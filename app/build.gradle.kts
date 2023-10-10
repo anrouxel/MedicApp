@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "fr.medicapp.medicapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "fr.medicapp.medicapp"
