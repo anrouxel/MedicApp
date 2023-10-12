@@ -22,3 +22,5 @@ val CaribbeanGreen700 = Color(0xFF008363)
 val CaribbeanGreen800 = Color(0xFF00674f)
 val CaribbeanGreen900 = Color(0xFF005542)
 val CaribbeanGreen950 = Color(0xFF003027)
+
+val White = Color(0xFFFFFFFF)
