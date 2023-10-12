@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.components
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ fun MedicAppTextField() {
         value = text,
         onValueChange = { text = it},
         label = { Text("Email") },
+        shape = RoundedCornerShape(20),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = CaribbeanGreen500,
             unfocusedBorderColor = CaribbeanGreen500,
@@ -31,7 +33,7 @@ fun MedicAppTextField() {
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 private fun TextFieldPreview() {
     MedicAppTextField()
