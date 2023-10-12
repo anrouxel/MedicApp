@@ -5,11 +5,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import fr.medicapp.medicapp.Greeting
 import fr.medicapp.medicapp.ui.theme.CaribbeanGreen500
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
-import fr.medicapp.medicapp.ui.theme.White
 
 @Composable
 fun MedicAppButton() {
@@ -18,7 +17,8 @@ fun MedicAppButton() {
         shape = RoundedCornerShape(20),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = CaribbeanGreen500,
-            contentColor = White)
+            contentColor = Color.White
+        )
     ) {
         Text(text = "Connexion")
     }
