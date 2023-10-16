@@ -82,7 +82,7 @@ fun Home() {
                     onClick = { /*TODO*/ },
                     icon = {
                         Icon(
-                            imageVector = Icons.Filled.Medication,
+                            imageVector = Icons.Filled.MedicalInformation,
                             contentDescription = "Ordonnances"
                         )
                     },
@@ -92,7 +92,7 @@ fun Home() {
                     onClick = { /*TODO*/ },
                     icon = {
                         Icon(
-                            imageVector = Icons.Filled.MedicalInformation,
+                            imageVector = Icons.Filled.Medication,
                             contentDescription = "Medicaments"
                         )
                     }
