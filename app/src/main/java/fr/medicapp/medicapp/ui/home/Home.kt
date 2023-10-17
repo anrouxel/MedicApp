@@ -33,8 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.R
-import fr.medicapp.medicapp.ui.theme.CaribbeanGreen500
-import fr.medicapp.medicapp.ui.theme.CaribbeanGreen600
+import fr.medicapp.medicapp.ui.theme.EUGreen100
+import fr.medicapp.medicapp.ui.theme.EUGreen120
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,7 +125,7 @@ fun Home() {
                     .fillMaxWidth()
                     .height(height = 200.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = CaribbeanGreen600,
+                    containerColor = EUGreen120,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
@@ -146,7 +146,7 @@ fun Home() {
                     .fillMaxWidth()
                     .padding(top = 10.dp, bottom = 0.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = CaribbeanGreen500
+                    containerColor = EUGreen100
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
@@ -158,7 +158,7 @@ fun Home() {
                     .fillMaxWidth()
                     .padding(top = 10.dp, bottom = 0.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = CaribbeanGreen500
+                    containerColor = EUGreen100
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
