@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import fr.medicapp.medicapp.ui.theme.CaribbeanGreen500
+import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @Composable
@@ -16,7 +16,7 @@ fun MedicAppButton() {
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(20),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = CaribbeanGreen500,
+            containerColor = EUGreen100,
             contentColor = Color.White
         )
     ) {
