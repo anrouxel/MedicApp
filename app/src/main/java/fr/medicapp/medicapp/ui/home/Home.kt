@@ -27,6 +27,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -39,6 +43,8 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home() {
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -141,7 +147,9 @@ fun Home() {
                 }
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    showBottomSheet = true
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp, bottom = 0.dp),
@@ -163,6 +171,12 @@ fun Home() {
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Text(text = "Signaler un effet indesirable")
+            }
+            if (showBottomSheet) {
+                AddPrescriptionModalBottomSheet(
+                    showBottomSheet = showBottomSheet,
+                    onDismissRequest = { showBottomSheet = false }
+                )
             }
         }
     }
