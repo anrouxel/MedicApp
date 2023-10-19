@@ -2,10 +2,9 @@ package fr.medicapp.medicapp.ui.home
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -33,17 +32,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
-import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import kotlinx.coroutines.launch
 import java.io.File
@@ -76,8 +70,8 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
-        onResult = {sucess: Boolean ->
-            hasImage = sucess
+        onResult = { success: Boolean ->
+            hasImage = success
         }
     )
 
@@ -91,12 +85,6 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
                 .height(200.dp)
         ) {
             if (cameraPermissionState.status.isGranted) {
-                if (hasImage) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = imageUri),
-                        contentDescription = "OCR"
-                    )
-                }
                 Column(
                     modifier = Modifier
                         .weight(1f)
@@ -152,18 +140,36 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
                     }
                 }
             } else {
-                Column {
-                    Text(text = "Nous avons besoin de la permission pour accéder à la caméra")
-                    Button(
-                        onClick = {
-                            cameraPermissionState.launchPermissionRequest()
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = EUGreen100
-                        ),
-                        shape = RoundedCornerShape(10.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        Arrangement.Center
                     ) {
-                        Text(text = "Autoriser")
+                        Text(text = "Nous avons besoin de la permission pour accéder à la caméra")
+                    }
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        Arrangement.Center
+                    ) {
+                        Button(
+                            onClick = {
+                                cameraPermissionState.launchPermissionRequest()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = EUGreen100
+                            ),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Text(text = "Autoriser")
+                        }
                     }
                 }
             }
