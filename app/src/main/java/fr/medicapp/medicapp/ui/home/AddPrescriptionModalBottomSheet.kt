@@ -65,6 +65,12 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
         onResult = { uri: Uri? ->
             hasImage = uri != null
             imageUri = uri
+
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) {
+                    onDismissRequest()
+                }
+            }
         }
     )
 
@@ -72,6 +78,12 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success: Boolean ->
             hasImage = success
+
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) {
+                    onDismissRequest()
+                }
+            }
         }
     )
 
@@ -92,12 +104,6 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
                 ) {
                     IconButton(
                         onClick = {
-                            scope.launch { sheetState.hide() }.invokeOnCompletion {
-                                if (!sheetState.isVisible) {
-                                    onDismissRequest()
-                                }
-                            }
-
                             val uri: Uri = context.createImageFile()
                             imageUri = uri
                             cameraLauncher.launch(uri)
@@ -120,12 +126,6 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
                 ) {
                     IconButton(
                         onClick = {
-                            scope.launch { sheetState.hide() }.invokeOnCompletion {
-                                if (!sheetState.isVisible) {
-                                    onDismissRequest()
-                                }
-                            }
-
                             imagePicker.launch("image/*")
                         },
                         modifier = Modifier.fillMaxSize()
