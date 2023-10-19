@@ -104,11 +104,11 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
                 ) {
                     IconButton(
                         onClick = {
-                            /*scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            scope.launch { sheetState.hide() }.invokeOnCompletion {
                                 if (!sheetState.isVisible) {
                                     onDismissRequest()
                                 }
-                            }*/
+                            }
 
                             val uri: Uri = context.createImageFile()
                             imageUri = uri
