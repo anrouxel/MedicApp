@@ -36,7 +36,6 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
-
     val cameraPermissionState = rememberPermissionState(
         android.Manifest.permission.CAMERA
     )
