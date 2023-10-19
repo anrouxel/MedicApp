@@ -55,7 +55,9 @@ fun Home() {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                drawerShape = RoundedCornerShape(10.dp)
+            ) {
                 Spacer(modifier = Modifier.height(12.dp))
                 NavigationDrawerItem(
                     icon = {
@@ -73,7 +75,8 @@ fun Home() {
                             drawerState.close()
                         }
                     },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    shape = RoundedCornerShape(10.dp)
                 )
                 NavigationDrawerItem(
                     icon = {
