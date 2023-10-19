@@ -63,6 +63,9 @@ dependencies {
     // Material Design icons
     implementation("androidx.compose.material:material-icons-extended")
 
+    // ML Kit
+    implementation("com.google.mlkit:text-recognition:16.0.0")
+
     // Accompanist
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
 
