@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home() {
+    var showBottomSheet by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
@@ -221,7 +222,9 @@ fun Home() {
                     }
                 }
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        showBottomSheet = true
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp, bottom = 0.dp),
