@@ -36,6 +36,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -240,6 +244,38 @@ fun Home() {
                 ) {
                     Text(text = "Signaler un effet indesirable")
                 }
+            }
+            Button(
+                onClick = {
+                    showBottomSheet = true
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 0.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = EUGreen100
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(text = "Ajouter une ordonnance")
+            }
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 0.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = EUGreen100
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(text = "Signaler un effet indesirable")
+            }
+            if (showBottomSheet) {
+                AddPrescriptionModalBottomSheet(
+                    showBottomSheet = showBottomSheet,
+                    onDismissRequest = { showBottomSheet = false }
+                )
             }
         }
     }
