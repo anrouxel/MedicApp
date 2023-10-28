@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MedicalInformation
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Message
-import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -96,7 +97,8 @@ fun Home() {
                             drawerState.close()
                         }
                     },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    shape = RoundedCornerShape(10.dp)
                 )
                 NavigationDrawerItem(
                     icon = {
@@ -114,12 +116,13 @@ fun Home() {
                             drawerState.close()
                         }
                     },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    shape = RoundedCornerShape(10.dp)
                 )
                 NavigationDrawerItem(
                     icon = {
                         Icon(
-                            imageVector = Icons.Filled.Newspaper,
+                            imageVector = Icons.Filled.Description,
                             contentDescription = "Effets indesirables"
                         )
                     },
@@ -132,7 +135,8 @@ fun Home() {
                             drawerState.close()
                         }
                     },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    shape = RoundedCornerShape(10.dp)
                 )
                 NavigationDrawerItem(
                     icon = {
@@ -150,7 +154,27 @@ fun Home() {
                             drawerState.close()
                         }
                     },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Settings,
+                            contentDescription = "Paramètres"
+                        )
+                    },
+                    label = {
+                        Text(text = "Paramètres")
+                    },
+                    selected = false,
+                    onClick = {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    shape = RoundedCornerShape(10.dp)
                 )
             }
         }
