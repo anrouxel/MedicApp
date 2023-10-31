@@ -5,7 +5,10 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MedicalInformation
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.theme.EUBlue60
 import fr.medicapp.medicapp.ui.theme.EUGreen60
 import fr.medicapp.medicapp.ui.theme.EUPurple60
@@ -14,26 +17,30 @@ sealed class NavigationDrawerRoute(
     val route: String,
     val title: String,
     val icon: ImageVector,
-    val color: Color
+    val color: Color,
+    val logo: Int
 ) {
     object Home : NavigationDrawerRoute(
         route = "home",
         title = "Accueil",
         icon = Icons.Filled.Home,
-        color = EUGreen60
+        color = EUGreen60,
+        logo = R.drawable.medicapp_eu_green
     )
 
     object Prescriptions : NavigationDrawerRoute(
         route = "prescriptions",
         title = "Mes ordonnances",
         icon = Icons.Filled.MedicalInformation,
-        color = EUPurple60
+        color = EUPurple60,
+        logo = R.drawable.medicapp_eu_purple
     )
 
     object Messages : NavigationDrawerRoute(
         route = "messages",
         title = "Messagerie",
         icon = Icons.Filled.Message,
-        color = EUBlue60
+        color = EUBlue60,
+        logo = R.drawable.medicapp_eu_blue
     )
 }
