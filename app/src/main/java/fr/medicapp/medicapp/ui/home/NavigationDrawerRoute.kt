@@ -5,9 +5,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MedicalInformation
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.theme.EUBlue60
 import fr.medicapp.medicapp.ui.theme.EUGreen60
