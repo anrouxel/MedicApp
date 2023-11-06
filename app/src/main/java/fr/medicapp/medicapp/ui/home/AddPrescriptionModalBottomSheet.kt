@@ -118,6 +118,7 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
+        shape = RoundedCornerShape(10.dp),
     ) {
         Row(
             modifier = Modifier
