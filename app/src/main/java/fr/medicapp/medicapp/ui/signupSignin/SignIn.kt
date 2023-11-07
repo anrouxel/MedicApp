@@ -8,9 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -25,6 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,9 +46,18 @@ import fr.medicapp.medicapp.ui.theme.EUGreen100
 fun SignIn(
     login: () -> Unit
 ) {
-    var text by rememberSaveable {
+    var email by rememberSaveable {
         mutableStateOf("")
     }
+
+    var password by rememberSaveable {
+        mutableStateOf("")
+    }
+
+    var passwordHidden by rememberSaveable {
+        mutableStateOf(true)
+    }
+
 
     Column(
         modifier = Modifier
@@ -74,31 +92,46 @@ fun SignIn(
             verticalArrangement = Arrangement.Center
         ) {
             OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
+                value = email,
+                onValueChange = { email = it },
+                singleLine = true,
                 label = { Text("Email") },
                 shape = RoundedCornerShape(10.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = EUGreen100,
                     unfocusedBorderColor = EUGreen100,
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             )
 
             OutlinedTextField(
-                value = text,
-                onValueChange = { text = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
+                value = password,
+                onValueChange = { password = it },
+                singleLine = true,
                 label = { Text("Mot de passe") },
                 shape = RoundedCornerShape(10.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = EUGreen100,
                     unfocusedBorderColor = EUGreen100,
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp)
+                visualTransformation =
+                if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    IconButton(onClick = { passwordHidden = !passwordHidden }) {
+                        val visibilityIcon =
+                            if (passwordHidden) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                        // Please provide localized description for accessibility services
+                        val description = if (passwordHidden) "Show password" else "Hide password"
+                        Icon(imageVector = visibilityIcon, contentDescription = description)
+                    }
+                }
             )
         }
         Column(
