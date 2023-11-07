@@ -24,28 +24,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import fr.medicapp.medicapp.R
-import fr.medicapp.medicapp.ui.navigation.Graph
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignIn(
-    onClick: () -> Unit
+    login: () -> Unit
 ) {
     var text by rememberSaveable {
         mutableStateOf("")
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -111,7 +109,7 @@ fun SignIn(
             verticalArrangement = Arrangement.Center
         ) {
             Button(
-                onClick = onClick,
+                onClick = login,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = EUGreen100,
@@ -152,7 +150,7 @@ fun SignIn(
 @Composable
 private fun SignInPreview() {
     SignIn(
-        onClick = { }
+        login = { }
     )
 }
 
