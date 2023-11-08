@@ -86,7 +86,6 @@ fun Home() {
     }
     if (showBottomSheet) {
         AddPrescriptionModalBottomSheet(
-            showBottomSheet = showBottomSheet,
             onDismissRequest = { showBottomSheet = false }
         )
     }

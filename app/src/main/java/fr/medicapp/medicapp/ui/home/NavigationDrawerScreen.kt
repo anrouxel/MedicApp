@@ -49,7 +49,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
+    val navigationDrawerDestination = screens.find { it.route == currentDestination?.route }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -95,7 +95,9 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                 CenterAlignedTopAppBar(
                     title = {
                         Image(
-                            painter = painterResource(id = screens.find { it.route == currentDestination?.route }?.logo ?: R.drawable.medicapp_eu_green),
+                            painter = painterResource(
+                                id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                            ),
                             contentDescription = "MedicApp",
                         )
                     },

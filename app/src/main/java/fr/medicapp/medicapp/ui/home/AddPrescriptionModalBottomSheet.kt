@@ -50,7 +50,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: () -> Unit) {
+fun AddPrescriptionModalBottomSheet(onDismissRequest: () -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
@@ -74,7 +74,7 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
 
             if (imageUri != null) {
                 val image = InputImage.fromFilePath(context, imageUri!!)
-                val result = recognizer.process(image)
+                recognizer.process(image)
                     .addOnSuccessListener { visionText ->
                         Log.d("MLKit", visionText.text)
                     }
@@ -98,7 +98,7 @@ fun AddPrescriptionModalBottomSheet(showBottomSheet: Boolean, onDismissRequest: 
 
             if (imageUri != null) {
                 val image = InputImage.fromFilePath(context, imageUri!!)
-                val result = recognizer.process(image)
+                recognizer.process(image)
                     .addOnSuccessListener { visionText ->
                         Log.d("MLKit", visionText.text)
                     }
@@ -212,9 +212,9 @@ fun Context.createImageFile(): Uri {
     val imageFileName = "JPEG_" + timeStamp + "_"
 
     val image = File.createTempFile(
-        imageFileName, /* prefix */
-        ".jpg", /* suffix */
-        cacheDir      /* directory */
+        imageFileName,
+        ".jpg",
+        cacheDir
     ).apply {
         createNewFile()
     }
@@ -225,5 +225,5 @@ fun Context.createImageFile(): Uri {
 @Preview
 @Composable
 private fun AddPrescriptionModalBottomSheetPreview() {
-    AddPrescriptionModalBottomSheet(showBottomSheet = true, onDismissRequest = {})
+    AddPrescriptionModalBottomSheet(onDismissRequest = {})
 }
