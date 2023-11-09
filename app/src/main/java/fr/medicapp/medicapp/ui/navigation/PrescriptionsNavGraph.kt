@@ -1,23 +1,20 @@
 package fr.medicapp.medicapp.ui.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.ui.home.Home
 
 fun NavGraphBuilder.prescriptionsNavGraph(
-    navController: NavController
+    navController: NavHostController
 ) {
-    composable(PrescriptionsScreen.Prescriptions.route) {
-        Home()
+    composable(route = PrescriptionsRoute.Prescriptions.route) {
     }
-    composable(PrescriptionsScreen.PrescriptionDetailsWithId.route) {
-        Home()
+    composable(route = PrescriptionsRoute.PrescriptionDetailsWithId.route) {
     }
 }
 
-sealed class PrescriptionsScreen(val route: String) {
-    object Prescriptions : PrescriptionsScreen("prescriptions")
+sealed class PrescriptionsRoute(val route: String) {
+    object Prescriptions : PrescriptionsRoute("prescriptions")
 
-    object PrescriptionDetailsWithId : PrescriptionsScreen("prescription_details/{id}")
+    object PrescriptionDetailsWithId : PrescriptionsRoute("prescription_details/{id}")
 }

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -72,7 +74,9 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                         label = {
                             Text(text = screen.title)
                         },
-                        selected = currentDestination?.route == screen.route,
+                        selected = currentDestination?.hierarchy?.any {
+                            it.route == screen.route
+                        } == true,
                         onClick = {
                             scope.launch {
                                 drawerState.close()
@@ -128,7 +132,6 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
-                    .padding(10.dp)
             ) {
                 HomeNavGraph(
                     navController = navController,
