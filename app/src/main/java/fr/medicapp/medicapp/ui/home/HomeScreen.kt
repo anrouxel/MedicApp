@@ -33,7 +33,6 @@ fun HomeScreen(
             .padding(16.dp)
     ) {
         ElevatedCard(
-            onClick = { /*TODO*/ },
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
             ),

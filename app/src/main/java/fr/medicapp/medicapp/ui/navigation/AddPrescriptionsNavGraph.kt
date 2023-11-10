@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionOptionChooseInstruction
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionOptionFrequency
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionOptionPrescriptionSource
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionScreen
 
 fun NavGraphBuilder.addPrescriptionsNavGraph(
@@ -12,9 +14,9 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
 ) {
     navigation(
         route = Graph.ADD_PRESCRIPTIONS,
-        startDestination = AddPrescriptionsRoute.AddPrescriptions.route
+        startDestination = AddPrescriptionsRoute.AddPrescriptionsChooseInstruction.route
     ) {
-        composable(route = AddPrescriptionsRoute.AddPrescriptions.route) {
+        composable(route = AddPrescriptionsRoute.AddPrescriptionsChooseInstruction.route) {
             AddPrescriptionScreen(
                 navController = navController,
                 title = "Choisissez une option pour ajouter une ordonnance",
@@ -25,11 +27,35 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
                 )
             )
         }
+
+        composable(route = AddPrescriptionsRoute.AddPrescriptionsSource.route) {
+            AddPrescriptionScreen(
+                navController = navController,
+                title = "Votre traitement est-il prescrit par votre médecin ?",
+                options = listOf(
+                    AddPrescriptionOptionPrescriptionSource.DOCTOR_PRESCRIPTION,
+                    AddPrescriptionOptionPrescriptionSource.SELF_PRESCRIPTION
+                )
+            )
+        }
+
+        composable(route = AddPrescriptionsRoute.AddPrescriptionsFrequency.route) {
+            AddPrescriptionScreen(
+                navController = navController,
+                title = "Quelle est la fréquence de ce traitement?",
+                options = listOf(
+                    AddPrescriptionOptionFrequency.ONCE_DAILY,
+                    AddPrescriptionOptionFrequency.TWICE_DAILY,
+                    AddPrescriptionOptionFrequency.CUSTOM_FREQUENCY
+                )
+            )
+        }
     }
 }
 
 sealed class AddPrescriptionsRoute(val route: String) {
-    object AddPrescriptions : AddPrescriptionsRoute(
-        route = "add_prescriptions"
-    )
+    object AddPrescriptionsChooseInstruction : AddPrescriptionsRoute("add_prescriptions_choose_instruction")
+    object AddPrescriptionsSource : AddPrescriptionsRoute("add_prescriptions_source")
+
+    object AddPrescriptionsFrequency : AddPrescriptionsRoute("add_prescriptions_frequency")
 }
