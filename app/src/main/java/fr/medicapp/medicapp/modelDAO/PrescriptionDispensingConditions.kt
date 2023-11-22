@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.model
+package fr.medicapp.medicapp.modelDAO
 
 data class PrescriptionDispensingConditions(
     val cisCode: String,

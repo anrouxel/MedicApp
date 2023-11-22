@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.model
+package fr.medicapp.medicapp.modelDAO
 
 import java.util.Date
 
