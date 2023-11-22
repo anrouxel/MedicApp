@@ -34,16 +34,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.ViewModel.AddPrescriptionViewModel
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple40
 
 @Composable
 fun AddPrescriptionScreen(
     navController: NavHostController = rememberNavController(),
-    title: String,
-    options: List<AddPrescriptionOption>,
+    viewModel: AddPrescriptionViewModel,
 ) {
-    var selectedOption by remember { mutableStateOf<AddPrescriptionOption>(AddPrescriptionOption.NONE) }
+    var selectedOption by remember { mutableStateOf<>() }
 
     Column(
         modifier = Modifier
@@ -163,11 +163,7 @@ fun AddPrescriptionOptionButton(
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionScreen(
         title = "Choisissez une option pour ajouter une ordonnance",
-        options = listOf(
-            AddPrescriptionOptionChooseInstruction.CAMERA,
-            AddPrescriptionOptionChooseInstruction.GALLERY,
-            AddPrescriptionOptionChooseInstruction.MANUAL,
-        )
+        viewModel = AddPrescriptionViewModel()
     )
 }
 
