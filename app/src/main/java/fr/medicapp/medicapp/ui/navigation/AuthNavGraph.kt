@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.signupSignin.SignIn
+import fr.medicapp.medicapp.ui.signupSignin.SignUp1
+import fr.medicapp.medicapp.ui.signupSignin.SignUp2
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(
@@ -16,7 +18,15 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 login = {
                     navController.popBackStack()
                     navController.navigate(Graph.HOME)
+                },
+                register = {
+                    navController.navigate(AuthScreen.Register.route)
                 }
+            )
+        }
+        composable(AuthScreen.Register.route) {
+            SignUp2(
+
             )
         }
     }
