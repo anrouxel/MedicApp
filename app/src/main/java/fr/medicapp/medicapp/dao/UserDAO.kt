@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.dao
 
+import fr.medicapp.medicapp.modelDAO.Medication
+
 class UserDAO(id:Int, lastName: String, firstName: String, age: Int, email: String, mdp: String) {
 
     private val id: Int
@@ -8,6 +10,7 @@ class UserDAO(id:Int, lastName: String, firstName: String, age: Int, email: Stri
     private var age: Int
     private var email: String
     private var mdp: String
+    private var medicationMap: MutableMap<String,Medication>
 
     init {
         this.id = id
@@ -16,6 +19,7 @@ class UserDAO(id:Int, lastName: String, firstName: String, age: Int, email: Stri
         this.age = age
         this.email = email
         this.mdp = mdp
+        this.medicationMap = mutableMapOf()
     }
 
     /**
@@ -47,6 +51,14 @@ class UserDAO(id:Int, lastName: String, firstName: String, age: Int, email: Stri
         return mdp
     }
 
+    fun getMedicationMap(): MutableMap<String,Medication>{
+        return medicationMap
+    }
+
+    fun getMedication(cisCode: String): Medication?{
+        return medicationMap[cisCode]
+    }
+
     /**
      * Setters ensemble
      * Function name format: set{Variable}(new{Variable}: Type of {Variable})
@@ -70,5 +82,13 @@ class UserDAO(id:Int, lastName: String, firstName: String, age: Int, email: Stri
 
     fun setMdp(newMdp: String){
         this.mdp = newMdp
+    }
+
+    fun addMedication(newMedication: Medication){
+        this.medicationMap[newMedication.cisCode] = newMedication
+    }
+
+    fun deleteMedication(deletedMedication: String){
+        this.medicationMap.remove(deletedMedication)
     }
 }
