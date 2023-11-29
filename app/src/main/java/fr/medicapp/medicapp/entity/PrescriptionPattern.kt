@@ -1,8 +1,9 @@
 package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "PrescriptionPattern")
 data class PrescriptionPattern(
-    val sentence: String
+    @PrimaryKey val sentence: String
 )

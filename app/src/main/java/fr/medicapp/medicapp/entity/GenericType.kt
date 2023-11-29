@@ -1,8 +1,9 @@
 package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "GenericType")
 data class GenericType(
-    val genericTypeInfoMap:String
+    @PrimaryKey val genericTypeInfoMap:String
 )
