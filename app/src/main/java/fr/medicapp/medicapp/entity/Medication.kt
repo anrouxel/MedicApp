@@ -1,11 +1,12 @@
 package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(tableName = "Medication")
 data class Medication(
-    val cisCode: String,
+    @PrimaryKey val cisCode: String,
     val name: String,
     val pharmaceuticalForm: String,
     val administrationRoutes: List<String>,

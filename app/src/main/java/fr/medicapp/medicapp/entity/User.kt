@@ -1,10 +1,11 @@
 package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "User")
 data class User(
-    val id:Int,
+    @PrimaryKey(autoGenerate = true) val id:Int,
     val lastName: String,
     val firstName: String,
     val age: Int,
