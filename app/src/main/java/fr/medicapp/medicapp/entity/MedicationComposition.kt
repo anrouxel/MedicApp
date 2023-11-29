@@ -1,5 +1,8 @@
-package fr.medicapp.medicapp.modelDAO
+package fr.medicapp.medicapp.entity
 
+import androidx.room.Entity
+
+@Entity(tableName = "MedicationComposition")
 data class MedicationComposition(
     val cisCode: String,
     val pharmaceuticalElementDesignation: String,

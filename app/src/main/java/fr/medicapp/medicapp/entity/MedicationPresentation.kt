@@ -1,7 +1,9 @@
-package fr.medicapp.medicapp.modelDAO
+package fr.medicapp.medicapp.entity
 
+import androidx.room.Entity
 import java.util.Date
 
+@Entity(tableName = "MedicationPresentation")
 data class MedicationPresentation(
     val cisCode: String,
     val cip7Code: String,

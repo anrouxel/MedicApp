@@ -1,5 +1,8 @@
-package fr.medicapp.medicapp.modelDAO
+package fr.medicapp.medicapp.entity
 
+import androidx.room.Entity
+
+@Entity(tableName = "Labels")
 data class Labels(
     val bMedication: Label = Label("B-medication"),
     val iMedication: Label = Label("I-medication"),
