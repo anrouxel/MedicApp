@@ -19,6 +19,8 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ViewModel.AddPrescriptionViewModel
+import fr.medicapp.medicapp.model.AddPrescriptionOptionRadioButton
+import fr.medicapp.medicapp.model.AddPrescriptionOptionTextField
+import fr.medicapp.medicapp.model.AddPrescriptionType
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple40
 
@@ -43,15 +48,13 @@ fun AddPrescriptionScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: AddPrescriptionViewModel,
 ) {
-    var selectedOption by remember { mutableStateOf<>() }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         Text(
-            text = title,
+            text = viewModel.getSelectedScreenTitle(),
             fontWeight = FontWeight.Bold
         )
 
@@ -67,13 +70,29 @@ fun AddPrescriptionScreen(
                 )
         ) {
             // Génération des boutons radio
-            for (option in options) {
-                AddPrescriptionOptionButton(
-                    title = option.title,
-                    description = option.description,
-                    isSelected = selectedOption == option,
-                    onClick = { selectedOption = option }
-                )
+            for (option in viewModel.getSelectedScreenOptions()) {
+                when (viewModel.getSelectedScreenType()) {
+                    AddPrescriptionType.RadioButtonOption -> {
+                        val op = option as AddPrescriptionOptionRadioButton
+                        AddPrescriptionOptionButton(
+                            title = op.title,
+                            description = op.description,
+                            isSelected = viewModel.isSelectedScreenOptionRadioButton(op),
+                            onClick = {
+                                viewModel.setSelectedScreenOptionRadioButton(op)
+                            }
+                        )
+                    }
+                    AddPrescriptionType.TextFieldOption -> {
+                        val op = option as AddPrescriptionOptionTextField
+                        AddPrescriptionTextFieldOption(
+                            title = op.title,
+                            value = op.value,
+                            onValueChange = { op.value = it },
+                        )
+                    }
+                    else -> {}
+                }
 
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -83,7 +102,7 @@ fun AddPrescriptionScreen(
 
         Button(
             onClick = {
-                selectedOption.onClick(navController)
+                navController.navigate(viewModel.getSelectedScreenNextRoute())
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -91,7 +110,7 @@ fun AddPrescriptionScreen(
                 containerColor = EUPurple100,
             ),
             shape = RoundedCornerShape(10.dp),
-            enabled = selectedOption != AddPrescriptionOption.NONE
+            enabled = viewModel.getSelectedScreenValidation(),
         ) {
             Text(
                 text = "Suivant"
@@ -158,11 +177,44 @@ fun AddPrescriptionOptionButton(
     }
 }
 
+@Composable
+fun AddPrescriptionTextFieldOption(
+    title: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+
+    var text by remember { mutableStateOf("") }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Column {
+            Text(
+                text = title
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = value,
+                onValueChange = onValueChange,
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = EUPurple100,
+                    unfocusedBorderColor = EUPurple40,
+                    cursorColor = EUPurple100,
+                ),
+                shape = RoundedCornerShape(10.dp),
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionScreen(
-        title = "Choisissez une option pour ajouter une ordonnance",
         viewModel = AddPrescriptionViewModel()
     )
 }
@@ -186,5 +238,15 @@ private fun AddPrescriptionOptionButtonNotSelectedPreview() {
         description = "Ajouter une ordonnance",
         isSelected = false,
         onClick = { }
+    )
+}
+
+@Preview
+@Composable
+private fun AddPrescriptionTextFieldOptionSelectedPreview() {
+    AddPrescriptionTextFieldOption(
+        title = "Prénom du médecin",
+        value = "Jean",
+        onValueChange = { }
     )
 }

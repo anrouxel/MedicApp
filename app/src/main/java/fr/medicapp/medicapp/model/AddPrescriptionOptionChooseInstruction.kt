@@ -1,27 +1,26 @@
 package fr.medicapp.medicapp.model
 
-object AddPrescriptionOptionChooseInstruction : AddPrescriptionOptions() {
+object AddPrescriptionOptionChooseInstruction : AddPrescriptionOptionsRadioButton() {
 
-    override val route: String
-        get() = this::class.java.name
+    override val _route: String = AddPrescriptionOptionChooseInstruction::class.java.name
 
-    override val title: String = "Comment voulez-vous ajouter l'ordonnance ?"
+    override val _title: String = "Comment voulez-vous ajouter l'ordonnance ?"
 
-    override val options: List<AddPrescriptionOption> = listOf(
-        AddPrescriptionOption(
+    override val _options: List<AddPrescriptionOption> = listOf(
+        AddPrescriptionOptionRadioButton(
             "Caméra",
             "Prendre une photo de l'ordonnance",
             null
         ),
-        AddPrescriptionOption(
+        AddPrescriptionOptionRadioButton(
             "Galerie",
             "Choisir une photo de l'ordonnance",
             null
         ),
-        AddPrescriptionOption(
+        AddPrescriptionOptionRadioButton(
             "Manuel",
             "Entrer manuellement les informations de l'ordonnance",
-            AddPrescriptionOptionPrescriptionSource.route
+            AddPrescriptionOptionPrescriptionSource.getRoute()
         )
     )
 }

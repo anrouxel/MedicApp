@@ -1,24 +1,36 @@
 package fr.medicapp.medicapp.model
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
 abstract class AddPrescriptionOptions {
 
-    abstract val route: String
+    abstract val _type: AddPrescriptionType
 
-    abstract val title: String
+    protected abstract val _route: String
 
-    abstract val options: List<AddPrescriptionOption>
+    protected abstract val _title: String
 
-    private var selectedOption: AddPrescriptionOption? = null
+    protected abstract val _options: List<AddPrescriptionOption>
+
+    fun getOptions(): List<AddPrescriptionOption> {
+        return _options
+    }
 
     fun getTitle(): String {
-        return title
+        return _title
     }
 
-    fun selectOption(option: AddPrescriptionOption) {
-        selectedOption = option
+    fun getRoute(): String {
+        return _route
     }
 
-    fun isOptionSelected(option: AddPrescriptionOption): Boolean {
-        return selectedOption == option
+    fun getType(): AddPrescriptionType {
+        return _type
     }
+
+    abstract fun getValidation(): Boolean
+
+    abstract fun getNextRoute(): String?
 }
