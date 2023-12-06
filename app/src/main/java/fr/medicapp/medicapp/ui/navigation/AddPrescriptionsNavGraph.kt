@@ -1,49 +1,75 @@
 package fr.medicapp.medicapp.ui.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.ViewModel.AddPrescriptionViewModel
-import fr.medicapp.medicapp.model.AddPrescriptionOptionChooseInstruction
-import fr.medicapp.medicapp.model.AddPrescriptionOptionDoctorInfo
-import fr.medicapp.medicapp.model.AddPrescriptionOptionPrescriptionSource
-import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionScreen
+import fr.medicapp.medicapp.ViewModel.SharedAddPrescriptionViewModel
+import fr.medicapp.medicapp.model.ScreenChooseInstruction
+import fr.medicapp.medicapp.model.ScreenSource
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionInstructionsScreen
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionSourceScreen
 
 fun NavGraphBuilder.addPrescriptionsNavGraph(
     navController: NavHostController
 ) {
-    val viewModel = AddPrescriptionViewModel()
-
     navigation(
         route = Graph.ADD_PRESCRIPTIONS,
-        startDestination = AddPrescriptionOptionChooseInstruction.getRoute()
+        startDestination = AddPrescriptionsRoute.ChooseInstructions.route
     ) {
-        viewModel.addScreen(AddPrescriptionOptionChooseInstruction)
-        viewModel.setSelectedScreen(AddPrescriptionOptionChooseInstruction.getRoute())
-        composable(route = AddPrescriptionOptionChooseInstruction.getRoute()) {
-            AddPrescriptionScreen(
-                viewModel = viewModel,
-                navController = navController,
+        composable(route = AddPrescriptionsRoute.ChooseInstructions.route) {
+            val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
+            val state by viewModel.sharedState.collectAsStateWithLifecycle()
+            AddPrescriptionInstructionsScreen(
+                state = state,
+                optionInstructionContent = ScreenChooseInstruction.getOptions(),
+                onNavigate = { route, instruction ->
+                    viewModel.setInstructions(instruction)
+                    navController.navigate(route)
+                }
             )
         }
 
-        composable(route = AddPrescriptionOptionPrescriptionSource.getRoute()) {
-            viewModel.addScreen(AddPrescriptionOptionPrescriptionSource)
-            viewModel.setSelectedScreen(AddPrescriptionOptionPrescriptionSource.getRoute())
-            AddPrescriptionScreen(
-                navController = navController,
-                viewModel = viewModel,
-            )
-        }
-
-        composable(route = AddPrescriptionOptionDoctorInfo.getRoute()) {
-            viewModel.addScreen(AddPrescriptionOptionDoctorInfo)
-            viewModel.setSelectedScreen(AddPrescriptionOptionDoctorInfo.getRoute())
-            AddPrescriptionScreen(
-                navController = navController,
-                viewModel = viewModel,
+        composable(route = AddPrescriptionsRoute.ChooseSource.route) {
+            val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
+            val state by viewModel.sharedState.collectAsStateWithLifecycle()
+            AddPrescriptionSourceScreen(
+                state = state,
+                optionInstructionContent = ScreenSource.getOptions(),
+                onNavigate = { route ->
+                    navController.navigate(route)
+                }
             )
         }
     }
+}
+
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavHostController,
+): T {
+    val navGraphRoute = destination.parent?.route ?: return viewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+    return viewModel(parentEntry)
+}
+
+sealed class AddPrescriptionsRoute(
+    val route: String,
+) {
+    object ChooseInstructions : AddPrescriptionsRoute(
+        route = "choose_instructions"
+    )
+
+    object ChooseSource : AddPrescriptionsRoute(
+        route = "choose_source"
+    )
 }

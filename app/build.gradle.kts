@@ -73,6 +73,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 
     // Material Design icons
     implementation("androidx.compose.material:material-icons-extended")
@@ -88,6 +89,7 @@ dependencies {
     implementation("io.coil-kt:coil:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
+    // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
     testImplementation("junit:junit:4.13.2")
