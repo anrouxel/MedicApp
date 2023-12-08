@@ -46,7 +46,10 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUp1() {
+fun SignUp1(
+    back: () -> Unit,
+    validate: () -> Unit
+) {
     var email by rememberSaveable {
         mutableStateOf("")
     }
@@ -181,7 +184,7 @@ fun SignUp1() {
                     .weight(1f)
             ) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = back,
                     shape = RoundedCornerShape(20),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = EURed100,
@@ -199,7 +202,7 @@ fun SignUp1() {
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 ) {}
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = validate,
                     shape = RoundedCornerShape(20),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = EUGreen100,
@@ -221,5 +224,5 @@ fun SignUp1() {
 @Preview(showBackground = true)
 @Composable
 private fun SignUp1Preview() {
-    SignUp1()
+    SignUp1({}, {})
 }

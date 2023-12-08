@@ -20,13 +20,33 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                     navController.navigate(Graph.HOME)
                 },
                 register = {
-                    navController.navigate(AuthScreen.Register.route)
+                    navController.navigate(AuthScreen.RegisterMailPW.route)
                 }
             )
         }
-        composable(AuthScreen.Register.route) {
+        composable(AuthScreen.RegisterMailPW.route) {
+            SignUp1(
+                back = {
+                    /*navController.navigate("oi") {
+                        popUpTo()
+                    }*/
+                },
+                validate = {
+                    navController.navigate(AuthScreen.RegisterName.route)
+                }
+            )
+        }
+        composable(AuthScreen.RegisterName.route) {
             SignUp2(
-
+                back = {
+                    /*navController.navigate("oi") {
+                        popUpTo()
+                    }*/
+                },
+                validate = {
+                    navController.popBackStack()
+                    navController.navigate(Graph.HOME)
+                }
             )
         }
     }
@@ -34,6 +54,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
 
 sealed class AuthScreen(val route: String) {
     object Login : AuthScreen(route = "login")
-    object Register : AuthScreen(route = "register")
+    object RegisterMailPW : AuthScreen(route = "registermailpw")
+    object RegisterName : AuthScreen(route = "registername")
     object Forgot : AuthScreen(route = "forgot")
 }
