@@ -20,7 +20,6 @@ final class FullTokenizer(
     fun tokenize(text: String): MutableList<String> {
         val splitTokens: MutableList<String> = ArrayList()
         for (token in basicTokenizer.tokenize(text)) {
-            Log.d("token", token)
             splitTokens.addAll(wordpieceTokenizer.tokenize(token))
         }
         return splitTokens
