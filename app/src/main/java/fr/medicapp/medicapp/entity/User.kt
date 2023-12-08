@@ -10,6 +10,6 @@ data class User(
     val firstName: String,
     val age: Int,
     val email: String,
-    val mdp: String,
+    val mdp: ByteArray,
     val medicationMap: MutableMap<String,Medication>
 )

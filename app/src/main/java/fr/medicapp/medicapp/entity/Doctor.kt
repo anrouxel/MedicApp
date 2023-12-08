@@ -9,5 +9,5 @@ data class Doctor(@PrimaryKey(autoGenerate = true) val id:Int,
                   val firstName: String,
                   val age: Int,
                   val email: String,
-                  val mdp: String,
+                  val mdp: ByteArray,
                   val patientList: List<User>)
