@@ -11,10 +11,10 @@ import fr.medicapp.medicapp.entity.HasSmrOpinion
 interface HasSmrOpinionDAO {
 
     @Query("SELECT * FROM HasSmrOpinion")
-    fun getHasSmrOpinions(): List<HasSmrOpinion>
+    fun getHasSmrOpinionAll(): List<HasSmrOpinion>
 
     @Query("SELECT * FROM HasSmrOpinion WHERE cisCode = :cisCode")
-    fun getHasSmrOpinion(cisCode: String): HasSmrOpinion
+    fun getHasSmrOpinionOne(cisCode: String): HasSmrOpinion
 
     @Insert
     fun addHasSmrOpinion(hasSmrOpinion: HasSmrOpinion)

@@ -12,13 +12,13 @@ import fr.medicapp.medicapp.entity.User
 interface GenericGroupDAO {
 
     @Query("SELECT * FROM GenericGroup")
-    fun selectGenericGroups(): List<User>
+    fun getGenericGroupAll(): List<GenericGroup>
 
     @Query("SELECT * FROM GenericGroup WHERE cisCode = :cisCode")
-    fun selectGenericGroup(cisCode: String): User
+    fun getGenericGroupOne(cisCode: String): GenericGroup
 
     @Delete
-    fun deleteGenericGroup(cisCode: String)
+    fun deleteGenericGroup(genericGroup: GenericGroup)
 
     @Insert
     fun addGenericGroup(genericGroup: GenericGroup)

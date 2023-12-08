@@ -11,10 +11,10 @@ import fr.medicapp.medicapp.entity.GenericTypeInfo
 interface GenericTypeInfoDAO {
 
     @Query("SELECT * FROM GenericTypeInfo")
-    fun getGenericTypeInfos(): List<GenericTypeInfo>
+    fun getGenericTypeInfoAll(): List<GenericTypeInfo>
 
     @Query("SELECT * FROM GenericTypeInfo WHERE genericTypeId = :genericTypeId")
-    fun getGenericTypeInfo(genericTypeId: Int): GenericTypeInfo
+    fun getGenericTypeInfoOne(genericTypeId: Int): GenericTypeInfo
 
     @Delete
     fun deleteGenericTypeInfo(genericTypeInfo: GenericTypeInfo)

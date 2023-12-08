@@ -11,7 +11,7 @@ import fr.medicapp.medicapp.entity.GenericType
 interface GenericTypeDAO {
 
     @Query("SELECT * FROM GenericType")
-    fun getGenericTypes(): List<GenericType>
+    fun getGenericTypeAll(): List<GenericType>
 
     @Insert
     fun addGenericType(genericType: GenericType)

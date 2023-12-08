@@ -11,10 +11,10 @@ import fr.medicapp.medicapp.entity.ImportantInformation
 interface ImportantInformationDAO {
 
     @Query("SELECT * FROM ImportantInformation")
-    fun getImportantInformations(): List<ImportantInformation>
+    fun getImportantInformationAll(): List<ImportantInformation>
 
     @Query("SELECT * FROM ImportantInformation WHERE cisCode = :cisCode")
-    fun getImportantInformation(cisCode: String): ImportantInformation
+    fun getImportantInformationOne(cisCode: String): ImportantInformation
 
     @Insert
     fun addImportantInformation(importantInformation: ImportantInformation)
