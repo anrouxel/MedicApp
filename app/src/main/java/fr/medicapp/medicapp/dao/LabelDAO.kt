@@ -11,7 +11,7 @@ import fr.medicapp.medicapp.entity.Label
 interface LabelDAO {
 
     @Query("SELECT * FROM Label")
-    fun getLabel(): List<Label>
+    fun getLabelAll(): List<Label>
 
     @Insert
     fun addLabel(label: Label)
