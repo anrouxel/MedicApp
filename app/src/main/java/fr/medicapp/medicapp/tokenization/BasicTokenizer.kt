@@ -27,7 +27,10 @@ class BasicTokenizer(
                 stringBuilder.append(subToken).append(" ")
             }
         }
-        return whitespaceTokenize(stringBuilder.toString())
+        val splitTokens = whitespaceTokenize(stringBuilder.toString())
+        // modifier le premier token en ajoutant un underscore au début
+        splitTokens[0] = "▁${splitTokens[0]}"
+        return splitTokens
     }
 
     companion object {

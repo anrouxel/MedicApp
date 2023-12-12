@@ -5,7 +5,6 @@ final class WordpieceTokenizer(
 ) {
     private var dic: HashMap<String, Int>
 
-
     private val MAX_INPUTCHARS_PER_WORD = 200
 
     init {
@@ -42,13 +41,13 @@ final class WordpieceTokenizer(
                         if (start == 0) {
                             token.substring(start, end)
                         } else {
-                            "_" + token.substring(
+                            token.substring(
                                 start,
                                 end
                             )
                         }
-                    if (dic.containsKey(subStr)) {
-                        curSubStr = subStr
+                    curSubStr = dic[subStr]?.let { subStr } ?: curSubStr
+                    if (curSubStr != "") {
                         break
                     }
                     end--
@@ -72,6 +71,7 @@ final class WordpieceTokenizer(
                 outputTokens.addAll(subTokens)
             }
         }
+
         return outputTokens
     }
 }
