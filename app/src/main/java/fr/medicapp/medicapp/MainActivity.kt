@@ -34,6 +34,7 @@ import fr.medicapp.medicapp.tokenization.FeatureConverter
 import fr.medicapp.medicapp.tokenization.FullTokenizer
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import org.pytorch.Device
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.Tensor
@@ -49,10 +50,12 @@ class MainActivity : ComponentActivity() {
 
     private var mModule by mutableStateOf<Module?>(null)
     private var sentenceTokenized by mutableStateOf<MutableList<Pair<String, String>>>(mutableListOf())
+    private var visionText by mutableStateOf<String>("")
     private lateinit var mBackgroundThread: HandlerThread
     private lateinit var mHandle: Handler
 
     private val TAG = "CamemBERT"
+    private val MODEL_PATH = "model.pt"
     private val DIC_PATH = "vocab.txt"
     private val LABEL_PATH = "id_to_label.txt"
     private val dic: HashMap<String, Int> = HashMap()
@@ -91,6 +94,7 @@ class MainActivity : ComponentActivity() {
                             recognizer.process(image)
                                 .addOnSuccessListener { visionText ->
                                     Log.d("MLKit", visionText.text)
+                                    this.visionText = visionText.text
                                     try {
                                         loadDictionaryFile(this.assets)
                                         Log.v(TAG, "Dictionary loaded.")
@@ -202,13 +206,9 @@ class MainActivity : ComponentActivity() {
                                     Log.v(TAG, "startLogitsList: $startLogitsList")
                                     Log.v(TAG, "startLogitsList.size: ${startLogitsList.size}")
                                     val startCleanLogitsList = startLogitsList.filterIndexed { index, _ ->
-                                        Log.v(TAG, "index: $index, labelIds[index]: ${labelIds[index]}")
                                         labelIds[index] != -100
                                     }
                                     Log.v(TAG, "startCleanLogitsList: $startCleanLogitsList")
-                                    startCleanLogitsList.forEachIndexed { index, list ->
-                                        Log.v(TAG, "index: $index, labelIds[index]: ${labelIds[index]}")
-                                    }
                                     Log.v(TAG, "startCleanLogitsList.size: ${startCleanLogitsList.size}")
                                     val startPredictionsList = startCleanLogitsList.map { row ->
                                         row.indexOf(row.maxOrNull())
@@ -216,8 +216,8 @@ class MainActivity : ComponentActivity() {
                                     Log.v(TAG, "startPredictionsList: $startPredictionsList")
                                     Log.v(TAG, "startPredictionsList.size: ${startPredictionsList.size}")
 
-                                    val predictionsLabelList = startPredictionsList.map { index ->
-                                        labels[index]
+                                    var predictionsLabelList: List<String> = startPredictionsList.map { index ->
+                                        labels[index]!!
                                     }
                                     Log.v(TAG, "predictionsLabelList: $predictionsLabelList")
 
@@ -226,9 +226,17 @@ class MainActivity : ComponentActivity() {
                                     Log.v(TAG, "origTokens: ${feature.origTokens.size}")
 
                                     for (i in predictionsLabelList.indices) {
-                                        //Log.v(TAG, "labelIds[$i] = ${labelIds[i]}")
-                                        //Log.v(TAG, "predictionsLabelList[$i] = ${predictionsLabelList[i]}")
-                                        sentenceTokenized.add(Pair(predictionsLabelList[i], feature.origTokens[i]) as Pair<String, String>)
+                                        Log.v(TAG, predictionsLabelList[i])
+                                        if (predictionsLabelList[i] != "O") {
+                                            Log.v(TAG, "origTokens[$i] = ${feature.origTokens[i]}")
+                                            Log.v(TAG, "predictionsLabelList[$i] = ${predictionsLabelList[i]}")
+                                            sentenceTokenized.add(
+                                                Pair(
+                                                    feature.origTokens[i],
+                                                    predictionsLabelList[i]
+                                                )
+                                            )
+                                        }
                                     }
                                 }
                                 .addOnFailureListener { e ->
@@ -245,9 +253,11 @@ class MainActivity : ComponentActivity() {
                         if (hasImage) {
                             Text("Image prise")
 
+                            /*Text(text = visionText)
+
                             sentenceTokenized.forEach {
                                 Text("${it.first} : ${it.second}")
-                            }
+                            }*/
                         } else {
                             Button(onClick = {
                                 val uri: Uri = this.createImageFile()
@@ -300,35 +310,25 @@ class MainActivity : ComponentActivity() {
     @WorkerThread
     private fun loadModel() {
         if (mModule == null) {
-            val moduleFileAbsoluteFilePath: String? = assetFilePath(this, "model.pt")
-            mModule = Module.load(moduleFileAbsoluteFilePath)
+            val moduleFileAbsoluteFilePath: String? = assetFilePath(this.assets)
+            mModule = Module.load(moduleFileAbsoluteFilePath, mutableMapOf(), Device.CPU)
             Log.v(TAG, "Model loaded.")
         }
     }
 
-    private fun assetFilePath(context: Context, assetName: String): String? {
-        val file = File(context.filesDir, assetName)
-
-        try {
-            context.assets.open(assetName).use { `is` ->
-                FileOutputStream(file).use { os ->
-                    val buffer = ByteArray(4 * 1024)
-                    while (true) {
-                        val length = `is`.read(buffer)
-                        if (length <= 0) {
-                            break
-                        }
-                        os.write(buffer, 0, length)
-                    }
-                    os.flush()
-                    os.close()
+    private fun assetFilePath(assetManager: AssetManager): String? {
+        assetManager.open(MODEL_PATH).use { ins ->
+            val file = File(cacheDir, MODEL_PATH)
+            FileOutputStream(file).use { out ->
+                val buffer = ByteArray(1024)
+                var read: Int
+                while (ins.read(buffer).also { read = it } != -1) {
+                    out.write(buffer, 0, read)
                 }
-                return file.absolutePath
+                out.flush()
             }
-        } catch (e: IOException) {
-            Log.e("pytorchandroid", "Error process asset $assetName to file path")
+            return file.absolutePath
         }
-        return null
     }
 
     fun loadDictionaryFile(assetManager: AssetManager) {
