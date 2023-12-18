@@ -61,8 +61,8 @@ class MainActivity : ComponentActivity() {
     private val dic: HashMap<String, Int> = HashMap()
     private val labels: HashMap<Int, String> = HashMap()
     private lateinit var featureConverter: FeatureConverter
-    private val MAX_ANS_LEN = 32
-    private val MAX_QUERY_LEN = 64
+    private val MAX_ANS_LEN = 512
+    private val MAX_QUERY_LEN = 512
     private val MAX_SEQ_LEN = 512
     private val DO_LOWER_CASE = false
     private val PREDICT_ANS_NUM = 5
