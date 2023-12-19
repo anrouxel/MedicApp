@@ -39,7 +39,7 @@ final class WordpieceTokenizer(
                 while (start < end) {
                     val subStr =
                         if (start == 0) {
-                            token.substring(start, end)
+                            "▁${token.substring(start, end)}"
                         } else {
                             token.substring(
                                 start,
