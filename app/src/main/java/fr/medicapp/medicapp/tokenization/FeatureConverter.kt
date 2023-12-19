@@ -34,7 +34,6 @@ class FeatureConverter(
                 allDocTokens.add(subToken)
             }
         }
-        allDocTokens.forEach { Log.d("CamemBERTToken", it) }
 
         // -3 accounts for [CLS], [SEP] and [SEP].
         val maxContextLen = maxSeqLen - 3
