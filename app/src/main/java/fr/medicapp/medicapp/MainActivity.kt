@@ -12,6 +12,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.WorkerThread
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,7 +51,9 @@ import java.util.Date
 class MainActivity : ComponentActivity() {
 
     private var mModule by mutableStateOf<Module?>(null)
-    private var sentenceTokenized by mutableStateOf<MutableList<Pair<String, String>>>(mutableListOf())
+    private var result by mutableStateOf<Boolean>(false)
+    private var sentenceTokenized by mutableStateOf<MutableList<String>>(mutableListOf())
+    private var sentenceTokenizedLabel by mutableStateOf<MutableList<String>>(mutableListOf())
     private var visionText by mutableStateOf<String>("")
     private lateinit var mBackgroundThread: HandlerThread
     private lateinit var mHandle: Handler
@@ -71,10 +75,17 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mBackgroundThread = HandlerThread("BackgroundThread")
+        mBackgroundThread.start()
+        mHandle = Handler(mBackgroundThread.looper)
+
+        mHandle.removeCallbacks(modelRunnable)
+        mHandle.post(modelRunnable)
+
         setContent {
             MedicAppTheme {
 
-                /*val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
                 val cameraPermissionState = rememberPermissionState(
                     android.Manifest.permission.CAMERA
@@ -94,7 +105,9 @@ class MainActivity : ComponentActivity() {
                             recognizer.process(image)
                                 .addOnSuccessListener { visionText ->
                                     Log.d("MLKit", visionText.text)
-                                    //this.visionText = visionText.text
+                                    this.visionText = visionText.text
+                                    mHandle.removeCallbacks(textRunnable)
+                                    mHandle.post(textRunnable)
                                 }
                                 .addOnFailureListener { e ->
                                     Log.d("MLKit", e.toString())
@@ -108,13 +121,35 @@ class MainActivity : ComponentActivity() {
                 if (mModule != null) {
                     if (cameraPermissionState.status.isGranted) {
                         if (hasImage) {
-                            Text("Image prise")
+                            Column {
+                                Text("Image prise")
 
-                            /*Text(text = visionText)
+                                if (result) {
+                                    Text("Résultat")
 
-                            sentenceTokenized.forEach {
-                                Text("${it.first} : ${it.second}")
-                            }*/
+                                    Text("sentenceTokenized size: ${sentenceTokenized.size}")
+
+                                    Text("sentenceTokenizedLabel size: ${sentenceTokenizedLabel.size}")
+
+                                    Row {
+                                        Column {
+                                            Text("sentenceTokenized")
+                                            sentenceTokenized.forEach {
+                                                Text(it)
+                                            }
+                                        }
+
+                                        Column {
+                                            Text("sentenceTokenizedLabel")
+                                            sentenceTokenizedLabel.forEach {
+                                                Text(it)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            //Text(text = visionText)
                         } else {
                             Button(onClick = {
                                 val uri: Uri = this.createImageFile()
@@ -136,19 +171,12 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize(),
                     )
-                }*/
+                }
             }
         }
-
-        mBackgroundThread = HandlerThread("BackgroundThread")
-        mBackgroundThread.start()
-        mHandle = Handler(mBackgroundThread.looper)
-
-        mHandle.removeCallbacks(modelRunnable)
-        mHandle.post(modelRunnable)
     }
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
 
         // PyTorchAndroid.setNumThreads(1)
@@ -158,152 +186,7 @@ class MainActivity : ComponentActivity() {
                 assetName = "model2.pt"
             )
         )*/
-
-        this.visionText = "D Oeil droit MONOPROST 1 goutte le soir tous les jours pendant 1 mois TRAITEMENTA RENOUVELER PENDANT 6 MOIS 1 2 3 4 5 6 7 9 10 CE DE 12 3 456 7"
-        try {
-            loadDictionaryFile(this.assets)
-            Log.v(TAG, "Dictionary loaded.")
-        } catch (ex: IOException) {
-            Log.e(TAG, ex.message!!)
-        }
-
-        try {
-            loadIdToLabelFile(this.assets)
-            Log.v(TAG, "Id to label loaded.")
-        } catch (ex: IOException) {
-            Log.e(TAG, ex.message!!)
-        }
-
-        featureConverter = FeatureConverter(
-            dic,
-            DO_LOWER_CASE,
-            MAX_QUERY_LEN,
-            MAX_SEQ_LEN
-        )
-
-        Log.v(TAG, "Convert Feature...")
-        val feature: Feature = featureConverter.convert(this.visionText)
-        Log.v(TAG, "Set inputs...")
-        val inputIds = feature.inputIds
-        val inputMask = feature.inputMask
-        val segmentIds = feature.segmentIds
-        val startLogits = FloatArray(MAX_SEQ_LEN)
-        val endLogits = FloatArray(MAX_SEQ_LEN)
-
-        // Show token and tokenoToOrigMap
-        feature.origTokens.forEachIndexed { index, s ->
-            Log.v(TAG, "origTokens[$index] = $s")
-        }
-
-        /*inputIds.forEachIndexed { index, i ->
-            Log.v(TAG, "inputIds[$index] = $i")
-        }*/
-
-        val output: MutableMap<Int, Any> = HashMap()
-        output[0] = startLogits
-        output[1] = endLogits
-
-        val inputIdsTensor = Tensor.fromBlob(
-            inputIds,
-            longArrayOf(1, MAX_SEQ_LEN.toLong())
-        )
-        val inputMaskTensor = Tensor.fromBlob(
-            inputMask,
-            longArrayOf(1, MAX_SEQ_LEN.toLong())
-        )
-
-        Log.v(TAG, "inputIdsTensor: $inputIdsTensor")
-        Log.v(TAG, "inputIdsTensor.size: ${inputIdsTensor.shape()}")
-        Log.v(TAG, "inputIdsTensor.dataAsFloatArray: ${inputIdsTensor.dataAsIntArray.toList()}")
-        Log.v(TAG, "inputMaskTensor: $inputMaskTensor")
-        Log.v(TAG, "inputMaskTensor.size: ${inputMaskTensor.shape()}")
-        Log.v(TAG, "inputMaskTensor.dataAsFloatArray: ${inputMaskTensor.dataAsIntArray.toList()}")
-
-        val inputPredictions = IValue.from(
-            inputIdsTensor
-        )
-        val inputMaskPredictions = IValue.from(
-            inputMaskTensor
-        )
-
-        val labelIds = FeatureConverter.align_word_ids(feature)
-
-        Log.v(TAG, "Model loading...")
-        while (mModule == null) {
-            Log.v(TAG, "Model not loaded yet...")
-        }
-        Log.v(TAG, "Model loaded.")
-
-        Log.v(TAG, "Predicting...")
-
-        val outputTensor = mModule!!.forward(
-            inputPredictions,
-            inputMaskPredictions
-        ).toTuple()
-
-        /*
-            logits = model(input_id, mask)
-    logits_clean = logits[0][label_ids != -100]
-
-    predictions = logits_clean.argmax(dim=1).tolist()
-    prediction_label = [ids_to_labels[i] for i in predictions]
-    print(sentence)
-    print(prediction_label)
-         */
-
-        Log.v(TAG, "Predictions done.")
-
-        Log.v(TAG, "inputIdsTensor: ${inputIds.size}")
-        Log.v(TAG, "inputMaskTensor: ${inputMask.size}")
-        Log.v(TAG, "labelIds: ${labelIds.size}")
-
-        val startLogitsTensor = outputTensor[0].toTensor() // Tensor([1, 20, 3], dtype=torch.float32)
-        Log.v(TAG, "startLogitsTensor: $startLogitsTensor")
-        Log.v(TAG, "startLogitsTensor.size: ${startLogitsTensor.shape()}")
-        val startLogitsArray = startLogitsTensor.dataAsFloatArray
-        Log.v(TAG, "startLogitsArray: $startLogitsArray")
-        Log.v(TAG, "startLogitsArray.size: ${startLogitsArray.size}")
-        val startLogitsList = List(startLogitsTensor.shape()[1].toInt()) { row ->
-            List(startLogitsTensor.shape()[2].toInt()) { col ->
-                startLogitsArray[row * startLogitsTensor.shape()[2].toInt() + col]
-            }
-        }
-        Log.v(TAG, "startLogitsList: $startLogitsList")
-        Log.v(TAG, "startLogitsList.size: ${startLogitsList.size}")
-        val startCleanLogitsList = startLogitsList.filterIndexed { index, _ ->
-            labelIds[index] != -100
-        }
-        Log.v(TAG, "startCleanLogitsList: $startCleanLogitsList")
-        Log.v(TAG, "startCleanLogitsList.size: ${startCleanLogitsList.size}")
-        val startPredictionsList = startCleanLogitsList.map { row ->
-            row.indexOf(row.maxOrNull())
-        }
-        Log.v(TAG, "startPredictionsList: $startPredictionsList")
-        Log.v(TAG, "startPredictionsList.size: ${startPredictionsList.size}")
-
-        var predictionsLabelList: List<String> = startPredictionsList.map { index ->
-            labels[index]!!
-        }
-        Log.v(TAG, "predictionsLabelList: $predictionsLabelList")
-
-        Log.v(TAG, "visionText: ${this.visionText.split(" ").size}")
-        Log.v(TAG, "predictionsLabelList: ${predictionsLabelList.size}")
-        Log.v(TAG, "origTokens: ${feature.origTokens.size}")
-
-        for (i in predictionsLabelList.indices) {
-            Log.v(TAG, predictionsLabelList[i])
-            if (predictionsLabelList[i] != "O") {
-                Log.v(TAG, "origTokens[$i] = ${feature.origTokens[i]}")
-                Log.v(TAG, "predictionsLabelList[$i] = ${predictionsLabelList[i]}")
-                sentenceTokenized.add(
-                    Pair(
-                        feature.origTokens[i],
-                        predictionsLabelList[i]
-                    )
-                )
-            }
-        }
-    }
+    }*/
 
     private val modelRunnable = Runnable {
         loadModel()
@@ -313,8 +196,162 @@ class MainActivity : ComponentActivity() {
     private fun loadModel() {
         if (mModule == null) {
             val moduleFileAbsoluteFilePath: String? = assetFilePath(this.assets)
-            mModule = Module.load(moduleFileAbsoluteFilePath, mutableMapOf(), Device.CPU)
+            mModule = Module.load(moduleFileAbsoluteFilePath)//, mutableMapOf(), Device.CPU)
             Log.v(TAG, "Model loaded.")
+        }
+    }
+
+    private val textRunnable = Runnable {
+        runModel()
+    }
+
+    @WorkerThread
+    private fun runModel() {
+        if (mModule != null) {
+            try {
+                loadDictionaryFile(this.assets)
+                Log.v(TAG, "Dictionary loaded.")
+            } catch (ex: IOException) {
+                Log.e(TAG, ex.message!!)
+            }
+
+            try {
+                loadIdToLabelFile(this.assets)
+                Log.v(TAG, "Id to label loaded.")
+            } catch (ex: IOException) {
+                Log.e(TAG, ex.message!!)
+            }
+
+            featureConverter = FeatureConverter(
+                dic,
+                DO_LOWER_CASE,
+                MAX_QUERY_LEN,
+                MAX_SEQ_LEN
+            )
+
+            Log.v(TAG, "Convert Feature...")
+            val feature: Feature = featureConverter.convert(this.visionText)
+            Log.v(TAG, "Set inputs...")
+            val inputIds = feature.inputIds
+            val inputMask = feature.inputMask
+            val segmentIds = feature.segmentIds
+            val startLogits = FloatArray(MAX_SEQ_LEN)
+            val endLogits = FloatArray(MAX_SEQ_LEN)
+
+            // Show token and tokenoToOrigMap
+            feature.origTokens.forEachIndexed { index, s ->
+                Log.v(TAG, "origTokens[$index] = $s")
+            }
+
+            /*inputIds.forEachIndexed { index, i ->
+                Log.v(TAG, "inputIds[$index] = $i")
+            }*/
+
+            val output: MutableMap<Int, Any> = HashMap()
+            output[0] = startLogits
+            output[1] = endLogits
+
+            val inputIdsTensor = Tensor.fromBlob(
+                inputIds,
+                longArrayOf(1, MAX_SEQ_LEN.toLong())
+            )
+            val inputMaskTensor = Tensor.fromBlob(
+                inputMask,
+                longArrayOf(1, MAX_SEQ_LEN.toLong())
+            )
+
+            Log.v(TAG, "inputIdsTensor: $inputIdsTensor")
+            Log.v(TAG, "inputIdsTensor.size: ${inputIdsTensor.shape()}")
+            Log.v(TAG, "inputIdsTensor.dataAsFloatArray: ${inputIdsTensor.dataAsIntArray.toList()}")
+            Log.v(TAG, "inputMaskTensor: $inputMaskTensor")
+            Log.v(TAG, "inputMaskTensor.size: ${inputMaskTensor.shape()}")
+            Log.v(TAG, "inputMaskTensor.dataAsFloatArray: ${inputMaskTensor.dataAsIntArray.toList()}")
+
+            val inputPredictions = IValue.from(
+                inputIdsTensor
+            )
+            val inputMaskPredictions = IValue.from(
+                inputMaskTensor
+            )
+
+            val labelIds = FeatureConverter.align_word_ids(feature)
+
+            Log.v(TAG, "Model loading...")
+            while (mModule == null) {
+                Log.v(TAG, "Model not loaded yet...")
+            }
+            Log.v(TAG, "Model loaded.")
+
+            Log.v(TAG, "Predicting...")
+
+            val outputTensor = mModule!!.forward(
+                inputPredictions,
+                inputMaskPredictions
+            ).toTuple()
+
+            /*
+                logits = model(input_id, mask)
+        logits_clean = logits[0][label_ids != -100]
+
+        predictions = logits_clean.argmax(dim=1).tolist()
+        prediction_label = [ids_to_labels[i] for i in predictions]
+        print(sentence)
+        print(prediction_label)
+             */
+
+            Log.v(TAG, "Predictions done.")
+
+            Log.v(TAG, "inputIdsTensor: ${inputIds.size}")
+            Log.v(TAG, "inputMaskTensor: ${inputMask.size}")
+            Log.v(TAG, "labelIds: ${labelIds.size}")
+
+            val startLogitsTensor = outputTensor[0].toTensor() // Tensor([1, 20, 3], dtype=torch.float32)
+            Log.v(TAG, "startLogitsTensor: $startLogitsTensor")
+            Log.v(TAG, "startLogitsTensor.size: ${startLogitsTensor.shape()}")
+            val startLogitsArray = startLogitsTensor.dataAsFloatArray
+            Log.v(TAG, "startLogitsArray: $startLogitsArray")
+            Log.v(TAG, "startLogitsArray.size: ${startLogitsArray.size}")
+            val startLogitsList = List(startLogitsTensor.shape()[1].toInt()) { row ->
+                List(startLogitsTensor.shape()[2].toInt()) { col ->
+                    startLogitsArray[row * startLogitsTensor.shape()[2].toInt() + col]
+                }
+            }
+            Log.v(TAG, "startLogitsList: $startLogitsList")
+            Log.v(TAG, "startLogitsList.size: ${startLogitsList.size}")
+            val startCleanLogitsList = startLogitsList.filterIndexed { index, _ ->
+                labelIds[index] != -100
+            }
+            Log.v(TAG, "startCleanLogitsList: $startCleanLogitsList")
+            Log.v(TAG, "startCleanLogitsList.size: ${startCleanLogitsList.size}")
+            val startPredictionsList = startCleanLogitsList.map { row ->
+                row.indexOf(row.maxOrNull())
+            }
+            Log.v(TAG, "startPredictionsList: $startPredictionsList")
+            Log.v(TAG, "startPredictionsList.size: ${startPredictionsList.size}")
+
+            var predictionsLabelList: List<String> = startPredictionsList.map { index ->
+                labels[index]!!
+            }
+            Log.v(TAG, "predictionsLabelList: $predictionsLabelList")
+
+            Log.v(TAG, "visionText: ${this.visionText.split(" ").size}")
+            Log.v(TAG, "predictionsLabelList: ${predictionsLabelList.size}")
+            Log.v(TAG, "origTokens: ${feature.origTokens.size}")
+
+            for (i in predictionsLabelList.indices) {
+                Log.v(TAG, predictionsLabelList[i])
+                if (predictionsLabelList[i] != "O") {
+                    Log.v(TAG, "origTokens[$i] = ${feature.origTokens[i]}")
+                    Log.v(TAG, "predictionsLabelList[$i] = ${predictionsLabelList[i]}")
+                    sentenceTokenized.add(feature.origTokens[i])
+                    sentenceTokenizedLabel.add(predictionsLabelList[i])
+
+                    Log.v(TAG, "sentenceTokenized size: ${sentenceTokenized.size}")
+                    Log.v(TAG, "sentenceTokenizedLabel size: ${sentenceTokenizedLabel.size}")
+                }
+            }
+
+            result = true
         }
     }
 
