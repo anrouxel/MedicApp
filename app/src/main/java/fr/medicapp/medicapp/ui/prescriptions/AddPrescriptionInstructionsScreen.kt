@@ -31,7 +31,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple100
 fun AddPrescriptionInstructionsScreen(
     state: Prescription,
     onNavigate: (String, OptionInstruction) -> Unit,
-    optionInstructionContent: HashMap<OptionInstruction, OptionButtonContent>
+    optionContent: HashMap<OptionInstruction, OptionButtonContent>
 ) {
     var selectedInstruction by remember { mutableStateOf<OptionInstruction?>(state.getInstructions()) }
 
@@ -56,7 +56,7 @@ fun AddPrescriptionInstructionsScreen(
                     state = rememberScrollState()
                 )
         ) {
-            optionInstructionContent.forEach { (instruction, content) ->
+            optionContent.forEach { (instruction, content) ->
                 AddPrescriptionOptionButton(
                     title = content.getTitle(),
                     description = content.getDescription(),
@@ -77,7 +77,7 @@ fun AddPrescriptionInstructionsScreen(
         Button(
             onClick = {
                 selectedInstruction?.let {
-                    optionInstructionContent[it]?.getNextRoute()?.let { it1 ->
+                    optionContent[it]?.getNextRoute()?.let { it1 ->
                         onNavigate(
                             it1,
                             it
@@ -108,7 +108,7 @@ fun AddPrescriptionInstructionsScreen(
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionInstructionsScreen(
         state = Prescription(),
-        optionInstructionContent = ScreenChooseInstruction.getOptions(),
+        optionContent = ScreenChooseInstruction.getOptions(),
         onNavigate = { _, _ -> }
     )
 }

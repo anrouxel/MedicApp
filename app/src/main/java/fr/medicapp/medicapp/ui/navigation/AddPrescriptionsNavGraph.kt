@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -13,7 +14,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ViewModel.SharedAddPrescriptionViewModel
 import fr.medicapp.medicapp.model.ScreenChooseInstruction
+import fr.medicapp.medicapp.model.ScreenDoctor
 import fr.medicapp.medicapp.model.ScreenSource
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionDoctorScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionInstructionsScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionSourceScreen
 
@@ -29,7 +32,7 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
             AddPrescriptionInstructionsScreen(
                 state = state,
-                optionInstructionContent = ScreenChooseInstruction.getOptions(),
+                optionContent = ScreenChooseInstruction.getOptions(),
                 onNavigate = { route, instruction ->
                     viewModel.setInstructions(instruction)
                     navController.navigate(route)
@@ -42,8 +45,21 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
             AddPrescriptionSourceScreen(
                 state = state,
-                optionInstructionContent = ScreenSource.getOptions(),
+                optionContent = ScreenSource.getOptions(),
                 onNavigate = { route ->
+                    navController.navigate(route)
+                }
+            )
+        }
+
+        composable(route = AddPrescriptionsRoute.ChooseDoctor.route) {
+            val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
+            val state by viewModel.sharedState.collectAsStateWithLifecycle()
+            AddPrescriptionDoctorScreen(
+                state = state,
+                optionContent = ScreenDoctor.getOptions(),
+                onNavigate = { route, doctor ->
+                    viewModel.setDoctor(doctor)
                     navController.navigate(route)
                 }
             )
@@ -71,5 +87,9 @@ sealed class AddPrescriptionsRoute(
 
     object ChooseSource : AddPrescriptionsRoute(
         route = "choose_source"
+    )
+
+    object ChooseDoctor : AddPrescriptionsRoute(
+        route = "choose_doctor"
     )
 }

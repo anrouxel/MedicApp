@@ -27,7 +27,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple40
 @Composable
 fun AddPrescriptionOptionButton(
     title: String,
-    description: String,
+    description: String?,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -57,12 +57,14 @@ fun AddPrescriptionOptionButton(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Text(
-                    text = description,
-                    color = Color.Gray,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                if (description != null) {
+                    Text(
+                        text = description,
+                        color = Color.Gray,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
 
             Box(

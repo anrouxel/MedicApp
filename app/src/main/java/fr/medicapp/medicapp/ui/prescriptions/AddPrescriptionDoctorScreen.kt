@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,18 +26,21 @@ import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.OptionButtonContent
 import fr.medicapp.medicapp.model.OptionDoctor
 import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.model.ScreenSource
+import fr.medicapp.medicapp.model.ScreenDoctor
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddPrescriptionSourceScreen(
+fun AddPrescriptionDoctorScreen(
     state: Prescription,
-    onNavigate: (String) -> Unit,
-    optionContent: HashMap<Boolean, OptionButtonContent>
+    onNavigate: (String, OptionDoctor) -> Unit,
+    optionContent: HashMap<OptionDoctor, OptionButtonContent>
 ) {
     var selectedInstruction by remember {
-        mutableStateOf<Boolean?>(if (state.getDoctor() != null) true else null)
+        mutableStateOf<OptionDoctor?>(state.getDoctor())
     }
+
+    //var query by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -43,7 +48,7 @@ fun AddPrescriptionSourceScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Votre ordonnance a-t-elle été prescrite par un médecin ?",
+            text = "Qui est le médecin qui a prescrit votre ordonnance ?",
             fontWeight = FontWeight.Bold
         )
 
@@ -58,20 +63,38 @@ fun AddPrescriptionSourceScreen(
                     state = rememberScrollState()
                 )
         ) {
-            optionContent.forEach { (instruction, content) ->
-                AddPrescriptionOptionButton(
-                    title = content.getTitle(),
-                    description = content.getDescription(),
-                    isSelected = selectedInstruction == instruction,
-                    onClick = {
-                        selectedInstruction = instruction
+            // Bar de recherche
+
+            /*SearchBar(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                query = query,
+                onQueryChange = { query = it },
+                onSearch = { query = it },
+                active = true,
+                onActiveChange = { }
+            ) {*/
+                optionContent/*.filter {
+                    if (query.isEmpty() || query.isBlank()) {
+                        true
+                    } else {
+                        it.value.getTitle().contains(query, ignoreCase = true)
                     }
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(8.dp)
-                )
-            }
+                }*/.forEach { (instruction, content) ->
+                    AddPrescriptionOptionButton(
+                        title = content.getTitle(),
+                        description = content.getDescription(),
+                        isSelected = selectedInstruction == instruction,
+                        onClick = {
+                            selectedInstruction = instruction
+                        }
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .height(8.dp)
+                    )
+                }
+            //}
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -81,7 +104,8 @@ fun AddPrescriptionSourceScreen(
                 selectedInstruction?.let {
                     optionContent[it]?.getNextRoute()?.let { it1 ->
                         onNavigate(
-                            it1
+                            it1,
+                            it
                         )
                     }
                 }
@@ -107,9 +131,9 @@ fun AddPrescriptionSourceScreen(
 @Preview(showBackground = true)
 @Composable
 private fun AddPrescriptionScreenPreview() {
-    AddPrescriptionSourceScreen(
+    AddPrescriptionDoctorScreen(
         state = Prescription(),
-        optionContent = ScreenSource.getOptions(),
-        onNavigate = { _ -> }
+        optionContent = ScreenDoctor.getOptions(),
+        onNavigate = { _, _ -> }
     )
 }

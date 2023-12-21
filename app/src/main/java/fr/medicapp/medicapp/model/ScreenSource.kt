@@ -7,7 +7,7 @@ object ScreenSource {
         true to OptionButtonContent(
             "Oui",
             "Votre ordonnance a été prescrite par un médecin",
-            AddPrescriptionsRoute.ChooseInstructions.route
+            AddPrescriptionsRoute.ChooseDoctor.route
         ),
         false to OptionButtonContent(
             "Non",

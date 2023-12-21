@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.model
 class Prescription {
     private var _instructions: OptionInstruction? = null
 
-    private var _doctor: Doctor? = null
+    private var _doctor: OptionDoctor? = null
 
     fun getInstructions(): OptionInstruction? {
         return _instructions
@@ -13,11 +13,11 @@ class Prescription {
         _instructions = instructions
     }
 
-    fun getDoctor(): Doctor? {
+    fun getDoctor(): OptionDoctor? {
         return _doctor
     }
 
-    fun setDoctor(doctor: Doctor) {
+    fun setDoctor(doctor: OptionDoctor) {
         _doctor = doctor
     }
 }
