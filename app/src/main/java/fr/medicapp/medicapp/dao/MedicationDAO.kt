@@ -15,10 +15,10 @@ import fr.medicapp.medicapp.entity.Medication
 interface MedicationDAO {
 
     @Query("SELECT * FROM Medication")
-    fun getMedications():List<Medication>
+    fun getMedicationAll():List<Medication>
 
     @Query("SELECT * FROM Medication m WHERE m.cisCode = :cisCode")
-    fun getMedication(cisCode: String):Medication
+    fun getMedicationOne(cisCode: String):Medication
 
     @Insert
     fun addMedication(medication: Medication)

@@ -14,7 +14,7 @@ import fr.medicapp.medicapp.entity.User
 interface UserDAO {
 
     @Query("SELECT * FROM User")
-    fun getUsers(): List<User>
+    fun getUserAll(): List<User>
 
     @Query("SELECT * FROM User u WHERE u.lastName = :lastName AND u.firstName = :firstName")
     fun getUserWithName(lastName: String, firstName: String): User?

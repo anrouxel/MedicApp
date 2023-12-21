@@ -20,7 +20,7 @@ class LabelRepository(private val labelDAO: LabelDAO) {
             labelDAO.addLabel(label)
             Pair(true,"Success")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Generic Type already exist !")
+            Pair(false,"Label already exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){
@@ -33,7 +33,7 @@ class LabelRepository(private val labelDAO: LabelDAO) {
             labelDAO.deleteLabel(label)
             Pair(true,"Success")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Generic Type doesn't exist !")
+            Pair(false,"Label doesn't exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){
