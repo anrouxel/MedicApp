@@ -7,6 +7,9 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.PrescriptionPattern
 
+/**
+ * DAO Permettant l'accès à la table PrescriptionPattern
+ * */
 @Dao
 interface PrescriptionPatternDAO {
 

@@ -4,6 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
+/**
+ * Table nommée HasSmrOpinion.
+ * Définie par le cisCode, elle est utilisée par Medication.
+ * Elle utilise une liste de la table TransparencyCommissionOpinionLinks.
+ * */
 @Entity(tableName = "HasSmrOpinion")
 data class HasSmrOpinion(
     @PrimaryKey val cisCode : String,

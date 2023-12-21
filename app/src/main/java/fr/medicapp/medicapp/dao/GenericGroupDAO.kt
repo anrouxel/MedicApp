@@ -8,6 +8,10 @@ import androidx.room.Update
 import fr.medicapp.medicapp.entity.GenericGroup
 import fr.medicapp.medicapp.entity.User
 
+
+/**
+ * DAO Permettant l'accès à la table GenericGroup
+ * */
 @Dao
 interface GenericGroupDAO {
 

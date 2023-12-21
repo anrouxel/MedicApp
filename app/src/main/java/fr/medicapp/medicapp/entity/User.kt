@@ -3,6 +3,10 @@ package fr.medicapp.medicapp.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Table nommée User représentant un User (Patient).
+ * Utilise une MutableMap de Medication.
+ * */
 @Entity(tableName = "User")
 data class User(
     @PrimaryKey(autoGenerate = true) val id:Int,

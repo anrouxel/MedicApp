@@ -4,6 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
+/**
+ * Table nommée Medication.
+ * Elle est définie par son cisCode.
+ * Elle représente un médicament avec toutes ses informations nécessaire.
+ * La majorité des tables de la base de données sont utilisées ici.
+ * */
 @Entity(tableName = "Medication")
 data class Medication(
     @PrimaryKey val cisCode: String,

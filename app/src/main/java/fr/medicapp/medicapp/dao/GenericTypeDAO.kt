@@ -7,6 +7,9 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.GenericType
 
+/**
+ * DAO Permettant l'accès à la table GenericType
+ * */
 @Dao
 interface GenericTypeDAO {
 

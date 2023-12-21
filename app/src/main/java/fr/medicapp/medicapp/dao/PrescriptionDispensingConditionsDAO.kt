@@ -7,6 +7,10 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.PrescriptionDispensingConditions
 
+
+/**
+ * DAO Permettant l'accès à la table PrescriptionDispensingConditions
+ * */
 @Dao
 interface PrescriptionDispensingConditionsDAO {
 

@@ -7,6 +7,9 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.Doctor
 
+/**
+ * DAO Permettant l'accès à la table Doctor
+ * */
 @Dao
 interface DoctorDAO {
 

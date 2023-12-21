@@ -4,6 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
+/**
+ * Table nommée MedicationPresentation.
+ * Elle est définie par son cisCode et est utilisée par Medication.
+ * Elle utilise une liste de Flottant pour le reimbursementRates.
+ * */
 @Entity(tableName = "MedicationPresentation")
 data class MedicationPresentation(
     @PrimaryKey val cisCode: String,

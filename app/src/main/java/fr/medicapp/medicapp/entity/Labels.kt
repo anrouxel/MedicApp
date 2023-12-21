@@ -2,6 +2,10 @@ package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
 
+/**
+ * Table nommée Labels.
+ * Elle créer uniquement des Label utilisés par le tri.
+ * */
 @Entity(tableName = "Labels")
 data class Labels(
     val bMedication: Label = Label("B-medication"),

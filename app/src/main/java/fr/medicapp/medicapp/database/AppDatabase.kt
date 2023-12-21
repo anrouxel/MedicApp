@@ -36,6 +36,9 @@ import fr.medicapp.medicapp.entity.SentenceData
 import fr.medicapp.medicapp.entity.TransparencyCommissionOpinionLinks
 import fr.medicapp.medicapp.entity.User
 
+/**
+ * Classe configurant la base de données selon les entities et leurs DAO associés
+ * */
 @Database(entities = [Doctor::class,
     GenericGroup::class,
     GenericType::class,

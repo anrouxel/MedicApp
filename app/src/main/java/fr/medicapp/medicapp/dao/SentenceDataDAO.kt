@@ -8,6 +8,9 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.SentenceData
 
+/**
+ * DAO Permettant l'accès à la table SentenceData
+ * */
 @Dao
 interface SentenceDataDAO {
 

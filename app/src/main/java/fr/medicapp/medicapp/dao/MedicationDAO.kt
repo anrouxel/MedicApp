@@ -7,6 +7,10 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.Medication
 
+
+/**
+ * DAO Permettant l'accès à la table Medication
+ * */
 @Dao
 interface MedicationDAO {
 

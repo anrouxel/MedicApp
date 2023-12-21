@@ -7,6 +7,10 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.Label
 
+
+/**
+ * DAO Permettant l'accès à la table Label
+ * */
 @Dao
 interface LabelDAO {
 
