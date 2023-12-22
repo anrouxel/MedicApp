@@ -15,4 +15,12 @@ data class Doctor(
     @PrimaryKey(autoGenerate = true) val id: UUID,
     val lastName: String,
     val firstName: String,
-)
+) {
+    fun getFullName(): String {
+        return "$firstName $lastName"
+    }
+
+    fun getInitials(): String {
+        return "${firstName[0]}${lastName[0]}"
+    }
+}

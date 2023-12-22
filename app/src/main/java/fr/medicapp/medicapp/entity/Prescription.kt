@@ -1,6 +1,14 @@
 package fr.medicapp.medicapp.entity
 
 data class Prescription(
-    val doctor: Doctor,
-    val treatments: List<Treatment>,
-)
+    var doctor: Doctor? = null,
+    val treatments: List<Treatment> = emptyList(),
+) {
+    fun isPrescribedByDoctor(): Boolean {
+        return doctor != null
+    }
+
+    fun isPrescribedByDoctor(doctor: Doctor?): Boolean {
+        return this.doctor == doctor
+    }
+}

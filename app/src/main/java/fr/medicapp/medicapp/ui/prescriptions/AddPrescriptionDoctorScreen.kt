@@ -21,16 +21,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.entity.Doctor
+import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.model.OptionButtonContent
+import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
+import java.util.UUID
 
 @Composable
 fun AddPrescriptionDoctorScreen(
     state: Prescription,
-    onNavigate: (String, OptionDoctor) -> Unit,
-    optionContent: HashMap<OptionDoctor, OptionButtonContent>
+    optionContent: List<Doctor>,
+    onNavigate: (String) -> Unit,
 ) {
-    var selectedInstruction by remember {
-        mutableStateOf<OptionDoctor?>(state.getDoctor())
+    var selectedDoctor by remember {
+        mutableStateOf<Doctor?>(null)
     }
 
     Column(
@@ -45,6 +50,25 @@ fun AddPrescriptionDoctorScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Button(
+            onClick = {
+                onNavigate(AddPrescriptionsRoute.AddDoctor.route)
+            },
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = EUPurple100,
+            ),
+            shape = RoundedCornerShape(10.dp),
+            enabled = true
+        ) {
+            Text(
+                text = "Ajouter un médecin"
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,13 +78,12 @@ fun AddPrescriptionDoctorScreen(
                     state = rememberScrollState()
                 )
         ) {
-            optionContent.forEach { (instruction, content) ->
+            optionContent.forEach { doctor ->
                 AddPrescriptionOptionButton(
-                    title = content.getTitle(),
-                    description = content.getDescription(),
-                    isSelected = selectedInstruction == instruction,
+                    title = doctor.getFullName(),
+                    isSelected = doctor == selectedDoctor,
                     onClick = {
-                        selectedInstruction = instruction
+                        selectedDoctor = doctor
                     }
                 )
                 Spacer(
@@ -73,23 +96,14 @@ fun AddPrescriptionDoctorScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = {
-                selectedInstruction?.let {
-                    optionContent[it]?.getNextRoute()?.let { it1 ->
-                        onNavigate(
-                            it1,
-                            it
-                        )
-                    }
-                }
-            },
+            onClick = { },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = EUPurple100,
             ),
             shape = RoundedCornerShape(10.dp),
-            enabled = selectedInstruction != null
+            enabled = selectedDoctor != null
         ) {
             Text(
                 text = "Suivant"
@@ -104,7 +118,23 @@ fun AddPrescriptionDoctorScreen(
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionDoctorScreen(
         state = Prescription(),
-        optionContent = ScreenDoctor.getOptions(),
-        onNavigate = { _, _ -> }
+        optionContent = listOf(
+            Doctor(
+                id = UUID.randomUUID(),
+                firstName = "Jean",
+                lastName = "Dupont",
+            ),
+            Doctor(
+                id = UUID.randomUUID(),
+                firstName = "Jean",
+                lastName = "Dupont",
+            ),
+            Doctor(
+                id = UUID.randomUUID(),
+                firstName = "Jean",
+                lastName = "Dupont",
+            ),
+        ),
+        onNavigate = { _ -> }
     )
 }

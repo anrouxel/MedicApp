@@ -27,7 +27,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple40
 @Composable
 fun AddPrescriptionOptionButton(
     title: String,
-    description: String?,
+    description: String? = null,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {

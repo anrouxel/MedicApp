@@ -11,27 +11,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
+import fr.medicapp.medicapp.ui.theme.EUPurple60
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddPrescriptionSourceScreen(
+fun AddPrescriptionAddDoctorScreen(
     state: Prescription,
     onNavigate: (String) -> Unit,
-    optionContent: HashMap<Boolean, OptionButtonContent>
 ) {
-    var selectedInstruction by remember {
-        mutableStateOf<Boolean?>(if (state.getDoctor() != null) true else null)
-    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -39,7 +47,7 @@ fun AddPrescriptionSourceScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Votre ordonnance a-t-elle été prescrite par un médecin ?",
+            text = "Qui est le médecin qui a prescrit votre ordonnance ?",
             fontWeight = FontWeight.Bold
         )
 
@@ -54,33 +62,49 @@ fun AddPrescriptionSourceScreen(
                     state = rememberScrollState()
                 )
         ) {
-            optionContent.forEach { (instruction, content) ->
-                AddPrescriptionOptionButton(
-                    title = content.getTitle(),
-                    description = content.getDescription(),
-                    isSelected = selectedInstruction == instruction,
-                    onClick = {
-                        selectedInstruction = instruction
-                    }
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                text = "Prénom :"
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                value = firstName,
+                onValueChange = { firstName = it },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = EUPurple60,
+                    unfocusedBorderColor = EUPurple100
                 )
-                Spacer(
-                    modifier = Modifier
-                        .height(8.dp)
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                text = "Nom :"
+            )
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                value = lastName,
+                onValueChange = { lastName = it },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = EUPurple60,
+                    unfocusedBorderColor = EUPurple100
                 )
-            }
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                selectedInstruction?.let {
-                    optionContent[it]?.getNextRoute()?.let { it1 ->
-                        onNavigate(
-                            it1
-                        )
-                    }
-                }
+                onNavigate(AddPrescriptionsRoute.ChooseDoctor.route)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -88,7 +112,7 @@ fun AddPrescriptionSourceScreen(
                 containerColor = EUPurple100,
             ),
             shape = RoundedCornerShape(10.dp),
-            enabled = selectedInstruction != null
+            enabled = (firstName.isNotEmpty() || firstName.isNotBlank()) && (lastName.isNotEmpty() || lastName.isNotBlank())
         ) {
             Text(
                 text = "Suivant"
@@ -98,14 +122,11 @@ fun AddPrescriptionSourceScreen(
 }
 
 
-
-
 @Preview(showBackground = true)
 @Composable
 private fun AddPrescriptionScreenPreview() {
-    AddPrescriptionSourceScreen(
+    AddPrescriptionAddDoctorScreen(
         state = Prescription(),
-        optionContent = ScreenSource.getOptions(),
         onNavigate = { _ -> }
     )
 }

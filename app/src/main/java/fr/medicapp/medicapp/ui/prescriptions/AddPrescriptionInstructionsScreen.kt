@@ -21,15 +21,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.model.OptionButtonContent
+import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 
 @Composable
 fun AddPrescriptionInstructionsScreen(
     state: Prescription,
-    onNavigate: (String, OptionInstruction) -> Unit,
-    optionContent: HashMap<OptionInstruction, OptionButtonContent>
+    onNavigate: (String) -> Unit,
 ) {
-    var selectedInstruction by remember { mutableStateOf<OptionInstruction?>(state.getInstructions()) }
+    val optionContent: List<OptionButtonContent> = listOf(
+        OptionButtonContent(
+            title = "Caméra",
+            description = "Prenez une photo de votre ordonnance",
+            route = AddPrescriptionsRoute.ChooseSource.route
+        ),
+        OptionButtonContent(
+            title = "Galerie",
+            description = "Choisissez une photo de votre ordonnance",
+            route = AddPrescriptionsRoute.ChooseSource.route
+        ),
+        OptionButtonContent(
+            title = "Manuellement",
+            description = "Entrez manuellement les informations de votre ordonnance",
+            route = AddPrescriptionsRoute.ChooseSource.route
+        ),
+    )
+
+    var selectedInstruction by remember {
+        mutableStateOf<OptionButtonContent?>(null)
+    }
 
     Column(
         modifier = Modifier
@@ -52,13 +74,13 @@ fun AddPrescriptionInstructionsScreen(
                     state = rememberScrollState()
                 )
         ) {
-            optionContent.forEach { (instruction, content) ->
+            optionContent.forEach { content ->
                 AddPrescriptionOptionButton(
-                    title = content.getTitle(),
-                    description = content.getDescription(),
-                    isSelected = selectedInstruction == instruction,
+                    title = content.title,
+                    description = content.description,
+                    isSelected = selectedInstruction == content,
                     onClick = {
-                        selectedInstruction = instruction
+                        selectedInstruction = content
                     }
                 )
                 Spacer(
@@ -73,10 +95,9 @@ fun AddPrescriptionInstructionsScreen(
         Button(
             onClick = {
                 selectedInstruction?.let {
-                    optionContent[it]?.getNextRoute()?.let { it1 ->
+                    it.route?.let { it1 ->
                         onNavigate(
-                            it1,
-                            it
+                            it1
                         )
                     }
                 }
@@ -104,7 +125,6 @@ fun AddPrescriptionInstructionsScreen(
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionInstructionsScreen(
         state = Prescription(),
-        optionContent = ScreenChooseInstruction.getOptions(),
-        onNavigate = { _, _ -> }
+        onNavigate = { _ -> }
     )
 }
