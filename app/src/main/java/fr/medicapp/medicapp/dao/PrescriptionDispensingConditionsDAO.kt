@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.PrescriptionDispensingConditions
 
-
 /**
  * DAO Permettant l'accès à la table PrescriptionDispensingConditions
  * */
@@ -15,10 +14,10 @@ import fr.medicapp.medicapp.entity.PrescriptionDispensingConditions
 interface PrescriptionDispensingConditionsDAO {
 
     @Query("SELECT * FROM PrescriptionDispensingConditions")
-    fun getPrescriptionDispensingConditionsAll():List<PrescriptionDispensingConditions>
+    fun getPrescriptionDispensingConditionsAll(): List<PrescriptionDispensingConditions>
 
     @Query("SELECT * FROM PrescriptionDispensingConditions pdc WHERE pdc.cisCode = :cisCode")
-    fun getPrescriptionDispensingConditionsOne(cisCode:String):PrescriptionDispensingConditions
+    fun getPrescriptionDispensingConditionsOne(cisCode: String): PrescriptionDispensingConditions
 
     @Insert
     fun addPrescriptionDispensingConditions(prescriptionDispensingConditions: PrescriptionDispensingConditions)

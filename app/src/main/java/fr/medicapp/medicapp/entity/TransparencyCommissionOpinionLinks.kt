@@ -10,6 +10,6 @@ import androidx.room.PrimaryKey
  * */
 @Entity(tableName = "TransparencyCommissionOpinionLinks")
 data class TransparencyCommissionOpinionLinks(
-    @PrimaryKey val hasDossierCode : String,
-    val commissionOpinionLink : Uri?
+    @PrimaryKey val hasDossierCode: String,
+    val commissionOpinionLink: Uri?
 )

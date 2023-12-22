@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.TransparencyCommissionOpinionLinks
 
-
 /**
  * DAO Permettant l'accès à la table TransparencyCommissionOpinionLink
  * */
@@ -15,10 +14,10 @@ import fr.medicapp.medicapp.entity.TransparencyCommissionOpinionLinks
 interface TransparencyCommissionOpinionLinkDAO {
 
     @Query("SELECT * FROM TransparencyCommissionOpinionLinks")
-    fun getTransparencyCommissionOpinionLinkAll():List<TransparencyCommissionOpinionLinks>
+    fun getTransparencyCommissionOpinionLinkAll(): List<TransparencyCommissionOpinionLinks>
 
     @Query("SELECT * FROM TransparencyCommissionOpinionLinks tcol WHERE tcol.hasDossierCode = :hasDossierCode")
-    fun getTransparencyCommissionOpinionLinkOne(hasDossierCode:String):TransparencyCommissionOpinionLinks
+    fun getTransparencyCommissionOpinionLinkOne(hasDossierCode: String): TransparencyCommissionOpinionLinks
 
     @Insert
     fun addTransparencyCommissionOpinionLink(transparencyCommissionOpinionLinks: TransparencyCommissionOpinionLinks)
@@ -28,5 +27,4 @@ interface TransparencyCommissionOpinionLinkDAO {
 
     @Update
     fun updateTransparencyCommissionOpinionLink(transparencyCommissionOpinionLinks: TransparencyCommissionOpinionLinks)
-
 }

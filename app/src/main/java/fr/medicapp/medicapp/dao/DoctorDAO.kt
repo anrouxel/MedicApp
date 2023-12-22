@@ -14,13 +14,13 @@ import fr.medicapp.medicapp.entity.Doctor
 interface DoctorDAO {
 
     @Query("SELECT * FROM Doctor")
-    fun getDoctorAll():List<Doctor>
+    fun getDoctorAll(): List<Doctor>
 
     @Query("SELECT * FROM Doctor d WHERE d.id = :id")
-    fun getDoctorOne(id:Int):Doctor
+    fun getDoctorOne(id: Int): Doctor
 
     @Query("SELECT * FROM Doctor d WHERE d.email = :email")
-    fun getDoctorOneByEmail(email:String):Doctor
+    fun getDoctorOneByEmail(email: String): Doctor
 
     @Insert
     fun addDoctor(doctor: Doctor)
@@ -30,5 +30,4 @@ interface DoctorDAO {
 
     @Update
     fun updateDoctor(doctor: Doctor)
-
 }

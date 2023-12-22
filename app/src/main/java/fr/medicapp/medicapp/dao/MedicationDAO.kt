@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.Medication
 
-
 /**
  * DAO Permettant l'accès à la table Medication
  * */
@@ -15,10 +14,10 @@ import fr.medicapp.medicapp.entity.Medication
 interface MedicationDAO {
 
     @Query("SELECT * FROM Medication")
-    fun getMedicationAll():List<Medication>
+    fun getMedicationAll(): List<Medication>
 
     @Query("SELECT * FROM Medication m WHERE m.cisCode = :cisCode")
-    fun getMedicationOne(cisCode: String):Medication
+    fun getMedicationOne(cisCode: String): Medication
 
     @Insert
     fun addMedication(medication: Medication)

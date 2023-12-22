@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.ImportantInformation
 
-
 /**
  * DAO Permettant l'accès à la table ImportantInformation
  * */

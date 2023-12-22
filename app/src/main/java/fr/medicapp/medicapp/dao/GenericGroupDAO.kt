@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.GenericGroup
-import fr.medicapp.medicapp.entity.User
-
 
 /**
  * DAO Permettant l'accès à la table GenericGroup

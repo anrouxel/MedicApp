@@ -10,9 +10,9 @@ import androidx.room.PrimaryKey
  * */
 @Entity(tableName = "GenericGroup")
 data class GenericGroup(
-    val genericGroupId : String,
-    val genericGroupLabel : String,
-    @PrimaryKey val cisCode : String,
-    val genericType : String,
+    val genericGroupId: String,
+    val genericGroupLabel: String,
+    @PrimaryKey val cisCode: String,
+    val genericType: String,
     val sortNumber: Int?
 )

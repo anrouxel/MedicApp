@@ -9,5 +9,5 @@ import androidx.room.PrimaryKey
  * */
 @Entity(tableName = "GenericType")
 data class GenericType(
-    @PrimaryKey val genericTypeInfoMap:String
+    @PrimaryKey val genericTypeInfoMap: String
 )

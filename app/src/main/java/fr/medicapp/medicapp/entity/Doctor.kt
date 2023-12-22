@@ -10,10 +10,12 @@ import androidx.room.PrimaryKey
  * La liste de User qui lui est associé devrait permettre au Doctor de suivre ses patients.
  * */
 @Entity(tableName = "Doctor")
-data class Doctor(@PrimaryKey(autoGenerate = true) val id:Int,
-                  val lastName: String,
-                  val firstName: String,
-                  val age: Int,
-                  val email: String,
-                  val mdp: ByteArray,
-                  val patientList: List<User>)
+data class Doctor(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    val lastName: String,
+    val firstName: String,
+    val age: Int,
+    val email: String,
+    val mdp: ByteArray,
+    val patientList: List<User>
+)

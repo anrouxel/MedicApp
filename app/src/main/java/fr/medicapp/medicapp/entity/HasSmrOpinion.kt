@@ -11,11 +11,11 @@ import java.util.Date
  * */
 @Entity(tableName = "HasSmrOpinion")
 data class HasSmrOpinion(
-    @PrimaryKey val cisCode : String,
-    val hasDossierCode : String,
-    val evaluationReason : String,
+    @PrimaryKey val cisCode: String,
+    val hasDossierCode: String,
+    val evaluationReason: String,
     val transparencyCommissionOpinionDate: Date?,
     val smrValue: String,
-    val smrLabel:String,
+    val smrLabel: String,
     val transparencyCommissionOpinionLinks: List<TransparencyCommissionOpinionLinks>
 )
