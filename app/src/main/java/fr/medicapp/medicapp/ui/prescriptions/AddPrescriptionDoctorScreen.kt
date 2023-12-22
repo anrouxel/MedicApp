@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +27,6 @@ import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.ScreenDoctor
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPrescriptionDoctorScreen(
     state: Prescription,
@@ -39,8 +36,6 @@ fun AddPrescriptionDoctorScreen(
     var selectedInstruction by remember {
         mutableStateOf<OptionDoctor?>(state.getDoctor())
     }
-
-    //var query by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -63,38 +58,20 @@ fun AddPrescriptionDoctorScreen(
                     state = rememberScrollState()
                 )
         ) {
-            // Bar de recherche
-
-            /*SearchBar(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                query = query,
-                onQueryChange = { query = it },
-                onSearch = { query = it },
-                active = true,
-                onActiveChange = { }
-            ) {*/
-                optionContent/*.filter {
-                    if (query.isEmpty() || query.isBlank()) {
-                        true
-                    } else {
-                        it.value.getTitle().contains(query, ignoreCase = true)
+            optionContent.forEach { (instruction, content) ->
+                AddPrescriptionOptionButton(
+                    title = content.getTitle(),
+                    description = content.getDescription(),
+                    isSelected = selectedInstruction == instruction,
+                    onClick = {
+                        selectedInstruction = instruction
                     }
-                }*/.forEach { (instruction, content) ->
-                    AddPrescriptionOptionButton(
-                        title = content.getTitle(),
-                        description = content.getDescription(),
-                        isSelected = selectedInstruction == instruction,
-                        onClick = {
-                            selectedInstruction = instruction
-                        }
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .height(8.dp)
-                    )
-                }
-            //}
+                )
+                Spacer(
+                    modifier = Modifier
+                        .height(8.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -124,8 +101,6 @@ fun AddPrescriptionDoctorScreen(
         }
     }
 }
-
-
 
 
 @Preview(showBackground = true)
