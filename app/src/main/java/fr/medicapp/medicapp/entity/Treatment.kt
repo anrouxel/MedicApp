@@ -13,9 +13,9 @@ import java.util.Date
  */
 data class Treatment(
     val medication: Medication,
-    val frequencies: List<Frequency>,
+    val frequencies: List<Frequency> = emptyList(),
     val duration: Duration,
-    var history: List<Date>,
+    var history: List<Date> = emptyList(),
 ) {
     fun getStartDate(): Date {
         return duration.startDate
@@ -33,34 +33,21 @@ data class Treatment(
         return Date().after(duration.endDate)
     }
 
-    fun lastInTake(): Date {
-        return history.last()
+    fun lastTake(): Date {
+        return history.max()
     }
 
     fun nextInTake(): Date? {
-        val now = Calendar.getInstance()
-        for (frequency in frequencies) {
-            val nextInTake = Calendar.getInstance()
-            nextInTake.set(Calendar.HOUR_OF_DAY, frequency.hour)
-            nextInTake.set(Calendar.DAY_OF_WEEK, frequency.day) // +1 because Calendar.DAY_OF_WEEK starts from 1 (Sunday) to 7 (Saturday)
-            if (nextInTake.before(now)) {
-                nextInTake.add(Calendar.WEEK_OF_YEAR, 1)
-            }
-            if (nextInTake.time.before(duration.endDate)) {
-                if (history.isEmpty() || nextInTake.time.after(history.last())) {
-                    return nextInTake.time
-                } else {
-                    // Check if the user forgot to take the medication and it's not too late to take it
-                    val lastInTake = Calendar.getInstance()
-                    lastInTake.time = history.last()
-                    lastInTake.add(Calendar.HOUR, 1) // Assuming the user has 1 hour to take the medication after the scheduled time
-                    if (lastInTake.after(now)) {
-                        return nextInTake.time
-                    }
-                }
-            }
-        }
-        return null
+        val now = Date()
+        if (now.after(duration.endDate)) return null
+        val nextTake = frequencies.map { frequency ->
+            val calendar = Calendar.getInstance()
+            calendar.time = now
+            calendar.set(Calendar.HOUR_OF_DAY, frequency.hour)
+            calendar.set(Calendar.DAY_OF_WEEK, frequency.day)
+            calendar.time
+        }.filter { it.after(now) }.min()
+        return nextTake
     }
 
     fun getRemainingInTake(): Int {
@@ -72,5 +59,6 @@ data class Treatment(
 
     fun getHistoryByDay(): List<Pair<Date, Int>> {
         /* TODO: Implémenter cette fonction. */
+        return emptyList()
     }
 }

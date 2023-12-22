@@ -14,5 +14,6 @@ data class Duration(
 ) {
     init {
         require(startDate.before(endDate)) { "La date de début doit être avant la date de fin" }
+        require(endDate.after(startDate)) { "La date de fin doit être après la date de début" }
     }
 }
