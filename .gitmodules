@@ -1,0 +1,3 @@
+[submodule "app/src/main/assets"]
+	path = app/src/main/assets
+	url = https://gitlab.univ-nantes.fr/E213726L/MedicAppAssets.git
