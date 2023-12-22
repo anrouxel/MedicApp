@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 /**
  * Table nommé Doctor représentant un utilisateur médecin.
@@ -11,11 +12,7 @@ import androidx.room.PrimaryKey
  * */
 @Entity(tableName = "Doctor")
 data class Doctor(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: UUID,
     val lastName: String,
     val firstName: String,
-    val age: Int,
-    val email: String,
-    val mdp: ByteArray,
-    val patientList: List<User>
 )

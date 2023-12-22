@@ -23,10 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.theme.EUPurple100
-import fr.medicapp.medicapp.ui.theme.EUPurple40
 
 @Composable
 fun AddPrescriptionAddDoctorScreen(

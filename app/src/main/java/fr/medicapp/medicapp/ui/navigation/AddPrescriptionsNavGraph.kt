@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -13,9 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ViewModel.SharedAddPrescriptionViewModel
-import fr.medicapp.medicapp.model.ScreenChooseInstruction
-import fr.medicapp.medicapp.model.ScreenDoctor
-import fr.medicapp.medicapp.model.ScreenSource
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionDoctorScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionInstructionsScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionSourceScreen

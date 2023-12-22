@@ -2,9 +2,6 @@ package fr.medicapp.medicapp.ViewModel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.model.OptionDoctor
-import fr.medicapp.medicapp.model.OptionInstruction
-import fr.medicapp.medicapp.model.Prescription
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
