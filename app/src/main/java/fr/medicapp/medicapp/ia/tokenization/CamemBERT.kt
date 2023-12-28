@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.tokenization
+package fr.medicapp.medicapp.ia.tokenization
 
 object CamemBERT {
     val BOS_TOKEN: String = "<s>"

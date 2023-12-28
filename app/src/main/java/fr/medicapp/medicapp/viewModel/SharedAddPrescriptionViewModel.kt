@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ViewModel
+package fr.medicapp.medicapp.viewModel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.entity.Doctor
 import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.model.AddPrescription
 import fr.medicapp.medicapp.model.OptionButtonContent
 import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
@@ -20,23 +21,25 @@ class SharedAddPrescriptionViewModel(
 
     val sharedState = _sharedState.asStateFlow()
 
-    val doctors: MutableState<MutableList<Doctor>> = mutableStateOf(mutableListOf<Doctor>(
-        Doctor(
-            id = UUID.randomUUID(),
-            firstName = "Jean",
-            lastName = "Dupont",
-        ),
-        Doctor(
-            id = UUID.randomUUID(),
-            firstName = "Jeanne",
-            lastName = "Dupont",
-        ),
-        Doctor(
-            id = UUID.randomUUID(),
-            firstName = "Jean",
-            lastName = "Dupond",
-        ),
-    ))
+    val doctors: MutableState<MutableList<Doctor>> = mutableStateOf(
+        mutableListOf<Doctor>(
+            Doctor(
+                id = UUID.randomUUID(),
+                firstName = "Jean",
+                lastName = "Dupont",
+            ),
+            Doctor(
+                id = UUID.randomUUID(),
+                firstName = "Jeanne",
+                lastName = "Dupont",
+            ),
+            Doctor(
+                id = UUID.randomUUID(),
+                firstName = "Jean",
+                lastName = "Dupond",
+            ),
+        )
+    )
 
     val source: HashMap<Boolean, OptionButtonContent> = hashMapOf(
         true to OptionButtonContent(
@@ -45,7 +48,7 @@ class SharedAddPrescriptionViewModel(
         ),
         false to OptionButtonContent(
             title = "Non",
-            route = AddPrescriptionsRoute.ChooseDoctor.route
+            route = AddPrescriptionsRoute.AddTreatmentMedication.route
         ),
     )
 
@@ -64,6 +67,24 @@ class SharedAddPrescriptionViewModel(
             title = "Manuellement",
             description = "Entrez manuellement les informations de votre ordonnance",
             route = AddPrescriptionsRoute.ChooseSource.route
+        ),
+    )
+
+    val medication = listOf(
+        OptionButtonContent(
+            title = "Paracétamol",
+            description = "500mg",
+            route = AddPrescriptionsRoute.AddTreatmentMedication.route
+        ),
+        OptionButtonContent(
+            title = "Ibuprofène",
+            description = "200mg",
+            route = AddPrescriptionsRoute.AddTreatmentMedication.route
+        ),
+        OptionButtonContent(
+            title = "Doliprane",
+            description = "500mg",
+            route = AddPrescriptionsRoute.AddTreatmentMedication.route
         ),
     )
 
@@ -99,7 +120,20 @@ class SharedAddPrescriptionViewModel(
         _sharedState.value = _sharedState.value.copy(instructions = instruction)
     }
 
-    fun setSource(source: OptionButtonContent) {
+    fun setSource(source: Boolean) {
         _sharedState.value = _sharedState.value.copy(source = source)
+    }
+
+    fun addTreatment(): Int {
+        _sharedState.value.prescription.treatments.add(Treatment())
+        return _sharedState.value.prescription.treatments.size - 1
+    }
+
+    fun setMedication(traitementId: Int, medication: OptionButtonContent) {
+        _sharedState.value.prescription.treatments[traitementId].medication = medication
+    }
+
+    fun setDosage(treatmentId: Int, dosage: Int) {
+        _sharedState.value.prescription.treatments[treatmentId].dosage = dosage
     }
 }

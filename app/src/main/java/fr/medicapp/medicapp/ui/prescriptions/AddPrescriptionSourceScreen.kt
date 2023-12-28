@@ -31,11 +31,11 @@ import fr.medicapp.medicapp.ui.theme.EUPurple100
 fun AddPrescriptionSourceScreen(
     state: AddPrescription,
     optionContent: HashMap<Boolean, OptionButtonContent>,
-    onNavigate: (String, OptionButtonContent) -> Unit,
+    onNavigate: (String, Boolean) -> Unit,
 ) {
 
     var selectedSource by remember {
-        mutableStateOf<OptionButtonContent?>(state.source)
+        mutableStateOf<Boolean?>(state.source)
     }
 
     Column(
@@ -63,9 +63,9 @@ fun AddPrescriptionSourceScreen(
                 AddPrescriptionOptionButton(
                     title = content.value.title,
                     description = content.value.description,
-                    isSelected = selectedSource == content.value,
+                    isSelected = selectedSource == content.key,
                     onClick = {
-                        selectedSource = content.value
+                        selectedSource = content.key
                     }
                 )
                 Spacer(
@@ -79,7 +79,7 @@ fun AddPrescriptionSourceScreen(
 
         Button(
             onClick = {
-                onNavigate(selectedSource!!.route!!, selectedSource!!)
+                onNavigate(optionContent[selectedSource]!!.route!!, selectedSource!!)
             },
             modifier = Modifier
                 .fillMaxWidth(),

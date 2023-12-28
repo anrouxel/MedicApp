@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.tokenization
+package fr.medicapp.medicapp.ia.tokenization
 
 final class WordpieceTokenizer(
     vocab: HashMap<String, Int>

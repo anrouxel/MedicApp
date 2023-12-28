@@ -11,8 +11,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.ViewModel.SharedAddPrescriptionViewModel
+import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionAddDoctorScreen
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionAddTreatmentMedicationDosageFrequencyScreen
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionAddTreatmentMedicationDosageScreen
+import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionAddTreatmentMedicationScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionDoctorScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionInstructionsScreen
 import fr.medicapp.medicapp.ui.prescriptions.AddPrescriptionSourceScreen
@@ -44,6 +47,10 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
                 optionContent = viewModel.source
             ) { route, source ->
                 viewModel.setSource(source)
+                if (!source) {
+                    val index = viewModel.addTreatment()
+                    route.replace("{treatmentId}", index.toString())
+                }
                 navController.navigate(route)
             }
         }
@@ -57,6 +64,8 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
             ) { route, doctor ->
                 if (doctor != null) {
                     viewModel.setDoctor(doctor)
+                    val index = viewModel.addTreatment()
+                    route.replace("{treatmentId}", index.toString())
                 }
                 navController.navigate(route)
             }
@@ -75,6 +84,46 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
                         inclusive = true
                     }
                 }
+            }
+        }
+
+        composable(route = AddPrescriptionsRoute.AddTreatmentMedication.route) {
+            val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
+            val state by viewModel.sharedState.collectAsStateWithLifecycle()
+            val treatmentId = it.arguments?.getInt("treatmentId") ?: 0
+            AddPrescriptionAddTreatmentMedicationScreen(
+                treatmentId = treatmentId,
+                state = state,
+                optionContent = viewModel.medication
+            ) { route, medication ->
+                viewModel.setMedication(treatmentId, medication)
+                navController.navigate(route)
+            }
+        }
+
+        composable(route = AddPrescriptionsRoute.AddTreatmentMedicationDosage.route) {
+            val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
+            val state by viewModel.sharedState.collectAsStateWithLifecycle()
+            val treatmentId = it.arguments?.getInt("treatmentId") ?: 0
+            AddPrescriptionAddTreatmentMedicationDosageScreen(
+                treatmentId = treatmentId,
+                state = state,
+            ) { route, dosage ->
+                viewModel.setDosage(treatmentId, dosage)
+                navController.navigate(route)
+            }
+        }
+
+        composable(route = AddPrescriptionsRoute.AddTreatmentMedicationDosageFrequency.route) {
+            val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
+            val state by viewModel.sharedState.collectAsStateWithLifecycle()
+            val treatmentId = it.arguments?.getInt("treatmentId") ?: 0
+            AddPrescriptionAddTreatmentMedicationDosageFrequencyScreen(
+                treatmentId = treatmentId,
+                state = state,
+            ) { route, dosage ->
+                viewModel.setDosage(treatmentId, dosage)
+                navController.navigate(route)
             }
         }
     }

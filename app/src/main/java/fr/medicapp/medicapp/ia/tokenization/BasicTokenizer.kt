@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.tokenization
+package fr.medicapp.medicapp.ia.tokenization
 
 import java.util.Arrays
 import java.util.Locale

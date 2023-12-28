@@ -21,20 +21,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.entity.Doctor
+import fr.medicapp.medicapp.entity.Prescription
 import fr.medicapp.medicapp.model.AddPrescription
+import fr.medicapp.medicapp.model.OptionButtonContent
 import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
-import java.util.UUID
 
 @Composable
-fun AddPrescriptionDoctorScreen(
+fun AddPrescriptionAddTreatmentMedicationScreen(
+    treatmentId: Int,
     state: AddPrescription,
-    optionContent: MutableList<Doctor>,
-    onNavigate: (String, Doctor?) -> Unit,
+    optionContent: List<OptionButtonContent>,
+    onNavigate: (String, OptionButtonContent) -> Unit,
 ) {
-    var selectedDoctor by remember {
-        mutableStateOf<Doctor?>(state.prescription.doctor)
+
+    var selectedMedication by remember {
+        mutableStateOf<OptionButtonContent?>(state.prescription.treatments[treatmentId].medication)
     }
 
     Column(
@@ -43,28 +45,9 @@ fun AddPrescriptionDoctorScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Qui est le médecin qui a prescrit votre ordonnance ?",
+            text = "Votre ordonnance a-t-elle été prescrite par un médecin ?",
             fontWeight = FontWeight.Bold
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                onNavigate(AddPrescriptionsRoute.AddDoctor.route, null)
-            },
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = EUPurple100,
-            ),
-            shape = RoundedCornerShape(10.dp),
-            enabled = true
-        ) {
-            Text(
-                text = "Ajouter un médecin"
-            )
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -77,12 +60,13 @@ fun AddPrescriptionDoctorScreen(
                     state = rememberScrollState()
                 )
         ) {
-            optionContent.forEach { doctor ->
+            optionContent.forEach { content ->
                 AddPrescriptionOptionButton(
-                    title = doctor.getFullName(),
-                    isSelected = doctor == selectedDoctor,
+                    title = content.title,
+                    description = content.description,
+                    isSelected = selectedMedication == content,
                     onClick = {
-                        selectedDoctor = doctor
+                        selectedMedication = content
                     }
                 )
                 Spacer(
@@ -96,7 +80,7 @@ fun AddPrescriptionDoctorScreen(
 
         Button(
             onClick = {
-                onNavigate(AddPrescriptionsRoute.AddTreatmentMedication.route, selectedDoctor!!)
+                onNavigate(AddPrescriptionsRoute.AddTreatmentMedicationDosage.route, selectedMedication!!)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -104,7 +88,7 @@ fun AddPrescriptionDoctorScreen(
                 containerColor = EUPurple100,
             ),
             shape = RoundedCornerShape(10.dp),
-            enabled = selectedDoctor != null
+            enabled = selectedMedication != null
         ) {
             Text(
                 text = "Suivant"
@@ -114,27 +98,23 @@ fun AddPrescriptionDoctorScreen(
 }
 
 
+
+
 @Preview(showBackground = true)
 @Composable
 private fun AddPrescriptionScreenPreview() {
-    AddPrescriptionDoctorScreen(
+    AddPrescriptionAddTreatmentMedicationScreen(
+        treatmentId = 0,
         state = AddPrescription(),
-        optionContent = mutableListOf<Doctor>(
-            Doctor(
-                id = UUID.randomUUID(),
-                firstName = "Jean",
-                lastName = "Dupont",
+        optionContent = listOf(
+            OptionButtonContent(
+                title = "Oui",
+                description = "Votre ordonnance a été prescrite par un médecin"
             ),
-            Doctor(
-                id = UUID.randomUUID(),
-                firstName = "Jean",
-                lastName = "Dupont",
-            ),
-            Doctor(
-                id = UUID.randomUUID(),
-                firstName = "Jean",
-                lastName = "Dupont",
-            ),
-        ),
+            OptionButtonContent(
+                title = "Non",
+                description = "Votre ordonnance n'a pas été prescrite par un médecin"
+            )
+        )
     ) { _, _ -> }
 }
