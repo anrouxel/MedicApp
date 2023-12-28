@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ia.tokenization
+package fr.medicapp.medicapp.ai.tokenization
 
 import android.util.Log
 import java.util.Collections

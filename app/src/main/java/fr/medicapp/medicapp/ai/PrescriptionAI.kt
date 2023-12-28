@@ -1,18 +1,13 @@
-package fr.medicapp.medicapp.ia.tokenization
+package fr.medicapp.medicapp.ai
 
-import android.content.Context
 import android.content.res.AssetManager
-import android.net.Uri
 import android.os.Handler
 import android.os.HandlerThread
 import androidx.annotation.WorkerThread
-import androidx.compose.ui.platform.LocalContext
+import fr.medicapp.medicapp.ai.tokenization.FeatureConverter
 import org.pytorch.Module
 import java.io.BufferedReader
-import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStreamReader
-import java.text.SimpleDateFormat
 
 class PrescriptionAI {
     private lateinit var mModule: Module

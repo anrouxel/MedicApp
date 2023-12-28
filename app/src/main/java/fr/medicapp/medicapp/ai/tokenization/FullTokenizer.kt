@@ -1,6 +1,4 @@
-package fr.medicapp.medicapp.ia.tokenization
-
-import android.util.Log
+package fr.medicapp.medicapp.ai.tokenization
 
 
 final class FullTokenizer(

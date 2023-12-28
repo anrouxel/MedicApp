@@ -1,7 +1,4 @@
-package fr.medicapp.medicapp.ia.tokenization
-
-import java.util.Arrays
-import java.util.Locale
+package fr.medicapp.medicapp.ai.tokenization
 
 
 class BasicTokenizer(
