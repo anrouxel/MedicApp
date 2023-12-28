@@ -22,28 +22,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.model.AddPrescription
 import fr.medicapp.medicapp.model.OptionButtonContent
 import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 
 @Composable
 fun AddPrescriptionSourceScreen(
-    state: Prescription,
-    onNavigate: (String) -> Unit,
+    state: AddPrescription,
+    optionContent: HashMap<Boolean, OptionButtonContent>,
+    onNavigate: (String, OptionButtonContent) -> Unit,
 ) {
-    val optionContent: List<OptionButtonContent> = listOf(
-        OptionButtonContent(
-            title = "Oui",
-            route = AddPrescriptionsRoute.ChooseDoctor.route
-        ),
-        OptionButtonContent(
-            title = "Non",
-            route = AddPrescriptionsRoute.ChooseDoctor.route
-        ),
-    )
 
     var selectedSource by remember {
-        mutableStateOf<OptionButtonContent?>(null)
+        mutableStateOf<OptionButtonContent?>(state.source)
     }
 
     Column(
@@ -69,11 +61,11 @@ fun AddPrescriptionSourceScreen(
         ) {
             optionContent.forEach { content ->
                 AddPrescriptionOptionButton(
-                    title = content.title,
-                    description = content.description,
-                    isSelected = selectedSource == content,
+                    title = content.value.title,
+                    description = content.value.description,
+                    isSelected = selectedSource == content.value,
                     onClick = {
-                        selectedSource = content
+                        selectedSource = content.value
                     }
                 )
                 Spacer(
@@ -87,13 +79,7 @@ fun AddPrescriptionSourceScreen(
 
         Button(
             onClick = {
-                selectedSource?.let {
-                    it.route?.let { it1 ->
-                        onNavigate(
-                            it1
-                        )
-                    }
-                }
+                onNavigate(selectedSource!!.route!!, selectedSource!!)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -117,7 +103,16 @@ fun AddPrescriptionSourceScreen(
 @Composable
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionSourceScreen(
-        state = Prescription(),
-        onNavigate = { _ -> }
-    )
+        state = AddPrescription(),
+        optionContent = hashMapOf(
+            true to OptionButtonContent(
+                title = "Oui",
+                route = AddPrescriptionsRoute.ChooseDoctor.route
+            ),
+            false to OptionButtonContent(
+                title = "Non",
+                route = AddPrescriptionsRoute.ChooseDoctor.route
+            ),
+        )
+    ) { _, _ -> }
 }

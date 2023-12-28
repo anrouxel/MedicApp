@@ -22,20 +22,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.entity.Prescription
-import fr.medicapp.medicapp.model.OptionButtonContent
+import fr.medicapp.medicapp.model.AddPrescription
 import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import java.util.UUID
 
 @Composable
 fun AddPrescriptionDoctorScreen(
-    state: Prescription,
-    optionContent: List<Doctor>,
-    onNavigate: (String) -> Unit,
+    state: AddPrescription,
+    optionContent: MutableList<Doctor>,
+    onNavigate: (String, Doctor?) -> Unit,
 ) {
     var selectedDoctor by remember {
-        mutableStateOf<Doctor?>(null)
+        mutableStateOf<Doctor?>(state.prescription.doctor)
     }
 
     Column(
@@ -52,7 +51,7 @@ fun AddPrescriptionDoctorScreen(
 
         Button(
             onClick = {
-                onNavigate(AddPrescriptionsRoute.AddDoctor.route)
+                onNavigate(AddPrescriptionsRoute.AddDoctor.route, null)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -96,7 +95,9 @@ fun AddPrescriptionDoctorScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { },
+            onClick = {
+                onNavigate(AddPrescriptionsRoute.ChooseDoctor.route, selectedDoctor!!)
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -117,8 +118,8 @@ fun AddPrescriptionDoctorScreen(
 @Composable
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionDoctorScreen(
-        state = Prescription(),
-        optionContent = listOf(
+        state = AddPrescription(),
+        optionContent = mutableListOf<Doctor>(
             Doctor(
                 id = UUID.randomUUID(),
                 firstName = "Jean",
@@ -135,6 +136,5 @@ private fun AddPrescriptionScreenPreview() {
                 lastName = "Dupont",
             ),
         ),
-        onNavigate = { _ -> }
-    )
+    ) { _, _ -> }
 }

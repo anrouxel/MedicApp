@@ -22,35 +22,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.model.AddPrescription
 import fr.medicapp.medicapp.model.OptionButtonContent
 import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 
 @Composable
 fun AddPrescriptionInstructionsScreen(
-    state: Prescription,
-    onNavigate: (String) -> Unit,
+    state: AddPrescription,
+    optionContent: List<OptionButtonContent>,
+    onNavigate: (String, OptionButtonContent) -> Unit,
 ) {
-    val optionContent: List<OptionButtonContent> = listOf(
-        OptionButtonContent(
-            title = "Caméra",
-            description = "Prenez une photo de votre ordonnance",
-            route = AddPrescriptionsRoute.ChooseSource.route
-        ),
-        OptionButtonContent(
-            title = "Galerie",
-            description = "Choisissez une photo de votre ordonnance",
-            route = AddPrescriptionsRoute.ChooseSource.route
-        ),
-        OptionButtonContent(
-            title = "Manuellement",
-            description = "Entrez manuellement les informations de votre ordonnance",
-            route = AddPrescriptionsRoute.ChooseSource.route
-        ),
-    )
-
     var selectedInstruction by remember {
-        mutableStateOf<OptionButtonContent?>(null)
+        mutableStateOf<OptionButtonContent?>(state.instructions)
     }
 
     Column(
@@ -94,13 +78,7 @@ fun AddPrescriptionInstructionsScreen(
 
         Button(
             onClick = {
-                selectedInstruction?.let {
-                    it.route?.let { it1 ->
-                        onNavigate(
-                            it1
-                        )
-                    }
-                }
+                onNavigate(selectedInstruction!!.route!!, selectedInstruction!!)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -124,7 +102,23 @@ fun AddPrescriptionInstructionsScreen(
 @Composable
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionInstructionsScreen(
-        state = Prescription(),
-        onNavigate = { _ -> }
-    )
+        state = AddPrescription(),
+        optionContent = listOf(
+            OptionButtonContent(
+                title = "Caméra",
+                description = "Prenez une photo de votre ordonnance",
+                route = AddPrescriptionsRoute.ChooseSource.route
+            ),
+            OptionButtonContent(
+                title = "Galerie",
+                description = "Choisissez une photo de votre ordonnance",
+                route = AddPrescriptionsRoute.ChooseSource.route
+            ),
+            OptionButtonContent(
+                title = "Manuellement",
+                description = "Entrez manuellement les informations de votre ordonnance",
+                route = AddPrescriptionsRoute.ChooseSource.route
+            ),
+        )
+    ) { _, _ -> }
 }

@@ -12,7 +12,7 @@ import java.util.UUID
  * */
 @Entity(tableName = "Doctor")
 data class Doctor(
-    @PrimaryKey(autoGenerate = true) val id: UUID,
+    @PrimaryKey(autoGenerate = true) val id: UUID = UUID.randomUUID(),
     val lastName: String,
     val firstName: String,
 ) {

@@ -29,10 +29,11 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
             AddPrescriptionInstructionsScreen(
                 state = state,
-                onNavigate = { route ->
-                    navController.navigate(route)
-                }
-            )
+                optionContent = viewModel.instruction
+            ) { route, instruction ->
+                viewModel.setInstruction(instruction)
+                navController.navigate(route)
+            }
         }
 
         composable(route = AddPrescriptionsRoute.ChooseSource.route) {
@@ -40,10 +41,11 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
             AddPrescriptionSourceScreen(
                 state = state,
-                onNavigate = { route ->
-                    navController.navigate(route)
-                }
-            )
+                optionContent = viewModel.source
+            ) { route, source ->
+                viewModel.setSource(source)
+                navController.navigate(route)
+            }
         }
 
         composable(route = AddPrescriptionsRoute.ChooseDoctor.route) {
@@ -51,20 +53,29 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
             AddPrescriptionDoctorScreen(
                 state = state,
-                optionContent = viewModel.doctors,
-                onNavigate = { route ->
-                    navController.navigate(route)
+                optionContent = viewModel.doctors.value
+            ) { route, doctor ->
+                if (doctor != null) {
+                    viewModel.setDoctor(doctor)
                 }
-            )
+                navController.navigate(route)
+            }
         }
 
         composable(route = AddPrescriptionsRoute.AddDoctor.route) {
             val viewModel = it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
             AddPrescriptionAddDoctorScreen(
-                state = state,
-                onNavigate = { }
-            )
+                state = state
+            ) { route, doctor ->
+                viewModel.addDoctor(doctor)
+                viewModel.setDoctor(doctor)
+                navController.navigate(route) {
+                    popUpTo(route = route) {
+                        inclusive = true
+                    }
+                }
+            }
         }
     }
 }

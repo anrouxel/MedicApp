@@ -25,7 +25,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.entity.Doctor
 import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.model.AddPrescription
 import fr.medicapp.medicapp.ui.navigation.AddPrescriptionsRoute
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple60
@@ -33,8 +35,8 @@ import fr.medicapp.medicapp.ui.theme.EUPurple60
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddPrescriptionAddDoctorScreen(
-    state: Prescription,
-    onNavigate: (String) -> Unit,
+    state: AddPrescription,
+    onNavigate: (String, Doctor) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -104,7 +106,7 @@ fun AddPrescriptionAddDoctorScreen(
 
         Button(
             onClick = {
-                onNavigate(AddPrescriptionsRoute.ChooseDoctor.route)
+                onNavigate(AddPrescriptionsRoute.ChooseDoctor.route, Doctor(firstName = firstName, lastName = lastName))
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -126,7 +128,6 @@ fun AddPrescriptionAddDoctorScreen(
 @Composable
 private fun AddPrescriptionScreenPreview() {
     AddPrescriptionAddDoctorScreen(
-        state = Prescription(),
-        onNavigate = { _ -> }
-    )
+        state = AddPrescription()
+    ) { _, _ -> }
 }
