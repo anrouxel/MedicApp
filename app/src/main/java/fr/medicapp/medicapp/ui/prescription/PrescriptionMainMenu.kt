@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -63,6 +65,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -76,6 +79,7 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
+import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
@@ -83,7 +87,10 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrescriptionMainMenu(ordonnances : List<TestOrdonnance>) {
+fun PrescriptionMainMenu(
+    ordonnances : List<TestOrdonnance>,
+    prescription: () -> Unit
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -122,61 +129,79 @@ fun PrescriptionMainMenu(ordonnances : List<TestOrdonnance>) {
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            for (i in ordonnances) {
-                ElevatedCard(
-                    onClick = { /*TODO*/ },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = 110.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = EUPurple80,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Column(
+            if (ordonnances.isNotEmpty()){
+                for (i in ordonnances) {
+                    ElevatedCard(
+                        onClick = prescription,
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp),
+                            .fillMaxWidth()
+                            .height(height = 110.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = EUPurple80,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text(
-                            text = "ORD"+i.id,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                        ) {
+                            Text(
+                                text = "ORD"+i.id,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
 
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Row() {
-                            Icon(
-                                imageVector = Icons.Filled.Person,
-                                contentDescription = "",
-                                tint = Color.White
                             )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                i.medecinConsulte,
-                                fontSize = 15.sp
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Row() {
-                            Icon(
-                                imageVector = Icons.Filled.CalendarToday,
-                                contentDescription = "",
-                                tint = Color.White
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                i.dateConsult,
-                                fontSize = 15.sp
-                            )
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Row() {
+                                Icon(
+                                    imageVector = Icons.Filled.Person,
+                                    contentDescription = "",
+                                    tint = Color.White
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    i.medecinConsulte,
+                                    fontSize = 15.sp
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Row() {
+                                Icon(
+                                    imageVector = Icons.Filled.CalendarToday,
+                                    contentDescription = "",
+                                    tint = Color.White
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    i.dateConsult,
+                                    fontSize = 15.sp
+                                )
+                            }
                         }
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                ) {
+                    Text(
+                        "Vous n'avez pas d'ordonnances.\nPour en ajouter, cliquez sur le bouton en bas.",
+                        color = EUPurple100,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+
             }
         }
     }
@@ -185,7 +210,7 @@ fun PrescriptionMainMenu(ordonnances : List<TestOrdonnance>) {
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionMainMenuPreview() {
-    var ordonnances = listOf(
+    /*var ordonnances = listOf(
         TestOrdonnance(1,
             "Dr. MOTTU",
             "01/01/2023"),
@@ -195,6 +220,7 @@ private fun PrescriptionMainMenuPreview() {
         TestOrdonnance(3,
             "Dr. BERDJUGIN",
             "10/06/2023")
-    )
-    PrescriptionMainMenu(ordonnances)
+    )*/
+    var ordonnances = listOf<TestOrdonnance>()
+    PrescriptionMainMenu(ordonnances, {})
 }
