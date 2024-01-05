@@ -1,7 +1,10 @@
 package fr.medicapp.medicapp.ui.prescription
 
-data class TestConsultation (
-    var medecin : String,
-    var date : String,
-    var medicaments : List<TestMedicament>
+import java.time.LocalDate
+import java.util.Date
+
+data class TestConsultation(
+    var medecin: String,
+    var date: String,
+    var medicaments: List<TestMedicament>
 )
