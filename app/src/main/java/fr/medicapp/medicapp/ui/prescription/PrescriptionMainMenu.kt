@@ -210,7 +210,7 @@ fun PrescriptionMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionMainMenuPreview() {
-    /*var ordonnances = listOf(
+    var ordonnances = listOf(
         TestOrdonnance(1,
             "Dr. MOTTU",
             "01/01/2023"),
@@ -220,7 +220,7 @@ private fun PrescriptionMainMenuPreview() {
         TestOrdonnance(3,
             "Dr. BERDJUGIN",
             "10/06/2023")
-    )*/
-    var ordonnances = listOf<TestOrdonnance>()
+    )
+    //ordonnances = emptyList()
     PrescriptionMainMenu(ordonnances, {})
 }

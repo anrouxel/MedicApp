@@ -5,5 +5,7 @@ data class TestMedicament(
     var posologie : String,
     var aRenouveler : Int,
     var quantiteSuffisantePour : String,
-    var remboursable : Boolean
+    var remboursable : Boolean,
+    var notificationActive : Boolean,
+    var erreur : String
 )

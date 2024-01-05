@@ -1,9 +1,6 @@
 package fr.medicapp.medicapp.ui.prescription
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,20 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,40 +29,32 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
-import fr.medicapp.medicapp.ui.theme.EUGreen120
+import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EUOrange100
+import fr.medicapp.medicapp.ui.theme.EUOrange20
+import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
@@ -76,7 +62,7 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditPrescriptionScaffold(consultations : TestConsultation) {
+fun EditPrescription(consultations : TestConsultation) {
 
     Scaffold(
         topBar = {
@@ -127,17 +113,18 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                     ) {}
                     Button(
                         onClick = { /*TODO*/ },
+                        enabled = false,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = EUOrange100,
-                            contentColor = Color.White
+                            disabledContainerColor = EUOrange20,
+                            disabledContentColor = Color.White
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(3f)
                     ) {
                         Text(
-                            text = "Editer",
+                            text = "Éditer",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -150,10 +137,13 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                     ) {}
                     Button(
                         onClick = { /*TODO*/ },
+                        enabled = errorList(consultations),
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
-                            contentColor = Color.White
+                            contentColor = Color.White,
+                            disabledContainerColor = EUGreen40,
+                            disabledContentColor = Color.White
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -229,13 +219,26 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                 var renouvellement by remember { mutableStateOf("") }
                 var qsp by remember { mutableStateOf("") }
 
-                Box() {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = EUPurple20,
+                        contentColor = Color.Black
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(5.dp),
                         modifier = Modifier.verticalScroll(
                             enabled = true,
                             state = rememberScrollState()
                         )
+                            .fillMaxSize()
+                            .padding(10.dp)
                     ) {
                         Text(
                             i.nom,
@@ -243,8 +246,28 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                             fontWeight = FontWeight.Bold
                         )
 
+                        if (i.erreur.isNotEmpty()) {
+                            Row() {
+                                Icon(
+                                    imageVector = Icons.Filled.Warning,
+                                    contentDescription = "",
+                                    tint = EURed100,
+                                    modifier = Modifier
+                                        .padding(top = 2.dp)
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    i.erreur,
+                                    fontSize = 20.sp,
+                                    fontStyle = FontStyle.Italic,
+                                    fontWeight = FontWeight.Light,
+                                    color = EURed100
+                                )
+                            }
+                        }
+
                         Row() {
-                            var checked by remember { mutableStateOf(true) }
+                            var checked by remember { mutableStateOf(i.notificationActive) }
                             Switch(
                                 checked = checked,
                                 onCheckedChange = {
@@ -253,15 +276,16 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                                 colors = SwitchDefaults.colors(
                                     checkedThumbColor = Color.White,
                                     checkedTrackColor = EUGreen100,
+                                    uncheckedBorderColor = EURed100,
                                     uncheckedThumbColor = Color.White,
                                     uncheckedTrackColor = EURed100,
                                 ),
-                                modifier = Modifier.scale(scale = 0.75f),
                             )
-                            Spacer(modifier = Modifier.width(5.dp))
+                            Spacer(modifier = Modifier.width(7.dp))
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
+                                    .padding(top = 10.dp)
                             ) {
                                 Text(
                                     "Notification de rappel ${ if (checked) "activée" else "désactivée" }",
@@ -289,8 +313,8 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                                 label = { Text("Posologie") },
                                 shape = RoundedCornerShape(20),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = EUGreen100,
-                                    unfocusedBorderColor = EUGreen100,
+                                    focusedBorderColor = EUPurple100,
+                                    unfocusedBorderColor = EUPurple100,
                                 )
                             )
                         }
@@ -312,12 +336,13 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                                     label = { Text("Renouvellement du traitement") },
                                     shape = RoundedCornerShape(20),
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        focusedBorderColor = EUGreen100,
-                                        unfocusedBorderColor = EUGreen100,
+                                        focusedBorderColor = EUPurple100,
+                                        unfocusedBorderColor = EUPurple100,
                                     )
                                 )
                             }
                         }
+
                         if (i.quantiteSuffisantePour != "") {
                             Row() {
                                 Icon(
@@ -332,15 +357,16 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                                 OutlinedTextField(
                                     value = qsp,
                                     onValueChange = { qsp = it},
-                                    label = { Text("Quantité suffisante pour") },
+                                    label = { Text("Quantité suffisante pour...") },
                                     shape = RoundedCornerShape(20),
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        focusedBorderColor = EUGreen100,
-                                        unfocusedBorderColor = EUGreen100,
+                                        focusedBorderColor = EUPurple100,
+                                        unfocusedBorderColor = EUPurple100,
                                     )
                                 )
                             }
                         }
+
                         if (i.remboursable) {
                             Row() {
                                 Icon(
@@ -378,6 +404,7 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -385,7 +412,7 @@ fun EditPrescriptionScaffold(consultations : TestConsultation) {
 
 @Preview(showBackground = true)
 @Composable
-private fun EditPrescriptionScaffoldPreview() {
+private fun EditPrescriptionPreview() {
     var tab = TestConsultation(
         "Dr. MOTTU",
         "22/11/2023",
@@ -394,27 +421,37 @@ private fun EditPrescriptionScaffoldPreview() {
                 "3 fois par jour",
                 3,
                 "8 jours",
-                true),
+                true,
+                true,
+                "Informations incomplètes"),
             TestMedicament("Cortisone",
                 "1 fois par jour",
                 0,
                 "",
-                false),
+                false,
+                false,
+                ""),
             TestMedicament("Esoméprazole",
                 "2 fois par jour",
                 2,
                 "8 semaines",
-                true),
+                true,
+                false,
+                ""),
             TestMedicament("Monoprost",
                 "1 fois par jour",
                 10,
                 "15 jours",
-                true),
+                true,
+                true,
+                ""),
             TestMedicament("Ibuprofène",
                 "2 fois par jour",
                 0,
                 "8 jours",
-                true))
+                true,
+                true,
+                ""))
     )
-    EditPrescriptionScaffold(tab)
+    EditPrescription(tab)
 }
