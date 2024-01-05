@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.ui.home.Home
 import fr.medicapp.medicapp.ui.home.NavigationDrawerScreen
 
 @Composable
@@ -15,7 +14,7 @@ fun RootNavGraph(navController: NavHostController) {
         startDestination = Graph.AUTHENTICATION
     ) {
         authNavGraph(navController = navController)
-        composable(Graph.HOME) {
+        composable(route = Graph.HOME) {
             NavigationDrawerScreen()
         }
     }
@@ -26,4 +25,5 @@ object Graph {
     const val AUTHENTICATION = "auth_graph"
     const val HOME = "home_graph"
     const val PRESCRIPTION = "prescription_graph"
+    const val ADD_PRESCRIPTIONS = "add_prescriptions_graph"
 }

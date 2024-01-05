@@ -1,10 +1,9 @@
 package fr.medicapp.medicapp.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,11 +27,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -53,7 +51,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
+    val navigationDrawerDestination = screens.find { it.route == currentDestination?.route }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -76,7 +74,9 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                         label = {
                             Text(text = screen.title)
                         },
-                        selected = currentDestination?.route == screen.route,
+                        selected = currentDestination?.hierarchy?.any {
+                            it.route == screen.route
+                        } == true,
                         onClick = {
                             scope.launch {
                                 drawerState.close()
@@ -99,7 +99,10 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                 CenterAlignedTopAppBar(
                     title = {
                         Image(
-                            painter = painterResource(id = screens.find { it.route == currentDestination?.route }?.logo ?: R.drawable.medicapp_eu_green),
+                            painter = painterResource(
+                                // id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                id = R.drawable.medicapp_eu_purple
+                            ),
                             contentDescription = "MedicApp",
                         )
                     },
@@ -121,7 +124,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                                 imageVector = Icons.Filled.Notifications,
                                 contentDescription = "Notifications"
                             )
-                        };
+                        }
                     }
                 )
             },
@@ -130,7 +133,6 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
-                    .padding(10.dp)
             ) {
                 HomeNavGraph(
                     navController = navController,

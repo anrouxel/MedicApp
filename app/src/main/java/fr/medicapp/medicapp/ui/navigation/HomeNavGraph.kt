@@ -1,13 +1,11 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.ui.home.Home
+import fr.medicapp.medicapp.ui.home.HomeScreen
 import fr.medicapp.medicapp.ui.home.NavigationDrawerRoute
-import fr.medicapp.medicapp.ui.home.Prescriptions
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
@@ -16,14 +14,17 @@ fun HomeNavGraph(navController: NavHostController) {
         route = Graph.HOME,
         startDestination = NavigationDrawerRoute.Home.route
     ) {
-        composable(NavigationDrawerRoute.Home.route) {
-            Home()
+        composable(route = NavigationDrawerRoute.Home.route) {
+            HomeScreen(
+                onAddPrescriptionClick = {
+                    navController.navigate(Graph.ADD_PRESCRIPTIONS)
+                }
+            )
         }
-        composable(NavigationDrawerRoute.Prescriptions.route) {
-            Prescriptions()
+        composable(route = NavigationDrawerRoute.Prescriptions.route) {
         }
-        composable(NavigationDrawerRoute.Messages.route) {
-            Prescriptions()
+        composable(route = NavigationDrawerRoute.Messages.route) {
         }
+        addPrescriptionsNavGraph(navController)
     }
 }
