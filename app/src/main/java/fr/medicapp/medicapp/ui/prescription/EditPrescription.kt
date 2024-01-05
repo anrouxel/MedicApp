@@ -1,13 +1,15 @@
 package fr.medicapp.medicapp.ui.prescription
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,15 +35,17 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDatePickerState
@@ -60,6 +64,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.maxkeppeker.sheets.core.models.base.IconSource
+import com.maxkeppeker.sheets.core.models.base.UseCaseState
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import com.maxkeppeler.sheets.option.OptionDialog
+import com.maxkeppeler.sheets.option.models.DisplayMode
+import com.maxkeppeler.sheets.option.models.Option
+import com.maxkeppeler.sheets.option.models.OptionConfig
+import com.maxkeppeler.sheets.option.models.OptionDetails
+import com.maxkeppeler.sheets.option.models.OptionSelection
+import fr.medicapp.medicapp.ui.components.CalendarModal
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -70,13 +88,58 @@ import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EUYellow100
+import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditPrescription(consultations : TestConsultation) {
+fun EditPrescription(consultations: TestConsultation) {
+
+    val datePickerState = remember { mutableStateOf<LocalDate>(LocalDate.now()) }
+    val dataPickerOpenState = remember { mutableStateOf(false) }
+
+    if (dataPickerOpenState.value) {
+        CalendarModal(
+            selectedDate = datePickerState,
+            closeSelection = {
+                dataPickerOpenState.value = false
+            }
+        )
+    }
+
+    val options = listOf(
+        Option(
+            titleText = "Lundi",
+        ),
+        Option(
+            titleText = "Mardi",
+        ),
+        Option(
+            titleText = "Mercredi",
+        ),
+        Option(
+            titleText = "Jeudi",
+        ),
+        Option(
+            titleText = "Vendredi",
+        ),
+        Option(
+            titleText = "Samedi",
+        ),
+        Option(
+            titleText = "Dimanche",
+        ),
+    )
+
+    /*OptionDialog(
+        state = rememberUseCaseState(visible = true),
+        selection = OptionSelection.Multiple(options) { index, option ->
+            // Handle selection
+        },
+        config = OptionConfig(mode = DisplayMode.LIST)
+    )*/
 
     Scaffold(
         topBar = {
@@ -172,7 +235,7 @@ fun EditPrescription(consultations : TestConsultation) {
                 }
             }
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -184,8 +247,7 @@ fun EditPrescription(consultations : TestConsultation) {
                     defaultElevation = 6.dp
                 ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 150.dp),
+                    .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = EUPurple80,
                     contentColor = Color.White
@@ -194,7 +256,7 @@ fun EditPrescription(consultations : TestConsultation) {
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(10.dp)
                 ) {
                     var medecin by remember { mutableStateOf("") }
@@ -202,13 +264,15 @@ fun EditPrescription(consultations : TestConsultation) {
                     OutlinedTextField(
                         value = consultations.medecin,
                         textStyle = TextStyle(fontSize = 16.sp, color = Color.White),
-                        onValueChange = { medecin = it},
-                        label = { Text(
-                            "Médecin",
-                            color = EUPurple20
-                        ) },
+                        onValueChange = { medecin = it },
+                        label = {
+                            Text(
+                                "Médecin",
+                                color = EUPurple20
+                            )
+                        },
                         shape = RoundedCornerShape(20),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                        colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = EUPurple20,
                             unfocusedBorderColor = EUPurple20,
                         ),
@@ -217,22 +281,16 @@ fun EditPrescription(consultations : TestConsultation) {
 
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    /*val time = System.currentTimeMillis()
-                    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = time)
-                    DatePicker(state = datePickerState, modifier = Modifier.padding(16.dp))
-
-                    val state = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
-                    DatePicker(state = state, modifier = Modifier.padding(16.dp))
-
-                    Text("Entered date timestamp: ${state.selectedDateMillis ?: "no input"}")*/
-
                     OutlinedTextField(
-                        value = consultations.date,
+                        enabled = false,
+                        value = datePickerState.value.toString(),
                         textStyle = TextStyle(fontSize = 16.sp, color = Color.White),
-                        onValueChange = { date = it},
-                        label = { Text(
-                            "Date de consultation (jj/mm/yyyy)"
-                        ) },
+                        onValueChange = { date = it },
+                        label = {
+                            Text(
+                                "Date de consultation"
+                            )
+                        },
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Filled.CalendarMonth,
@@ -242,15 +300,21 @@ fun EditPrescription(consultations : TestConsultation) {
                         },
                         isError = false,
                         shape = RoundedCornerShape(20),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                        colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = EUPurple20,
-                            focusedLabelColor = EUPurple20,
                             unfocusedBorderColor = EUPurple20,
-                            unfocusedLabelColor = EUPurple20,
+                            disabledBorderColor = EUPurple20,
                             errorBorderColor = EURed60,
-                            errorLabelColor = EURed60
+                            focusedLabelColor = EUPurple20,
+                            unfocusedLabelColor = EUPurple20,
+                            disabledLabelColor = EUPurple20,
+                            errorLabelColor = EURed60,
                         ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                dataPickerOpenState.value = true
+                            }
                     )
                 }
             }
@@ -291,10 +355,10 @@ fun EditPrescription(consultations : TestConsultation) {
                             OutlinedTextField(
                                 value = i.nom,
                                 textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
-                                onValueChange = { posologie = it},
+                                onValueChange = { posologie = it },
                                 label = { Text("Nom du médicament") },
                                 shape = RoundedCornerShape(20),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = EUPurple100,
                                     unfocusedBorderColor = EUPurple100,
                                 ),
@@ -324,7 +388,7 @@ fun EditPrescription(consultations : TestConsultation) {
                         }
 
                         if (i.erreur.isNotEmpty()) {
-                            Row() {
+                            Row {
                                 Icon(
                                     imageVector = Icons.Filled.Warning,
                                     contentDescription = "",
@@ -343,7 +407,7 @@ fun EditPrescription(consultations : TestConsultation) {
                             }
                         }
 
-                        Row() {
+                        Row {
                             var checked by remember { mutableStateOf(i.notificationActive) }
                             Switch(
                                 checked = checked,
@@ -393,10 +457,10 @@ fun EditPrescription(consultations : TestConsultation) {
                             OutlinedTextField(
                                 value = i.posologie,
                                 textStyle = TextStyle(fontSize = 16.sp),
-                                onValueChange = { posologie = it},
+                                onValueChange = { posologie = it },
                                 label = { Text("Posologie") },
                                 shape = RoundedCornerShape(20),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = EUPurple100,
                                     unfocusedBorderColor = EUPurple100,
                                 ),
@@ -427,10 +491,10 @@ fun EditPrescription(consultations : TestConsultation) {
                                 OutlinedTextField(
                                     value = i.aRenouveler.toString() + " fois",
                                     textStyle = TextStyle(fontSize = 16.sp),
-                                    onValueChange = { renouvellement = it},
+                                    onValueChange = { renouvellement = it },
                                     label = { Text("Renouvellement") },
                                     shape = RoundedCornerShape(20),
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = EUPurple100,
                                         unfocusedBorderColor = EUPurple100,
                                     ),
@@ -462,10 +526,10 @@ fun EditPrescription(consultations : TestConsultation) {
                                 OutlinedTextField(
                                     value = i.quantiteSuffisantePour,
                                     textStyle = TextStyle(fontSize = 16.sp),
-                                    onValueChange = { qsp = it},
+                                    onValueChange = { qsp = it },
                                     label = { Text("Quantité suffisante pour...") },
                                     shape = RoundedCornerShape(20),
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = EUPurple100,
                                         unfocusedBorderColor = EUPurple100,
                                     ),
@@ -475,7 +539,7 @@ fun EditPrescription(consultations : TestConsultation) {
                         }
 
                         if (i.remboursable) {
-                            Row() {
+                            Row {
                                 Box(
                                     modifier = Modifier
                                         .padding(8.dp, end = 15.dp)
@@ -498,7 +562,7 @@ fun EditPrescription(consultations : TestConsultation) {
                                 )
                             }
                         } else {
-                            Row() {
+                            Row {
                                 Icon(
                                     imageVector = Icons.Filled.MoneyOff,
                                     contentDescription = "",
@@ -557,7 +621,6 @@ fun EditPrescription(consultations : TestConsultation) {
                     )
                 }
             }
-
         }
     }
 }
@@ -569,41 +632,52 @@ private fun EditPrescriptionPreview() {
         "Dr. MOTTU",
         "22/11/2023",
         mutableListOf(
-            TestMedicament("Doliprane 1000mg",
+            TestMedicament(
+                "Doliprane 1000mg",
                 "3 fois par jour",
                 3,
                 "8 jours",
                 true,
                 true,
-                ""),
-            TestMedicament("Cortisone",
+                ""
+            ),
+            TestMedicament(
+                "Cortisone",
                 "1 fois par jour",
                 0,
                 "",
                 false,
                 false,
-                ""),
-            TestMedicament("Esoméprazole",
+                ""
+            ),
+            TestMedicament(
+                "Esoméprazole",
                 "2 fois par jour",
                 2,
                 "8 semaines",
                 true,
                 false,
-                ""),
-            TestMedicament("Monoprost",
+                ""
+            ),
+            TestMedicament(
+                "Monoprost",
                 "1 fois par jour",
                 10,
                 "15 jours",
                 true,
                 true,
-                ""),
-            TestMedicament("Ibuprofène",
+                ""
+            ),
+            TestMedicament(
+                "Ibuprofène",
                 "2 fois par jour",
                 0,
                 "8 jours",
                 true,
                 true,
-                ""))
+                ""
+            )
+        )
     )
     /*tab = TestConsultation(
         "Dr. MOTTU",
