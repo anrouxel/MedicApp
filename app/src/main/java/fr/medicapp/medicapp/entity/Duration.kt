@@ -1,5 +1,8 @@
 package fr.medicapp.medicapp.entity
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.LocalDate
 import java.util.Date
 
 /**
@@ -8,12 +11,13 @@ import java.util.Date
  * @property startDate La date de début de la durée.
  * @property endDate La date de fin de la durée.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 data class Duration(
-    val startDate: Date,
-    val endDate: Date
+    var startDate: LocalDate,
+    var endDate: LocalDate
 ) {
     init {
-        require(startDate.before(endDate)) { "La date de début doit être avant la date de fin" }
-        require(endDate.after(startDate)) { "La date de fin doit être après la date de début" }
+        require(startDate.isBefore(endDate) || startDate == endDate) { "La date de début doit être avant la date de fin" }
+        require(endDate.isAfter(startDate) || endDate == startDate) { "La date de fin doit être après la date de début" }
     }
 }

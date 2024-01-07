@@ -60,12 +60,11 @@ fun HomeNavGraph(navController: NavHostController) {
         startDestination = NavigationDrawerRoute.Home.route
     ) {
         composable(route = NavigationDrawerRoute.Home.route) {
-            /*HomeScreen(
+            HomeScreen(
                 onAddPrescriptionClick = {
                     navController.navigate(Graph.ADD_PRESCRIPTIONS)
                 }
-            )*/
-            EditPrescription(consultations = tab)
+            )
         }
         composable(route = NavigationDrawerRoute.Prescriptions.route) {
         }

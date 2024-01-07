@@ -6,11 +6,11 @@ package fr.medicapp.medicapp.ui.prescription
  * @return Un booléen : true si la liste est OK, false sinon
  * @author Quentin
  */
-fun errorList(consult : TestConsultation) : Boolean {
-    for (i in consult.medicaments) {
+fun errorList(consult: String) : Boolean {
+    /*for (i in consult.medicaments) {
         if (i.erreur.isNotEmpty()) {
             return false
         }
-    }
+    }*/
     return true
 }

@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.prescription
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,26 +17,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
-import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,10 +44,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,29 +55,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.maxkeppeker.sheets.core.models.base.IconSource
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
 import com.maxkeppeler.sheets.option.models.Option
 import com.maxkeppeler.sheets.option.models.OptionConfig
-import com.maxkeppeler.sheets.option.models.OptionDetails
 import com.maxkeppeler.sheets.option.models.OptionSelection
-import fr.medicapp.medicapp.ui.components.CalendarModal
-import fr.medicapp.medicapp.ui.theme.EUBlue100
+import fr.medicapp.medicapp.entity.Doctor
+import fr.medicapp.medicapp.entity.Duration
+import fr.medicapp.medicapp.entity.Frequency
+import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
-import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUOrange20
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
@@ -89,59 +83,19 @@ import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
-import fr.medicapp.medicapp.ui.theme.EUYellow100
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditPrescription(consultations: TestConsultation) {
-
-    val datePickerState = remember { mutableStateOf<LocalDate>(LocalDate.now()) }
-    val dataPickerOpenState = remember { mutableStateOf(false) }
-
-    if (dataPickerOpenState.value) {
-        CalendarModal(
-            selectedDate = datePickerState,
-            closeSelection = {
-                dataPickerOpenState.value = false
-            }
-        )
-    }
-
-    val options = listOf(
-        Option(
-            titleText = "Lundi",
-        ),
-        Option(
-            titleText = "Mardi",
-        ),
-        Option(
-            titleText = "Mercredi",
-        ),
-        Option(
-            titleText = "Jeudi",
-        ),
-        Option(
-            titleText = "Vendredi",
-        ),
-        Option(
-            titleText = "Samedi",
-        ),
-        Option(
-            titleText = "Dimanche",
-        ),
-    )
-
-    /*OptionDialog(
-        state = rememberUseCaseState(visible = true),
-        selection = OptionSelection.Multiple(options) { index, option ->
-            // Handle selection
-        },
-        config = OptionConfig(mode = DisplayMode.LIST)
-    )*/
-
+fun EditPrescription(
+    doctors: List<Doctor>,
+    onValidate: () -> Unit,
+    prescription: Prescription,
+) {
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
                 colors = topAppBarColors(
@@ -214,7 +168,6 @@ fun EditPrescription(consultations: TestConsultation) {
                     ) {}
                     Button(
                         onClick = { /*TODO*/ },
-                        enabled = errorList(consultations),
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
@@ -241,6 +194,7 @@ fun EditPrescription(consultations: TestConsultation) {
                 .padding(innerPadding)
                 .fillMaxSize()
                 .padding(10.dp)
+                .verticalScroll(rememberScrollState()),
         ) {
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
@@ -259,12 +213,25 @@ fun EditPrescription(consultations: TestConsultation) {
                         .fillMaxWidth()
                         .padding(10.dp)
                 ) {
-                    var medecin by remember { mutableStateOf("") }
-                    var date by remember { mutableStateOf("") }
+                    var doctorOpen by remember { mutableStateOf(false) }
+
+                    if (doctorOpen) {
+                        OptionDialog(
+                            state = rememberUseCaseState(true, onCloseRequest = {
+                                doctorOpen = false
+                            }),
+                            selection = OptionSelection.Single(doctors.map { doctor: Doctor -> doctor.getOption() }) { index, option ->
+                                prescription.doctor = doctors[index]
+                            },
+                            config = OptionConfig(mode = DisplayMode.LIST)
+                        )
+                    }
+
                     OutlinedTextField(
-                        value = consultations.medecin,
+                        enabled = false,
+                        value = prescription.doctor?.getFullName() ?: "",
                         textStyle = TextStyle(fontSize = 16.sp, color = Color.White),
-                        onValueChange = { medecin = it },
+                        onValueChange = { prescription.doctor!!.firstName = it },
                         label = {
                             Text(
                                 "Médecin",
@@ -275,17 +242,40 @@ fun EditPrescription(consultations: TestConsultation) {
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = EUPurple20,
                             unfocusedBorderColor = EUPurple20,
+                            disabledBorderColor = EUPurple20,
+                            errorBorderColor = EURed60,
+                            focusedLabelColor = EUPurple20,
+                            unfocusedLabelColor = EUPurple20,
+                            disabledLabelColor = EUPurple20,
+                            errorLabelColor = EURed60,
                         ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                doctorOpen = true
+                            }
                     )
 
                     Spacer(modifier = Modifier.height(5.dp))
 
+                    var datePrescriptionOpen by remember { mutableStateOf(false) }
+
+                    if (datePrescriptionOpen) {
+                        CalendarDialog(
+                            state = rememberUseCaseState(true, onCloseRequest = {
+                                datePrescriptionOpen = false
+                            }),
+                            selection = CalendarSelection.Date { date ->
+                                prescription.date = date
+                            },
+                        )
+                    }
+
                     OutlinedTextField(
                         enabled = false,
-                        value = datePickerState.value.toString(),
+                        value = prescription.date.toString(),
                         textStyle = TextStyle(fontSize = 16.sp, color = Color.White),
-                        onValueChange = { date = it },
+                        onValueChange = { },
                         label = {
                             Text(
                                 "Date de consultation"
@@ -313,7 +303,7 @@ fun EditPrescription(consultations: TestConsultation) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                dataPickerOpenState.value = true
+                                datePrescriptionOpen = true
                             }
                     )
                 }
@@ -321,154 +311,389 @@ fun EditPrescription(consultations: TestConsultation) {
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            for (i in consultations.medicaments) {
-                var posologie by remember { mutableStateOf("") }
-                var renouvellement by remember { mutableStateOf("") }
-                var qsp by remember { mutableStateOf("") }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                prescription.treatments.forEach { treatment ->
+                    var posologie by remember { mutableStateOf("") }
+                    var renouvellement by remember { mutableStateOf("") }
+                    var qsp by remember { mutableStateOf("") }
 
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = EUPurple20,
-                        contentColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
                         modifier = Modifier
-                            .verticalScroll(
-                                enabled = true,
-                                state = rememberScrollState()
-                            )
-                            .fillMaxSize()
-                            .padding(10.dp)
+                            .fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = EUPurple20,
+                            contentColor = Color.Black
+                        ),
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(5.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
                         ) {
-                            OutlinedTextField(
-                                value = i.nom,
-                                textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
-                                onValueChange = { posologie = it },
-                                label = { Text("Nom du médicament") },
-                                shape = RoundedCornerShape(20),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = EUPurple100,
-                                    unfocusedBorderColor = EUPurple100,
-                                ),
-                                modifier = Modifier.weight(1f)
-                            )
-
-                            Spacer(modifier = Modifier.width(10.dp))
-
-                            Button(
-                                onClick = { /*TODO*/ },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = EUPurple60,
-                                    contentColor = Color.White,
-                                ),
-                                shape = RoundedCornerShape(30),
-                                contentPadding = PaddingValues(0.dp),
-                                modifier = Modifier
-                                    .size(57.dp)
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Delete,
-                                    contentDescription = "",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(30.dp)
+                                OutlinedTextField(
+                                    value = treatment.medication?.name ?: "",
+                                    textStyle = TextStyle(
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    onValueChange = { },
+                                    label = { Text("Nom du médicament") },
+                                    shape = RoundedCornerShape(20),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = EUPurple100,
+                                        unfocusedBorderColor = EUPurple100,
+                                    ),
+                                    modifier = Modifier.weight(1f)
                                 )
-                            }
-                        }
 
-                        if (i.erreur.isNotEmpty()) {
+                                Spacer(modifier = Modifier.width(10.dp))
+
+                                Button(
+                                    onClick = {
+                                        prescription.treatments.remove(treatment)
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = EUPurple60,
+                                        contentColor = Color.White,
+                                    ),
+                                    shape = RoundedCornerShape(30),
+                                    contentPadding = PaddingValues(0.dp),
+                                    modifier = Modifier
+                                        .size(57.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(30.dp)
+                                    )
+                                }
+                            }
+
+                            /*if (i.erreur.isNotEmpty()) {
+                                Row {
+                                    Icon(
+                                        imageVector = Icons.Filled.Warning,
+                                        contentDescription = "",
+                                        tint = EURed100,
+                                        modifier = Modifier
+                                            .padding(top = 2.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    Text(
+                                        i.erreur,
+                                        fontSize = 20.sp,
+                                        fontStyle = FontStyle.Italic,
+                                        fontWeight = FontWeight.Light,
+                                        color = EURed100
+                                    )
+                                }
+                            }*/
+
                             Row {
-                                Icon(
-                                    imageVector = Icons.Filled.Warning,
-                                    contentDescription = "",
-                                    tint = EURed100,
+                                Switch(
+                                    checked = treatment.notification,
+                                    onCheckedChange = {
+                                        Log.d("TAG", "EditPrescription: ${treatment.notification}")
+                                        treatment.notification = it
+                                        Log.d("TAG", "EditPrescription2: ${treatment.notification}")
+                                    },
+                                    colors = SwitchDefaults.colors(
+                                        checkedThumbColor = Color.White,
+                                        checkedTrackColor = EUGreen100,
+                                        uncheckedBorderColor = EURed100,
+                                        uncheckedThumbColor = Color.White,
+                                        uncheckedTrackColor = EURed100,
+                                    ),
+                                )
+                                Spacer(modifier = Modifier.width(7.dp))
+                                Box(
                                     modifier = Modifier
-                                        .padding(top = 2.dp)
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    i.erreur,
-                                    fontSize = 20.sp,
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Light,
-                                    color = EURed100
-                                )
+                                        .fillMaxSize()
+                                        .padding(top = 10.dp)
+                                ) {
+                                    Text(
+                                        "Notification de rappel ${if (treatment.notification) "activée" else "désactivée"}",
+                                        fontSize = 18.sp
+                                    )
+                                }
                             }
-                        }
 
-                        Row {
-                            var checked by remember { mutableStateOf(i.notificationActive) }
-                            Switch(
-                                checked = checked,
-                                onCheckedChange = {
-                                    checked = it
-                                },
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = Color.White,
-                                    checkedTrackColor = EUGreen100,
-                                    uncheckedBorderColor = EURed100,
-                                    uncheckedThumbColor = Color.White,
-                                    uncheckedTrackColor = EURed100,
-                                ),
-                            )
-                            Spacer(modifier = Modifier.width(7.dp))
                             Box(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 10.dp)
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
                             ) {
-                                Text(
-                                    "Notification de rappel ${ if (checked) "activée" else "désactivée" }",
-                                    fontSize = 18.sp
-                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(8.dp, end = 15.dp)
+                                            .size(24.dp)
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .background(color = EUGreen100)
+                                                .clip(RoundedCornerShape(100.dp)),
+                                            imageVector = Icons.Filled.Medication,
+                                            contentDescription = "",
+                                            tint = Color.White
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    OutlinedTextField(
+                                        value = treatment.dosage.toString(),
+                                        textStyle = TextStyle(fontSize = 16.sp),
+                                        onValueChange = { treatment.dosage = it.toInt() },
+                                        label = { Text("Dosage") },
+                                        shape = RoundedCornerShape(20),
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedBorderColor = EUPurple100,
+                                            unfocusedBorderColor = EUPurple100,
+                                        ),
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
                             }
                         }
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                        // Zone pour ajouter les fréquences
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(8.dp, end = 15.dp)
-                                    .size(24.dp)
-                            ) {
-                                Icon(
+                            Column {
+                                Row(
                                     modifier = Modifier
-                                        .background(color = EUGreen100)
-                                        .clip(RoundedCornerShape(100.dp)),
-                                    imageVector = Icons.Filled.HourglassTop,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
+                                        .fillMaxWidth()
+                                        .padding(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(8.dp, end = 15.dp)
+                                            .size(24.dp)
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .background(color = EUGreen100)
+                                                .clip(RoundedCornerShape(100.dp)),
+                                            imageVector = Icons.Filled.Repeat,
+                                            contentDescription = "",
+                                            tint = Color.White
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    Text(
+                                        "Fréquences",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(10.dp))
+
+                                // Affichage des fréquences
+                                Column {
+                                    treatment.frequencies.forEach { frequency ->
+                                        var frequencyDayOpen by remember { mutableStateOf(false) }
+                                        var frequencyHourOpen by remember { mutableStateOf(false) }
+
+                                        val options = listOf(
+                                            Option(
+                                                titleText = "Lundi",
+                                            ),
+                                            Option(
+                                                titleText = "Mardi",
+                                            ),
+                                            Option(
+                                                titleText = "Mercredi",
+                                            ),
+                                            Option(
+                                                titleText = "Jeudi",
+                                            ),
+                                            Option(
+                                                titleText = "Vendredi",
+                                            ),
+                                            Option(
+                                                titleText = "Samedi",
+                                            ),
+                                            Option(
+                                                titleText = "Dimanche",
+                                            ),
+                                        )
+
+                                        if (frequencyDayOpen) {
+                                            OptionDialog(
+                                                state = rememberUseCaseState(
+                                                    true,
+                                                    onCloseRequest = {
+                                                        frequencyDayOpen = false
+                                                    }),
+                                                selection = OptionSelection.Single(options) { index, option ->
+                                                    frequency.day = index + 1
+                                                },
+                                            )
+                                        }
+
+                                        if (frequencyHourOpen) {
+                                            DateTimeDialog(
+                                                state = rememberUseCaseState(
+                                                    true,
+                                                    onCloseRequest = {
+                                                        frequencyHourOpen = false
+                                                    }),
+                                                selection = DateTimeSelection.Time {
+                                                    frequency.hour = it.hour
+                                                }
+                                            )
+                                        }
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(10.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Button(
+                                                onClick = {
+                                                    prescription.treatments.remove(treatment)
+                                                },
+                                                colors = ButtonDefaults.buttonColors(
+                                                    containerColor = EUPurple60,
+                                                    contentColor = Color.White,
+                                                ),
+                                                shape = RoundedCornerShape(30),
+                                                contentPadding = PaddingValues(0.dp),
+                                                modifier = Modifier
+                                                    .padding(8.dp, end = 15.dp)
+                                                    .size(30.dp)
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Delete,
+                                                    contentDescription = "",
+                                                    tint = Color.White,
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.width(5.dp))
+                                            OutlinedTextField(
+                                                enabled = false,
+                                                value = frequency.day.toString(),
+                                                textStyle = TextStyle(fontSize = 16.sp),
+                                                onValueChange = { frequency.day = it.toInt() },
+                                                label = { Text("Jour") },
+                                                shape = RoundedCornerShape(20),
+                                                colors = OutlinedTextFieldDefaults.colors(
+                                                    focusedBorderColor = EUPurple100,
+                                                    unfocusedBorderColor = EUPurple100,
+                                                    disabledBorderColor = EUPurple100,
+                                                    errorBorderColor = EURed60,
+                                                    focusedLabelColor = EUPurple100,
+                                                    unfocusedLabelColor = EUPurple100,
+                                                    disabledLabelColor = EUPurple100,
+                                                    errorLabelColor = EURed60,
+                                                ),
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .clickable {
+                                                        frequencyDayOpen = true
+                                                    }
+                                            )
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                            OutlinedTextField(
+                                                enabled = false,
+                                                value = frequency.hour.toString(),
+                                                textStyle = TextStyle(fontSize = 16.sp),
+                                                onValueChange = { frequency.hour = it.toInt() },
+                                                label = { Text("Heure") },
+                                                shape = RoundedCornerShape(20),
+                                                colors = OutlinedTextFieldDefaults.colors(
+                                                    focusedBorderColor = EUPurple100,
+                                                    disabledBorderColor = EUPurple100,
+                                                    unfocusedBorderColor = EUPurple100,
+                                                    disabledLabelColor = EUPurple100,
+                                                ),
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .clickable {
+                                                        frequencyHourOpen = true
+                                                    }
+                                            )
+                                        }
+                                    }
+
+                                        ElevatedCard(
+                                            elevation = CardDefaults.cardElevation(
+                                                defaultElevation = 6.dp
+                                            ),
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(height = 50.dp)
+                                                .clickable {
+                                                    treatment.frequencies.add(
+                                                        Frequency(
+                                                            hour = null,
+                                                            day = null
+                                                        )
+                                                    )
+
+                                                    Log.d("TAG", "EditPrescription: ${treatment.frequencies}")
+                                                },
+                                            colors = CardDefaults.cardColors(
+                                                containerColor = EUPurple80,
+                                                contentColor = Color.White
+                                            ),
+                                            shape = RoundedCornerShape(10.dp)
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .padding(10.dp),
+                                                horizontalArrangement = Arrangement.Center,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Icon(
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                        .clip(RoundedCornerShape(100.dp)),
+                                                    imageVector = Icons.Filled.Add,
+                                                    contentDescription = "",
+                                                    tint = Color.White
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    "Ajouter une fréquence",
+                                                    fontSize = 18.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = Modifier
+                                                        .align(Alignment.CenterVertically)
+                                                )
+                                            }
+                                        }
+
+                                }
                             }
-                            Spacer(modifier = Modifier.width(5.dp))
-                            OutlinedTextField(
-                                value = i.posologie,
-                                textStyle = TextStyle(fontSize = 16.sp),
-                                onValueChange = { posologie = it },
-                                label = { Text("Posologie") },
-                                shape = RoundedCornerShape(20),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = EUPurple100,
-                                    unfocusedBorderColor = EUPurple100,
-                                ),
-                                modifier = Modifier.fillMaxWidth()
-                            )
                         }
 
-                        if (i.aRenouveler != 0) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                        ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
@@ -480,216 +705,136 @@ fun EditPrescription(consultations: TestConsultation) {
                                 ) {
                                     Icon(
                                         modifier = Modifier
-                                            .background(color = EUBlue100)
+                                            .background(color = EUGreen100)
                                             .clip(RoundedCornerShape(100.dp)),
-                                        imageVector = Icons.Filled.Repeat,
+                                        imageVector = Icons.Filled.HourglassTop,
                                         contentDescription = "",
                                         tint = Color.White
                                     )
                                 }
                                 Spacer(modifier = Modifier.width(5.dp))
+
+                                var durationOpen by remember { mutableStateOf(false) }
+
+                                if (durationOpen) {
+                                    CalendarDialog(
+                                        state = rememberUseCaseState(true, onCloseRequest = {
+                                            durationOpen = false
+                                        }),
+                                        selection = CalendarSelection.Period { startDate, endDate ->
+                                            treatment.duration!!.startDate = startDate
+                                            treatment.duration!!.endDate = endDate
+                                        },
+                                    )
+                                }
+
                                 OutlinedTextField(
-                                    value = i.aRenouveler.toString() + " fois",
+                                    enabled = false,
+                                    value = treatment.duration!!.startDate.toString() + " - " + treatment.duration!!.endDate.toString(),
                                     textStyle = TextStyle(fontSize = 16.sp),
-                                    onValueChange = { renouvellement = it },
-                                    label = { Text("Renouvellement") },
+                                    onValueChange = { },
+                                    label = { Text("Durée") },
                                     shape = RoundedCornerShape(20),
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = EUPurple100,
                                         unfocusedBorderColor = EUPurple100,
+                                        disabledBorderColor = EUPurple100,
+                                        errorBorderColor = EURed60,
+                                        focusedLabelColor = EUPurple100,
+                                        unfocusedLabelColor = EUPurple100,
+                                        disabledLabelColor = EUPurple100,
+                                        errorLabelColor = EURed60,
                                     ),
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                            }
-                        }
-
-                        if (i.quantiteSuffisantePour != "") {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Box(
                                     modifier = Modifier
-                                        .padding(8.dp, end = 15.dp)
-                                        .size(24.dp)
-                                ) {
-                                    Icon(
-                                        modifier = Modifier
-                                            .background(color = EUOrange100)
-                                            .clip(RoundedCornerShape(100.dp)),
-                                        imageVector = Icons.Filled.Medication,
-                                        contentDescription = "",
-                                        tint = Color.White
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(5.dp))
-                                OutlinedTextField(
-                                    value = i.quantiteSuffisantePour,
-                                    textStyle = TextStyle(fontSize = 16.sp),
-                                    onValueChange = { qsp = it },
-                                    label = { Text("Quantité suffisante pour...") },
-                                    shape = RoundedCornerShape(20),
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = EUPurple100,
-                                        unfocusedBorderColor = EUPurple100,
-                                    ),
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                            }
-                        }
-
-                        if (i.remboursable) {
-                            Row {
-                                Box(
-                                    modifier = Modifier
-                                        .padding(8.dp, end = 15.dp)
-                                        .size(24.dp)
-                                ) {
-                                    Icon(
-                                        modifier = Modifier
-                                            .background(color = EUYellow100)
-                                            .clip(RoundedCornerShape(100.dp)),
-                                        imageVector = Icons.Filled.AttachMoney,
-                                        contentDescription = "",
-                                        tint = Color.White
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    "Médicament remboursable",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        } else {
-                            Row {
-                                Icon(
-                                    imageVector = Icons.Filled.MoneyOff,
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .background(color = EUYellow100)
-                                        .clip(RoundedCornerShape(20.dp)),
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    "Médicament non-remboursable",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            durationOpen = true
+                                        }
                                 )
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 50.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = EUPurple80,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
+
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
                         modifier = Modifier
-                            .size(24.dp)
-                            .clip(RoundedCornerShape(100.dp)),
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "",
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "Ajouter un médicament",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                    )
-                }
+                            .fillMaxWidth()
+                            .height(height = 50.dp)
+                            .clickable {
+                                prescription.treatments.add(
+                                    Treatment(
+                                        medication = null,
+                                        dosage = 0,
+                                        frequencies = mutableListOf(),
+                                        duration = Duration(
+                                            startDate = LocalDate.now(),
+                                            endDate = LocalDate.now(),
+                                        ),
+                                        notification = false,
+                                        history = mutableListOf()
+                                    )
+                                )
+                            },
+                        colors = CardDefaults.cardColors(
+                            containerColor = EUPurple80,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(RoundedCornerShape(100.dp)),
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                "Ajouter un médicament",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                            )
+                        }
+                    }
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 private fun EditPrescriptionPreview() {
-    var tab = TestConsultation(
-        "Dr. MOTTU",
-        "22/11/2023",
-        mutableListOf(
-            TestMedicament(
-                "Doliprane 1000mg",
-                "3 fois par jour",
-                3,
-                "8 jours",
-                true,
-                true,
-                ""
+    EditPrescription(
+        prescription = Prescription(),
+        doctors = listOf(
+            Doctor(
+                firstName = "Jean",
+                lastName = "Dupont"
             ),
-            TestMedicament(
-                "Cortisone",
-                "1 fois par jour",
-                0,
-                "",
-                false,
-                false,
-                ""
+            Doctor(
+                firstName = "John",
+                lastName = "Dupont"
             ),
-            TestMedicament(
-                "Esoméprazole",
-                "2 fois par jour",
-                2,
-                "8 semaines",
-                true,
-                false,
-                ""
+            Doctor(
+                firstName = "Mark",
+                lastName = "Dupont"
             ),
-            TestMedicament(
-                "Monoprost",
-                "1 fois par jour",
-                10,
-                "15 jours",
-                true,
-                true,
-                ""
-            ),
-            TestMedicament(
-                "Ibuprofène",
-                "2 fois par jour",
-                0,
-                "8 jours",
-                true,
-                true,
-                ""
-            )
-        )
+        ),
+        onValidate = {},
     )
-    /*tab = TestConsultation(
-        "Dr. MOTTU",
-        "22/11/2023",
-        mutableListOf(
-            TestMedicament("Doliprane 1000mg",
-                "3 fois par jour",
-                3,
-                "8 jours",
-                true,
-                true,
-                ""))
-    )*/
-    EditPrescription(tab)
 }

@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.maxkeppeler.sheets.option.models.Option
 import java.util.UUID
 
 /**
@@ -14,7 +15,7 @@ import java.util.UUID
 data class Doctor(
     @PrimaryKey(autoGenerate = true) val id: UUID = UUID.randomUUID(),
     val lastName: String,
-    val firstName: String,
+    var firstName: String,
 ) {
     fun getFullName(): String {
         return "$firstName $lastName"
@@ -22,5 +23,11 @@ data class Doctor(
 
     fun getInitials(): String {
         return "${firstName[0]}${lastName[0]}"
+    }
+
+    fun getOption(): Option {
+        return Option(
+            titleText = getFullName(),
+        )
     }
 }

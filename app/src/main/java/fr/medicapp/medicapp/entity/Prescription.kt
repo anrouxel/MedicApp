@@ -1,8 +1,15 @@
 package fr.medicapp.medicapp.entity
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import java.time.LocalDate
+import java.util.Date
+
 data class Prescription(
     var doctor: Doctor? = null,
-    val treatments: MutableList<Treatment> = mutableListOf(),
+    var date: LocalDate? = null,
+    val treatments: MutableList<Treatment> = mutableStateListOf(),
 ) {
     fun isPrescribedByDoctor(): Boolean {
         return doctor != null
