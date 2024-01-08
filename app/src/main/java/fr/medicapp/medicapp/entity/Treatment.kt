@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.entity
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
@@ -22,7 +23,7 @@ data class Treatment(
     //@PrimaryKey(autoGenerate = true) val id: Int,
     var medication: Medication? = null,
     var dosage: Int? = null,
-    var frequencies: MutableList<Frequency> = mutableListOf(),
+    var frequencies: MutableList<Frequency> = mutableStateListOf(),
     var duration: Duration? = null,
     var notification: Boolean = false,
     var history: MutableList<Date> = mutableListOf(),

@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import fr.medicapp.medicapp.entity.Duration
 import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.ui.theme.EUGreen100
@@ -70,28 +71,6 @@ fun TreatmentCard(
     treatment: Treatment,
     onRemove: () -> Unit
 ) {
-    var medication = remember { mutableStateOf(treatment.medication?.name ?: "") }
-    var notification = remember { mutableStateOf(treatment.notification) }
-    var dosage = remember { mutableStateOf(treatment.dosage?.toString() ?: "") }
-    var duration = remember { mutableStateOf(treatment.duration) }
-    var frequencies = remember { treatment.frequencies.toMutableStateList() }
-
-    LaunchedEffect(notification) {
-        treatment.notification = notification.value
-    }
-
-    LaunchedEffect(dosage) {
-        treatment.dosage = dosage.value.toIntOrNull()
-    }
-
-    LaunchedEffect(duration) {
-        treatment.duration = duration.value
-    }
-
-    LaunchedEffect(frequencies) {
-        treatment.frequencies = frequencies
-    }
-
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -115,14 +94,12 @@ fun TreatmentCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 OutlinedTextField(
-                    value = medication.value,
+                    value = treatment.medication.toString(),
                     textStyle = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     ),
-                    onValueChange = {
-                        medication.value = it
-                    },
+                    onValueChange = { },
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -178,9 +155,9 @@ fun TreatmentCard(
 
             Row {
                 Switch(
-                    checked = notification.value,
+                    checked = treatment.notification,
                     onCheckedChange = {
-                        notification.value = it
+                        treatment.notification = it
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
@@ -228,10 +205,10 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = dosage.value,
+                        value = treatment.dosage?.toString() ?: "",
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
-                            dosage.value = it
+                            treatment.dosage = it.toIntOrNull()
                         },
                         label = { Text("Dosage") },
                         shape = RoundedCornerShape(20),
@@ -284,12 +261,11 @@ fun TreatmentCard(
 
                 // Affichage des fréquences
                 Column {
-                    for (frequency in frequencies) {
-                        Log.d("TAG", "TreatmentCard: ${frequency}")
+                    treatment.frequencies.forEachIndexed { index, frequency ->
                         FrequencyCard(
                             frequency = frequency,
                             onRemove = {
-                                frequencies.remove(frequency)
+                                treatment.frequencies.removeAt(index)
                             }
                         )
                     }
@@ -297,7 +273,7 @@ fun TreatmentCard(
                     AddButton(
                         text = "Ajouter une fréquence",
                         onClick = {
-                            frequencies.add(Frequency(0, 0))
+                            treatment.frequencies.add(Frequency(0, 0))
                         }
                     )
                 }
@@ -337,7 +313,7 @@ fun TreatmentCard(
                             durationOpen = false
                         }),
                         selection = CalendarSelection.Period { startDate, endDate ->
-                            duration.value = fr.medicapp.medicapp.entity.Duration(
+                            treatment.duration = Duration(
                                 startDate,
                                 endDate
                             )
@@ -347,7 +323,7 @@ fun TreatmentCard(
 
                 OutlinedTextField(
                     enabled = false,
-                    value = duration.value.toString(),
+                    value = treatment.duration?.toString() ?: "",
                     textStyle = TextStyle(fontSize = 16.sp),
                     onValueChange = { },
                     label = { Text("Durée") },

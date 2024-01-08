@@ -52,17 +52,7 @@ fun FrequencyCard(
     onRemove: () -> Unit
 ) {
     var frequencyDayOpen = remember { mutableStateOf(false) }
-    var frequencyDay = remember { mutableStateOf(frequency.day) }
     var frequencyHourOpen = remember { mutableStateOf(false) }
-    var frequencyHour = remember { mutableStateOf(frequency.hour) }
-
-    LaunchedEffect(frequency.day) {
-        frequencyDay.value = frequency.day
-    }
-
-    LaunchedEffect(frequency.hour) {
-        frequencyHour.value = frequency.hour
-    }
 
     val options = listOf(
         Option(
@@ -96,7 +86,7 @@ fun FrequencyCard(
                     frequencyDayOpen.value = false
                 }),
             selection = OptionSelection.Single(options) { index, option ->
-                frequencyDay.value = index + 1
+                frequency.day = index + 1
             },
         )
     }
@@ -109,7 +99,7 @@ fun FrequencyCard(
                     frequencyHourOpen.value = false
                 }),
             selection = DateTimeSelection.Time {
-                frequencyHour.value = it.hour
+                frequency.hour = it.hour
             }
         )
     }
@@ -142,7 +132,7 @@ fun FrequencyCard(
         Spacer(modifier = Modifier.width(5.dp))
         OutlinedTextField(
             enabled = false,
-            value = frequencyDay.value.toString(),
+            value = frequency.day.toString(),
             textStyle = TextStyle(fontSize = 16.sp),
             onValueChange = { },
             label = { Text("Jour") },
@@ -166,7 +156,7 @@ fun FrequencyCard(
         Spacer(modifier = Modifier.width(10.dp))
         OutlinedTextField(
             enabled = false,
-            value = frequencyHour.value.toString(),
+            value = frequency.hour.toString(),
             textStyle = TextStyle(fontSize = 16.sp),
             onValueChange = { },
             label = { Text("Heure") },

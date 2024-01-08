@@ -315,11 +315,11 @@ fun EditPrescription(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                for (treatment in prescription.treatments) {
+                prescription.treatments.forEachIndexed { index, treatment ->
                     TreatmentCard(
                         treatment = treatment,
                         onRemove = {
-                            prescription.treatments.remove(treatment)
+                            prescription.treatments.removeAt(index)
                         }
                     )
                     Spacer(modifier = Modifier.height(10.dp))

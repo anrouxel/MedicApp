@@ -31,4 +31,8 @@ data class Medication(
     val hasAsmrOpinions: List<HasAsmrOpinion>,
     val importantInformations: List<ImportantInformation>,
     val prescriptionDispensingConditions: List<PrescriptionDispensingConditions>
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
