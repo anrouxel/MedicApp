@@ -19,9 +19,6 @@ interface DoctorDAO {
     @Query("SELECT * FROM Doctor d WHERE d.id = :id")
     fun getDoctorOne(id: Int): Doctor
 
-    @Query("SELECT * FROM Doctor d WHERE d.email = :email")
-    fun getDoctorOneByEmail(email: String): Doctor
-
     @Insert
     fun addDoctor(doctor: Doctor)
 

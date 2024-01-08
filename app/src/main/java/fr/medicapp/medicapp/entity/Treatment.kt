@@ -2,6 +2,8 @@ package fr.medicapp.medicapp.entity
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
@@ -14,8 +16,10 @@ import java.util.Date
  * @property duration La durée du traitement.
  * @property history La liste des dates de prise du traitement.
  */
+@Entity(tableName = "Treatment")
 @RequiresApi(Build.VERSION_CODES.O)
 data class Treatment(
+    @PrimaryKey(autoGenerate = true) val id: Int,
     var medication: Medication? = null,
     var dosage: Int? = null,
     var frequencies: MutableList<Frequency> = mutableListOf(),
