@@ -70,10 +70,27 @@ fun TreatmentCard(
     treatment: Treatment,
     onRemove: () -> Unit
 ) {
-    var medication by remember { mutableStateOf(treatment.medication?.name ?: "") }
-    var notification by remember { mutableStateOf(treatment.notification) }
-    var dosage by remember { mutableStateOf(treatment.dosage?.toString() ?: "") }
+    var medication = remember { mutableStateOf(treatment.medication?.name ?: "") }
+    var notification = remember { mutableStateOf(treatment.notification) }
+    var dosage = remember { mutableStateOf(treatment.dosage?.toString() ?: "") }
+    var duration = remember { mutableStateOf(treatment.duration) }
     var frequencies = remember { treatment.frequencies.toMutableStateList() }
+
+    LaunchedEffect(notification) {
+        treatment.notification = notification.value
+    }
+
+    LaunchedEffect(dosage) {
+        treatment.dosage = dosage.value.toIntOrNull()
+    }
+
+    LaunchedEffect(duration) {
+        treatment.duration = duration.value
+    }
+
+    LaunchedEffect(frequencies) {
+        treatment.frequencies = frequencies
+    }
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -98,15 +115,13 @@ fun TreatmentCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 OutlinedTextField(
-                    value = medication,
+                    value = medication.value,
                     textStyle = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     ),
                     onValueChange = {
-                        Log.d("TAG", "EditPrescription: ${medication}")
-                        medication = it
-                        Log.d("TAG", "EditPrescription1: ${medication}")
+                        medication.value = it
                     },
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
@@ -163,13 +178,9 @@ fun TreatmentCard(
 
             Row {
                 Switch(
-                    checked = notification,
+                    checked = notification.value,
                     onCheckedChange = {
-                        Log.d("TAG", "EditPrescription: ${notification}")
-                        notification = it
-                        treatment.notification = notification
-                        Log.d("TAG", "EditPrescription1: ${notification}")
-                        Log.d("TAG", "EditPrescription2: ${treatment.notification}")
+                        notification.value = it
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
@@ -217,18 +228,10 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = dosage,
+                        value = dosage.value,
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
-                            Log.d("TAG", "EditPrescription: ${dosage}")
-                            dosage = it
-                            if (dosage.isNotEmpty()) {
-                                treatment.dosage = dosage.toInt()
-                            } else {
-                                treatment.dosage = null
-                            }
-                            Log.d("TAG", "EditPrescription1: ${dosage}")
-                            Log.d("TAG", "EditPrescription2: ${treatment.dosage}")
+                            dosage.value = it
                         },
                         label = { Text("Dosage") },
                         shape = RoundedCornerShape(20),
@@ -334,15 +337,17 @@ fun TreatmentCard(
                             durationOpen = false
                         }),
                         selection = CalendarSelection.Period { startDate, endDate ->
-                            treatment.duration!!.startDate = startDate
-                            treatment.duration!!.endDate = endDate
+                            duration.value = fr.medicapp.medicapp.entity.Duration(
+                                startDate,
+                                endDate
+                            )
                         },
                     )
                 }
 
                 OutlinedTextField(
                     enabled = false,
-                    value = treatment.duration!!.startDate.toString() + " - " + treatment.duration!!.endDate.toString(),
+                    value = duration.value.toString(),
                     textStyle = TextStyle(fontSize = 16.sp),
                     onValueChange = { },
                     label = { Text("Durée") },

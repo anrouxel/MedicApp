@@ -20,4 +20,8 @@ data class Duration(
         require(startDate.isBefore(endDate) || startDate == endDate) { "La date de début doit être avant la date de fin" }
         require(endDate.isAfter(startDate) || endDate == startDate) { "La date de fin doit être après la date de début" }
     }
+
+    override fun toString(): String {
+        return "Du $startDate au $endDate"
+    }
 }

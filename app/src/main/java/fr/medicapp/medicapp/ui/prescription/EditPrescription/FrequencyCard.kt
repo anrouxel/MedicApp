@@ -21,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,8 +51,18 @@ fun FrequencyCard(
     frequency: Frequency,
     onRemove: () -> Unit
 ) {
-    var frequencyDayOpen by remember { mutableStateOf(false) }
-    var frequencyHourOpen by remember { mutableStateOf(false) }
+    var frequencyDayOpen = remember { mutableStateOf(false) }
+    var frequencyDay = remember { mutableStateOf(frequency.day) }
+    var frequencyHourOpen = remember { mutableStateOf(false) }
+    var frequencyHour = remember { mutableStateOf(frequency.hour) }
+
+    LaunchedEffect(frequency.day) {
+        frequencyDay.value = frequency.day
+    }
+
+    LaunchedEffect(frequency.hour) {
+        frequencyHour.value = frequency.hour
+    }
 
     val options = listOf(
         Option(
@@ -77,28 +88,28 @@ fun FrequencyCard(
         ),
     )
 
-    if (frequencyDayOpen) {
+    if (frequencyDayOpen.value) {
         OptionDialog(
             state = rememberUseCaseState(
                 true,
                 onCloseRequest = {
-                    frequencyDayOpen = false
+                    frequencyDayOpen.value = false
                 }),
             selection = OptionSelection.Single(options) { index, option ->
-                frequency.day = index + 1
+                frequencyDay.value = index + 1
             },
         )
     }
 
-    if (frequencyHourOpen) {
+    if (frequencyHourOpen.value) {
         DateTimeDialog(
             state = rememberUseCaseState(
                 true,
                 onCloseRequest = {
-                    frequencyHourOpen = false
+                    frequencyHourOpen.value = false
                 }),
             selection = DateTimeSelection.Time {
-                frequency.hour = it.hour
+                frequencyHour.value = it.hour
             }
         )
     }
@@ -131,9 +142,9 @@ fun FrequencyCard(
         Spacer(modifier = Modifier.width(5.dp))
         OutlinedTextField(
             enabled = false,
-            value = frequency.day.toString(),
+            value = frequencyDay.value.toString(),
             textStyle = TextStyle(fontSize = 16.sp),
-            onValueChange = { frequency.day = it.toInt() },
+            onValueChange = { },
             label = { Text("Jour") },
             shape = RoundedCornerShape(20),
             colors = OutlinedTextFieldDefaults.colors(
@@ -149,15 +160,15 @@ fun FrequencyCard(
             modifier = Modifier
                 .weight(1f)
                 .clickable {
-                    frequencyDayOpen = true
+                    frequencyDayOpen.value = true
                 }
         )
         Spacer(modifier = Modifier.width(10.dp))
         OutlinedTextField(
             enabled = false,
-            value = frequency.hour.toString(),
+            value = frequencyHour.value.toString(),
             textStyle = TextStyle(fontSize = 16.sp),
-            onValueChange = { frequency.hour = it.toInt() },
+            onValueChange = { },
             label = { Text("Heure") },
             shape = RoundedCornerShape(20),
             colors = OutlinedTextFieldDefaults.colors(
@@ -169,7 +180,7 @@ fun FrequencyCard(
             modifier = Modifier
                 .weight(1f)
                 .clickable {
-                    frequencyHourOpen = true
+                    frequencyHourOpen.value = true
                 }
         )
     }
