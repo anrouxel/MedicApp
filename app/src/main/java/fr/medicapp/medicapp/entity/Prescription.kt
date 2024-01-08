@@ -9,7 +9,7 @@ import java.util.Date
 data class Prescription(
     var doctor: Doctor? = null,
     var date: LocalDate? = null,
-    val treatments: MutableList<Treatment> = mutableStateListOf(),
+    var treatments: MutableList<Treatment> = mutableStateListOf(),
 ) {
     fun isPrescribedByDoctor(): Boolean {
         return doctor != null

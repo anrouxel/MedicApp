@@ -18,8 +18,8 @@ import java.util.Date
 data class Treatment(
     var medication: Medication? = null,
     var dosage: Int? = null,
-    val frequencies: MutableList<Frequency> = mutableListOf(),
-    val duration: Duration? = null,
+    var frequencies: MutableList<Frequency> = mutableListOf(),
+    var duration: Duration? = null,
     var notification: Boolean = false,
     var history: MutableList<Date> = mutableListOf(),
 ) {
