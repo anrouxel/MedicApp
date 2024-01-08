@@ -10,7 +10,7 @@ import java.util.Date
 
 @Entity(tableName = "Prescription")
 data class Prescription(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    //@PrimaryKey(autoGenerate = true) val id: Int,
     var doctor: Doctor? = null,
     var date: LocalDate? = null,
     var treatments: MutableList<Treatment> = mutableStateListOf(),

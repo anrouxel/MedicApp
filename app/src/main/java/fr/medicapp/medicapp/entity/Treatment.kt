@@ -19,7 +19,7 @@ import java.util.Date
 @Entity(tableName = "Treatment")
 @RequiresApi(Build.VERSION_CODES.O)
 data class Treatment(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    //@PrimaryKey(autoGenerate = true) val id: Int,
     var medication: Medication? = null,
     var dosage: Int? = null,
     var frequencies: MutableList<Frequency> = mutableListOf(),

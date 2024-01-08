@@ -24,13 +24,13 @@ class DoctorRepository(private val doctorDAO:DoctorDAO) {
         }
     }
 
-    fun getDoctorOneByEmail(email: String): Doctor?{
+    /*fun getDoctorOneByEmail(email: String): Doctor?{
         return try {
             doctorDAO.getDoctorOneByEmail(email)
         }catch (e: Exception){
             null
         }
-    }
+    }*/
 
     fun addDoctor(doctor: Doctor): Pair<Boolean,String>{
         return try {
