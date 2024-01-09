@@ -10,10 +10,10 @@ import java.util.Date
 
 @Entity(tableName = "Prescription")
 data class Prescription(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    //@PrimaryKey(autoGenerate = true) val id: Int,
     var doctor: Doctor? = null,
     var date: LocalDate? = null,
-    val treatments: MutableList<Treatment> = mutableStateListOf(),
+    var treatments: MutableList<Treatment> = mutableStateListOf(),
 ) {
     fun isPrescribedByDoctor(): Boolean {
         return doctor != null
@@ -21,5 +21,18 @@ data class Prescription(
 
     fun isPrescribedByDoctor(doctor: Doctor?): Boolean {
         return this.doctor == doctor
+    }
+
+    fun isValide(): Boolean {
+        return doctor != null && date != null && treatments.isNotEmpty() && areTreatmentsValid()
+    }
+
+    fun areTreatmentsValid(): Boolean {
+        for (treatment in treatments) {
+            if (!treatment.isValide()) {
+                return false
+            }
+        }
+        return true
     }
 }
