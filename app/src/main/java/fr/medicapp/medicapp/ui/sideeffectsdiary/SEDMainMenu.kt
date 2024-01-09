@@ -52,7 +52,7 @@ fun SEDMainMenu(
                 ),
                 title = {
                     Text(
-                        "Journal des effets secondaires",
+                        "Journal des effets",
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -92,7 +92,6 @@ fun SEDMainMenu(
                             .fillMaxWidth()
                             .height(height = 75.dp),
                         colors =
-                            // Cas du message pas vu
                             CardDefaults.cardColors(
                                 containerColor = EURed80,
                                 contentColor = Color.White
