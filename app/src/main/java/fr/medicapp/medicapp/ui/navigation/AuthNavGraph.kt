@@ -29,6 +29,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 back = {
                     /*navController.navigate("oi") {
                         popUpTo()
+                        TODO
                     }*/
                 },
                 validate = {
@@ -41,6 +42,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 back = {
                     /*navController.navigate("oi") {
                         popUpTo()
+                        TODO
                     }*/
                 },
                 validate = {

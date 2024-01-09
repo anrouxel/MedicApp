@@ -34,22 +34,8 @@ class PrescriptionAI {
 
     @WorkerThread
     private fun loadModel() {
+        /* TODO */
     }
-
-    /*private fun Context.loadModelFile(assetManager: AssetManager) {
-        assetManager.open(MODEL_PATH).use { ins ->
-            val file = File(cacheDir, MODEL_PATH)
-            FileOutputStream(file).use { out ->
-                val buffer = ByteArray(1024)
-                var read: Int
-                while (ins.read(buffer).also { read = it } != -1) {
-                    out.write(buffer, 0, read)
-                }
-                out.flush()
-            }
-            mModule = Module.load(file.absolutePath)
-        }
-    }*/
 
     private fun loadDictionaryFile(assetManager: AssetManager) {
         assetManager.open(DIC_PATH).use { ins ->

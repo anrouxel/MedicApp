@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.DoctorDAO
 import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.security.EncryptionMotDePasse
 
 class DoctorRepository(private val doctorDAO:DoctorDAO) {
 

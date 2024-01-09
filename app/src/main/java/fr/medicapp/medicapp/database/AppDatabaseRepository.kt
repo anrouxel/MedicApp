@@ -27,7 +27,7 @@ class AppDatabaseRepository()
 {
     private val appDatabase : AppDatabase = Room.databaseBuilder(
             context = MainActivity(),
-            AppDatabase::class.java, "database-name"
+            AppDatabase::class.java, "dataLocal"
         ).build()
 
     fun doctorRepository(): DoctorRepository{

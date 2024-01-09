@@ -6,7 +6,7 @@ import fr.medicapp.medicapp.dao.PrescriptionDAO
 import fr.medicapp.medicapp.entity.Prescription
 
 class PrescriptionRepository(private val prescriptionDAO: PrescriptionDAO) {
-
+    private val succesString = "Success !"
     fun getPrescriptionAll(): List<Prescription>{
         return try {
             prescriptionDAO.getPrescriptionAll()
@@ -26,7 +26,7 @@ class PrescriptionRepository(private val prescriptionDAO: PrescriptionDAO) {
     fun addPrescription(prescription: Prescription): Pair<Boolean,String>{
         return try {
             prescriptionDAO.addPrescription(prescription)
-            Pair(true,"Success !")
+            Pair(true,succesString)
         }catch (e: SQLiteConstraintException){
             Pair(false,"Prescription already exist !")
         }catch (e: SQLiteException){
@@ -39,7 +39,7 @@ class PrescriptionRepository(private val prescriptionDAO: PrescriptionDAO) {
     fun deletePrescription(prescription: Prescription): Pair<Boolean,String>{
         return try {
             prescriptionDAO.deletePrescription(prescription)
-            Pair(true, "Success !")
+            Pair(true, succesString)
         }catch (e: SQLiteConstraintException){
             Pair(false,"Prescription doesn't exist !")
         }catch (e: SQLiteException){
@@ -52,7 +52,7 @@ class PrescriptionRepository(private val prescriptionDAO: PrescriptionDAO) {
     fun updatePrescription(prescription: Prescription): Pair<Boolean,String>{
         return try {
             prescriptionDAO.updatePrescription(prescription)
-            Pair(true,"Success !")
+            Pair(true,succesString)
         }catch (e: SQLiteConstraintException){
             Pair(false,"Prescription doesn't exist !")
         }catch (e: SQLiteException){

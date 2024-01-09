@@ -5,7 +5,6 @@ class BasicTokenizer(
     doLowerCase: Boolean = false
 ) {
     private val doLowerCase: Boolean
-
     init {
         this.doLowerCase = doLowerCase
     }
@@ -31,10 +30,13 @@ class BasicTokenizer(
     }
 
     companion object {
+        private const val nullStringError = "The input String is null"
         /* Performs invalid character removal and whitespace cleanup on text. */
         fun cleanText(text: String?): String {
+
+
             if (text == null) {
-                throw NullPointerException("The input String is null.")
+                throw NullPointerException(nullStringError)
             }
             val stringBuilder = StringBuilder("")
             for (element in text) {
@@ -56,7 +58,7 @@ class BasicTokenizer(
         /* Runs basic whitespace cleaning and splitting on a piece of text. */
         fun whitespaceTokenize(text: String?): MutableList<String> {
             if (text == null) {
-                throw NullPointerException("The input String is null.")
+                throw NullPointerException(nullStringError)
             }
             return mutableListOf(*text.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray())
@@ -65,7 +67,7 @@ class BasicTokenizer(
         /* Splits punctuation on a piece of text. */
         fun runSplitOnPunc(text: String?): MutableList<String> {
             if (text == null) {
-                throw NullPointerException("The input String is null.")
+                throw NullPointerException(nullStringError)
             }
             val tokens: MutableList<String> = ArrayList()
             var startNewWord = true

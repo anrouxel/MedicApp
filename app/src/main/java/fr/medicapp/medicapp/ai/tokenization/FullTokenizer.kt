@@ -23,7 +23,7 @@ final class FullTokenizer(
         return splitTokens
     }
 
-    fun convertTokensToIds(tokens: MutableList<String>): MutableList<Int> {
+    fun convertTokensToIds(tokens: List<String>): MutableList<Int> {
         val outputIds: MutableList<Int> = ArrayList()
         for (token in tokens) {
             outputIds.add(dic[token]!!)

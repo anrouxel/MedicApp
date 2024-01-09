@@ -43,7 +43,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.room.RoomDatabase
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
@@ -51,13 +50,11 @@ import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
 import com.maxkeppeler.sheets.option.models.OptionConfig
 import com.maxkeppeler.sheets.option.models.OptionSelection
-import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.database.AppDatabaseRepository
 import fr.medicapp.medicapp.entity.Doctor
 import fr.medicapp.medicapp.entity.Duration
 import fr.medicapp.medicapp.entity.Prescription
 import fr.medicapp.medicapp.entity.Treatment
-import fr.medicapp.medicapp.repository.PrescriptionRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
@@ -75,7 +72,7 @@ fun EditPrescription(
     doctors: List<Doctor>,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
-    prescription: Prescription,
+    prescription: Prescription
 ) {
     Scaffold(
         modifier = Modifier
@@ -138,6 +135,8 @@ fun EditPrescription(
                         enabled = prescription.isValide(),
                         onClick = {
                             onConfirm()
+                            val prescriptionRepository = AppDatabaseRepository().prescriptionRepository()
+                            prescriptionRepository.addPrescription(prescription)
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -191,7 +190,7 @@ fun EditPrescription(
                             state = rememberUseCaseState(true, onCloseRequest = {
                                 doctorOpen = false
                             }),
-                            selection = OptionSelection.Single(doctors.map { doctor: Doctor -> doctor.getOption() }) { index, option ->
+                            selection = OptionSelection.Single(doctors.map { doctor: Doctor -> doctor.getOption() }) { index, _ ->
                                 prescription.doctor = doctors[index]
                             },
                             config = OptionConfig(mode = DisplayMode.LIST)

@@ -37,15 +37,8 @@ final class WordpieceTokenizer(
                 var curSubStr = ""
                 var end = token.length // Longer substring matches first.
                 while (start < end) {
-                    val subStr =
-                        if (start == 0) {
-                            token.substring(start, end)
-                        } else {
-                            token.substring(
-                                start,
-                                end
-                            )
-                        }
+                    val subStr = token.substring(start, end)
+
                     curSubStr = dic[subStr]?.let { subStr } ?: curSubStr
                     if (curSubStr != "") {
                         break

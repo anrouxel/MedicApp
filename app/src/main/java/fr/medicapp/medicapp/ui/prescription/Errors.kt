@@ -11,6 +11,7 @@ fun errorList(consult: String) : Boolean {
         if (i.erreur.isNotEmpty()) {
             return false
         }
+        TODO
     }*/
     return true
 }

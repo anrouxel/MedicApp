@@ -31,12 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.ui.messages.TestMessages
 import fr.medicapp.medicapp.ui.theme.EUBlue100
-import fr.medicapp.medicapp.ui.theme.EUBlue80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -154,6 +151,6 @@ private fun SEDMainMenuPreview() {
         listOf("Vomissements", "Mal à la gorge"),
         "J'ai eu mal à la tête hier"
     ))
-    //var se = listOf<TestSideEffect>()
+    //var se = listOf<TestSideEffect>() /* TODO */
     SEDMainMenu(se)
 }

@@ -1,12 +1,9 @@
 package fr.medicapp.medicapp.entity
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
-import java.util.Date
 import java.util.UUID
 
 @Entity(tableName = "Prescription")
