@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.repository
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.GenericTypeDAO
-import fr.medicapp.medicapp.entity.GenericGroup
 import fr.medicapp.medicapp.entity.GenericType
 
 class GenericTypeRepository(private val genericTypeDAO: GenericTypeDAO) {

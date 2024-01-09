@@ -2,6 +2,8 @@ package fr.medicapp.medicapp.database
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.room.Room
+import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.repository.DoctorRepository
 import fr.medicapp.medicapp.repository.DurationRepository
 import fr.medicapp.medicapp.repository.FrequencyRepository
@@ -21,7 +23,13 @@ import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.repository.UserRepository
 
 @RequiresApi(Build.VERSION_CODES.O)
-class AppDatabaseRepository(private val appDatabase: AppDatabase) {
+class AppDatabaseRepository()
+{
+    private val appDatabase : AppDatabase = Room.databaseBuilder(
+            context = MainActivity(),
+            AppDatabase::class.java, "dataLocal"
+        ).build()
+
     fun doctorRepository(): DoctorRepository{
         return DoctorRepository(appDatabase.doctorDAO())
     }
@@ -89,4 +97,5 @@ class AppDatabaseRepository(private val appDatabase: AppDatabase) {
     fun userRepository(): UserRepository{
         return UserRepository(appDatabase.userDAO())
     }
+
 }

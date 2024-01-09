@@ -82,5 +82,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun prescriptionDispensingConditionsDAO(): PrescriptionDispensingConditionsDAO
     abstract fun transparencyCommissionOpinionLinkDAO(): TransparencyCommissionOpinionLinkDAO
     abstract fun treatmentDAO(): TreatmentDAO
+
     abstract fun userDAO(): UserDAO
 }
