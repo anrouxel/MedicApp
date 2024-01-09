@@ -145,12 +145,12 @@ private fun SEDMainMenuPreview() {
     var se = listOf(TestSideEffect(
             "Amoxicilline",
         "01/01/2023",
-        listOf("Mal de tête", "Nausées"),
+        mutableListOf("Mal de tête", "Nausées"),
         "J'ai eu mal à la tête hier"
     ), TestSideEffect(
         "Doliprane",
         "02/06/2023",
-        listOf("Vomissements", "Mal à la gorge"),
+        mutableListOf("Vomissements", "Mal à la gorge"),
         "J'ai eu mal à la tête hier"
     ))
     //var se = listOf<TestSideEffect>()

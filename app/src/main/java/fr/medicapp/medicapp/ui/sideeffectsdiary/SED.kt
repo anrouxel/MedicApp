@@ -215,7 +215,7 @@ private fun SEDPreview() {
     var se = TestSideEffect(
         "Nurofen",
         "14/12/2022",
-        listOf("Mal de tête", "Nausées", "Malaise", "Vomissements", "Diarrhée", "Mal aux yeux"),
+        mutableListOf("Mal de tête", "Nausées", "Malaise", "Vomissements", "Diarrhée", "Mal aux yeux"),
         "J'ai eu mal à la tête hier"
     )
     //var se = listOf<TestSideEffect>()
