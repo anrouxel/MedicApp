@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
+import java.util.UUID
 
 /**
  * Classe de données représentant un traitement.
@@ -20,7 +21,7 @@ import java.util.Date
 @Entity(tableName = "Treatment")
 @RequiresApi(Build.VERSION_CODES.O)
 data class Treatment(
-    //@PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: UUID = UUID.randomUUID(),
     var medication: Medication? = null,
     var dosage: Int? = null,
     var frequencies: MutableList<Frequency> = mutableStateListOf(),

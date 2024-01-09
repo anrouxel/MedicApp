@@ -3,8 +3,10 @@ package fr.medicapp.medicapp.entity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.util.Date
+import java.util.UUID
 
 /**
  * Représente une durée avec une date de début et de fin.
@@ -15,6 +17,7 @@ import java.util.Date
 @Entity
 @RequiresApi(Build.VERSION_CODES.O)
 data class Duration(
+    @PrimaryKey(autoGenerate = true) val id: UUID = UUID.randomUUID(),
     var startDate: LocalDate,
     var endDate: LocalDate
 ) {

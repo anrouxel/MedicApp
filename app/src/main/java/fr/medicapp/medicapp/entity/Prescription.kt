@@ -7,10 +7,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.util.Date
+import java.util.UUID
 
 @Entity(tableName = "Prescription")
 data class Prescription(
-    //@PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: UUID = UUID.randomUUID(),
     var doctor: Doctor? = null,
     var date: LocalDate? = null,
     var treatments: MutableList<Treatment> = mutableStateListOf(),
