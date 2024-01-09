@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.entity
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.room.Entity
 import java.time.LocalDate
 import java.util.Date
 
@@ -11,6 +12,7 @@ import java.util.Date
  * @property startDate La date de début de la durée.
  * @property endDate La date de fin de la durée.
  */
+@Entity
 @RequiresApi(Build.VERSION_CODES.O)
 data class Duration(
     var startDate: LocalDate,

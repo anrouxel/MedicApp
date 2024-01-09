@@ -1,8 +1,10 @@
 package fr.medicapp.medicapp.entity
 
+import androidx.room.Entity
 import java.util.Calendar
 import java.util.Date
 
+@Entity
 data class Frequency(
     var hour: Int? = null,
     var day: Int? = null,
