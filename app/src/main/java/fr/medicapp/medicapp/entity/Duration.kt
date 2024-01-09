@@ -3,6 +3,7 @@ package fr.medicapp.medicapp.entity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 /**
@@ -22,6 +23,10 @@ data class Duration(
     }
 
     override fun toString(): String {
-        return "Du $startDate au $endDate"
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val startDateText = startDate.format(formatter)
+        val endDateText = endDate.format(formatter)
+
+        return "Du $startDateText au $endDateText"
     }
 }

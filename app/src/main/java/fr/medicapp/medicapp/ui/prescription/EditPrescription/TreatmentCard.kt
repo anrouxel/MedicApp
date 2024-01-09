@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
@@ -48,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,7 +59,9 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fr.medicapp.medicapp.entity.Duration
 import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Treatment
+import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
+import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
@@ -94,7 +98,7 @@ fun TreatmentCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 OutlinedTextField(
-                    value = treatment.medication.toString(),
+                    value = if (treatment.medication != null) treatment.medication.toString() else "",
                     textStyle = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
@@ -105,6 +109,12 @@ fun TreatmentCard(
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = EUPurple100,
                         unfocusedBorderColor = EUPurple100,
+                        disabledBorderColor = EUPurple100,
+                        errorBorderColor = EURed60,
+                        focusedLabelColor = EUPurple100,
+                        unfocusedLabelColor = EUPurple100,
+                        disabledLabelColor = EUPurple100,
+                        errorLabelColor = EURed60,
                     ),
                     modifier = Modifier.weight(1f)
                 )
@@ -170,7 +180,6 @@ fun TreatmentCard(
                 Spacer(modifier = Modifier.width(7.dp))
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
                         .padding(top = 10.dp)
                 ) {
                     Text(
@@ -183,7 +192,7 @@ fun TreatmentCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(start = 10.dp, end = 10.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -191,12 +200,12 @@ fun TreatmentCard(
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(8.dp, end = 15.dp)
+                            .padding(end = 15.dp)
                             .size(24.dp)
                     ) {
                         Icon(
                             modifier = Modifier
-                                .background(color = EUGreen100)
+                                .background(color = EUOrange100)
                                 .clip(RoundedCornerShape(100.dp)),
                             imageVector = Icons.Filled.Medication,
                             contentDescription = "",
@@ -210,11 +219,18 @@ fun TreatmentCard(
                         onValueChange = {
                             treatment.dosage = it.toIntOrNull()
                         },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text("Dosage") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = EUPurple100,
                             unfocusedBorderColor = EUPurple100,
+                            disabledBorderColor = EUPurple100,
+                            errorBorderColor = EURed60,
+                            focusedLabelColor = EUPurple100,
+                            unfocusedLabelColor = EUPurple100,
+                            disabledLabelColor = EUPurple100,
+                            errorLabelColor = EURed60,
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -226,7 +242,7 @@ fun TreatmentCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(start = 10.dp, end = 10.dp)
         ) {
             Column {
                 Row(
@@ -237,19 +253,21 @@ fun TreatmentCard(
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(8.dp, end = 15.dp)
+                            .padding(end = 15.dp)
                             .size(24.dp)
                     ) {
                         Icon(
                             modifier = Modifier
-                                .background(color = EUGreen100)
+                                .background(color = EUBlue100)
                                 .clip(RoundedCornerShape(100.dp)),
                             imageVector = Icons.Filled.Repeat,
                             contentDescription = "",
                             tint = Color.White
                         )
                     }
+
                     Spacer(modifier = Modifier.width(5.dp))
+
                     Text(
                         "Fréquences",
                         fontSize = 18.sp,
@@ -257,7 +275,7 @@ fun TreatmentCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 // Affichage des fréquences
                 Column {
@@ -283,7 +301,7 @@ fun TreatmentCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(20.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -291,7 +309,7 @@ fun TreatmentCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .padding(8.dp, end = 15.dp)
+                        .padding(end = 15.dp)
                         .size(24.dp)
                 ) {
                     Icon(
