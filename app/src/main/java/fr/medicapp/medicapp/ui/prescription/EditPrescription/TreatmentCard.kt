@@ -71,6 +71,16 @@ fun TreatmentCard(
     treatment: Treatment,
     onRemove: () -> Unit
 ) {
+    var notification = remember { mutableStateOf(treatment.notification) }
+    var dosage = remember { mutableStateOf(treatment.dosage.toString()) }
+    var duration = remember { mutableStateOf(treatment.duration.toString()) }
+
+    LaunchedEffect(treatment) {
+        notification.value = treatment.notification
+        dosage.value = treatment.dosage.toString()
+        duration.value = treatment.duration.toString()
+    }
+
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -155,8 +165,9 @@ fun TreatmentCard(
 
             Row {
                 Switch(
-                    checked = treatment.notification,
+                    checked = notification.value,
                     onCheckedChange = {
+                        notification.value = it
                         treatment.notification = it
                     },
                     colors = SwitchDefaults.colors(
@@ -205,9 +216,10 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = treatment.dosage?.toString() ?: "",
+                        value = dosage.value,
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
+                            dosage.value = it
                             treatment.dosage = it.toIntOrNull()
                         },
                         label = { Text("Dosage") },
@@ -313,17 +325,16 @@ fun TreatmentCard(
                             durationOpen = false
                         }),
                         selection = CalendarSelection.Period { startDate, endDate ->
-                            treatment.duration = Duration(
-                                startDate,
-                                endDate
-                            )
+                            treatment.duration = Duration(startDate, endDate)
+                            duration.value = treatment.duration.toString()
+                            durationOpen = false
                         },
                     )
                 }
 
                 OutlinedTextField(
                     enabled = false,
-                    value = treatment.duration?.toString() ?: "",
+                    value = duration.value,
                     textStyle = TextStyle(fontSize = 16.sp),
                     onValueChange = { },
                     label = { Text("Durée") },

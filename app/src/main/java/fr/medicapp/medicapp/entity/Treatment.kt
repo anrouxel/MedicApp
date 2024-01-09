@@ -28,6 +28,19 @@ data class Treatment(
     var notification: Boolean = false,
     var history: MutableList<Date> = mutableListOf(),
 ) {
+    fun isValide(): Boolean {
+        return medication != null && dosage != null && frequencies.isNotEmpty() && areFrequenciesValid() && duration != null
+    }
+
+    fun areFrequenciesValid(): Boolean {
+        for (frequency in frequencies) {
+            if (!frequency.isValide()) {
+                return false
+            }
+        }
+        return true
+    }
+
     fun getStartDate(): LocalDate {
         return duration!!.startDate
     }

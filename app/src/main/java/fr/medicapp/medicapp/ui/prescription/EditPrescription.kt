@@ -90,7 +90,8 @@ import java.time.LocalDate
 @Composable
 fun EditPrescription(
     doctors: List<Doctor>,
-    onValidate: () -> Unit,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
     prescription: Prescription,
 ) {
     Scaffold(
@@ -121,7 +122,9 @@ fun EditPrescription(
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onCancel()
+                        },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -142,24 +145,6 @@ fun EditPrescription(
                             .fillMaxWidth()
                             .weight(0.5f)
                     ) {}
-                    Button(
-                        onClick = { /*TODO*/ },
-                        enabled = false,
-                        shape = RoundedCornerShape(20),
-                        colors = ButtonDefaults.buttonColors(
-                            disabledContainerColor = EUOrange20,
-                            disabledContentColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(3f)
-                    ) {
-                        Text(
-                            text = "Éditer",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
 
                     Box(
                         modifier = Modifier
@@ -167,7 +152,10 @@ fun EditPrescription(
                             .weight(0.5f)
                     ) {}
                     Button(
-                        onClick = { /*TODO*/ },
+                        enabled = prescription.isValide(),
+                        onClick = {
+                            onConfirm()
+                        },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
@@ -370,6 +358,7 @@ private fun EditPrescriptionPreview() {
                 lastName = "Dupont"
             ),
         ),
-        onValidate = {},
+        onCancel = {},
+        onConfirm = {},
     )
 }
