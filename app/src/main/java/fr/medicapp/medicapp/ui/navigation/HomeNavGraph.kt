@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -52,6 +54,7 @@ var tab = TestConsultation(
     )
 )
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
     NavHost(
@@ -62,7 +65,7 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(route = NavigationDrawerRoute.Home.route) {
             HomeScreen(
                 onAddPrescriptionClick = {
-                    navController.navigate(Graph.ADD_PRESCRIPTIONS)
+                    navController.navigate(PrescriptionRoute.AddPrescription.route)
                 }
             )
         }
@@ -70,6 +73,6 @@ fun HomeNavGraph(navController: NavHostController) {
         }
         composable(route = NavigationDrawerRoute.Messages.route) {
         }
-        addPrescriptionsNavGraph(navController)
+        prescriptionNavGraph(navController)
     }
 }

@@ -34,6 +34,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,6 +58,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fr.medicapp.medicapp.entity.Duration
 import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Treatment
+import fr.medicapp.medicapp.ui.prescription.DateRangePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
@@ -285,7 +287,7 @@ fun TreatmentCard(
                     AddButton(
                         text = "Ajouter une fréquence",
                         onClick = {
-                            treatment.frequencies.add(Frequency(0, 0))
+                            treatment.frequencies.add(Frequency(hour = 0, day = 0))
                         }
                     )
                 }
@@ -318,17 +320,17 @@ fun TreatmentCard(
                 Spacer(modifier = Modifier.width(5.dp))
 
                 var durationOpen by remember { mutableStateOf(false) }
+                var durationState = rememberDateRangePickerState()
 
                 if (durationOpen) {
-                    CalendarDialog(
-                        state = rememberUseCaseState(true, onCloseRequest = {
-                            durationOpen = false
-                        }),
-                        selection = CalendarSelection.Period { startDate, endDate ->
-                            treatment.duration = Duration(startDate, endDate)
-                            duration.value = treatment.duration.toString()
+                    DateRangePickerModal(
+                        state = durationState,
+                        onDismissRequest = {
                             durationOpen = false
                         },
+                        onConfirm = {
+                            durationOpen = false
+                        }
                     )
                 }
 

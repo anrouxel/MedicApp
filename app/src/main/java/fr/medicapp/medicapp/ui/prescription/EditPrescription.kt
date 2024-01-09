@@ -30,6 +30,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -227,14 +228,17 @@ fun EditPrescription(
 
                     var datePrescriptionOpen by remember { mutableStateOf(false) }
 
+                    var datePrescriptionState = rememberDatePickerState()
+
                     if (datePrescriptionOpen) {
-                        CalendarDialog(
-                            state = rememberUseCaseState(true, onCloseRequest = {
+                        DatePickerModal(
+                            state = datePrescriptionState,
+                            onDismissRequest = {
                                 datePrescriptionOpen = false
-                            }),
-                            selection = CalendarSelection.Date { date ->
-                                prescription.date = date
                             },
+                            onConfirm = {
+                                datePrescriptionOpen = false
+                            }
                         )
                     }
 

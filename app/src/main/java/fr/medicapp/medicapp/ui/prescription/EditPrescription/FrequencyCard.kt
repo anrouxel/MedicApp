@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,12 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.date_time.DateTimeDialog
-import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.Option
 import com.maxkeppeler.sheets.option.models.OptionSelection
 import fr.medicapp.medicapp.entity.Frequency
+import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EURed60
@@ -52,7 +52,6 @@ fun FrequencyCard(
     onRemove: () -> Unit
 ) {
     var frequencyDayOpen = remember { mutableStateOf(false) }
-    var frequencyHourOpen = remember { mutableStateOf(false) }
 
     val options = listOf(
         Option(
@@ -91,15 +90,21 @@ fun FrequencyCard(
         )
     }
 
-    if (frequencyHourOpen.value) {
-        DateTimeDialog(
-            state = rememberUseCaseState(
-                true,
-                onCloseRequest = {
-                    frequencyHourOpen.value = false
-                }),
-            selection = DateTimeSelection.Time {
-                frequency.hour = it.hour
+    var frequencyTimeOpen = remember { mutableStateOf(false) }
+    var frequencyTimeState = rememberTimePickerState(
+        is24Hour = true,
+    )
+
+    if (frequencyTimeOpen.value) {
+        TimePickerModal(
+            state = frequencyTimeState,
+            onDismissRequest = {
+                frequencyTimeOpen.value = false
+            },
+            onConfirm = {
+                frequency.hour = frequencyTimeState.hour
+                frequency.minute = frequencyTimeState.minute
+                frequencyTimeOpen.value = false
             }
         )
     }
@@ -156,7 +161,7 @@ fun FrequencyCard(
         Spacer(modifier = Modifier.width(10.dp))
         OutlinedTextField(
             enabled = false,
-            value = frequency.hour.toString(),
+            value = frequency.hour.toString() + ":" + frequency.minute.toString(),
             textStyle = TextStyle(fontSize = 16.sp),
             onValueChange = { },
             label = { Text("Heure") },
@@ -170,7 +175,7 @@ fun FrequencyCard(
             modifier = Modifier
                 .weight(1f)
                 .clickable {
-                    frequencyHourOpen.value = true
+                    frequencyTimeOpen.value = true
                 }
         )
     }
