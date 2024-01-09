@@ -22,4 +22,17 @@ data class Prescription(
     fun isPrescribedByDoctor(doctor: Doctor?): Boolean {
         return this.doctor == doctor
     }
+
+    fun isValide(): Boolean {
+        return doctor != null && date != null && treatments.isNotEmpty() && areTreatmentsValid()
+    }
+
+    fun areTreatmentsValid(): Boolean {
+        for (treatment in treatments) {
+            if (!treatment.isValide()) {
+                return false
+            }
+        }
+        return true
+    }
 }

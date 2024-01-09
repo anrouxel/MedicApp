@@ -41,9 +41,12 @@ fun NavGraphBuilder.addPrescriptionsNavGraph(
                         firstName = "Jane",
                     ),
                 ),
-                onValidate = {
+                onCancel = {
                     navController.popBackStack()
-                }
+                },
+                onConfirm = {
+                    navController.popBackStack()
+                },
             )
         }
     }

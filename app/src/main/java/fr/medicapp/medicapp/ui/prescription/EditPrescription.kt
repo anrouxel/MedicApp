@@ -64,14 +64,14 @@ import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditPrescription(
     doctors: List<Doctor>,
-    onValidate: () -> Unit,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
     prescription: Prescription,
 ) {
     Scaffold(
@@ -102,7 +102,9 @@ fun EditPrescription(
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onCancel()
+                        },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -122,7 +124,10 @@ fun EditPrescription(
                     Spacer(modifier = Modifier.weight(0.3f))
 
                     Button(
-                        onClick = { /*TODO*/ },
+                        enabled = prescription.isValide(),
+                        onClick = {
+                            onConfirm()
+                        },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
@@ -336,6 +341,7 @@ private fun EditPrescriptionPreview() {
                 lastName = "Dupont"
             ),
         ),
-        onValidate = {},
+        onCancel = {},
+        onConfirm = {},
     )
 }
