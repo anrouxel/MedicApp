@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class SharedAddPrescriptionViewModel : ViewModel() {
-    private val _sharedState = MutableStateFlow(Prescription(1))
+    private val _sharedState = MutableStateFlow(Prescription())
 
     val sharedState = _sharedState.asStateFlow()
+
 }
