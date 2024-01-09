@@ -1,6 +1,11 @@
 package fr.medicapp.medicapp.entity
 
-import fr.medicapp.medicapp.model.OptionButtonContent
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.mutableStateListOf
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
@@ -12,27 +17,31 @@ import java.util.Date
  * @property duration La durée du traitement.
  * @property history La liste des dates de prise du traitement.
  */
+@Entity(tableName = "Treatment")
+@RequiresApi(Build.VERSION_CODES.O)
 data class Treatment(
-    var medication: OptionButtonContent? = null,
+    //@PrimaryKey(autoGenerate = true) val id: Int,
+    var medication: Medication? = null,
     var dosage: Int? = null,
-    val frequencies: MutableList<Frequency> = mutableListOf(),
-    val duration: Duration? = null,
+    var frequencies: MutableList<Frequency> = mutableStateListOf(),
+    var duration: Duration? = null,
+    var notification: Boolean = false,
     var history: MutableList<Date> = mutableListOf(),
 ) {
-    fun getStartDate(): Date {
+    fun getStartDate(): LocalDate {
         return duration!!.startDate
     }
 
-    fun getEndDate(): Date {
+    fun getEndDate(): LocalDate {
         return duration!!.endDate
     }
 
     fun getRemainingDays(): Long {
-        return (duration!!.endDate.time - Date().time) / (1000 * 60 * 60 * 24)
+        return LocalDate.now().until(duration!!.endDate).days.toLong()
     }
 
     fun isOver(): Boolean {
-        return Date().after(duration!!.endDate)
+        return LocalDate.now().isAfter(duration!!.endDate)
     }
 
     fun lastTake(): Date {
@@ -40,23 +49,8 @@ data class Treatment(
     }
 
     fun nextInTake(): Date? {
-        val now = Date()
-        if (now.after(duration!!.endDate)) return null
-        val nextTake = frequencies.map { frequency ->
-            val calendar = Calendar.getInstance()
-            calendar.time = now
-            frequency.hour?.let { calendar.set(Calendar.HOUR_OF_DAY, it) }
-            frequency.day?.let { calendar.set(Calendar.DAY_OF_WEEK, it) }
-            calendar.time
-        }.filter { it.after(now) }.min()
-        return nextTake
-    }
-
-    fun getRemainingInTake(): Int {
-        val totalDays = ((duration!!.endDate.time - duration!!.startDate.time) / (1000 * 60 * 60 * 24)).toInt()
-        val totalIntakes = totalDays * frequencies.size
-        val takenIntakes = history.size
-        return totalIntakes - takenIntakes
+        /* TODO: Implémenter cette fonction. */
+        return null
     }
 
     fun getHistoryByDay(): List<Pair<Date, Int>> {

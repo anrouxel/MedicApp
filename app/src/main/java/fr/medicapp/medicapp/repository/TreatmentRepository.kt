@@ -2,42 +2,33 @@ package fr.medicapp.medicapp.repository
 
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
-import fr.medicapp.medicapp.dao.DoctorDAO
-import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.security.EncryptionMotDePasse
+import fr.medicapp.medicapp.dao.TreatmentDAO
+import fr.medicapp.medicapp.entity.Treatment
 
-class DoctorRepository(private val doctorDAO:DoctorDAO) {
+class TreatmentRepository(private val treatmentDAO: TreatmentDAO) {
 
-    fun getDoctorAll(): List<Doctor> {
+    fun getTreatmentAll(): List<Treatment>{
         return try {
-            this.doctorDAO.getDoctorAll()
+            treatmentDAO.getTreatmentAll()
         }catch (e: Exception){
             emptyList()
         }
     }
 
-    fun getDoctorOne(id: Int): Doctor?{
-        return try{
-            doctorDAO.getDoctorOne(id)
+    fun getTreatmentOne(id: Int): Treatment?{
+        return try {
+            treatmentDAO.getTreatmentOne(id)
         }catch (e: Exception){
             null
         }
     }
 
-    /*fun getDoctorOneByEmail(email: String): Doctor?{
+    fun addTreatment(treatment: Treatment): Pair<Boolean,String>{
         return try {
-            doctorDAO.getDoctorOneByEmail(email)
-        }catch (e: Exception){
-            null
-        }
-    }*/
-
-    fun addDoctor(doctor: Doctor): Pair<Boolean,String>{
-        return try {
-            doctorDAO.addDoctor(doctor)
-            Pair(true,"Success")
+            treatmentDAO.addTreatment(treatment)
+            Pair(true, "Success !")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Doctor already exist !")
+            Pair(false,"Treatment already exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){
@@ -45,12 +36,12 @@ class DoctorRepository(private val doctorDAO:DoctorDAO) {
         }
     }
 
-    fun deleteDoctor(doctor: Doctor): Pair<Boolean,String>{
+    fun deleteTreatment(treatment: Treatment): Pair<Boolean,String>{
         return try {
-            doctorDAO.deleteDoctor(doctor)
-            Pair(true,"Success")
+            treatmentDAO.deleteTreatment(treatment)
+            Pair(true,"Success !")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Doctor doesn't exist !")
+            Pair(false,"Treatment doesn't exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){
@@ -58,12 +49,12 @@ class DoctorRepository(private val doctorDAO:DoctorDAO) {
         }
     }
 
-    fun updateDoctor(doctor: Doctor): Pair<Boolean,String>{
+    fun updateTreatment(treatment: Treatment): Pair<Boolean,String>{
         return try {
-            doctorDAO.updateDoctor(doctor)
-            Pair(true,"Success")
+            treatmentDAO.updateTreatment(treatment)
+            Pair(true,"Success !")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Doctor doesn't exist !")
+            Pair(false,"Treatment doesn't exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){

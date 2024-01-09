@@ -132,7 +132,6 @@ fun Prescription(consultation : TestConsultation) {
                     ) {}
                     Button(
                         onClick = { /*TODO*/ },
-                        enabled = errorList(consultation),
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
