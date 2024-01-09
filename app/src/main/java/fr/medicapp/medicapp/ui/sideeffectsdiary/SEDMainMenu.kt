@@ -52,7 +52,7 @@ fun SEDMainMenu(
                 ),
                 title = {
                     Text(
-                        "Journal des effets secondaires",
+                        "Journal des effets",
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -92,7 +92,6 @@ fun SEDMainMenu(
                             .fillMaxWidth()
                             .height(height = 75.dp),
                         colors =
-                            // Cas du message pas vu
                             CardDefaults.cardColors(
                                 containerColor = EURed80,
                                 contentColor = Color.White
@@ -146,12 +145,12 @@ private fun SEDMainMenuPreview() {
     var se = listOf(TestSideEffect(
             "Amoxicilline",
         "01/01/2023",
-        listOf("Mal de tête", "Nausées"),
+        mutableListOf("Mal de tête", "Nausées"),
         "J'ai eu mal à la tête hier"
     ), TestSideEffect(
         "Doliprane",
         "02/06/2023",
-        listOf("Vomissements", "Mal à la gorge"),
+        mutableListOf("Vomissements", "Mal à la gorge"),
         "J'ai eu mal à la tête hier"
     ))
     //var se = listOf<TestSideEffect>()
