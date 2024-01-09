@@ -65,3 +65,5 @@ j
 :app/src/main/java/fr/medicapp/medicapp/dao/FrequencyDAO.kt,0\4\045f0ad039508f012fe13d824c79a1acdb2cb86d
 x
 Happ/src/main/java/fr/medicapp/medicapp/repository/FrequencyRepository.kt,1\0\1085dc3b21ee62c55ae57f20cccfaa3732d6701f
+x
+Happ/src/main/java/fr/medicapp/medicapp/database/AppDatabaseRepository.kt,e\f\efdaaed337b59de44f223811b12f07d569ee6120

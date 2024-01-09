@@ -66,7 +66,6 @@ import fr.medicapp.medicapp.entity.User
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun doctorDAO(): DoctorDAO
     abstract fun durationDAO(): DurationDAO
     abstract fun frequencyDAO(): FrequencyDAO
