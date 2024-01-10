@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.prescription.EditPrescription
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,11 +36,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,6 +55,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fr.medicapp.medicapp.entity.Duration
 import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Treatment
+import fr.medicapp.medicapp.ui.theme.EUBlack100
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUOrange100
@@ -76,7 +73,7 @@ fun TreatmentCard(
     onRemove: () -> Unit
 ) {
     var notification = remember { mutableStateOf(treatment.notification) }
-    var dosage = remember { mutableStateOf(treatment.dosage.toString()) }
+    var dosage = remember { mutableStateOf(treatment.dosage?.toString() ?: "") }
     var duration = remember { mutableStateOf(treatment.duration.toString()) }
 
     LaunchedEffect(treatment) {
@@ -108,11 +105,13 @@ fun TreatmentCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 OutlinedTextField(
-                    value = if (treatment.medication != null) treatment.medication.toString() else "",
+                    value = treatment.medication.toString(),
                     textStyle = TextStyle(
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = EUBlack100
                     ),
+                    enabled = false,
                     onValueChange = { },
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
@@ -225,11 +224,11 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = dosage.value,
+                        value = dosage.value,//if (treatment.dosage != null) dosage.value else "0",
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
                             dosage.value = it
-                            treatment.dosage = it.toIntOrNull()
+                            //treatment.dosage = it.toIntOrNull()
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text("Dosage") },

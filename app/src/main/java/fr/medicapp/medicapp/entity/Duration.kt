@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 /**
  * Représente une durée avec une date de début et de fin.
