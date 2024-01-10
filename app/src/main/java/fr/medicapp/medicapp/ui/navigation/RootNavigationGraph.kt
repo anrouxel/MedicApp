@@ -25,5 +25,5 @@ object Graph {
     const val AUTHENTICATION = "auth_graph"
     const val HOME = "home_graph"
     const val PRESCRIPTION = "prescription_graph"
-    const val ADD_PRESCRIPTIONS = "add_prescriptions_graph"
+    const val SIDE_EFFECTS = "add_side_effects_graph"
 }

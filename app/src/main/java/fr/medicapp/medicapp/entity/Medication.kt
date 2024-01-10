@@ -13,7 +13,7 @@ import java.util.Date
 @Entity(tableName = "Medication")
 data class Medication(
     @PrimaryKey val cisCode: String,
-    val name: String,
+    var name: String,
     val pharmaceuticalForm: String,
     val administrationRoutes: List<String>,
     val marketingAuthorizationStatus: String,

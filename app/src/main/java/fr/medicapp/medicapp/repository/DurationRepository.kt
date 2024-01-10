@@ -2,25 +2,25 @@ package fr.medicapp.medicapp.repository
 
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
-import fr.medicapp.medicapp.dao.GenericTypeDAO
-import fr.medicapp.medicapp.entity.GenericType
+import fr.medicapp.medicapp.dao.DurationDAO
+import fr.medicapp.medicapp.entity.Duration
 
-class GenericTypeRepository(private val genericTypeDAO: GenericTypeDAO) {
+class DurationRepository(private val durationDAO: DurationDAO) {
 
-    fun getGenericTypeAll():List<GenericType>{
+    fun getDurationAll(): List<Duration>{
         return try {
-            genericTypeDAO.getGenericTypeAll()
+            durationDAO.getDurationAll()
         }catch (e: Exception){
             emptyList()
         }
     }
 
-    fun addGenericType(genericType: GenericType): Pair<Boolean,String>{
+    fun addDuration(duration: Duration): Pair<Boolean,String>{
         return try {
-            genericTypeDAO.addGenericType(genericType)
-            Pair(true,"Success")
+            durationDAO.addDuration(duration)
+            Pair(true,"Add is a success !")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Generic Type already exist !")
+            Pair(false,"Duration already exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){
@@ -28,12 +28,12 @@ class GenericTypeRepository(private val genericTypeDAO: GenericTypeDAO) {
         }
     }
 
-    fun deleteGenericType(genericType: GenericType): Pair<Boolean,String>{
+    fun deleteDuration(duration: Duration): Pair<Boolean,String>{
         return try {
-            genericTypeDAO.deleteGenericType(genericType)
-            Pair(true,"Success")
+            durationDAO.deleteDuration(duration)
+            Pair(true,"Delete is a success !")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Generic Type doesn't exist !")
+            Pair(false,"Duration doesn't exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){
@@ -41,12 +41,12 @@ class GenericTypeRepository(private val genericTypeDAO: GenericTypeDAO) {
         }
     }
 
-    fun updateGenericType(genericType: GenericType): Pair<Boolean,String>{
+    fun updateDuration(duration: Duration): Pair<Boolean,String>{
         return try {
-            genericTypeDAO.updateGenericType(genericType)
-            Pair(true,"Success")
+            durationDAO.updateDuration(duration)
+            Pair(true,"Update is a success !")
         }catch (e: SQLiteConstraintException){
-            Pair(false,"Generic Type doesn't exist !")
+            Pair(false,"Duration doesn't exist !")
         }catch (e: SQLiteException){
             Pair(false,"Database error : ${e.message}")
         }catch(e: Exception){

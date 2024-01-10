@@ -6,7 +6,7 @@ import fr.medicapp.medicapp.dao.TreatmentDAO
 import fr.medicapp.medicapp.entity.Treatment
 
 class TreatmentRepository(private val treatmentDAO: TreatmentDAO) {
-
+    private val successString = "Succes !"
     fun getTreatmentAll(): List<Treatment>{
         return try {
             treatmentDAO.getTreatmentAll()
@@ -26,7 +26,7 @@ class TreatmentRepository(private val treatmentDAO: TreatmentDAO) {
     fun addTreatment(treatment: Treatment): Pair<Boolean,String>{
         return try {
             treatmentDAO.addTreatment(treatment)
-            Pair(true, "Success !")
+            Pair(true, successString)
         }catch (e: SQLiteConstraintException){
             Pair(false,"Treatment already exist !")
         }catch (e: SQLiteException){
@@ -39,7 +39,7 @@ class TreatmentRepository(private val treatmentDAO: TreatmentDAO) {
     fun deleteTreatment(treatment: Treatment): Pair<Boolean,String>{
         return try {
             treatmentDAO.deleteTreatment(treatment)
-            Pair(true,"Success !")
+            Pair(true,successString)
         }catch (e: SQLiteConstraintException){
             Pair(false,"Treatment doesn't exist !")
         }catch (e: SQLiteException){
@@ -52,7 +52,7 @@ class TreatmentRepository(private val treatmentDAO: TreatmentDAO) {
     fun updateTreatment(treatment: Treatment): Pair<Boolean,String>{
         return try {
             treatmentDAO.updateTreatment(treatment)
-            Pair(true,"Success !")
+            Pair(true,successString)
         }catch (e: SQLiteConstraintException){
             Pair(false,"Treatment doesn't exist !")
         }catch (e: SQLiteException){

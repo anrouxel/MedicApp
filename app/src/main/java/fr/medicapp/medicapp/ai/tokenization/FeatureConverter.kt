@@ -79,7 +79,7 @@ class FeatureConverter(
     }
 
     companion object {
-        fun align_word_ids(feature: Feature, labelAllTokens: Boolean = false): MutableList<Int> {
+        fun alignWordIds(feature: Feature, labelAllTokens: Boolean = false): MutableList<Int> {
             val inputIds = feature.inputIds
             val tokenToOrigMap = feature.tokenToOrigMap
             var previousWordIdx: Int? = null

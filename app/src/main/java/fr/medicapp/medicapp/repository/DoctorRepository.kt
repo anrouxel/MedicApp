@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.DoctorDAO
 import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.security.EncryptionMotDePasse
 
 class DoctorRepository(private val doctorDAO:DoctorDAO) {
 
@@ -23,14 +22,6 @@ class DoctorRepository(private val doctorDAO:DoctorDAO) {
             null
         }
     }
-
-    /*fun getDoctorOneByEmail(email: String): Doctor?{
-        return try {
-            doctorDAO.getDoctorOneByEmail(email)
-        }catch (e: Exception){
-            null
-        }
-    }*/
 
     fun addDoctor(doctor: Doctor): Pair<Boolean,String>{
         return try {
