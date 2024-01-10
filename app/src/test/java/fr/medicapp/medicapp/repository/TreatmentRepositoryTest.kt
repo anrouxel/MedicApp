@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 
 import org.junit.jupiter.api.Test
 
-class DoctorRepositoryTest {
+class TreatmentRepositoryTest {
 
     @Test
     fun getAll() {
