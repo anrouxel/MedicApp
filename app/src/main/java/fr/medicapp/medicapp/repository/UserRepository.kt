@@ -15,12 +15,12 @@ class UserRepository(
         return userDao.getOne(id)
     }
 
-    override fun add(t: UserEntity): UserEntity {
-        return userDao.add(t)
+    override fun add(t: UserEntity) {
+        userDao.add(t)
     }
 
-    override fun addAll(vararg t: UserEntity): List<UserEntity> {
-        return userDao.addAll(*t)
+    override fun addAll(vararg t: UserEntity){
+        userDao.addAll(*t)
     }
 
     override fun delete(t: UserEntity) {
@@ -31,8 +31,8 @@ class UserRepository(
         userDao.deleteAll(*t)
     }
 
-    override fun update(t: UserEntity): UserEntity {
-        return userDao.update(t)
+    override fun update(t: UserEntity)  {
+         userDao.update(t)
     }
 
     override fun updateAll(vararg t: UserEntity) {

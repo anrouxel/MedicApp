@@ -7,15 +7,15 @@ interface IDatabase<T> {
 
     fun <E> getOne(id: E): T
 
-    fun add(t: T): UserEntity
+    fun add(t: T)
 
-    fun addAll(vararg t: T): List<UserEntity>
+    fun addAll(vararg t: T)
 
     fun delete(t: T)
 
     fun deleteAll(vararg t: T)
 
-    fun update(t: T): UserEntity
+    fun update(t: T)
 
     fun updateAll(vararg t: T)
 }

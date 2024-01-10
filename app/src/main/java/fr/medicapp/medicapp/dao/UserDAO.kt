@@ -20,11 +20,11 @@ interface UserDAO : IDatabase<UserEntity> {
     override fun <E> getOne(id: E): UserEntity
     @Insert
     @Throws(SQLiteException::class)
-    override fun add(t: UserEntity) : UserEntity
+    override fun add(t: UserEntity)
 
     @Insert
     @Throws(SQLiteException::class)
-    override fun addAll(vararg t: UserEntity) : List<UserEntity>
+    override fun addAll(vararg t: UserEntity)
 
     @Delete
     @Throws(SQLiteException::class)
@@ -36,7 +36,7 @@ interface UserDAO : IDatabase<UserEntity> {
 
     @Update
     @Throws(SQLiteException::class)
-    override fun update(t: UserEntity) : UserEntity
+    override fun update(t: UserEntity)
 
     @Update
     @Throws(SQLiteException::class)
