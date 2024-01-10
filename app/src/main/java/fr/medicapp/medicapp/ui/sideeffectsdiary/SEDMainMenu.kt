@@ -129,7 +129,7 @@ fun SEDMainMenu(
                 ) {
                     Text(
                         "Vous n'avez pas constaté d'effets secondaires.\nPour en ajouter un, cliquez sur\nle bouton en bas.",
-                        color = EUBlue100,
+                        color = EURed100,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
