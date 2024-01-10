@@ -1,19 +1,24 @@
 package fr.medicapp.medicapp.entity
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
-import java.util.Date
-import java.util.UUID
 
 @Entity
 data class TreatmentEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
+
+    var medication: String,
+
+    var posology: String,
+
+    var quantity: String,
+
+    var renew: String,
 
     @Embedded
     val duration: DurationEntity,
+
+    var notification: Boolean = false
 )

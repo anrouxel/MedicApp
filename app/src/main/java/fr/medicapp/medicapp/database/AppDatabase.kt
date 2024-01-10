@@ -6,12 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import fr.medicapp.medicapp.dao.DoctorDAO
+import fr.medicapp.medicapp.dao.PrescriptionAndDoctorDAO
 import fr.medicapp.medicapp.dao.PrescriptionDAO
+import fr.medicapp.medicapp.dao.PrescriptionWithTreatmentDAO
 import fr.medicapp.medicapp.dao.TreatmentDAO
 import fr.medicapp.medicapp.dao.UserDAO
 import fr.medicapp.medicapp.entity.DoctorEntity
 import fr.medicapp.medicapp.entity.DurationEntity
+import fr.medicapp.medicapp.entity.PrescriptionAndDoctorEntity
 import fr.medicapp.medicapp.entity.PrescriptionEntity
+import fr.medicapp.medicapp.entity.PrescriptionWithTreatmentEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.entity.UserEntity
 
@@ -23,7 +27,9 @@ import fr.medicapp.medicapp.entity.UserEntity
         DoctorEntity::class,
         TreatmentEntity::class,
         PrescriptionEntity::class,
-        UserEntity::class
+        UserEntity::class,
+        /*PrescriptionWithTreatmentEntity::class,
+        PrescriptionAndDoctorEntity::class*/
     ],
     version = 1
 )
@@ -33,6 +39,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun prescriptionDAO(): PrescriptionDAO
     abstract fun treatmentDAO(): TreatmentDAO
     abstract fun userDAO(): UserDAO
+    /*abstract fun prescriptionWithTreatmentDAO(): PrescriptionWithTreatmentDAO
+    abstract fun prescriptionAndDoctorDAO(): PrescriptionAndDoctorDAO*/
 
     companion object {
         private const val DATABASE_NAME = "dataLocal.db"

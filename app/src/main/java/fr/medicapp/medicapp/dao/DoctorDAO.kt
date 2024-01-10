@@ -13,7 +13,7 @@ interface DoctorDAO {
     fun getAll(): List<DoctorEntity>
 
     @Query("SELECT * FROM DoctorEntity WHERE id = :id")
-    fun getOne(id: Int): DoctorEntity
+    fun getOne(id: String): DoctorEntity
 
     @Insert
     fun add(t: DoctorEntity)

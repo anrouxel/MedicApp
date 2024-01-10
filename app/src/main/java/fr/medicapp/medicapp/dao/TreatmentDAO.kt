@@ -14,7 +14,7 @@ interface TreatmentDAO {
     fun getAll(): List<TreatmentEntity>
 
     @Query("SELECT * FROM TreatmentEntity WHERE id = :id")
-    fun getOne(id: Int): TreatmentEntity
+    fun getOne(id: String): TreatmentEntity
 
     @Insert
     fun add(t: TreatmentEntity)

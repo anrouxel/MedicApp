@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -59,7 +60,7 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Prescription(consultation : TestConsultation) {
+fun Prescription(consultation : MutableList<TreatmentEntity>) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -185,7 +186,7 @@ fun Prescription(consultation : TestConsultation) {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            consultation.medecin,
+                            "",
                             fontSize = 20.sp,
                             color = EUPurple20
                         )
@@ -198,7 +199,7 @@ fun Prescription(consultation : TestConsultation) {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            consultation.date,
+                            "",
                             fontSize = 20.sp,
                             color = EUPurple20
                         )
@@ -208,7 +209,7 @@ fun Prescription(consultation : TestConsultation) {
             Spacer(modifier = Modifier.height(15.dp))
 
             // Itération de la liste des médicaments
-            for (i in consultation.medicaments) {
+            for (i in consultation) {
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
@@ -232,12 +233,12 @@ fun Prescription(consultation : TestConsultation) {
                             .padding(10.dp)
                     ) {
                         Text(
-                            i.nom,
+                            i.medication,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
 
-                        if (i.erreur.isNotEmpty()) {
+                        /*if (i.erreur.isNotEmpty()) {
                             Row() {
                                 Icon(
                                     imageVector = Icons.Filled.Warning,
@@ -255,17 +256,14 @@ fun Prescription(consultation : TestConsultation) {
                                     color = EURed100
                                 )
                             }
-                        }
+                        }*/
 
                         Row(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            var checked by remember { mutableStateOf(i.notificationActive) }
                             Switch(
-                                checked = checked,
-                                onCheckedChange = {
-                                    checked = it
-                                },
+                                checked = i.notification,
+                                onCheckedChange = { },
                                 colors = SwitchDefaults.colors(
                                     disabledCheckedThumbColor = Color.White,
                                     disabledCheckedTrackColor = EUGreen40,
@@ -282,7 +280,7 @@ fun Prescription(consultation : TestConsultation) {
                                     .padding(top = 10.dp)
                             ) {
                                 Text(
-                                    "Notification de rappel ${ if (checked) "activée" else "désactivée" }",
+                                    "Notification de rappel ${ if (i.notification) "activée" else "désactivée" }",
                                     fontSize = 18.sp
                                 )
                             }
@@ -302,13 +300,13 @@ fun Prescription(consultation : TestConsultation) {
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                i.posologie,
+                                i.posology,
                                 fontSize = 18.sp
                             )
                         }
                         Spacer(modifier = Modifier.width(5.dp))
 
-                        if (i.aRenouveler != 0) {
+                        if (i.renew != "") {
                             Row() {
                                 Icon(
                                     imageVector = Icons.Filled.Repeat,
@@ -325,14 +323,14 @@ fun Prescription(consultation : TestConsultation) {
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    i.aRenouveler.toString() + " fois",
+                                    i.renew.toString() + " fois",
                                     fontSize = 18.sp
                                 )
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                         }
 
-                        if (i.quantiteSuffisantePour != "") {
+                        if (i.quantity != "") {
                             Row() {
                                 Icon(
                                     imageVector = Icons.Filled.Medication,
@@ -349,14 +347,14 @@ fun Prescription(consultation : TestConsultation) {
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    i.quantiteSuffisantePour,
+                                    i.quantity,
                                     fontSize = 18.sp
                                 )
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                         }
 
-                        if (i.remboursable) {
+                        /*if (i.remboursable) {
                             Row() {
                                 Icon(
                                     imageVector = Icons.Filled.AttachMoney,
@@ -390,7 +388,7 @@ fun Prescription(consultation : TestConsultation) {
                                     fontWeight = FontWeight.Bold
                                 )
                             }
-                        }
+                        }*/
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -402,45 +400,6 @@ fun Prescription(consultation : TestConsultation) {
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionPreview() {
-    var tab = TestConsultation(
-        "Dr. MOTTU",
-        "22/11/2023",
-        mutableListOf(
-            TestMedicament("Doliprane 1000mg",
-                "3 fois par jour",
-                3,
-                "8 jours",
-                true,
-                true,
-                "Informations incomplètes"),
-            TestMedicament("Cortisone",
-                "1 fois par jour",
-                0,
-                "",
-                false,
-                false,
-                ""),
-            TestMedicament("Esoméprazole",
-                "2 fois par jour",
-                2,
-                "8 semaines",
-                true,
-                false,
-                ""),
-            TestMedicament("Monoprost",
-                "1 fois par jour",
-                10,
-                "15 jours",
-                true,
-                true,
-                ""),
-            TestMedicament("Ibuprofène",
-                "2 fois par jour",
-                0,
-                "8 jours",
-                true,
-                true,
-                ""))
-    )
+    var tab = mutableListOf<TreatmentEntity>()
     Prescription(tab)
 }

@@ -10,7 +10,7 @@ class UserRepository(
         return userDao.getAll()
     }
 
-    fun getOne(id: Int): UserEntity {
+    fun getOne(id: String): UserEntity {
         return userDao.getOne(id)
     }
 

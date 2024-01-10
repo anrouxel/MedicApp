@@ -9,8 +9,8 @@ data class PrescriptionAndDoctorEntity(
     @Embedded val prescription: PrescriptionEntity,
 
     @Relation(
-        parentColumn = "prescriptionId",
-        entityColumn = "doctorId"
+        parentColumn = "id",
+        entityColumn = "id"
     )
     val doctor: DoctorEntity
 )

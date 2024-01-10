@@ -10,7 +10,7 @@ class PrescriptionAndDoctorRepository(
         return prescriptionAndDoctorDAO.getAll()
     }
 
-    fun getOne(id: Int): PrescriptionAndDoctorEntity {
+    fun getOne(id: String): PrescriptionAndDoctorEntity {
         return prescriptionAndDoctorDAO.getOne(id)
     }
 

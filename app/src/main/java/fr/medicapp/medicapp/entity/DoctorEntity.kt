@@ -7,8 +7,8 @@ import java.util.UUID
 
 @Entity
 data class DoctorEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
 
     val lastName: String,
 

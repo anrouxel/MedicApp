@@ -7,8 +7,8 @@ import java.time.LocalDate
 
 @Entity
 data class PrescriptionEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
 
     var date: LocalDate,
 )

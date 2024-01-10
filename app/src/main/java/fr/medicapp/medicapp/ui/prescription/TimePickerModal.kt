@@ -39,7 +39,7 @@ fun TimePickerModal(
     onDismissRequest: () -> Unit = {},
     onConfirm: () -> Unit = {},
 ) {
-     AlertDialog(
+    AlertDialog(
         modifier = Modifier
             .fillMaxWidth()
             .background(

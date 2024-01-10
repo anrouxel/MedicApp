@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,14 +38,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.entity.DurationEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple80
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrescriptionMainMenu(
-    ordonnances : List<TestOrdonnance>,
-    prescription: () -> Unit
+    ordonnances : MutableList<TreatmentEntity>,
+    onPrescription: (String) -> Unit,
+    addPrescription: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -66,7 +71,7 @@ fun PrescriptionMainMenu(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = addPrescription,
                 containerColor = EUPurple100
             ) {
                 Icon(
@@ -87,7 +92,9 @@ fun PrescriptionMainMenu(
             if (ordonnances.isNotEmpty()){
                 for (i in ordonnances) {
                     ElevatedCard(
-                        onClick = prescription,
+                        onClick = {
+                            onPrescription(i.id)
+                        },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
                         ),
@@ -106,7 +113,7 @@ fun PrescriptionMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = "ORD"+i.id,
+                                text = i.medication,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -120,7 +127,7 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.medecinConsulte,
+                                    i.posology,
                                     fontSize = 15.sp
                                 )
                             }
@@ -133,7 +140,7 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.dateConsult,
+                                    i.duration.toString(),
                                     fontSize = 15.sp
                                 )
                             }
@@ -166,18 +173,21 @@ fun PrescriptionMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionMainMenuPreview() {
-    var ordonnances = listOf(
-        TestOrdonnance(1,
-            "Dr. MOTTU",
-            "01/01/2023"),
-        TestOrdonnance(2,
-            "Dr. CAZALAS",
-            "02/10/2023"),
-        TestOrdonnance(3,
-            "Dr. BERDJUGIN",
-            "10/06/2023")
+    var ordonnances = mutableStateListOf<TreatmentEntity>(
+        TreatmentEntity(
+            id = "1",
+            medication = "Doliprane",
+            posology = "1 comprimé par jour",
+            quantity = "1 boite",
+            renew = "1 fois",
+            duration = DurationEntity(
+                startDate = LocalDate.now(),
+                endDate = LocalDate.now()
+            ),
+            notification = false
+        ),
     )
 
 
-    PrescriptionMainMenu(ordonnances) { }
+    PrescriptionMainMenu(ordonnances, {}, {})
 }

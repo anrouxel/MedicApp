@@ -10,7 +10,7 @@ class PrescriptionWithTreatmentRepository(
         return prescriptionWithTreatmentDao.getAll()
     }
 
-    fun getOne(id: Int): PrescriptionWithTreatmentEntity {
+    fun getOne(id: String): PrescriptionWithTreatmentEntity {
         return prescriptionWithTreatmentDao.getOne(id)
     }
 

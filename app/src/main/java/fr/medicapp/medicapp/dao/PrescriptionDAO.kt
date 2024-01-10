@@ -13,7 +13,7 @@ interface PrescriptionDAO {
     fun getAll(): List<PrescriptionEntity>
 
     @Query("SELECT * FROM PrescriptionEntity WHERE id = :id")
-    fun getOne(id: Int): PrescriptionEntity
+    fun getOne(id: String): PrescriptionEntity
 
     @Insert
     fun add(t: PrescriptionEntity)

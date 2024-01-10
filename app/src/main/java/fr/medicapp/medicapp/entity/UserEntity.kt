@@ -6,8 +6,8 @@ import java.util.UUID
 
 @Entity
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
 
     val lastName: String,
 

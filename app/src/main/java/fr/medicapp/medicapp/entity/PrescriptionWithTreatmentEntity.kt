@@ -7,11 +7,11 @@ import androidx.room.Relation
 @Entity
 data class PrescriptionWithTreatmentEntity(
     @Embedded
-    val prescription: PrescriptionAndDoctorEntity,
+    val prescription: PrescriptionEntity,
 
     @Relation(
-        parentColumn = "prescriptionId",
-        entityColumn = "treatmentId"
+        parentColumn = "id",
+        entityColumn = "id"
     )
     val treatments: List<TreatmentEntity>
 )

@@ -10,7 +10,7 @@ class TreatmentRepository(
         return treatmentDao.getAll()
     }
 
-    fun getOne(id: Int): TreatmentEntity {
+    fun getOne(id: String): TreatmentEntity {
         return treatmentDao.getOne(id)
     }
 

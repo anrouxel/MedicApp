@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,14 +45,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
+import com.maxkeppeler.sheets.option.models.Option
 import com.maxkeppeler.sheets.option.models.OptionConfig
 import com.maxkeppeler.sheets.option.models.OptionSelection
+import fr.medicapp.medicapp.model.Doctor
+import fr.medicapp.medicapp.model.Duration
+import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
+import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
+import fr.medicapp.medicapp.ui.theme.EUOrange20
+import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
+import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
@@ -59,7 +73,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-/*
+
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,7 +133,6 @@ fun EditPrescription(
                     Spacer(modifier = Modifier.weight(0.3f))
 
                     Button(
-                        enabled = prescription.isValide(),
                         onClick = {
                             onConfirm()
                         },
@@ -285,9 +298,6 @@ fun EditPrescription(
                 prescription.treatments.forEachIndexed { index, treatment ->
                     TreatmentCard(
                         treatment = treatment,
-                        posologie = "",
-                        renouvellement = "",
-                        quantiteSuffisantePour = "",
                         onRemove = {
                             prescription.treatments.removeAt(index)
                         }
@@ -300,15 +310,11 @@ fun EditPrescription(
                     onClick = {
                         Log.d("EditPrescription", "AddButton: onClick")
                         var treatment = Treatment(
-                            medication = null,
-                            posologie = mutableListOf(),
-                            frequencies = mutableStateListOf(),
                             duration = Duration(
                                 startDate = LocalDate.now(),
                                 endDate = LocalDate.now(),
                             ),
                             notification = false,
-                            history = mutableListOf(),
                         )
                         Log.d("EditPrescription", "AddButton: treatment = $treatment")
                         prescription.treatments.add(treatment)
@@ -347,4 +353,3 @@ private fun EditPrescriptionPreview() {
         onConfirm = {},
     )
 }
-*/

@@ -11,7 +11,7 @@ interface PrescriptionAndDoctorDAO {
     fun getAll(): List<PrescriptionAndDoctorEntity>
 
     @Query("SELECT * FROM PrescriptionAndDoctorEntity WHERE id = :id")
-    fun getOne(id: Int): PrescriptionAndDoctorEntity
+    fun getOne(id: String): PrescriptionAndDoctorEntity
 
     @Insert
     fun add(t: PrescriptionAndDoctorEntity)
