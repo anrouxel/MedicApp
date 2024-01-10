@@ -33,6 +33,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple80
 fun AddButton(
     text: String,
     icone: ImageVector,
+    color: Color,
     onClick: () -> Unit
 ) {
     ElevatedCard(
@@ -46,7 +47,7 @@ fun AddButton(
                 onClick()
             },
         colors = CardDefaults.cardColors(
-            containerColor = EUPurple80,
+            containerColor = color,
             contentColor = Color.White
         ),
         shape = RoundedCornerShape(10.dp)
@@ -84,6 +85,7 @@ private fun AddButtonPreview() {
     AddButton(
         text = "Ajouter un traitement",
         icone = Icons.Filled.Add,
+        color = EUPurple80,
         onClick = {}
     )
 }

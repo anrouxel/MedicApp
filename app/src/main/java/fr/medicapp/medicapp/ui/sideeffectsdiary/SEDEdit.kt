@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.sideeffectsdiary
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,11 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -45,16 +48,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.SideEffect
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.DatePickerModal
+import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUPurple100
+import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed140
 import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -288,7 +296,7 @@ fun SEDEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 65.dp + (sideeffects.effetsConstates.size * 63 + sideeffects.effetsConstates.size).dp),
+                    .height(height = 115.dp + (sideeffects.effetsConstates.size * 63 + sideeffects.effetsConstates.size).dp),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EURed80,
@@ -345,6 +353,15 @@ fun SEDEdit(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
+
+                    AddButton(
+                        text = "Ajouter un effet",
+                        icone = Icons.Filled.Add,
+                        color = EURed60,
+                        onClick = {
+
+                        }
+                    )
                 }
             }
         }
