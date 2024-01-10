@@ -5,7 +5,7 @@ import fr.medicapp.medicapp.entity.TreatmentEntity
 import java.util.UUID
 
 data class Treatment(
-    var id: Int? = null,
+    var id: String = "",
     var medication: String = "",
     var posology: String = "",
     var quantity: String = "",

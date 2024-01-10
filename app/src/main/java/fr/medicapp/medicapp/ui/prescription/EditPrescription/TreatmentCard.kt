@@ -69,9 +69,6 @@ import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
-import java.time.Instant
-import java.time.ZoneId
-import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)

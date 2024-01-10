@@ -24,6 +24,7 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 @Composable
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
+    onAddSideEffectClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -66,7 +67,7 @@ fun HomeScreen(
             Text(text = "Ajouter une ordonnance")
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onAddSideEffectClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp, bottom = 0.dp),
@@ -84,6 +85,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     HomeScreen(
-        onAddPrescriptionClick = { }
+        onAddPrescriptionClick = { },
+        onAddSideEffectClick = { }
     )
 }

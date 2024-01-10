@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.model
 
 data class User(
-    val id: Int,
+    var id: String = "",
 
     val lastName: String,
 

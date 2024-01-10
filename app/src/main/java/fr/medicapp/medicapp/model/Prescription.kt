@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import java.time.LocalDate
 
 data class Prescription(
-    var id: Int? = null,
+    var id: String? = null,
     var doctor: Doctor? = null,
     var date: LocalDate? = null,
     var treatments: MutableList<Treatment> = mutableStateListOf()

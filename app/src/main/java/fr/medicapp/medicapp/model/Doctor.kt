@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.model
 import com.maxkeppeler.sheets.option.models.Option
 
 data class Doctor(
-    val id: Int? = null,
+    val id: String? = null,
 
     val lastName: String,
 

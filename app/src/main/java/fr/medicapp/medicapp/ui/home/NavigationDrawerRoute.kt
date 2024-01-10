@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.navigation.Graph
 import fr.medicapp.medicapp.ui.navigation.PrescriptionRoute
+import fr.medicapp.medicapp.ui.navigation.SideEffectRoute
 import fr.medicapp.medicapp.ui.theme.EUBlue60
 import fr.medicapp.medicapp.ui.theme.EUGreen60
 import fr.medicapp.medicapp.ui.theme.EUPurple60
@@ -37,8 +38,8 @@ sealed class NavigationDrawerRoute(
     )
 
     object Messages : NavigationDrawerRoute(
-        route = "messages",
-        title = "Messagerie",
+        route = SideEffectRoute.Main.route,
+        title = "Effet secondaire",
         icon = Icons.Filled.Message,
         color = EUBlue60,
         logo = R.drawable.medicapp_eu_blue

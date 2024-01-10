@@ -65,11 +65,13 @@ fun HomeNavGraph(navController: NavHostController) {
             HomeScreen(
                 onAddPrescriptionClick = {
                     navController.navigate(PrescriptionRoute.AddPrescription.route)
-                }
+                },
+                onAddSideEffectClick = {
+                    navController.navigate(SideEffectRoute.AddSideEffect.route)
+                },
             )
         }
-        composable(route = NavigationDrawerRoute.Messages.route) {
-        }
         prescriptionNavGraph(navController)
+        sideEffectNavGraph(navController)
     }
 }
