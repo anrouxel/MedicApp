@@ -74,6 +74,7 @@ import fr.medicapp.medicapp.ui.theme.EURed60
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -345,13 +346,7 @@ fun EditPrescription(
 @Composable
 private fun EditPrescriptionPreview() {
     EditPrescription(
-        prescription = Prescription(
-            Doctor(
-            firstName = "Jean",
-            lastName = "Dupont"
-        ),
-            LocalDate.now()
-        ),
+        prescription = Prescription(),
         doctors = listOf(
             Doctor(
                 firstName = "Jean",
