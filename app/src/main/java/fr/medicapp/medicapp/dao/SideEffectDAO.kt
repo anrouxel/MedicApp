@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.entity.UserEntity
 
 @Dao
 interface SideEffectDAO {

@@ -81,10 +81,11 @@ fun NavGraphBuilder.sideEffectNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = SideEffectRepository(db.sideEffectDAO())
 
-            var result: SideEffectEntity? = null
+            var result: MutableList<SideEffectEntity> = mutableListOf()
 
             Thread {
-                result = repository.getOne(id)
+                result.clear()
+                result.add(repository.getOne(id))
             }.start()
 
             val sideEffect = remember {
@@ -104,10 +105,16 @@ fun NavGraphBuilder.sideEffectNavGraph(
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
             val db = AppDatabase.getInstance(LocalContext.current)
-            val repository = TreatmentRepository(db.treatmentDAO())
+            val repository = SideEffectRepository(db.sideEffectDAO())
 
             SEDEdit(
                 sideeffects = state,
+                onConfirm = {
+                    Thread {
+                        repository.add(state.toEntity())
+                    }.start()
+                    navController.popBackStack()
+                },
             )
         }
     }
@@ -115,6 +122,6 @@ fun NavGraphBuilder.sideEffectNavGraph(
 
 sealed class SideEffectRoute(val route: String) {
     object Main : SideEffectRoute(route = "main_side_effects")
-    object SideEffect : SideEffectRoute(route = "side_effect/{id}")
+    object SideEffect : SideEffectRoute(route = "show_side_effect/{id}")
     object AddSideEffect : SideEffectRoute(route = "add_side_effect")
 }

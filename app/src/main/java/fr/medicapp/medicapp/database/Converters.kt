@@ -17,4 +17,16 @@ class Converters {
     fun toLocalDate(localDate: LocalDate): String {
         return localDate.toString()
     }
+
+    @TypeConverter
+    // MutableList<String> to String
+    fun fromEffetsConstates(effetsConstates: MutableList<String>): String {
+        return effetsConstates.joinToString(separator = "\"")
+    }
+
+    @TypeConverter
+    // String to MutableList<String>
+    fun toEffetsConstates(effetsConstates: String): MutableList<String> {
+        return effetsConstates.split("\"").toMutableList()
+    }
 }

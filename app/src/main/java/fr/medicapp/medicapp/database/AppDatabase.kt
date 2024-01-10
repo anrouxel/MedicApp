@@ -17,6 +17,7 @@ import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.PrescriptionAndDoctorEntity
 import fr.medicapp.medicapp.entity.PrescriptionEntity
 import fr.medicapp.medicapp.entity.PrescriptionWithTreatmentEntity
+import fr.medicapp.medicapp.entity.SideEffectEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.entity.UserEntity
 
@@ -31,7 +32,7 @@ import fr.medicapp.medicapp.entity.UserEntity
         UserEntity::class,
         /*PrescriptionWithTreatmentEntity::class,
         PrescriptionAndDoctorEntity::class*/
-        SideEffectDAO::class
+        SideEffectEntity::class
     ],
     version = 1
 )

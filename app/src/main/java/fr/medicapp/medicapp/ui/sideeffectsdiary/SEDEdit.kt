@@ -70,7 +70,8 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDEdit(
-    sideeffects : SideEffect
+    sideeffects : SideEffect,
+    onConfirm: () -> Unit
 ) {
 
     var nomMedicament by remember { mutableStateOf(sideeffects.medicament) }
@@ -95,7 +96,9 @@ fun SEDEdit(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = {
+                    onConfirm()
+                },
                 containerColor = EURed100
             ) {
                 Icon(
@@ -359,7 +362,7 @@ fun SEDEdit(
                         icone = Icons.Filled.Add,
                         color = EURed60,
                         onClick = {
-
+                            sideeffects.effetsConstates.add("")
                         }
                     )
                 }
@@ -374,5 +377,5 @@ fun SEDEdit(
 private fun SEDEditPreview() {
     var se = SideEffect()
     //var se = listOf<TestSideEffect>()
-    SEDEdit(se)
+    SEDEdit(se, {})
 }
