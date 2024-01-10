@@ -240,25 +240,17 @@ fun TreatmentCard(
                     Spacer(modifier = Modifier.width(5.dp))
 
                     var durationOpen by remember { mutableStateOf(false) }
-                    var durationState = rememberDateRangePickerState()
 
                     if (durationOpen) {
-                        DateRangePickerModal(
-                            state = durationState,
-                            onDismissRequest = {
+                        CalendarDialog(
+                            state = rememberUseCaseState(true, onCloseRequest = {
+                                durationOpen = false
+                            }),
+                            selection = CalendarSelection.Period { startDate, endDate ->
+                                treatment.duration = Duration(startDate, endDate)
+                                duration.value = treatment.duration.toString()
                                 durationOpen = false
                             },
-                            onConfirm = {
-                                durationOpen = false
-                                if (durationState.selectedStartDateMillis != null && durationState.selectedEndDateMillis != null) {
-                                    treatment.duration = Duration(
-                                        startDate = Instant.ofEpochMilli(durationState.selectedStartDateMillis!!)
-                                            .atZone(ZoneId.systemDefault()).toLocalDate(),
-                                        endDate = Instant.ofEpochMilli(durationState.selectedEndDateMillis!!)
-                                            .atZone(ZoneId.systemDefault()).toLocalDate()
-                                    )
-                                }
-                            }
                         )
                     }
 

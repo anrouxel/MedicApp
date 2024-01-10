@@ -73,6 +73,10 @@ fun NavGraphBuilder.prescriptionNavGraph(
             Thread {
                 result.clear()
                 result.addAll(repository.getAll().toMutableList())
+
+                result.forEach {
+                    Log.d("TAG", it.toString())
+                }
             }.start()
 
             val ordonnance = remember {
@@ -99,7 +103,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             Thread {
                 result.clear()
-                result.addAll(repository.getAll().toMutableList())
+                result.add(repository.getOne(id))
             }.start()
 
             val prescription = remember {
