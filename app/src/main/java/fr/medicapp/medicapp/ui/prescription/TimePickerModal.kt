@@ -1,6 +1,8 @@
 package fr.medicapp.medicapp.ui.prescription
 
 import android.app.TimePickerDialog
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +29,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.entity.Doctor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,4 +84,14 @@ fun TimePickerModal(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showBackground = true)
+@Composable
+private fun TimePickerModalPreview() {
+    TimePickerModal(
+        TimePickerState(10, 20, true)
+    )
 }

@@ -79,15 +79,22 @@ import java.util.UUID
 @Composable
 fun TreatmentCard(
     treatment: Treatment,
+    posologie: String,
+    renouvellement: String,
+    quantiteSuffisantePour: String,
     onRemove: () -> Unit
 ) {
     var notification = remember { mutableStateOf(treatment.notification) }
-    var dosage = remember { mutableStateOf(treatment.dosage.toString()) }
     var duration = remember { mutableStateOf(treatment.duration.toString()) }
+    var posologieR = remember { mutableStateOf(posologie) }
+    var renouvellementR = remember { mutableStateOf(renouvellement) }
+    var quantiteSuffisantePourR = remember { mutableStateOf(quantiteSuffisantePour) }
 
     LaunchedEffect(treatment) {
         notification.value = treatment.notification
-        dosage.value = treatment.dosage.toString()
+        posologieR.value = posologie
+        renouvellementR.value = renouvellement
+        quantiteSuffisantePourR.value = quantiteSuffisantePour
         duration.value = treatment.duration.toString()
     }
 
@@ -199,13 +206,163 @@ fun TreatmentCard(
                 Spacer(modifier = Modifier.width(7.dp))
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
                         .padding(top = 10.dp)
                 ) {
                     Text(
                         "Notification de rappel ${if (treatment.notification) "activée" else "désactivée"}",
                         fontSize = 18.sp
                     )
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 15.dp)
+                            .size(24.dp)
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .background(color = EUGreen100)
+                                .clip(RoundedCornerShape(100.dp)),
+                            imageVector = Icons.Filled.HourglassTop,
+                            contentDescription = "",
+                            tint = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    var durationOpen by remember { mutableStateOf(false) }
+                    var durationState = rememberDateRangePickerState()
+
+                    if (durationOpen) {
+                        DateRangePickerModal(
+                            state = durationState,
+                            onDismissRequest = {
+                                durationOpen = false
+                            },
+                            onConfirm = {
+                                durationOpen = false
+                                if (durationState.selectedStartDateMillis != null && durationState.selectedEndDateMillis != null) {
+                                    treatment.duration = Duration(
+                                        startDate = Instant.ofEpochMilli(durationState.selectedStartDateMillis!!)
+                                            .atZone(ZoneId.systemDefault()).toLocalDate(),
+                                        endDate = Instant.ofEpochMilli(durationState.selectedEndDateMillis!!)
+                                            .atZone(ZoneId.systemDefault()).toLocalDate()
+                                    )
+                                }
+                            }
+                        )
+                    }
+
+                    Column() {
+
+                        OutlinedTextField(
+                            value = posologieR.value,
+                            textStyle = TextStyle(fontSize = 16.sp),
+                            onValueChange = {
+                                posologieR.value = it
+                            },
+                            label = { Text("Posologie") },
+                            shape = RoundedCornerShape(20),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = EUPurple100,
+                                unfocusedBorderColor = EUPurple100,
+                                disabledBorderColor = EUPurple100,
+                                errorBorderColor = EURed60,
+                                focusedLabelColor = EUPurple100,
+                                unfocusedLabelColor = EUPurple100,
+                                disabledLabelColor = EUPurple100,
+                                errorLabelColor = EURed60,
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        OutlinedTextField(
+                            enabled = false,
+                            value = duration.value,
+                            textStyle = TextStyle(fontSize = 16.sp),
+                            onValueChange = { },
+                            label = { Text("Durée") },
+                            shape = RoundedCornerShape(20),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = EUPurple100,
+                                unfocusedBorderColor = EUPurple100,
+                                disabledBorderColor = EUPurple100,
+                                errorBorderColor = EURed60,
+                                focusedLabelColor = EUPurple100,
+                                unfocusedLabelColor = EUPurple100,
+                                disabledLabelColor = EUPurple100,
+                                errorLabelColor = EURed60,
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    durationOpen = true
+                                }
+                        )
+
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp)
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(end = 15.dp)
+                                .size(24.dp)
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .background(color = EUBlue100)
+                                    .clip(RoundedCornerShape(100.dp)),
+                                imageVector = Icons.Filled.Repeat,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(5.dp))
+
+                        OutlinedTextField(
+                            value = renouvellementR.value,
+                            textStyle = TextStyle(fontSize = 16.sp),
+                            onValueChange = {
+                                renouvellementR.value = it
+                            },
+                            label = { Text("Renouvellement") },
+                            shape = RoundedCornerShape(20),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = EUPurple100,
+                                unfocusedBorderColor = EUPurple100,
+                                disabledBorderColor = EUPurple100,
+                                errorBorderColor = EURed60,
+                                focusedLabelColor = EUPurple100,
+                                unfocusedLabelColor = EUPurple100,
+                                disabledLabelColor = EUPurple100,
+                                errorLabelColor = EURed60,
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
 
@@ -234,14 +391,12 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = dosage.value,//if (treatment.dosage != null) dosage.value else "0",
+                        value = quantiteSuffisantePourR.value,
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
-                            dosage.value = it
-                            //treatment.dosage = it.toIntOrNull()
+                            quantiteSuffisantePourR.value = it
                         },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        label = { Text("Dosage") },
+                        label = { Text("Quantité suffisante pour...") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = EUPurple100,
@@ -257,140 +412,7 @@ fun TreatmentCard(
                     )
                 }
             }
-        }
-
-        // Zone pour ajouter les fréquences
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp, end = 10.dp)
-        ) {
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 15.dp)
-                            .size(24.dp)
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .background(color = EUBlue100)
-                                .clip(RoundedCornerShape(100.dp)),
-                            imageVector = Icons.Filled.Repeat,
-                            contentDescription = "",
-                            tint = Color.White
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(5.dp))
-
-                    Text(
-                        "Fréquences",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                // Affichage des fréquences
-                Column {
-                    treatment.frequencies.forEachIndexed { index, frequency ->
-                        FrequencyCard(
-                            frequency = frequency,
-                            onRemove = {
-                                treatment.frequencies.removeAt(index)
-                            }
-                        )
-                    }
-
-                    AddButton(
-                        text = "Ajouter une fréquence",
-                        onClick = {
-                            treatment.frequencies.add(Frequency(hour = 0, day = 0))
-                        }
-                    )
-                }
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(end = 15.dp)
-                        .size(24.dp)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .background(color = EUGreen100)
-                            .clip(RoundedCornerShape(100.dp)),
-                        imageVector = Icons.Filled.HourglassTop,
-                        contentDescription = "",
-                        tint = Color.White
-                    )
-                }
-                Spacer(modifier = Modifier.width(5.dp))
-
-                var durationOpen by remember { mutableStateOf(false) }
-                var durationState = rememberDateRangePickerState()
-
-                if (durationOpen) {
-                    DateRangePickerModal(
-                        state = durationState,
-                        onDismissRequest = {
-                            durationOpen = false
-                        },
-                        onConfirm = {
-                            durationOpen = false
-                            if (durationState.selectedStartDateMillis != null && durationState.selectedEndDateMillis != null) {
-                                treatment.duration = Duration(
-                                    startDate = Instant.ofEpochMilli(durationState.selectedStartDateMillis!!)
-                                        .atZone(ZoneId.systemDefault()).toLocalDate(),
-                                    endDate = Instant.ofEpochMilli(durationState.selectedEndDateMillis!!)
-                                        .atZone(ZoneId.systemDefault()).toLocalDate()
-                                )
-                            }
-                        }
-                    )
-                }
-
-                OutlinedTextField(
-                    enabled = false,
-                    value = duration.value,
-                    textStyle = TextStyle(fontSize = 16.sp),
-                    onValueChange = { },
-                    label = { Text("Durée") },
-                    shape = RoundedCornerShape(20),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = EUPurple100,
-                        unfocusedBorderColor = EUPurple100,
-                        disabledBorderColor = EUPurple100,
-                        errorBorderColor = EURed60,
-                        focusedLabelColor = EUPurple100,
-                        unfocusedLabelColor = EUPurple100,
-                        disabledLabelColor = EUPurple100,
-                        errorLabelColor = EURed60,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            durationOpen = true
-                        }
-                )
-            }
+            //fin padding
         }
     }
 }
@@ -408,6 +430,9 @@ fun TreatmentCardPreview() {
             notification = false,
             history = mutableListOf(),
         ),
+        posologie = "3 fois par jour",
+        renouvellement = "3 fois",
+        quantiteSuffisantePour = "3 jours",
         onRemove = {}
     )
 }
