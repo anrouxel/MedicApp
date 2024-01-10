@@ -11,10 +11,10 @@ import java.util.UUID
 @Entity(tableName = "User")
 data class User(
     @PrimaryKey(autoGenerate = true) val id: UUID,
-    val lastName: String,
-    val firstName: String,
-    val age: Int,
-    val email: String,
-    val mdp: String,
-    val medicationMap: MutableMap<String, Medication>
+    val lastName: String?,
+    val firstName: String?,
+    val age: Int?,
+    val email: String?,
+    val mdp: String?,
+    val medicationMap: MutableMap<String, Medication>?
 )
