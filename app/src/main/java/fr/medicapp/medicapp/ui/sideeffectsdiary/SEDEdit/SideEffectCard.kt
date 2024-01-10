@@ -59,9 +59,6 @@ import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import fr.medicapp.medicapp.entity.Duration
-import fr.medicapp.medicapp.entity.Frequency
-import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.ui.theme.EUBlack100
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.prescription.DateRangePickerModal

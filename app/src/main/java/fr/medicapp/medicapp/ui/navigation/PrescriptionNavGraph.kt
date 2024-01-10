@@ -16,13 +16,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
 import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
 import fr.medicapp.medicapp.ui.prescription.TestConsultation
 import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
-import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
 
 var ordonnances = listOf(
     TestOrdonnance(
@@ -57,7 +54,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
         startDestination = PrescriptionRoute.Main.route,
     ) {
         composable(route = PrescriptionRoute.Main.route) {
-            val db = AppDatabase.getInstance(LocalContext.current)
+            /*val db = AppDatabase.getInstance(LocalContext.current)
             val repository = PrescriptionRepository(db.prescriptionDAO())
 
             val test = repository.getPrescriptionAll()
@@ -67,17 +64,17 @@ fun NavGraphBuilder.prescriptionNavGraph(
             PrescriptionMainMenu(
                 ordonnances = ordonnances,
                 prescription = {}
-            )
+            )*/
         }
 
         composable(route = PrescriptionRoute.Prescription.route) {
-            Prescription(
+            /*Prescription(
                 consultation = consultation,
-            )
+            )*/
         }
 
         composable(route = PrescriptionRoute.AddPrescription.route) {
-            val viewModel =
+            /*val viewModel =
                 it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
@@ -103,7 +100,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     repository.addPrescription(state)
                     navController.popBackStack()
                 },
-            )
+            )*/
         }
     }
 }

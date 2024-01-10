@@ -48,12 +48,7 @@ import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
 import com.maxkeppeler.sheets.option.models.OptionConfig
 import com.maxkeppeler.sheets.option.models.OptionSelection
-import fr.medicapp.medicapp.entity.Doctor
-import fr.medicapp.medicapp.entity.Duration
-import fr.medicapp.medicapp.entity.Prescription
-import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
-import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EUPurple20
@@ -64,7 +59,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -352,3 +347,4 @@ private fun EditPrescriptionPreview() {
         onConfirm = {},
     )
 }
+*/
