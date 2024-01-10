@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Upload
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -32,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
@@ -76,6 +78,31 @@ fun SEDEdit(
 
     var nomMedicament by remember { mutableStateOf(sideeffects.medicament) }
 
+    var errorDialogOpen = remember { mutableStateOf(false) }
+
+    if (errorDialogOpen.value) {
+        AlertDialog(
+            onDismissRequest = {
+                errorDialogOpen.value = false
+            },
+            title = {
+                Text("Erreur")
+            },
+            text = {
+                Text("Veuillez remplir tous les champs")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        errorDialogOpen.value = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -97,7 +124,12 @@ fun SEDEdit(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    onConfirm()
+                    // Vérification des champs
+                    if (nomMedicament != "" && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
+                        onConfirm()
+                    } else {
+                        errorDialogOpen.value = true
+                    }
                 },
                 containerColor = EURed100
             ) {

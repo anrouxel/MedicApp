@@ -85,6 +85,7 @@ fun TreatmentCard(
     var quantity = remember { mutableStateOf(treatment.quantity) }
 
     LaunchedEffect(treatment) {
+        medication.value = treatment.medication
         notification.value = treatment.notification
         duration.value = treatment.duration.toString()
         posology.value = treatment.posology

@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 final class WordpieceTokenizer(
     vocab: HashMap<String, Int>
@@ -32,18 +32,26 @@ final class WordpieceTokenizer(
             }
             var isBad = false // Mark if a word cannot be tokenized into known subwords.
             var start = 0
+            var end = token.length
             val subTokens: MutableList<String> = ArrayList()
-            while (start < token.length) {
+            while (0 < end) {
                 var curSubStr = ""
-                var end = token.length // Longer substring matches first.
+                 // Longer substring matches first.
                 while (start < end) {
-                    val subStr = token.substring(start, end)
-
+                    val subStr =
+                        if (start == 0) {
+                            "▁${token.substring(start, end)}"
+                        } else {
+                            token.substring(
+                                start,
+                                end
+                            )
+                        }
                     curSubStr = dic[subStr]?.let { subStr } ?: curSubStr
                     if (curSubStr != "") {
                         break
                     }
-                    end--
+                    start++
                 }
 
                 // The word doesn't contain any known subwords.
@@ -53,10 +61,11 @@ final class WordpieceTokenizer(
                 }
 
                 // curSubStr is the longeset subword that can be found.
-                subTokens.add(curSubStr)
+                subTokens.add(0, curSubStr)
 
                 // Proceed to tokenize the resident string.
-                start = end
+                end = start
+                start = 0
             }
             if (isBad) {
                 outputTokens.add(CamemBERT.UNK_TOKEN)

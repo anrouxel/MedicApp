@@ -109,6 +109,9 @@ dependencies {
     implementation("com.maxkeppeler.sheets-compose-dialogs:state:$sheetsComposeDialogsVersion")
     implementation("com.maxkeppeler.sheets-compose-dialogs:color:$sheetsComposeDialogsVersion")
 
+    // PyTorch
+    implementation("org.pytorch:pytorch_android:2.1.0")
+
     // Room
     implementation("androidx.room:room-runtime:2.5.0")
     ksp("androidx.room:room-compiler:2.5.0")

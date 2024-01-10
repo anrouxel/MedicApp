@@ -13,9 +13,6 @@ data class Treatment(
     var duration: Duration? = null,
     var notification: Boolean = false
 ) {
-    fun isValide(): Boolean {
-        return medication.isNotEmpty() && posology.isNotEmpty() && quantity.isNotEmpty() && renew.isNotEmpty() && duration != null
-    }
 
     fun toEntity(): TreatmentEntity {
         return TreatmentEntity(

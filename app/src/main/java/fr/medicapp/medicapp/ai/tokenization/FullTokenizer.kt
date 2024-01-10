@@ -1,4 +1,6 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
+
+import android.util.Log
 
 
 final class FullTokenizer(
@@ -23,7 +25,7 @@ final class FullTokenizer(
         return splitTokens
     }
 
-    fun convertTokensToIds(tokens: List<String>): MutableList<Int> {
+    fun convertTokensToIds(tokens: MutableList<String>): MutableList<Int> {
         val outputIds: MutableList<Int> = ArrayList()
         for (token in tokens) {
             outputIds.add(dic[token]!!)

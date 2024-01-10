@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 class CharChecker {
     companion object {

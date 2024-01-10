@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 import android.util.Log
 import java.util.Collections
@@ -34,7 +34,6 @@ class FeatureConverter(
                 allDocTokens.add(subToken)
             }
         }
-        allDocTokens.forEach { Log.d("CamemBERTToken", it) }
 
         // -3 accounts for [CLS], [SEP] and [SEP].
         val maxContextLen = maxSeqLen - 3
@@ -62,11 +61,6 @@ class FeatureConverter(
         tokens.add(CamemBERT.SEP_TOKEN)
         segmentIds.add(0)
 
-        while (tokens.size < maxSeqLen) {
-            tokens.add(CamemBERT.PAD_TOKEN)
-            segmentIds.add(0)
-        }
-
         val inputIds = tokenizer.convertTokensToIds(tokens)
         val inputMask: MutableList<Int> = ArrayList(
             Collections.nCopies(
@@ -75,11 +69,18 @@ class FeatureConverter(
             )
         )
 
+        while (tokens.size < maxSeqLen) {
+            tokens.add(CamemBERT.PAD_TOKEN)
+            inputIds.add(1)
+            segmentIds.add(0)
+            inputMask.add(0)
+        }
+
         return Feature(inputIds, inputMask, segmentIds, origTokens, tokenToOrigMap)
     }
 
     companion object {
-        fun alignWordIds(feature: Feature, labelAllTokens: Boolean = false): MutableList<Int> {
+        fun align_word_ids(feature: Feature, labelAllTokens: Boolean = false): MutableList<Int> {
             val inputIds = feature.inputIds
             val tokenToOrigMap = feature.tokenToOrigMap
             var previousWordIdx: Int? = null

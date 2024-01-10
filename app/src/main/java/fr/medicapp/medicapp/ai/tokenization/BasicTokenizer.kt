@@ -1,10 +1,14 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
+
+import java.util.Arrays
+import java.util.Locale
 
 
 class BasicTokenizer(
     doLowerCase: Boolean = false
 ) {
     private val doLowerCase: Boolean
+
     init {
         this.doLowerCase = doLowerCase
     }
@@ -24,19 +28,14 @@ class BasicTokenizer(
             }
         }
         val splitTokens = whitespaceTokenize(stringBuilder.toString())
-        // modifier le premier token en ajoutant un underscore au début
-        splitTokens[0] = "▁${splitTokens[0]}"
         return splitTokens
     }
 
     companion object {
-        private const val nullStringError = "The input String is null"
         /* Performs invalid character removal and whitespace cleanup on text. */
         fun cleanText(text: String?): String {
-
-
             if (text == null) {
-                throw NullPointerException(nullStringError)
+                throw NullPointerException("The input String is null.")
             }
             val stringBuilder = StringBuilder("")
             for (element in text) {
@@ -58,7 +57,7 @@ class BasicTokenizer(
         /* Runs basic whitespace cleaning and splitting on a piece of text. */
         fun whitespaceTokenize(text: String?): MutableList<String> {
             if (text == null) {
-                throw NullPointerException(nullStringError)
+                throw NullPointerException("The input String is null.")
             }
             return mutableListOf(*text.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray())
@@ -67,7 +66,7 @@ class BasicTokenizer(
         /* Splits punctuation on a piece of text. */
         fun runSplitOnPunc(text: String?): MutableList<String> {
             if (text == null) {
-                throw NullPointerException(nullStringError)
+                throw NullPointerException("The input String is null.")
             }
             val tokens: MutableList<String> = ArrayList()
             var startNewWord = true
