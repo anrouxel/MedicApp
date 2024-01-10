@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.util.UUID
+import java.time.format.DateTimeFormatter
 
 /**
  * Représente une durée avec une date de début et de fin.
@@ -26,6 +27,10 @@ data class Duration(
     }
 
     override fun toString(): String {
-        return "Du $startDate au $endDate"
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val startDateText = startDate.format(formatter)
+        val endDateText = endDate.format(formatter)
+
+        return "Du $startDateText au $endDateText"
     }
 }

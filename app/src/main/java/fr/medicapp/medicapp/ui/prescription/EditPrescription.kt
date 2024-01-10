@@ -47,24 +47,34 @@ import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
+import com.maxkeppeler.sheets.option.models.Option
 import com.maxkeppeler.sheets.option.models.OptionConfig
 import com.maxkeppeler.sheets.option.models.OptionSelection
 import fr.medicapp.medicapp.database.AppDatabaseRepository
 import fr.medicapp.medicapp.entity.Doctor
 import fr.medicapp.medicapp.entity.Duration
+import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Prescription
 import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
+import fr.medicapp.medicapp.ui.theme.EUOrange20
+import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
+import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -121,17 +131,9 @@ fun EditPrescription(
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5f)
-                    ) {}
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5f)
-                    ) {}
+                    Spacer(modifier = Modifier.weight(0.3f))
+
                     Button(
                         enabled = prescription.isValide(),
                         onClick = {
@@ -191,7 +193,9 @@ fun EditPrescription(
                             state = rememberUseCaseState(true, onCloseRequest = {
                                 doctorOpen = false
                             }),
-                            selection = OptionSelection.Single(doctors.map { doctor: Doctor -> doctor.getOption() }) { index, _ ->
+                            selection = OptionSelection.Single(
+                                doctors.map { doctor: Doctor -> doctor.getOption() }
+                            ) { index, _ ->
                                 prescription.doctor = doctors[index]
                             },
                             config = OptionConfig(mode = DisplayMode.LIST)
@@ -241,13 +245,20 @@ fun EditPrescription(
                             },
                             onConfirm = {
                                 datePrescriptionOpen = false
+                                if (datePrescriptionState.selectedDateMillis != null) {
+                                    prescription.date = Instant.ofEpochMilli(datePrescriptionState.selectedDateMillis!!).atZone(
+                                        ZoneId.systemDefault()
+                                    ).toLocalDate()
+                                }
                             }
                         )
                     }
 
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
                     OutlinedTextField(
                         enabled = false,
-                        value = prescription.date.toString(),
+                        value = if (prescription.date != null) prescription.date!!.format(formatter) else "",
                         textStyle = TextStyle(fontSize = 16.sp, color = Color.White),
                         onValueChange = { },
                         label = {
@@ -348,8 +359,6 @@ private fun EditPrescriptionPreview() {
             ),
         ),
         onCancel = {},
-        onConfirm = {
-
-        },
+        onConfirm = {},
     )
 }

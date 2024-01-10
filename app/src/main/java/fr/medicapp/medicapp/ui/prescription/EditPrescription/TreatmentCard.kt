@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.prescription.EditPrescription
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
@@ -33,18 +35,22 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,13 +60,18 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fr.medicapp.medicapp.entity.Duration
 import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Treatment
+import fr.medicapp.medicapp.ui.theme.EUBlack100
+import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.prescription.DateRangePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
+import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
+import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -106,14 +117,22 @@ fun TreatmentCard(
                     value = treatment.medication.toString(),
                     textStyle = TextStyle(
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = EUBlack100
                     ),
+                    enabled = false,
                     onValueChange = { },
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = EUPurple100,
                         unfocusedBorderColor = EUPurple100,
+                        disabledBorderColor = EUPurple100,
+                        errorBorderColor = EURed60,
+                        focusedLabelColor = EUPurple100,
+                        unfocusedLabelColor = EUPurple100,
+                        disabledLabelColor = EUPurple100,
+                        errorLabelColor = EURed60,
                     ),
                     modifier = Modifier.weight(1f)
                 )
@@ -142,10 +161,7 @@ fun TreatmentCard(
                 }
             }
 
-
-            /*
-            /* TODO */
-            if (i.erreur.isNotEmpty()) {
+            /*if (i.erreur.isNotEmpty()) {
                 Row {
                     Icon(
                         imageVector = Icons.Filled.Warning,
@@ -196,7 +212,7 @@ fun TreatmentCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(start = 10.dp, end = 10.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -204,12 +220,12 @@ fun TreatmentCard(
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(8.dp, end = 15.dp)
+                            .padding(end = 15.dp)
                             .size(24.dp)
                     ) {
                         Icon(
                             modifier = Modifier
-                                .background(color = EUGreen100)
+                                .background(color = EUOrange100)
                                 .clip(RoundedCornerShape(100.dp)),
                             imageVector = Icons.Filled.Medication,
                             contentDescription = "",
@@ -218,17 +234,24 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = dosage.value,
+                        value = dosage.value,//if (treatment.dosage != null) dosage.value else "0",
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
                             dosage.value = it
-                            treatment.dosage = it.toIntOrNull()
+                            //treatment.dosage = it.toIntOrNull()
                         },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text("Dosage") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = EUPurple100,
                             unfocusedBorderColor = EUPurple100,
+                            disabledBorderColor = EUPurple100,
+                            errorBorderColor = EURed60,
+                            focusedLabelColor = EUPurple100,
+                            unfocusedLabelColor = EUPurple100,
+                            disabledLabelColor = EUPurple100,
+                            errorLabelColor = EURed60,
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -240,7 +263,7 @@ fun TreatmentCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(start = 10.dp, end = 10.dp)
         ) {
             Column {
                 Row(
@@ -251,19 +274,21 @@ fun TreatmentCard(
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(8.dp, end = 15.dp)
+                            .padding(end = 15.dp)
                             .size(24.dp)
                     ) {
                         Icon(
                             modifier = Modifier
-                                .background(color = EUGreen100)
+                                .background(color = EUBlue100)
                                 .clip(RoundedCornerShape(100.dp)),
                             imageVector = Icons.Filled.Repeat,
                             contentDescription = "",
                             tint = Color.White
                         )
                     }
+
                     Spacer(modifier = Modifier.width(5.dp))
+
                     Text(
                         "Fréquences",
                         fontSize = 18.sp,
@@ -271,7 +296,7 @@ fun TreatmentCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 // Affichage des fréquences
                 Column {
@@ -297,7 +322,7 @@ fun TreatmentCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(20.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -305,7 +330,7 @@ fun TreatmentCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .padding(8.dp, end = 15.dp)
+                        .padding(end = 15.dp)
                         .size(24.dp)
                 ) {
                     Icon(
@@ -330,6 +355,14 @@ fun TreatmentCard(
                         },
                         onConfirm = {
                             durationOpen = false
+                            if (durationState.selectedStartDateMillis != null && durationState.selectedEndDateMillis != null) {
+                                treatment.duration = Duration(
+                                    startDate = Instant.ofEpochMilli(durationState.selectedStartDateMillis!!)
+                                        .atZone(ZoneId.systemDefault()).toLocalDate(),
+                                    endDate = Instant.ofEpochMilli(durationState.selectedEndDateMillis!!)
+                                        .atZone(ZoneId.systemDefault()).toLocalDate()
+                                )
+                            }
                         }
                     )
                 }

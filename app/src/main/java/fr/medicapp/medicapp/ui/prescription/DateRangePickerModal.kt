@@ -5,6 +5,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerColors
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DateRangePicker
@@ -25,8 +27,10 @@ fun DateRangePickerModal(
     state: DateRangePickerState,
     onDismissRequest: () -> Unit = {},
     onConfirm: () -> Unit = {},
+    colors: DatePickerColors = DatePickerDefaults.colors(),
 ) {
     DatePickerDialog(
+        colors = colors,
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(

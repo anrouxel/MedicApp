@@ -49,6 +49,8 @@ fun FrequencyCard(
     onRemove: () -> Unit
 ) {
     var frequencyDayOpen = remember { mutableStateOf(false) }
+    var frequencyHourOpen = remember { mutableStateOf(false) }
+    val dayOfWeek = listOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
 
     val options = listOf(
         Option(
@@ -81,8 +83,8 @@ fun FrequencyCard(
                 onCloseRequest = {
                     frequencyDayOpen.value = false
                 }),
-            selection = OptionSelection.Single(options) { index, _ ->
-                frequency.day = index + 1
+            selection = OptionSelection.Single(options) { index, option ->
+                frequency.day = index
             },
         )
     }
@@ -134,7 +136,7 @@ fun FrequencyCard(
         Spacer(modifier = Modifier.width(5.dp))
         OutlinedTextField(
             enabled = false,
-            value = frequency.day.toString(),
+            value = dayOfWeek[frequency.day!!],
             textStyle = TextStyle(fontSize = 16.sp),
             onValueChange = { },
             label = { Text("Jour") },
