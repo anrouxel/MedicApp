@@ -311,6 +311,7 @@ fun EditPrescription(
                 AddButton(
                     text = "Ajouter un traitement",
                     icone = Icons.Filled.Add,
+                    color = EUPurple80,
                     onClick = {
                         Log.d("EditPrescription", "AddButton: onClick")
                         var treatment = Treatment(
@@ -334,6 +335,7 @@ fun EditPrescription(
                 AddButton(
                     text = "Importer une ordonnance (Galerie)",
                     icone = Icons.Filled.Upload,
+                    color = EUPurple80,
                     onClick = {
                         Log.d("EditPrescription", "AddButton: onClick")
                         var treatment = Treatment(
@@ -357,6 +359,7 @@ fun EditPrescription(
                 AddButton(
                     text = "Importer une ordonnance (Camera)",
                     icone = Icons.Filled.Upload,
+                    color = EUPurple80,
                     onClick = {
                         Log.d("EditPrescription", "AddButton: onClick")
                         var treatment = Treatment(
