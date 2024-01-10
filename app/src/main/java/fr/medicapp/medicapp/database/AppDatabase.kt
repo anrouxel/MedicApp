@@ -9,6 +9,7 @@ import fr.medicapp.medicapp.dao.DoctorDAO
 import fr.medicapp.medicapp.dao.PrescriptionAndDoctorDAO
 import fr.medicapp.medicapp.dao.PrescriptionDAO
 import fr.medicapp.medicapp.dao.PrescriptionWithTreatmentDAO
+import fr.medicapp.medicapp.dao.SideEffectDAO
 import fr.medicapp.medicapp.dao.TreatmentDAO
 import fr.medicapp.medicapp.dao.UserDAO
 import fr.medicapp.medicapp.entity.DoctorEntity
@@ -30,6 +31,7 @@ import fr.medicapp.medicapp.entity.UserEntity
         UserEntity::class,
         /*PrescriptionWithTreatmentEntity::class,
         PrescriptionAndDoctorEntity::class*/
+        SideEffectDAO::class
     ],
     version = 1
 )
@@ -41,6 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDAO(): UserDAO
     /*abstract fun prescriptionWithTreatmentDAO(): PrescriptionWithTreatmentDAO
     abstract fun prescriptionAndDoctorDAO(): PrescriptionAndDoctorDAO*/
+    abstract fun sideEffectDAO(): SideEffectDAO
 
     companion object {
         private const val DATABASE_NAME = "dataLocal.db"

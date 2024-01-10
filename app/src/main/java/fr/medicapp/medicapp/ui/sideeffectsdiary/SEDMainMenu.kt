@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.sideeffectsdiary
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,14 +33,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.entity.SideEffectEntity
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDMainMenu(
-    sideeffects : List<TestSideEffect>
+    sideeffects : List<SideEffectEntity>,
+    onSideEffect: (String) -> Unit,
+    addSideEffect: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -60,7 +66,7 @@ fun SEDMainMenu(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = { addSideEffect() },
                 containerColor = EURed100
             ) {
                 Icon(
@@ -81,7 +87,7 @@ fun SEDMainMenu(
             if (sideeffects.isNotEmpty()){
                 for (i in sideeffects) {
                     ElevatedCard(
-                        onClick = { /*TODO*/ },
+                        onClick = { onSideEffect(i.id) },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
                         ),
@@ -136,20 +142,19 @@ fun SEDMainMenu(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 private fun SEDMainMenuPreview() {
-    var se = listOf(TestSideEffect(
+    var se = mutableListOf<SideEffectEntity>(SideEffectEntity(
+        id = "",
             "Amoxicilline",
-        "01/01/2023",
+        LocalDate.now(),
+        12,
+        30,
         mutableListOf("Mal de tête", "Nausées"),
-        "J'ai eu mal à la tête hier"
-    ), TestSideEffect(
-        "Doliprane",
-        "02/06/2023",
-        mutableListOf("Vomissements", "Mal à la gorge"),
         "J'ai eu mal à la tête hier"
     ))
     //var se = listOf<TestSideEffect>() /* TODO */
-    SEDMainMenu(se)
+    SEDMainMenu(se, {}, {})
 }

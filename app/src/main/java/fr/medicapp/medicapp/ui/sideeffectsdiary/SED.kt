@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.sideeffectsdiary
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,14 +36,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.entity.SideEffectEntity
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SED(
-    sideeffects : TestSideEffect
+    sideeffects : SideEffectEntity
 ) {
     Scaffold(
         topBar = {
@@ -209,12 +213,16 @@ fun SED(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 private fun SEDPreview() {
-    var se = TestSideEffect(
+    var se = SideEffectEntity(
+        "1",
         "Nurofen",
-        "14/12/2022",
+        LocalDate.now(),
+        0,
+        0,
         mutableListOf("Mal de tête", "Nausées", "Malaise", "Vomissements", "Diarrhée", "Mal aux yeux"),
         "J'ai eu mal à la tête hier"
     )
