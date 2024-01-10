@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple80
 @Composable
 fun AddButton(
     text: String,
+    icone: ImageVector,
     onClick: () -> Unit
 ) {
     ElevatedCard(
@@ -60,7 +62,7 @@ fun AddButton(
                 modifier = Modifier
                     .size(24.dp)
                     .clip(RoundedCornerShape(100.dp)),
-                imageVector = Icons.Filled.Add,
+                imageVector = icone,
                 contentDescription = "",
                 tint = Color.White
             )
@@ -81,6 +83,7 @@ fun AddButton(
 private fun AddButtonPreview() {
     AddButton(
         text = "Ajouter un traitement",
+        icone = Icons.Filled.Add,
         onClick = {}
     )
 }
