@@ -5,7 +5,7 @@
   "firstName": "Paul",
   "age": 19,
   "email": "paul.boutet@medicapp.fr",
-  "passwordHash": ""
+  "mdp": ""
   },
   "User": {
     "_id": "2",
@@ -13,7 +13,7 @@
     "firstName": "Antonin",
     "age": 19,
     "email": "antonin.rouxel@medicapp.fr",
-    "passwordHash": ""
+    "mdp": ""
   },
   "User": {
     "_id": "1",
@@ -21,7 +21,7 @@
     "firstName": "Arthur",
     "age": 22,
     "email": "arthur.osselin@medicapp.fr",
-    "passwordHash": ""
+    "mdp": ""
   },
   "User": {
     "_id": "1",
@@ -29,6 +29,6 @@
     "firstName": "Lana",
     "age": 22,
     "email": "lana.heyrendt@medicapp.fr",
-    "passwordHash": ""
+    "mdp": ""
   }
 }

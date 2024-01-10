@@ -22,14 +22,15 @@ import java.util.UUID
 data class Treatment(
     @PrimaryKey(autoGenerate = true) val id: UUID = UUID.randomUUID(),
     var medication: Medication? = null,
-    var dosage: Int? = null,
+    var posologie: MutableList<String?> = mutableStateListOf(),  // 3 fois par jour ou 1 a 4 fois par jour
+    var duration: Duration? = null, // du () au ()
     var frequencies: MutableList<Frequency> = mutableStateListOf(),
-    var duration: Duration? = null,
     var notification: Boolean = false,
+    var renouvelable : Boolean = false,
     var history: MutableList<Date> = mutableListOf(),
 ) {
     fun isValide(): Boolean {
-        return medication != null && dosage != null && frequencies.isNotEmpty() && areFrequenciesValid() && duration != null
+        return medication != null && posologie != null && frequencies.isNotEmpty() && areFrequenciesValid() && duration != null
     }
 
     fun areFrequenciesValid(): Boolean {

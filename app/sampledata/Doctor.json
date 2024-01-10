@@ -1,0 +1,12 @@
+{
+  "Docteur" : {
+    "id" : "1",
+    "firstName" : "Jean Marie",
+    "lastName" : "MOTTU"
+  },
+  "Docteur" : {
+  "id" : "2",
+  "firstName" : "Sébastien",
+  "lastName" : "CAZALAS"
+  }
+}
