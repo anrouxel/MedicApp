@@ -82,12 +82,12 @@ fun TreatmentCard(
     onRemove: () -> Unit
 ) {
     var notification = remember { mutableStateOf(treatment.notification) }
-    var dosage = remember { mutableStateOf(treatment.dosage.toString()) }
+    var dosage = remember { mutableStateOf(if (treatment.dosage != null) treatment.dosage.toString() else "") }
     var duration = remember { mutableStateOf(treatment.duration.toString()) }
 
     LaunchedEffect(treatment) {
         notification.value = treatment.notification
-        dosage.value = treatment.dosage.toString()
+        dosage.value = if (treatment.dosage != null) treatment.dosage.toString() else ""
         duration.value = treatment.duration.toString()
     }
 
@@ -237,7 +237,7 @@ fun TreatmentCard(
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
                             dosage.value = it
-                            //treatment.dosage = it.toIntOrNull()
+                            treatment.dosage = it.toIntOrNull()
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text("Dosage") },
