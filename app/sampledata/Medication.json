@@ -1,0 +1,23 @@
+{
+  "Medication": {
+    "_id": "1312",
+    "name": "Acab",
+    "administrationRoutes": ["Pavé","batte"],
+    "importantInformations": ["Un flic une balle"],
+    "prescriptionDispensingConditions": ["Ne pas être flic","Etre de gauche"]
+  },
+  "Medication" : {
+    "_id": "1871",
+    "name": "Kropot",
+    "administrationRoutes": ["Pain","Conquête"],
+    "importantInformations": ["Ecole anar"],
+    "prescriptionDispensingConditions": ["Ukraine","Armée noire"]
+  },
+  "Medication" : {
+  "_id": "2016",
+  "name": "Béboute",
+  "administrationRoutes": ["Griffoire","Gamelle"],
+  "importantInformations": ["Miaou"],
+  "prescriptionDispensingConditions": ["Chien","Fenêtre","Sale de bain"]
+  }
+}
