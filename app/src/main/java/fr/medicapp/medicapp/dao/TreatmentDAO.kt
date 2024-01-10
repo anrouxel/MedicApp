@@ -5,23 +5,33 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import fr.medicapp.medicapp.entity.Treatment
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.TreatmentEntity
 
 @Dao
-interface TreatmentDAO {
+interface TreatmentDAO : IDatabase<TreatmentEntity> {
 
-    @Query("SELECT * FROM Treatment")
-    fun getTreatmentAll():List<Treatment>
+    @Query("SELECT * FROM TreatmentEntity")
+    override fun getAll(): List<TreatmentEntity>
 
-    @Query("SELECT * FROM Treatment t WHERE t.id = :id")
-    fun getTreatmentOne(id:Int): Treatment?
+    @Query("SELECT * FROM TreatmentEntity WHERE id = :id")
+    override fun <E> getOne(id: E): TreatmentEntity
 
     @Insert
-    fun addTreatment(treatment: Treatment)
+    override fun add(t: TreatmentEntity)
+
+    @Insert
+    override fun addAll(vararg t: TreatmentEntity)
 
     @Delete
-    fun deleteTreatment(treatment: Treatment)
+    override fun delete(t: TreatmentEntity)
+
+    @Delete
+    override fun deleteAll(vararg t: TreatmentEntity)
 
     @Update
-    fun updateTreatment(treatment: Treatment)
+    override fun update(t: TreatmentEntity)
+
+    @Update
+    override fun updateAll(vararg t: TreatmentEntity)
 }

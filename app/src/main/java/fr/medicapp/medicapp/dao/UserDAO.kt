@@ -5,26 +5,32 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import fr.medicapp.medicapp.entity.User
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.UserEntity
 
-/**
- * DAO Permettant l'accès à la table User
- * */
 @Dao
-interface UserDAO {
+interface UserDAO : IDatabase<UserEntity> {
+    @Query("SELECT * FROM UserEntity")
+    override fun getAll(): List<UserEntity>
 
-    @Query("SELECT * FROM User")
-    fun getUserAll(): List<User>
-
-    @Query("SELECT * FROM User u WHERE u.lastName = :lastName AND u.firstName = :firstName")
-    fun getUserWithName(lastName: String, firstName: String): User?
+    @Query("SELECT * FROM UserEntity WHERE id = :id")
+    override fun <E> getOne(id: E): UserEntity
 
     @Insert
-    fun addUser(user: User)
+    override fun add(t: UserEntity)
+
+    @Insert
+    override fun addAll(vararg t: UserEntity)
 
     @Delete
-    fun deleteUser(user: User)
+    override fun delete(t: UserEntity)
+
+    @Delete
+    override fun deleteAll(vararg t: UserEntity)
 
     @Update
-    fun updateUser(user: User)
+    override fun update(t: UserEntity)
+
+    @Update
+    override fun updateAll(vararg t: UserEntity)
 }

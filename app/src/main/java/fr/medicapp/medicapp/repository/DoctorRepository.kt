@@ -1,64 +1,41 @@
 package fr.medicapp.medicapp.repository
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.DoctorDAO
-import fr.medicapp.medicapp.entity.Doctor
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.DoctorEntity
 
-class DoctorRepository(private val doctorDAO:DoctorDAO) {
-
-    fun getDoctorAll(): List<Doctor> {
-        return try {
-            this.doctorDAO.getDoctorAll()
-        }catch (e: Exception){
-            emptyList()
-        }
+class DoctorRepository(
+    private val doctorDao: DoctorDAO
+) : IDatabase<DoctorEntity> {
+    override fun getAll(): List<DoctorEntity> {
+        return doctorDao.getAll()
     }
 
-    fun getDoctorOne(id: Int): Doctor?{
-        return try{
-            doctorDAO.getDoctorOne(id)
-        }catch (e: Exception){
-            null
-        }
+    override fun <E> getOne(id: E): DoctorEntity {
+        return doctorDao.getOne(id)
     }
 
-    fun addDoctor(doctor: Doctor): Pair<Boolean,String>{
-        return try {
-            doctorDAO.addDoctor(doctor)
-            Pair(true,"Success")
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Doctor already exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun add(t: DoctorEntity) {
+        doctorDao.add(t)
     }
 
-    fun deleteDoctor(doctor: Doctor): Pair<Boolean,String>{
-        return try {
-            doctorDAO.deleteDoctor(doctor)
-            Pair(true,"Success")
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Doctor doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun addAll(vararg t: DoctorEntity) {
+        doctorDao.addAll(*t)
     }
 
-    fun updateDoctor(doctor: Doctor): Pair<Boolean,String>{
-        return try {
-            doctorDAO.updateDoctor(doctor)
-            Pair(true,"Success")
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Doctor doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun delete(t: DoctorEntity) {
+        doctorDao.delete(t)
+    }
+
+    override fun deleteAll(vararg t: DoctorEntity) {
+        doctorDao.deleteAll(*t)
+    }
+
+    override fun update(t: DoctorEntity) {
+        doctorDao.update(t)
+    }
+
+    override fun updateAll(vararg t: DoctorEntity) {
+        doctorDao.updateAll(*t)
     }
 }

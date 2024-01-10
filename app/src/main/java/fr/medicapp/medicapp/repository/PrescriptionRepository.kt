@@ -1,64 +1,41 @@
 package fr.medicapp.medicapp.repository
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.PrescriptionDAO
-import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.PrescriptionEntity
 
-class PrescriptionRepository(private val prescriptionDAO: PrescriptionDAO) {
-    private val succesString = "Success !"
-    fun getPrescriptionAll(): List<Prescription>{
-        return try {
-            prescriptionDAO.getPrescriptionAll()
-        }catch (e: Exception){
-            emptyList()
-        }
+class PrescriptionRepository(
+    private val prescriptionDao: PrescriptionDAO
+) : IDatabase<PrescriptionEntity> {
+    override fun getAll(): List<PrescriptionEntity> {
+        return prescriptionDao.getAll()
     }
 
-    fun getPrescriptionOne(id: Int): Prescription?{
-        return try {
-            prescriptionDAO.getPrescriptionOne(id)
-        }catch (e:Exception){
-            null
-        }
+    override fun <E> getOne(id: E): PrescriptionEntity {
+        return prescriptionDao.getOne(id)
     }
 
-    fun addPrescription(prescription: Prescription): Pair<Boolean,String>{
-        return try {
-            prescriptionDAO.addPrescription(prescription)
-            Pair(true,succesString)
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Prescription already exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun add(t: PrescriptionEntity) {
+        prescriptionDao.add(t)
     }
 
-    fun deletePrescription(prescription: Prescription): Pair<Boolean,String>{
-        return try {
-            prescriptionDAO.deletePrescription(prescription)
-            Pair(true, succesString)
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Prescription doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun addAll(vararg t: PrescriptionEntity) {
+        prescriptionDao.addAll(*t)
     }
 
-    fun updatePrescription(prescription: Prescription): Pair<Boolean,String>{
-        return try {
-            prescriptionDAO.updatePrescription(prescription)
-            Pair(true,succesString)
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Prescription doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun delete(t: PrescriptionEntity) {
+        prescriptionDao.delete(t)
+    }
+
+    override fun deleteAll(vararg t: PrescriptionEntity) {
+        prescriptionDao.deleteAll(*t)
+    }
+
+    override fun update(t: PrescriptionEntity) {
+        prescriptionDao.update(t)
+    }
+
+    override fun updateAll(vararg t: PrescriptionEntity) {
+        prescriptionDao.updateAll(*t)
     }
 }

@@ -68,8 +68,6 @@ fun HomeNavGraph(navController: NavHostController) {
                 }
             )
         }
-        composable(route = NavigationDrawerRoute.Prescriptions.route) {
-        }
         composable(route = NavigationDrawerRoute.Messages.route) {
         }
         prescriptionNavGraph(navController)

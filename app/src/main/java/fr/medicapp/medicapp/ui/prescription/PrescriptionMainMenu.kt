@@ -37,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.database.AppDatabaseRepository
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 
@@ -179,7 +178,6 @@ private fun PrescriptionMainMenuPreview() {
             "10/06/2023")
     )
 
-    val prescriptionRepository = AppDatabaseRepository().prescriptionRepository()
 
-    PrescriptionMainMenu(ordonnances) { prescriptionRepository.getPrescriptionAll() }
+    PrescriptionMainMenu(ordonnances) { }
 }

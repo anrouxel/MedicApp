@@ -1,64 +1,41 @@
 package fr.medicapp.medicapp.repository
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.UserDAO
-import fr.medicapp.medicapp.entity.User
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.UserEntity
 
-class UserRepository(private val userDAO: UserDAO) {
-
-    fun getUsers(): List<User>{
-        return try {
-            userDAO.getUserAll()
-        }catch (e: Exception){
-            emptyList()
-        }
+class UserRepository(
+    private val userDao: UserDAO
+) : IDatabase<UserEntity> {
+    override fun getAll(): List<UserEntity> {
+        return userDao.getAll()
     }
 
-    fun getUserWithName(lastName: String, firstName: String): User?{
-        return try {
-            userDAO.getUserWithName(lastName,firstName)
-        }catch (e: Exception){
-            null
-        }
+    override fun <E> getOne(id: E): UserEntity {
+        return userDao.getOne(id)
     }
 
-    fun addUser(user: User): Pair<Boolean,String>{
-        return try {
-            userDAO.addUser(user)
-            Pair(true,"Success")
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"User already exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun add(t: UserEntity) {
+        userDao.add(t)
     }
 
-    fun deleteUser(user: User): Pair<Boolean,String>{
-        return try {
-            userDAO.deleteUser(user)
-            Pair(true,"Success")
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"User doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun addAll(vararg t: UserEntity) {
+        userDao.addAll(*t)
     }
 
-    fun updateUser(user: User): Pair<Boolean,String>{
-        return try {
-            userDAO.updateUser(user)
-            Pair(true,"Success")
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"User doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun delete(t: UserEntity) {
+        userDao.delete(t)
+    }
+
+    override fun deleteAll(vararg t: UserEntity) {
+        userDao.deleteAll(*t)
+    }
+
+    override fun update(t: UserEntity) {
+        userDao.update(t)
+    }
+
+    override fun updateAll(vararg t: UserEntity) {
+        userDao.updateAll(*t)
     }
 }

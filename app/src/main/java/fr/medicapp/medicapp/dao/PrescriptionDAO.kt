@@ -5,23 +5,32 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import fr.medicapp.medicapp.entity.Prescription
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.PrescriptionEntity
 
 @Dao
-interface PrescriptionDAO {
+interface PrescriptionDAO : IDatabase<PrescriptionEntity> {
+    @Query("SELECT * FROM PrescriptionEntity")
+    override fun getAll(): List<PrescriptionEntity>
 
-    @Query("SELECT * FROM Prescription")
-    fun getPrescriptionAll(): List<Prescription>
-
-    @Query("SELECT * FROM Prescription p WHERE p.id = :id")
-    fun getPrescriptionOne(id: Int): Prescription?
+    @Query("SELECT * FROM PrescriptionEntity WHERE id = :id")
+    override fun <E> getOne(id: E): PrescriptionEntity
 
     @Insert
-    fun addPrescription(prescription: Prescription)
+    override fun add(t: PrescriptionEntity)
+
+    @Insert
+    override fun addAll(vararg t: PrescriptionEntity)
 
     @Delete
-    fun deletePrescription(prescription: Prescription)
+    override fun delete(t: PrescriptionEntity)
+
+    @Delete
+    override fun deleteAll(vararg t: PrescriptionEntity)
 
     @Update
-    fun updatePrescription(prescription: Prescription)
+    override fun update(t: PrescriptionEntity)
+
+    @Update
+    override fun updateAll(vararg t: PrescriptionEntity)
 }

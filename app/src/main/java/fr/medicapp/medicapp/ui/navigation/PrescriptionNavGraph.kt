@@ -1,10 +1,12 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,6 +15,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.entity.Doctor
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
@@ -54,6 +57,13 @@ fun NavGraphBuilder.prescriptionNavGraph(
         startDestination = PrescriptionRoute.Main.route,
     ) {
         composable(route = PrescriptionRoute.Main.route) {
+            val db = AppDatabase.getInstance(LocalContext.current)
+            val repository = PrescriptionRepository(db.prescriptionDAO())
+
+            val test = repository.getPrescriptionAll()
+
+            Log.d("test", test.toString())
+            
             PrescriptionMainMenu(
                 ordonnances = ordonnances,
                 prescription = {}
@@ -71,6 +81,9 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
+            val db = AppDatabase.getInstance(LocalContext.current)
+            val repository = PrescriptionRepository(db.prescriptionDAO())
+
             EditPrescription(
                 prescription = state,
                 doctors = listOf(
@@ -87,6 +100,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     navController.popBackStack()
                 },
                 onConfirm = {
+                    repository.addPrescription(state)
                     navController.popBackStack()
                 },
             )

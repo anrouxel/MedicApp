@@ -1,64 +1,41 @@
 package fr.medicapp.medicapp.repository
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.dao.TreatmentDAO
-import fr.medicapp.medicapp.entity.Treatment
+import fr.medicapp.medicapp.database.IDatabase
+import fr.medicapp.medicapp.entity.TreatmentEntity
 
-class TreatmentRepository(private val treatmentDAO: TreatmentDAO) {
-    private val successString = "Succes !"
-    fun getTreatmentAll(): List<Treatment>{
-        return try {
-            treatmentDAO.getTreatmentAll()
-        }catch (e: Exception){
-            emptyList()
-        }
+class TreatmentRepository(
+    private val treatmentDao: TreatmentDAO
+) : IDatabase<TreatmentEntity> {
+    override fun getAll(): List<TreatmentEntity> {
+        return treatmentDao.getAll()
     }
 
-    fun getTreatmentOne(id: Int): Treatment?{
-        return try {
-            treatmentDAO.getTreatmentOne(id)
-        }catch (e: Exception){
-            null
-        }
+    override fun <E> getOne(id: E): TreatmentEntity {
+        return treatmentDao.getOne(id)
     }
 
-    fun addTreatment(treatment: Treatment): Pair<Boolean,String>{
-        return try {
-            treatmentDAO.addTreatment(treatment)
-            Pair(true, successString)
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Treatment already exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun add(t: TreatmentEntity) {
+        treatmentDao.add(t)
     }
 
-    fun deleteTreatment(treatment: Treatment): Pair<Boolean,String>{
-        return try {
-            treatmentDAO.deleteTreatment(treatment)
-            Pair(true,successString)
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Treatment doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun addAll(vararg t: TreatmentEntity) {
+        treatmentDao.addAll(*t)
     }
 
-    fun updateTreatment(treatment: Treatment): Pair<Boolean,String>{
-        return try {
-            treatmentDAO.updateTreatment(treatment)
-            Pair(true,successString)
-        }catch (e: SQLiteConstraintException){
-            Pair(false,"Treatment doesn't exist !")
-        }catch (e: SQLiteException){
-            Pair(false,"Database error : ${e.message}")
-        }catch(e: Exception){
-            Pair(false,"Unknown error : ${e.message}")
-        }
+    override fun delete(t: TreatmentEntity) {
+        treatmentDao.delete(t)
+    }
+
+    override fun deleteAll(vararg t: TreatmentEntity) {
+        treatmentDao.deleteAll(*t)
+    }
+
+    override fun update(t: TreatmentEntity) {
+        treatmentDao.update(t)
+    }
+
+    override fun updateAll(vararg t: TreatmentEntity) {
+        treatmentDao.updateAll(*t)
     }
 }

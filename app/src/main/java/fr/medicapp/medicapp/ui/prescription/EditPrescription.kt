@@ -4,7 +4,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,29 +44,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.date_time.DateTimeDialog
-import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
-import com.maxkeppeler.sheets.option.models.Option
 import com.maxkeppeler.sheets.option.models.OptionConfig
 import com.maxkeppeler.sheets.option.models.OptionSelection
-import fr.medicapp.medicapp.database.AppDatabaseRepository
 import fr.medicapp.medicapp.entity.Doctor
 import fr.medicapp.medicapp.entity.Duration
-import fr.medicapp.medicapp.entity.Frequency
 import fr.medicapp.medicapp.entity.Prescription
 import fr.medicapp.medicapp.entity.Treatment
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
-import fr.medicapp.medicapp.ui.theme.EUOrange20
-import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
-import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
@@ -138,8 +127,6 @@ fun EditPrescription(
                         enabled = prescription.isValide(),
                         onClick = {
                             onConfirm()
-                            val prescriptionRepository = AppDatabaseRepository().prescriptionRepository()
-                            prescriptionRepository.addPrescription(prescription)
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
