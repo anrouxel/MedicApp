@@ -19,20 +19,14 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromList(list: List<*>): String {
-        return list.toString()
+    // MutableList<String> to String
+    fun fromEffetsConstates(effetsConstates: MutableList<String>): String {
+        return effetsConstates.joinToString(separator = "\"")
     }
 
     @TypeConverter
-    fun ToString(list: List<*>): String {
-        return list.toString()
-    }
-
-    @TypeConverter
-    fun toList(datastring: String): MutableList<String> {
-        if(datastring == null || datastring.isEmpty()) {
-            return mutableListOf()
-        }
-        return mutableListOf(datastring)
+    // String to MutableList<String>
+    fun toEffetsConstates(effetsConstates: String): MutableList<String> {
+        return effetsConstates.split("\"").toMutableList()
     }
 }

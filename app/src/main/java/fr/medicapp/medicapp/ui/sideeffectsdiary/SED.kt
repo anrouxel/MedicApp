@@ -45,7 +45,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SED(
-    sideeffects : SideEffectEntity
+    sideeffects : MutableList<SideEffectEntity>
 ) {
     Scaffold(
         topBar = {
@@ -79,134 +79,136 @@ fun SED(
 
         }
     ) {innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
-            ElevatedCard(
-                onClick = { /*TODO*/ },
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
+        for (sideeffect in sideeffects) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 50.dp),
-                colors =
-                CardDefaults.cardColors(
-                    containerColor = EURed80,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(10.dp)
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .padding(10.dp)
             ) {
-                Row(
+                ElevatedCard(
+                    onClick = { /*TODO*/ },
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
+                        .fillMaxWidth()
+                        .height(height = 50.dp),
+                    colors =
+                    CardDefaults.cardColors(
+                        containerColor = EURed80,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10.dp)
                 ) {
-                    Text(
-                        text = "Médicament :",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        "Nurofen",
-                        fontSize = 18.sp
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            ElevatedCard(
-                onClick = { /*TODO*/ },
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 75.dp),
-                colors =
-                CardDefaults.cardColors(
-                    containerColor = EURed80,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                ) {
-                    Text(
-                        text = "Date/Heure de signalement :",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        "14/12/2022 à 7h35",
-                        fontSize = 18.sp
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            var effetsConstatesSize = sideeffects.effetsConstates.size
-            var effetsConstatesCard = if (sideeffects.effetsConstates.size > 5) 118 else effetsConstatesSize*18
-
-            ElevatedCard(
-                onClick = { /*TODO*/ },
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 77.dp+(effetsConstatesCard).dp),
-                colors =
-                CardDefaults.cardColors(
-                    containerColor = EURed80,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                ) {
-                    Text(
-                        text = "Effets constatés :",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    if (effetsConstatesSize > 5) {
-                        for (i in sideeffects.effetsConstates.slice(0..4)) {
-                            Text(
-                                "- $i",
-                                fontSize = 18.sp
-                            )
-                        }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                    ) {
                         Text(
-                            "Et plus...",
+                            text = "Médicament :",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            "Nurofen",
                             fontSize = 18.sp
                         )
-                    } else {
-                        for (i in sideeffects.effetsConstates) {
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                ElevatedCard(
+                    onClick = { /*TODO*/ },
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = 75.dp),
+                    colors =
+                    CardDefaults.cardColors(
+                        containerColor = EURed80,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                    ) {
+                        Text(
+                            text = "Date/Heure de signalement :",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            "14/12/2022 à 7h35",
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                var effetsConstatesSize = sideeffect.effetsConstates.size
+                var effetsConstatesCard = if (sideeffect.effetsConstates.size > 5) 118 else effetsConstatesSize*18
+
+                ElevatedCard(
+                    onClick = { /*TODO*/ },
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = 77.dp+(effetsConstatesCard).dp),
+                    colors =
+                    CardDefaults.cardColors(
+                        containerColor = EURed80,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                    ) {
+                        Text(
+                            text = "Effets constatés :",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        if (effetsConstatesSize > 5) {
+                            for (i in sideeffect.effetsConstates.slice(0..4)) {
+                                Text(
+                                    "- $i",
+                                    fontSize = 18.sp
+                                )
+                            }
                             Text(
-                                "- $i",
+                                "Et plus...",
                                 fontSize = 18.sp
                             )
+                        } else {
+                            for (i in sideeffect.effetsConstates) {
+                                Text(
+                                    "- $i",
+                                    fontSize = 18.sp
+                                )
+                            }
                         }
-                    }
 
+                    }
                 }
             }
         }
@@ -217,14 +219,15 @@ fun SED(
 @Preview(showBackground = true)
 @Composable
 private fun SEDPreview() {
-    var se = SideEffectEntity(
-        "1",
-        "Nurofen",
-        LocalDate.now(),
-        0,
-        0,
-        mutableListOf("Mal de tête", "Nausées", "Malaise", "Vomissements", "Diarrhée", "Mal aux yeux"),
-        "J'ai eu mal à la tête hier"
+    var se = mutableListOf<SideEffectEntity>(SideEffectEntity(
+            "1",
+            "Nurofen",
+            LocalDate.now(),
+            0,
+            0,
+            mutableListOf("Mal de tête", "Nausées", "Malaise", "Vomissements", "Diarrhée", "Mal aux yeux"),
+            "J'ai eu mal à la tête hier"
+        )
     )
     //var se = listOf<TestSideEffect>()
     SED(se)
