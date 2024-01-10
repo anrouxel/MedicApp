@@ -254,14 +254,11 @@ fun EditPrescription(
                         )
                     }
 
-                    val date = LocalDate.now()
                     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    val text = date.format(formatter)
-
 
                     OutlinedTextField(
                         enabled = false,
-                        value = text,
+                        value = if (prescription.date != null) prescription.date!!.format(formatter) else "",
                         textStyle = TextStyle(fontSize = 16.sp, color = Color.White),
                         onValueChange = { },
                         label = {
