@@ -306,7 +306,7 @@ fun EditPrescription(
                         Log.d("EditPrescription", "AddButton: onClick")
                         var treatment = Treatment(
                             medication = null,
-                            dosage = null,
+                            posologie = mutableListOf(),
                             frequencies = mutableStateListOf(),
                             duration = Duration(
                                 startDate = LocalDate.now(),

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.dao
 
+import android.database.sqlite.SQLiteException
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -11,26 +12,33 @@ import fr.medicapp.medicapp.entity.UserEntity
 @Dao
 interface UserDAO : IDatabase<UserEntity> {
     @Query("SELECT * FROM UserEntity")
+    @Throws(SQLiteException::class)
     override fun getAll(): List<UserEntity>
 
     @Query("SELECT * FROM UserEntity WHERE id = :id")
+    @Throws(SQLiteException::class)
     override fun <E> getOne(id: E): UserEntity
+    @Insert
+    @Throws(SQLiteException::class)
+    override fun add(t: UserEntity) : UserEntity
 
     @Insert
-    override fun add(t: UserEntity)
-
-    @Insert
-    override fun addAll(vararg t: UserEntity)
+    @Throws(SQLiteException::class)
+    override fun addAll(vararg t: UserEntity) : List<UserEntity>
 
     @Delete
+    @Throws(SQLiteException::class)
     override fun delete(t: UserEntity)
 
     @Delete
+    @Throws(SQLiteException::class)
     override fun deleteAll(vararg t: UserEntity)
 
     @Update
-    override fun update(t: UserEntity)
+    @Throws(SQLiteException::class)
+    override fun update(t: UserEntity) : UserEntity
 
     @Update
+    @Throws(SQLiteException::class)
     override fun updateAll(vararg t: UserEntity)
 }

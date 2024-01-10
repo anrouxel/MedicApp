@@ -1,19 +1,21 @@
 package fr.medicapp.medicapp.database
 
+import fr.medicapp.medicapp.entity.UserEntity
+
 interface IDatabase<T> {
     fun getAll(): List<T>
 
     fun <E> getOne(id: E): T
 
-    fun add(t: T)
+    fun add(t: T): UserEntity
 
-    fun addAll(vararg t: T)
+    fun addAll(vararg t: T): List<UserEntity>
 
     fun delete(t: T)
 
     fun deleteAll(vararg t: T)
 
-    fun update(t: T)
+    fun update(t: T): UserEntity
 
     fun updateAll(vararg t: T)
 }
