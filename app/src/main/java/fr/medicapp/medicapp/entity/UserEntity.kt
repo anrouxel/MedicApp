@@ -9,9 +9,9 @@ data class UserEntity(
     @PrimaryKey
     val id: String,
 
-    val lastName: String,
+    var lastName: String,
 
-    val firstName: String,
+    var firstName: String,
 
     val age: Int,
 

@@ -14,6 +14,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val db = AppDatabase.getInstance(this)
+
         setContent {
             MedicAppTheme {
                 RootNavGraph(navController = rememberNavController())
