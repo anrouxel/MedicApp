@@ -303,6 +303,9 @@ fun EditPrescription(
                 prescription.treatments.forEachIndexed { index, treatment ->
                     TreatmentCard(
                         treatment = treatment,
+                        posologie = "",
+                        renouvellement = "",
+                        quantiteSuffisantePour = "",
                         onRemove = {
                             prescription.treatments.removeAt(index)
                         }
