@@ -5,7 +5,7 @@ import androidx.room.Relation
 
 data class PrescriptionWithTreatmentEntity(
     @Embedded
-    val prescription: PrescriptionEntity,
+    val prescription: PrescriptionAndDoctorEntity,
 
     @Relation(
         parentColumn = "prescriptionId",
