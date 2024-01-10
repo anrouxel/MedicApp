@@ -199,7 +199,6 @@ fun TreatmentCard(
                 Spacer(modifier = Modifier.width(7.dp))
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
                         .padding(top = 10.dp)
                 ) {
                     Text(
@@ -234,7 +233,7 @@ fun TreatmentCard(
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
-                        value = dosage.value,//if (treatment.dosage != null) dosage.value else "0",
+                        value = if (treatment.dosage != null) dosage.value else "0",
                         textStyle = TextStyle(fontSize = 16.sp),
                         onValueChange = {
                             dosage.value = it
