@@ -13,10 +13,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,15 +22,16 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home() {
-    var showBottomSheet by remember { mutableStateOf(false) }
-
+fun HomeScreen(
+    onAddPrescriptionClick: () -> Unit,
+    onAddSideEffectClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(16.dp)
     ) {
         ElevatedCard(
-            onClick = { /*TODO*/ },
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
             ),
@@ -58,9 +55,7 @@ fun Home() {
             }
         }
         Button(
-            onClick = {
-                showBottomSheet = true
-            },
+            onClick = onAddPrescriptionClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp, bottom = 0.dp),
@@ -72,7 +67,7 @@ fun Home() {
             Text(text = "Ajouter une ordonnance")
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onAddSideEffectClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp, bottom = 0.dp),
@@ -84,15 +79,13 @@ fun Home() {
             Text(text = "Signaler un effet indesirable")
         }
     }
-    if (showBottomSheet) {
-        AddPrescriptionModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false }
-        )
-    }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun HomePreview() {
-    Home()
+private fun HomeScreenPreview() {
+    HomeScreen(
+        onAddPrescriptionClick = { },
+        onAddSideEffectClick = { }
+    )
 }

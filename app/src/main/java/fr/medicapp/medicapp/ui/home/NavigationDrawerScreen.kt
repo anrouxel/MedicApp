@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -72,7 +73,9 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                         label = {
                             Text(text = screen.title)
                         },
-                        selected = currentDestination?.route == screen.route,
+                        selected = currentDestination?.hierarchy?.any {
+                            it.route == screen.route
+                        } == true,
                         onClick = {
                             scope.launch {
                                 drawerState.close()
@@ -96,7 +99,8 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                     title = {
                         Image(
                             painter = painterResource(
-                                id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                // id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                id = R.drawable.medicapp_eu_purple
                             ),
                             contentDescription = "MedicApp",
                         )
@@ -128,7 +132,6 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
-                    .padding(10.dp)
             ) {
                 HomeNavGraph(
                     navController = navController,
