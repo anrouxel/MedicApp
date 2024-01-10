@@ -16,7 +16,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.ImportExport
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -307,6 +310,53 @@ fun EditPrescription(
 
                 AddButton(
                     text = "Ajouter un traitement",
+                    icone = Icons.Filled.Add,
+                    onClick = {
+                        Log.d("EditPrescription", "AddButton: onClick")
+                        var treatment = Treatment(
+                            duration = Duration(
+                                startDate = LocalDate.now(),
+                                endDate = LocalDate.now(),
+                            ),
+                            notification = false,
+                        )
+                        Log.d("EditPrescription", "AddButton: treatment = $treatment")
+                        prescription.treatments.add(treatment)
+                        Log.d(
+                            "EditPrescription",
+                            "AddButton: prescription.treatments = ${prescription.treatments}"
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                AddButton(
+                    text = "Importer une ordonnance (Galerie)",
+                    icone = Icons.Filled.Upload,
+                    onClick = {
+                        Log.d("EditPrescription", "AddButton: onClick")
+                        var treatment = Treatment(
+                            duration = Duration(
+                                startDate = LocalDate.now(),
+                                endDate = LocalDate.now(),
+                            ),
+                            notification = false,
+                        )
+                        Log.d("EditPrescription", "AddButton: treatment = $treatment")
+                        prescription.treatments.add(treatment)
+                        Log.d(
+                            "EditPrescription",
+                            "AddButton: prescription.treatments = ${prescription.treatments}"
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                AddButton(
+                    text = "Importer une ordonnance (Camera)",
+                    icone = Icons.Filled.Upload,
                     onClick = {
                         Log.d("EditPrescription", "AddButton: onClick")
                         var treatment = Treatment(
