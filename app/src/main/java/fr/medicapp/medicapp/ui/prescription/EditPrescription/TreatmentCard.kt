@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,6 +62,8 @@ import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
+import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -330,6 +333,14 @@ fun TreatmentCard(
                         },
                         onConfirm = {
                             durationOpen = false
+                            if (durationState.selectedStartDateMillis != null && durationState.selectedEndDateMillis != null) {
+                                treatment.duration = Duration(
+                                    startDate = Instant.ofEpochMilli(durationState.selectedStartDateMillis!!)
+                                        .atZone(ZoneId.systemDefault()).toLocalDate(),
+                                    endDate = Instant.ofEpochMilli(durationState.selectedEndDateMillis!!)
+                                        .atZone(ZoneId.systemDefault()).toLocalDate()
+                                )
+                            }
                         }
                     )
                 }

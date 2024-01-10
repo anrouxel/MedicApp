@@ -45,8 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.option.OptionDialog
 import com.maxkeppeler.sheets.option.models.DisplayMode
 import com.maxkeppeler.sheets.option.models.OptionConfig
@@ -64,7 +62,9 @@ import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -191,7 +191,9 @@ fun EditPrescription(
                             state = rememberUseCaseState(true, onCloseRequest = {
                                 doctorOpen = false
                             }),
-                            selection = OptionSelection.Single(doctors.map { doctor: Doctor -> doctor.getOption() }) { index, _ ->
+                            selection = OptionSelection.Single(
+                                doctors.map { doctor: Doctor -> doctor.getOption() }
+                            ) { index, _ ->
                                 prescription.doctor = doctors[index]
                             },
                             config = OptionConfig(mode = DisplayMode.LIST)
@@ -241,6 +243,11 @@ fun EditPrescription(
                             },
                             onConfirm = {
                                 datePrescriptionOpen = false
+                                if (datePrescriptionState.selectedDateMillis != null) {
+                                    prescription.date = Instant.ofEpochMilli(datePrescriptionState.selectedDateMillis!!).atZone(
+                                        ZoneId.systemDefault()
+                                    ).toLocalDate()
+                                }
                             }
                         )
                     }
@@ -349,7 +356,6 @@ private fun EditPrescriptionPreview() {
         ),
         onCancel = {},
         onConfirm = {
-
         },
     )
 }
