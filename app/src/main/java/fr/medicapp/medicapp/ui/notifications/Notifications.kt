@@ -275,7 +275,8 @@ private fun NotificationsPreview() {
     var notif = TestNotification(
         "Doliprane",
         "Tous les jours",
-        mutableListOf("5h00", "10h00", "15h00")
+        mutableListOf(5,10,15),
+        mutableListOf(0,0,0)
     )
     // var se = listOf<TestSideEffect>()
     Notifications(notif)

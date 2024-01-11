@@ -229,3 +229,5 @@ Lapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsEdit.kt,5
 Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\f\6f2ca82311b02ea4da34ab77b3b1c93565ad3b4c
 
 Oapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsService.kt,e\9\e9f56ad1c1bab1412b9ece758beeeb474e2a03d7
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/NotificationNavGraph.kt,a\6\a6b04e38d487c02ea067de367664a93b236d3031

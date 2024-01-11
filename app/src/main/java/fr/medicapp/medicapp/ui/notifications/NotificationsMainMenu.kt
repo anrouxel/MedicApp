@@ -109,7 +109,7 @@ fun NotificationsMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.nomMedicament,
+                                text = i.medicationName,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -127,7 +127,7 @@ fun NotificationsMainMenu(
                                 Spacer(modifier = Modifier.width(5.dp))
 
                                 Text(
-                                    i.frequence,
+                                    i.frequency,
                                     fontSize = 15.sp
                                 )
                             }
@@ -144,7 +144,7 @@ fun NotificationsMainMenu(
                                 Spacer(modifier = Modifier.width(5.dp))
 
                                 Text(
-                                    i.heures.toString().replace("[", "").replace("]", ""),
+                                    i.hours.toString().replace("[", "").replace("]", ""),
                                     fontSize = 15.sp
                                 )
                             }
@@ -180,7 +180,8 @@ private fun NotificationsMainMenuPreview() {
         TestNotification(
             "Doliprane",
             "Tous les jours",
-            mutableListOf("5h00", "10h00", "15h00")
+            mutableListOf(5,10,15),
+            mutableListOf(0,0,0)
         )
     )
     //var se = listOf<TestSideEffect>() /* TODO */

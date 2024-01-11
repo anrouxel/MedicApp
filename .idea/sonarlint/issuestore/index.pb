@@ -93,3 +93,5 @@ Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\
 Oapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsService.kt,e\9\e9f56ad1c1bab1412b9ece758beeeb474e2a03d7
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/NotificationNavGraph.kt,a\6\a6b04e38d487c02ea067de367664a93b236d3031

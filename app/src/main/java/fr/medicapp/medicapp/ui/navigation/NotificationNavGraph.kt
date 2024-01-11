@@ -109,9 +109,10 @@ fun NavGraphBuilder.notificationNavGraph(
             if (sideEffect != null) {
                 Notifications(
                     notifications = TestNotification(
-                        "",
-                        "",
-                        mutableListOf()
+                        "Doliprane",
+                        "Tout les jours",
+                        mutableListOf(16),
+                        mutableListOf(45)
                     )
                 )
             }
@@ -139,9 +140,10 @@ fun NavGraphBuilder.notificationNavGraph(
 
             NotificationsEdit(
                 notification = TestNotification(
-                    "",
-                    "",
-                    mutableListOf()
+                    "Doliprane",
+                    "Tout les jours",
+                    mutableListOf(17),
+                    mutableListOf(0)
                 ),
             ) {
 
