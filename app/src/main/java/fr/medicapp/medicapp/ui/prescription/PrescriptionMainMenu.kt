@@ -106,8 +106,8 @@ fun PrescriptionMainMenu(
                             defaultElevation = 6.dp
                         ),
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(height = 110.dp),
+                            .wrapContentHeight(),
+                            //.height(height = 110.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = EUPurple80,
                             contentColor = Color.White
@@ -116,7 +116,7 @@ fun PrescriptionMainMenu(
                     ) {
                         Column(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
                                 .padding(10.dp),
                         ) {
                             Text(
