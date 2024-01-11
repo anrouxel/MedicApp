@@ -100,8 +100,8 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                     title = {
                         Image(
                             painter = painterResource(
-                                //id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
-                                id = R.drawable.medicapp_eu_purple
+                                id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                //id = R.drawable.medicapp_eu_purple
                             ),
                             contentDescription = "MedicApp",
                         )
