@@ -12,6 +12,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,6 +56,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.NavHostController
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
 import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.model.Notification
@@ -73,6 +75,7 @@ fun NotificationsEdit(
     notification: Notification,
     onConfirm: () -> Unit
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
@@ -108,8 +111,8 @@ fun NotificationsEdit(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(
@@ -121,7 +124,7 @@ fun NotificationsEdit(
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.White
+                containerColor = Color.Unspecified
             ) {
                 Row(
                     modifier = Modifier
@@ -160,19 +163,29 @@ fun NotificationsEdit(
                             }*/
                             if (alarmManager.canScheduleExactAlarms()){
                                 val dateFormat = SimpleDateFormat("hhmm")
-                                for (heure in 0..notification.hours.size){
-                                    val dateString = "${notification.hours[heure]}:${notification.minutes[heure]}"
+                                for (heure in 0 until notification.hours.size){
+                                    val dateString =
+                                        "${notification.hours[heure]}:${notification.minutes[heure]}"
                                     val date = dateFormat.parse(dateString)
                                     alarmManager.setExactAndAllowWhileIdle(
                                         AlarmManager.RTC_WAKEUP,
                                         date.toInstant().toEpochMilli(),
                                         TaskStackBuilder.create(context).run {
-                                            addNextIntentWithParentStack(Intent(context,MainActivity::class.java))
-                                            getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                                            addNextIntentWithParentStack(
+                                                Intent(
+                                                    context,
+                                                    MainActivity::class.java
+                                                )
+                                            )
+                                            getPendingIntent(
+                                                0,
+                                                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                                            )
                                         }
                                     )
                                 }
                             }
+                            onConfirm()
                         },
                         enabled = true,
                         shape = RoundedCornerShape(20),

@@ -290,7 +290,7 @@ fun TreatmentCard(
                         OutlinedTextField(
                             enabled = false,
                             value = duration.value,
-                            textStyle = TextStyle(fontSize = 16.sp),
+                            textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                             onValueChange = { },
                             label = { Text("Durée") },
                             shape = RoundedCornerShape(20),

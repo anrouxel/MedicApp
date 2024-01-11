@@ -78,7 +78,7 @@ fun TimePickerModal(
                 TextButton(
                     onClick = onConfirm
                 ) {
-                    Text(text = "Confirmer")
+                    Text(text = "OK")
                 }
             }
         }
