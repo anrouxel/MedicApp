@@ -164,19 +164,28 @@ fun NotificationsEdit(
                             if (alarmManager.canScheduleExactAlarms()){
                                 val dateFormat = SimpleDateFormat("hhmm")
                                 for (heure in 0 until notification.hours.size){
-                                    val dateString = "${notification.hours[heure]}:${notification.minutes[heure]}"
+                                    val dateString =
+                                        "${notification.hours[heure]}:${notification.minutes[heure]}"
                                     val date = dateFormat.parse(dateString)
                                     alarmManager.setExactAndAllowWhileIdle(
                                         AlarmManager.RTC_WAKEUP,
                                         date.toInstant().toEpochMilli(),
                                         TaskStackBuilder.create(context).run {
-                                            addNextIntentWithParentStack(Intent(context,MainActivity::class.java))
-                                            getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                                            addNextIntentWithParentStack(
+                                                Intent(
+                                                    context,
+                                                    MainActivity::class.java
+                                                )
+                                            )
+                                            getPendingIntent(
+                                                0,
+                                                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                                            )
                                         }
                                     )
                                 }
                             }
-                            onConfirm
+                            onConfirm()
                         },
                         enabled = true,
                         shape = RoundedCornerShape(20),
