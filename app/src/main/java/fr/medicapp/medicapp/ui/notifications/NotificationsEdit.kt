@@ -61,7 +61,7 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
@@ -154,8 +154,9 @@ fun NotificationsEdit(
                             }*/
                             if (alarmManager.canScheduleExactAlarms()){
                                 val dateFormat = SimpleDateFormat("hhmm")
-                                for (heure in notification.heures){
-                                    val date = dateFormat.parse(heure)
+                                for (heure in 0..notification.hours.size){
+                                    val dateString = "${notification.hours[heure]}:${notification.minutes[heure]}"
+                                    val date = dateFormat.parse(dateString)
                                     alarmManager.setExactAndAllowWhileIdle(
                                         AlarmManager.RTC_WAKEUP,
                                         date.toInstant().toEpochMilli(),
@@ -359,7 +360,7 @@ fun NotificationsEdit(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsEditPreview() {
