@@ -44,6 +44,7 @@ import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.theme.EUPurple100
+import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -163,7 +164,7 @@ fun PrescriptionMainMenu(
                 ) {
                     Text(
                         "Vous n'avez pas d'ordonnances.\nPour en ajouter, cliquez sur le bouton en bas.",
-                        color = EUPurple100,
+                        color = if (darkmode) EUPurple60 else EUPurple100,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),

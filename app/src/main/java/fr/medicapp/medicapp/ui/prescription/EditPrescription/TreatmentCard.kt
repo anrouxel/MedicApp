@@ -17,10 +17,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.WarningAmber
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -61,6 +63,7 @@ import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
+import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
 
@@ -116,6 +119,8 @@ fun TreatmentCard(
                 if (medicationOpen) {
                     SearchDialog(
                         options = medications.map { it.toOptionDialog() },
+                        cardColor = EUPurple20,
+                        selectedCardColor = EUPurple80,
                         onDismiss = {
                             medicationOpen = false
                         },
@@ -137,6 +142,15 @@ fun TreatmentCard(
                         color = EUBlack100
                     ),
                     onValueChange = { },
+                    trailingIcon = {
+                        if (treatment.query != "") {
+                            Icon(
+                                imageVector = Icons.Filled.WarningAmber,
+                                contentDescription = "",
+                                tint = EURed100
+                            )
+                        }
+                    },
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -296,6 +310,15 @@ fun TreatmentCard(
                             onValueChange = { },
                             label = { Text("Durée") },
                             shape = RoundedCornerShape(20),
+                            trailingIcon = {
+                                if (treatment.query != "") {
+                                    Icon(
+                                        imageVector = Icons.Filled.WarningAmber,
+                                        contentDescription = "",
+                                        tint = EURed100
+                                    )
+                                }
+                            },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = EUPurple100,
                                 unfocusedBorderColor = EUPurple100,

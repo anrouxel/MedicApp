@@ -35,6 +35,8 @@ import fr.medicapp.medicapp.ui.theme.EUYellow110
 @Composable
 fun SearchDialog(
     options: List<OptionDialog>,
+    cardColor : Color,
+    selectedCardColor : Color,
     onDismiss: () -> Unit,
     onValidate: (OptionDialog) -> Unit,
     preQuery: String = ""
@@ -62,12 +64,12 @@ fun SearchDialog(
                             modifier = Modifier.fillMaxWidth(),
                             colors = if (option == selectedOption) {
                                 CardDefaults.cardColors(
-                                    containerColor = EUPurple80,
+                                    containerColor = selectedCardColor,
                                     contentColor = Color.White
                                 )
                             } else {
                                 CardDefaults.cardColors(
-                                    containerColor = EUPurple20,
+                                    containerColor = cardColor,
                                     contentColor = Color.Unspecified
                                 )
                             }
@@ -83,7 +85,7 @@ fun SearchDialog(
                                 Text(
                                     text = it,
                                     modifier = Modifier.padding(5.dp),
-                                    color = EUYellow110
+                                    color = if (option == selectedOption) Color.White else Color.Black
                                 )
                             }
                         }
@@ -97,9 +99,9 @@ fun SearchDialog(
             Button(
                 enabled = selectedOption != null,
                 colors = ButtonDefaults.buttonColors(
-                    disabledContainerColor = EUPurple20,
+                    disabledContainerColor = cardColor,
                     disabledContentColor = Color.White,
-                    containerColor = EUPurple100,
+                    containerColor = selectedCardColor,
                     contentColor = Color.White,
                 ),
                 onClick = {

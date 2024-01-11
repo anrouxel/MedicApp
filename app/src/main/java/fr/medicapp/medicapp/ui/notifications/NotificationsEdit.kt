@@ -1,7 +1,15 @@
 package fr.medicapp.medicapp.ui.notifications
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Context
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -47,6 +55,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.NavHostController
+import com.carterchen247.alarmscheduler.AlarmScheduler
+import com.carterchen247.alarmscheduler.model.AlarmConfig
+import com.carterchen247.alarmscheduler.model.DataPayload
+import com.carterchen247.alarmscheduler.model.ScheduleResult
+import com.carterchen247.alarmscheduler.task.AlarmTask
+import com.carterchen247.alarmscheduler.task.AlarmTaskFactory
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
+import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
@@ -55,6 +73,8 @@ import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
+import java.time.LocalTime
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,6 +168,35 @@ fun NotificationsEdit(
                             } else {
                                 errorDialogOpen.value = true
                             }*/
+                            AlarmScheduler.setAlarmTaskFactory(object : AlarmTaskFactory {
+                                override fun createAlarmTask(alarmType: Int): AlarmTask {
+                                    return MyAlarmTask()
+                                }
+                            })
+                            val config = AlarmConfig(
+                                Date().time + 10000L, // trigger time
+                                MyAlarmTask.TYPE
+                            ) {
+                                dataPayload("reminder" to "have a meeting")
+                            }
+
+                            AlarmScheduler.schedule(config) { result: ScheduleResult ->
+                                when (result) {
+                                    is ScheduleResult.Success -> {
+                                        // alarm scheduling success!
+                                    }
+                                    is ScheduleResult.Failure -> {
+                                        when (result) {
+                                            ScheduleResult.Failure.CannotScheduleExactAlarm -> {
+                                                // handle scenarios like user disables exact alarm permission
+                                            }
+                                            is ScheduleResult.Failure.Error -> {
+                                                // handle error
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             onConfirm()
                         },
                         enabled = true,
@@ -404,4 +453,14 @@ private fun NotificationsEditPreview() {
         mutableListOf(0, 15, 30, 45)
     )
     NotificationsEdit(notif, {})
+}
+
+class MyAlarmTask : AlarmTask {
+    override fun onAlarmFires(alarmId: Int, dataPayload: DataPayload) {
+        // do something with dataPayload you set
+    }
+
+    companion object {
+        const val TYPE = 1
+    }
 }
