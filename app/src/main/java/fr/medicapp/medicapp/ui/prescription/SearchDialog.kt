@@ -77,8 +77,15 @@ fun SearchDialog(
                                 modifier = Modifier.clickable {
                                     selectedOption = option
                                 }.padding(5.dp),
-
                             )
+
+                            option.description?.let {
+                                Text(
+                                    text = it,
+                                    modifier = Modifier.padding(5.dp),
+                                    color = EUYellow110
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(7.dp))

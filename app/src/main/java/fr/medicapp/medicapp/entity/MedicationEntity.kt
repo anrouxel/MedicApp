@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.maxkeppeler.sheets.option.OptionDialog
 import fr.medicapp.medicapp.model.OptionDialog
 import java.time.LocalDate
 
