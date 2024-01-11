@@ -46,7 +46,9 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     val screens = listOf(
         NavigationDrawerRoute.Home,
         NavigationDrawerRoute.Prescriptions,
-        NavigationDrawerRoute.Messages
+        NavigationDrawerRoute.Messages,
+        NavigationDrawerRoute.EffetsSecondaires,
+        NavigationDrawerRoute.Notifications
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -99,7 +101,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                     title = {
                         Image(
                             painter = painterResource(
-                                // id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                //id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
                                 id = R.drawable.medicapp_eu_purple
                             ),
                             contentDescription = "MedicApp",

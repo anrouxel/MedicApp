@@ -4,6 +4,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MedicalInformation
 import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.Newspaper
+import androidx.compose.material.icons.filled.RingVolume
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import fr.medicapp.medicapp.R
@@ -13,6 +15,8 @@ import fr.medicapp.medicapp.ui.navigation.SideEffectRoute
 import fr.medicapp.medicapp.ui.theme.EUBlue60
 import fr.medicapp.medicapp.ui.theme.EUGreen60
 import fr.medicapp.medicapp.ui.theme.EUPurple60
+import fr.medicapp.medicapp.ui.theme.EURed60
+import fr.medicapp.medicapp.ui.theme.EUYellow60
 
 sealed class NavigationDrawerRoute(
     val route: String,
@@ -39,9 +43,17 @@ sealed class NavigationDrawerRoute(
 
     object Messages : NavigationDrawerRoute(
         route = SideEffectRoute.Main.route,
-        title = "Effet secondaire",
+        title = "Journal des effets",
         icon = Icons.Filled.Message,
-        color = EUBlue60,
-        logo = R.drawable.medicapp_eu_blue
+        color = EURed60,
+        logo = R.drawable.medicapp_eu_red
+    )
+
+    object Notifications : NavigationDrawerRoute(
+        route = "notifications",
+        title = "Gérer notifications",
+        icon = Icons.Filled.RingVolume,
+        color = EUYellow60,
+        logo = R.drawable.medicapp_eu_yellow
     )
 }
