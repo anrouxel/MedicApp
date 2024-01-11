@@ -1,8 +1,11 @@
 package fr.medicapp.medicapp.ui.home
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MedicalInformation
+import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.RingVolume
@@ -36,8 +39,8 @@ sealed class NavigationDrawerRoute(
 
     object Prescriptions : NavigationDrawerRoute(
         route = PrescriptionRoute.Main.route,
-        title = "Mes ordonnances",
-        icon = Icons.Filled.MedicalInformation,
+        title = "Mes traitements",
+        icon = Icons.Filled.Medication,
         color = EUPurple60,
         logo = R.drawable.medicapp_eu_purple
     )
@@ -45,7 +48,7 @@ sealed class NavigationDrawerRoute(
     object Messages : NavigationDrawerRoute(
         route = SideEffectRoute.Main.route,
         title = "Journal des effets",
-        icon = Icons.Filled.Message,
+        icon = Icons.Filled.Book,
         color = EURed60,
         logo = R.drawable.medicapp_eu_red
     )

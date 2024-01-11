@@ -43,7 +43,9 @@ import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrescriptionMainMenu(
@@ -51,6 +53,7 @@ fun PrescriptionMainMenu(
     onPrescription: (String) -> Unit,
     addPrescription: () -> Unit
 ) {
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -60,7 +63,7 @@ fun PrescriptionMainMenu(
                 ),
                 title = {
                     Text(
-                        "Ordonnances",
+                        "Traitements",
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -140,7 +143,7 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.duration.startDate.toString() + " - " + i.duration.endDate.toString(),
+                                    i.duration.startDate.format(formatter) + " - " + i.duration.endDate.format(formatter),
                                     fontSize = 15.sp
                                 )
                             }
