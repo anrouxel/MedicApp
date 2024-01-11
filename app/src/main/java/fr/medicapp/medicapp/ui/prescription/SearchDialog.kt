@@ -36,9 +36,10 @@ import fr.medicapp.medicapp.ui.theme.EUYellow110
 fun SearchDialog(
     options: List<OptionDialog>,
     onDismiss: () -> Unit,
-    onValidate: (OptionDialog) -> Unit
+    onValidate: (OptionDialog) -> Unit,
+    preQuery: String = ""
 ) {
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by remember { mutableStateOf(preQuery) }
     var selectedOption by remember { mutableStateOf<OptionDialog?>(null) }
     val filteredOptions = options.filter {
         it.title.contains(searchQuery, ignoreCase = true)

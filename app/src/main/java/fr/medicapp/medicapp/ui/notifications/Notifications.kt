@@ -44,7 +44,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Notifications(
-    notifications: TestNotification
+    notifications: TestNotification,
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(

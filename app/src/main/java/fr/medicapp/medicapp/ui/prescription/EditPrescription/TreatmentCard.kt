@@ -121,7 +121,8 @@ fun TreatmentCard(
                             medicationOpen = false
                             medication.value = it.title
                             treatment.medication = medications.find { medication -> medication.cisCode == it.id }
-                        }
+                        },
+                        preQuery = treatment.query
                     )
                 }
 
