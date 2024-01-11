@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -73,7 +74,9 @@ fun SED(
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = onClose,
+                        onClick = {
+                            onClose()
+                        },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -84,10 +87,40 @@ fun SED(
                             .weight(3f)
                     ) {
                         Text(
-                            text = "Fermer",
+                            text = "Annuler",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold
                         )
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.3f))
+
+                    Button(
+                        onClick = {
+                            //TODO
+                        },
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Row() {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "Supprimer",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }
@@ -166,7 +199,7 @@ fun SED(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "${sideeffect.date} à ${sideeffect.hour}h${sideeffect.minute}",
+                            text = "${sideeffect.date} à ${sideeffect.hour}h${if (sideeffect.minute!! < 9) "0"+sideeffect.minute else sideeffect.minute}",
                             fontSize = 18.sp
                         )
                     }

@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -57,9 +61,69 @@ fun Notifications(
             )
         },
         bottomBar = {
+            BottomAppBar(
+                containerColor = Color.White
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp)
+                        .weight(1f)
+                ) {
+                    Button(
+                        onClick = {
+                            //onClose() // à décommenter
+                        },
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Text(
+                            text = "Annuler",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.3f))
+
+                    Button(
+                        onClick = {
+                            //TODO
+                        },
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Row() {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "Supprimer",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
+            }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            /*FloatingActionButton(
                 onClick = { },
                 containerColor = EUYellow120
             ) {
@@ -68,7 +132,7 @@ fun Notifications(
                     contentDescription = "",
                     tint = Color.White
                 )
-            }
+            }*/
         }
     ) { innerPadding ->
             Column(
