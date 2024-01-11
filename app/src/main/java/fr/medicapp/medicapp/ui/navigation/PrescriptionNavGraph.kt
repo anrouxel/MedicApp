@@ -151,7 +151,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             Thread {
                 result.clear()
-                result.addAll(repositoryMedication.getAll())
+                result.addAll(repositoryMedication.getAllWithoutNotTreadings())
             }.start()
 
             val medication = remember {
@@ -189,6 +189,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                     when {
                                         label.startsWith("B-") -> {
                                             if (label.removePrefix("B-") == "Drug" && treatment.query.isNotEmpty()) {
+                                                treatment.query = treatment.query.trim()
+                                                treatment.posology = treatment.posology.trim()
                                                 state.treatments.add(treatment)
                                                 treatment = Treatment()
                                             }
@@ -213,6 +215,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                     }
                                 }
                                 if (treatment.query.isNotEmpty()) {
+                                    treatment.query = treatment.query.trim()
+                                    treatment.posology = treatment.posology.trim()
                                     state.treatments.add(treatment)
                                 }
                             },
@@ -240,6 +244,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                     when {
                                         label.startsWith("B-") -> {
                                             if (label.removePrefix("B-") == "Drug" && treatment.query.isNotEmpty()) {
+                                                treatment.query = treatment.query.trim()
+                                                treatment.posology = treatment.posology.trim()
                                                 state.treatments.add(treatment)
                                                 treatment = Treatment()
                                             }
@@ -264,6 +270,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                     }
                                 }
                                 if (treatment.query.isNotEmpty()) {
+                                    treatment.query = treatment.query.trim()
+                                    treatment.posology = treatment.posology.trim()
                                     state.treatments.add(treatment)
                                 }
                             },

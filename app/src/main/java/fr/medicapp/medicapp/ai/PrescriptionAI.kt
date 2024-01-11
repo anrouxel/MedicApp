@@ -21,6 +21,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.concurrent.CountDownLatch
 
 class PrescriptionAI(
     val context: Context
@@ -56,9 +57,7 @@ class PrescriptionAI(
         mHandle.post {
             loadModel()
             val visionText = recognizeText(imageUri)
-            Log.d(TAG, "Text recognized1 : $visionText")
             if (visionText != null) {
-                Log.d(TAG, "Text recognized2.")
                 val sentenceTokenized = runModel(visionText)
                 onPrediction(sentenceTokenized)
             }
@@ -69,15 +68,17 @@ class PrescriptionAI(
     @WorkerThread
     private fun recognizeText(imageUri: Uri): String? {
         var visionText: String? = null
+        val latch = CountDownLatch(1)
         val image = InputImage.fromFilePath(context, imageUri)
-        Tasks.await(
-            recognizer.process(image)
-                .addOnSuccessListener {
-                    visionText = it.text
-                    Log.d(TAG, "Text recognized : $visionText")
-                }
-        )
-        Log.d(TAG, "Text recognized0 : $visionText")
+        recognizer.process(image)
+            .addOnSuccessListener {
+                visionText = it.text
+                latch.countDown()
+            }
+            .addOnFailureListener {
+                latch.countDown()
+            }
+        latch.await()
         return visionText
     }
 

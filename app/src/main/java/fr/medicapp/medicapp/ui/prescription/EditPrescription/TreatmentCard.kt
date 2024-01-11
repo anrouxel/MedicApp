@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,6 +72,7 @@ fun TreatmentCard(
     onRemove: () -> Unit,
     medications: List<MedicationEntity>
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     var medication = remember { mutableStateOf(treatment.medication?.name ?: "") }
     var notification = remember { mutableStateOf(treatment.notification) }
     var duration = remember { mutableStateOf(treatment.duration?.toString() ?: "") }
@@ -267,7 +269,7 @@ fun TreatmentCard(
 
                         OutlinedTextField(
                             value = posology.value,
-                            textStyle = TextStyle(fontSize = 16.sp),
+                            textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                             onValueChange = {
                                 posology.value = it
                                 treatment.posology = it
@@ -345,7 +347,7 @@ fun TreatmentCard(
 
                         OutlinedTextField(
                             value = renew.value,
-                            textStyle = TextStyle(fontSize = 16.sp),
+                            textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                             onValueChange = {
                                 renew.value = it
                                 treatment.renew = it
@@ -394,7 +396,7 @@ fun TreatmentCard(
                     Spacer(modifier = Modifier.width(5.dp))
                     OutlinedTextField(
                         value = quantity.value,
-                        textStyle = TextStyle(fontSize = 16.sp),
+                        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                         onValueChange = {
                             quantity.value = it
                             treatment.quantity = it

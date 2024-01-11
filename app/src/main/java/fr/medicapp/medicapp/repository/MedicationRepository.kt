@@ -12,6 +12,10 @@ class MedicationRepository(
         return medicationDAO.getAll()
     }
 
+    fun getAllWithoutNotTreadings(): List<MedicationEntity> {
+        return medicationDAO.getAllWithoutNotTreadings()
+    }
+
     fun getOne(id: String): MedicationEntity {
         return medicationDAO.getOne(id)
     }
