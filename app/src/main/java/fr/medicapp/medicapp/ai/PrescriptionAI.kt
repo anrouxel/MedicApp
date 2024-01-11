@@ -2,10 +2,15 @@ package fr.medicapp.medicapp.ai
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.net.Uri
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import androidx.annotation.WorkerThread
+import com.google.android.gms.tasks.Tasks
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import fr.medicapp.medicapp.tokenization.Feature
 import fr.medicapp.medicapp.tokenization.FeatureConverter
 import org.pytorch.IValue
@@ -16,7 +21,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.concurrent.CountDownLatch
 
 class PrescriptionAI(
     val context: Context
@@ -39,22 +43,42 @@ class PrescriptionAI(
     private val PREDICT_ANS_NUM = 5
     private val NUM_LITE_THREADS = 4
 
-    /*val modelRunnable = Runnable {
-
-    }*/
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
     fun analyse(
-        visionText: String,
-        onPrediction: (MutableList<Pair<String, String>>) -> Unit
+        imageUri: Uri,
+        onPrediction: (MutableList<Pair<String, String>>) -> Unit,
+        onDismiss: () -> Unit
     ) {
         mBackgroundThread = HandlerThread("BackgroundThread")
         mBackgroundThread.start()
         mHandle = Handler(mBackgroundThread.looper)
         mHandle.post {
             loadModel()
-            val result = runModel(visionText)
-            onPrediction(result)
+            val visionText = recognizeText(imageUri)
+            Log.d(TAG, "Text recognized1 : $visionText")
+            if (visionText != null) {
+                Log.d(TAG, "Text recognized2.")
+                val sentenceTokenized = runModel(visionText)
+                onPrediction(sentenceTokenized)
+            }
+            onDismiss()
         }
+    }
+
+    @WorkerThread
+    private fun recognizeText(imageUri: Uri): String? {
+        var visionText: String? = null
+        val image = InputImage.fromFilePath(context, imageUri)
+        Tasks.await(
+            recognizer.process(image)
+                .addOnSuccessListener {
+                    visionText = it.text
+                    Log.d(TAG, "Text recognized : $visionText")
+                }
+        )
+        Log.d(TAG, "Text recognized0 : $visionText")
+        return visionText
     }
 
     @WorkerThread
@@ -75,7 +99,7 @@ class PrescriptionAI(
             }
 
             val moduleFileAbsoluteFilePath: String? = assetFilePath(context.assets)
-            mModule = Module.load(moduleFileAbsoluteFilePath)//, mutableMapOf(), Device.CPU)
+            mModule = Module.load(moduleFileAbsoluteFilePath) // , mutableMapOf(), Device.CPU)
             Log.v(TAG, "Model loaded.")
         }
     }
@@ -149,7 +173,10 @@ class PrescriptionAI(
 
             for (i in predictionsLabelList.indices) {
                 if (predictionsLabelList[i] != "O") {
-                    Log.d("AIModel", "Prediction: ${feature.origTokens[i]} -> ${predictionsLabelList[i]}")
+                    Log.d(
+                        "AIModel",
+                        "Prediction: ${feature.origTokens[i]} -> ${predictionsLabelList[i]}"
+                    )
                     sentenceTokenized.add(Pair(feature.origTokens[i], predictionsLabelList[i]))
                 }
             }
