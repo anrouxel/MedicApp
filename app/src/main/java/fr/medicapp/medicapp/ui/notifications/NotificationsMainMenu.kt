@@ -176,13 +176,13 @@ fun NotificationsMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsMainMenuPreview() {
-    var se = listOf(
+    var notif = listOf(
         TestNotification(
             "Doliprane",
             "Tous les jours",
-            mutableListOf("5h00, 10h00, 15h00")
+            mutableListOf("5h00", "10h00", "15h00")
         )
     )
     //var se = listOf<TestSideEffect>() /* TODO */
-    NotificationsMainMenu(se)
+    NotificationsMainMenu(notif)
 }
