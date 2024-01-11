@@ -47,7 +47,6 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
         NavigationDrawerRoute.Home,
         NavigationDrawerRoute.Prescriptions,
         NavigationDrawerRoute.Messages,
-        NavigationDrawerRoute.EffetsSecondaires,
         NavigationDrawerRoute.Notifications
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
