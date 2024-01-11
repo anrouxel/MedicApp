@@ -159,8 +159,8 @@ fun NotificationsMainMenu(
                         .wrapContentHeight(align = Alignment.CenterVertically)
                 ) {
                     Text(
-                        "Vous n'avez pas constaté d'effets secondaires.\nPour en ajouter un, cliquez sur\nle bouton en bas.",
-                        color = EUBlue100,
+                        "Vous n'avez pas activé de notifications.\nPour en ajouter un, cliquez sur\nle bouton en bas.",
+                        color = EUYellow100,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),

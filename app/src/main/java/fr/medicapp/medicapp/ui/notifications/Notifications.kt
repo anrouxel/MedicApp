@@ -244,9 +244,9 @@ fun Notifications(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         if (heuresSize > 5) {
-                            for (i in notifications.hours.slice(0..4)) {
+                            for (i in 0..4) {
                                 Text(
-                                    "- $i",
+                                    "- ${notifications.hours[i]}:${notifications.minutes[i]}",
                                     fontSize = 18.sp
                                 )
                             }
@@ -255,9 +255,9 @@ fun Notifications(
                                 fontSize = 18.sp
                             )
                         } else {
-                            for (i in notifications.hours) {
+                            for (i in 0..notifications.hours.size) {
                                 Text(
-                                    "- $i",
+                                    "- ${notifications.hours[i]}:${notifications.minutes[i]}",
                                     fontSize = 18.sp
                                 )
                             }
