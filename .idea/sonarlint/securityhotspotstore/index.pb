@@ -62,7 +62,7 @@ Aapp/src/main/java/fr/medicapp/medicapp/ui/components/TextField.kt,7/b/7b49869b
 l
 <app/src/main/java/fr/medicapp/medicapp/ui/home/HomeScreen.kt,f/b/fbdab33ccd1ab6cb074877cfc5b6fa0cacf89990
 w
-Gapp/src/main/java/fr/medicapp/medicapp/ui/home/NavigationDrawerRoute.kt,c/c/ccb01acea6846d233a5dbaca00d79acd4a50d942
+Gapp/src/main/java/fr/medicapp/medicapp/ui/home/NavigationDrawerRoute.kt,c\c\ccb01acea6846d233a5dbaca00d79acd4a50d942
 h
 8app/src/main/java/fr/medicapp/medicapp/ui/theme/Color.kt,3/1/31e832e27b1fa14948592747f562e2c461b60d5a
 h
@@ -229,3 +229,5 @@ Lapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsEdit.kt,5
 Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\f\6f2ca82311b02ea4da34ab77b3b1c93565ad3b4c
 
 Oapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsService.kt,e\9\e9f56ad1c1bab1412b9ece758beeeb474e2a03d7
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/NotificationNavGraph.kt,a\6\a6b04e38d487c02ea067de367664a93b236d3031

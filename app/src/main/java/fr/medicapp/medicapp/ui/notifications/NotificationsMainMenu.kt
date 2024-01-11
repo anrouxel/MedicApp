@@ -144,7 +144,7 @@ fun NotificationsMainMenu(
                                 Spacer(modifier = Modifier.width(5.dp))
 
                                 Text(
-                                    i.hours.toString().replace("[", "").replace("]", ""),
+                                    i.hours.zip(i.minutes).map { (heure, minute) -> "${heure}h${if (minute<9) "0$minute" else minute }" }.toString().replace("[", "").replace("]", ""),
                                     fontSize = 15.sp
                                 )
                             }
@@ -159,8 +159,8 @@ fun NotificationsMainMenu(
                         .wrapContentHeight(align = Alignment.CenterVertically)
                 ) {
                     Text(
-                        "Vous n'avez pas constaté d'effets secondaires.\nPour en ajouter un, cliquez sur\nle bouton en bas.",
-                        color = EUBlue100,
+                        "Vous n'avez pas créé de notifications.\nPour en créer une, cliquez sur\nle bouton en bas.",
+                        color = EUYellow100,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
@@ -180,10 +180,10 @@ private fun NotificationsMainMenuPreview() {
         TestNotification(
             "Doliprane",
             "Tous les jours",
-            mutableListOf(8, 12, 18),
-            mutableListOf(0, 0, 0)
+            mutableListOf(5,10,15),
+            mutableListOf(0,0,0)
         )
     )
-    //var se = listOf<TestSideEffect>() /* TODO */
+    //notif = listOf<TestNotification>()
     NotificationsMainMenu(notif)
 }

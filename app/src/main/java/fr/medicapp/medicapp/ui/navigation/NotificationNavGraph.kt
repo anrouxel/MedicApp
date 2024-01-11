@@ -41,6 +41,7 @@ import fr.medicapp.medicapp.ui.sideeffectsdiary.SED
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
 import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
+import fr.medicapp.medicapp.viewModel.SharedNotificationViewModel
 import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
 import java.time.LocalDate
 
@@ -109,10 +110,10 @@ fun NavGraphBuilder.notificationNavGraph(
             if (sideEffect != null) {
                 Notifications(
                     notifications = TestNotification(
-                        "",
-                        "",
-                        mutableListOf(),
-                        mutableListOf()
+                        "Doliprane",
+                        "Tout les jours",
+                        mutableListOf(16),
+                        mutableListOf(45)
                     )
                 )
             }
@@ -120,7 +121,7 @@ fun NavGraphBuilder.notificationNavGraph(
 
         composable(route = NotificationRoute.AddNotification.route) {
             val viewModel =
-                it.sharedViewModel<SharedSideEffectViewModel>(navController = navController)
+                it.sharedViewModel<SharedNotificationViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
             val db = AppDatabase.getInstance(LocalContext.current)
@@ -139,15 +140,9 @@ fun NavGraphBuilder.notificationNavGraph(
             }
 
             NotificationsEdit(
-                notification = TestNotification(
-                    "",
-                    "",
-                    mutableListOf(),
-                    mutableListOf()
-                ),
-            ) {
-
-            }
+                notification = state,
+                {}
+            )
         }
     }
 }

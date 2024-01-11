@@ -9,7 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +39,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,7 +57,9 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
 import fr.medicapp.medicapp.MainActivity
+import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
+import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
@@ -65,13 +70,14 @@ import fr.medicapp.medicapp.ui.theme.EUYellow110
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
-    notification: TestNotification,
+    notification: Notification,
     onConfirm: () -> Unit
 ) {
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
     var medicationName by remember { mutableStateOf(notification.medicationName) }
+    var frequency by remember { mutableStateOf(notification.frequency) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -240,8 +246,8 @@ fun NotificationsEdit(
                         value = medicationName,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
                         onValueChange = {
-                            /*nomMedicament = it
-                            sideeffects.medicament = it*/
+                            medicationName = it
+                            notification.medicationName = it
                         },
                         label = { Text("Nom du médicament") },
                         shape = RoundedCornerShape(20),
@@ -265,7 +271,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp),
+                    .height(height = 85.dp),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -279,16 +285,17 @@ fun NotificationsEdit(
                         .padding(10.dp)
                 ) {
                     OutlinedTextField(
-                        /*modifier = Modifier.clickable{
-                            //
-                        },*/
+                        modifier = Modifier.fillMaxWidth(),
                         enabled = true,
-                        value = "",
+                        value = frequency,
                         textStyle = TextStyle(
                             fontSize = 16.sp,
                             color = Color.White
                         ),
-                        onValueChange = { },
+                        onValueChange = {
+                            frequency = it
+                            notification.frequency = it
+                        },
                         label = { Text("Fréquence de rappel") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -339,9 +346,57 @@ fun NotificationsEdit(
                             minutes.value = notification.minutes[i]
                         }
 
-                        TimeCard(
-                            hours.value,
-                            minutes.value
+                        var frequencyTimeOpen = remember { mutableStateOf(false) }
+                        var frequencyTimeState = rememberTimePickerState(
+                            is24Hour = true,
+                        )
+
+                        if (frequencyTimeOpen.value) {
+                            TimePickerModal(
+                                state = frequencyTimeState,
+                                onDismissRequest = {
+                                    frequencyTimeOpen.value = false
+                                },
+                                onConfirm = {
+                                    notification.hours[i] = frequencyTimeState.hour
+                                    notification.minutes[i] = frequencyTimeState.minute
+                                    frequencyTimeOpen.value = false
+                                }
+                            )
+                        }
+
+                        OutlinedTextField(
+                            modifier = Modifier.clickable{
+                                frequencyTimeOpen.value = true
+                            }.fillMaxWidth(),
+                            enabled = false,
+                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${notification.minutes[i]}" else "",
+                            textStyle = TextStyle(
+                                fontSize = 16.sp,
+                                color = Color.White
+                            ),
+                            onValueChange = { },
+                            shape = RoundedCornerShape(20),
+                            trailingIcon = {
+                                IconButton(onClick = {
+                                    notification.hours.removeAt(i)
+                                    notification.minutes.removeAt(i)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.DeleteForever,
+                                        contentDescription = "",
+                                        tint = Color.White
+                                    )
+                                }
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedLabelColor = Color.White,
+                                unfocusedLabelColor = Color.White,
+                                focusedBorderColor = Color.White,
+                                unfocusedBorderColor = Color.White,
+                                disabledBorderColor = Color.White,
+                                disabledLabelColor = Color.White,
+                            )
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
@@ -351,7 +406,8 @@ fun NotificationsEdit(
                         icone = Icons.Filled.Add,
                         color = EUYellow100,
                         onClick = {
-                            //sideeffects.effetsConstates.add("")
+                            notification.hours.add(0)
+                            notification.minutes.add(0)
                         }
                     )
                 }
@@ -364,12 +420,12 @@ fun NotificationsEdit(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsEditPreview() {
-    var notif = TestNotification(
+    var notif = Notification(
+        "Rappel doliprane",
         "Doliprane",
         "Tous les jours",
         mutableListOf(5, 10, 15, 20),
         mutableListOf(0, 15, 30, 45)
     )
-    //var se = listOf<TestSideEffect>()
     NotificationsEdit(notif, {})
 }
