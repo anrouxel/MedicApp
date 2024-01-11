@@ -145,6 +145,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun NavigationDrawerScreenPreview() {
