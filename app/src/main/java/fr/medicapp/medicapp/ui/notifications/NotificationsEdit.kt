@@ -55,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.NavHostController
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
 import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.model.Notification
@@ -160,7 +161,7 @@ fun NotificationsEdit(
                             }*/
                             if (alarmManager.canScheduleExactAlarms()){
                                 val dateFormat = SimpleDateFormat("hhmm")
-                                for (heure in 0..notification.hours.size){
+                                for (heure in 0 until notification.hours.size){
                                     val dateString = "${notification.hours[heure]}:${notification.minutes[heure]}"
                                     val date = dateFormat.parse(dateString)
                                     alarmManager.setExactAndAllowWhileIdle(
@@ -173,6 +174,7 @@ fun NotificationsEdit(
                                     )
                                 }
                             }
+                            onConfirm
                         },
                         enabled = true,
                         shape = RoundedCornerShape(20),

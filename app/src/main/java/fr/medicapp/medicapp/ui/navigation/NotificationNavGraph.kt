@@ -82,7 +82,10 @@ fun NavGraphBuilder.notificationNavGraph(
             }
 
             NotificationsMainMenu(
-                notifications = listOf()
+                notifications = listOf(),
+                onNavigation = {
+                    navController.navigate(NotificationRoute.AddNotification.route)
+                }
             )
         }
 
@@ -141,7 +144,9 @@ fun NavGraphBuilder.notificationNavGraph(
 
             NotificationsEdit(
                 notification = state,
-                {}
+                onConfirm = {
+                    navController.navigate(NotificationRoute.Main.route)
+                }
             )
         }
     }
