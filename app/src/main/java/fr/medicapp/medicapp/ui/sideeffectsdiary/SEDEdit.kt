@@ -22,6 +22,9 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -56,6 +59,8 @@ import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.DatePickerModal
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
+import fr.medicapp.medicapp.ui.theme.EUGreen100
+import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
@@ -119,10 +124,68 @@ fun SEDEdit(
             )
         },
         bottomBar = {
+            BottomAppBar(
+                containerColor = Color.White
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp)
+                        .weight(1f)
+                ) {
+                    Button(
+                        onClick = {
+                            //onCancel()
+                        },
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Text(
+                            text = "Annuler",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.3f))
+
+                    Button(
+                        onClick = {
+                            /*if (prescription.treatments.size > 0 && prescription.treatments.all { it.medication != "" && it.posology != "" && it.quantity != "" && it.renew != "" && it.duration != null }) {
+                                onConfirm()
+                            } else {
+                                errorDialogOpen.value = true
+                            }*/
+                        },
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EUGreen100,
+                            contentColor = Color.White,
+                            disabledContainerColor = EUGreen40,
+                            disabledContentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Text(
+                            text = "Valider",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
 
         },
         floatingActionButton = {
-            FloatingActionButton(
+            /*FloatingActionButton(
                 onClick = {
                     // Vérification des champs
                     if (nomMedicament != "" && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
@@ -138,8 +201,7 @@ fun SEDEdit(
                     contentDescription = "",
                     tint = Color.White
                 )
-            }
-
+            }*/
         }
     ) {innerPadding ->
         Column(
