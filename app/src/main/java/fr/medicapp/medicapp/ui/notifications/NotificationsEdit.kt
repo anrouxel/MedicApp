@@ -3,7 +3,11 @@ package fr.medicapp.medicapp.ui.notifications
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -48,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
+import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -55,7 +60,7 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
@@ -146,6 +151,20 @@ fun NotificationsEdit(
                             } else {
                                 errorDialogOpen.value = true
                             }*/
+                            if (alarmManager.canScheduleExactAlarms()){
+                                val dateFormat = SimpleDateFormat("hhmm")
+                                for (heure in notification.heures){
+                                    val date = dateFormat.parse(heure)
+                                    alarmManager.setExactAndAllowWhileIdle(
+                                        AlarmManager.RTC_WAKEUP,
+                                        date.toInstant().toEpochMilli(),
+                                        TaskStackBuilder.create(context).run {
+                                            addNextIntentWithParentStack(Intent(context,MainActivity::class.java))
+                                            getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                                        }
+                                    )
+                                }
+                            }
                         },
                         enabled = true,
                         shape = RoundedCornerShape(20),
@@ -370,7 +389,7 @@ fun NotificationsEdit(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsEditPreview() {
