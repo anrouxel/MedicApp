@@ -54,7 +54,7 @@ sealed class NavigationDrawerRoute(
     )
 
     object Notifications : NavigationDrawerRoute(
-        route = NotificationRoute.AddNotification.route,
+        route = NotificationRoute.Main.route,
         title = "Gérer notifications",
         icon = Icons.Filled.RingVolume,
         color = EUYellow60,
