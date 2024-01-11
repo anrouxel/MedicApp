@@ -2,12 +2,13 @@ package fr.medicapp.medicapp.model
 
 import androidx.compose.runtime.mutableStateListOf
 import fr.medicapp.medicapp.entity.SideEffectEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import java.time.LocalDate
 import java.util.UUID
 
 data class SideEffect(
     var id: String = "",
-    var medicament: String = "",
+    var medicament: TreatmentEntity? = null,
     var date: LocalDate? = null,
     var hour: Int? = null,
     var minute: Int? = null,
@@ -17,7 +18,7 @@ data class SideEffect(
     fun toEntity(): SideEffectEntity {
         return SideEffectEntity(
             id = UUID.randomUUID().toString(),
-            medicament = medicament,
+            medicament = medicament!!.id,
             date = date!!,
             hour = hour!!,
             minute = minute!!,

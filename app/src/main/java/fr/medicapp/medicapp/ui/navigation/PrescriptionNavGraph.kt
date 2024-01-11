@@ -131,6 +131,9 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             Prescription(
                 consultation = prescription,
+                onClose = {
+                    navController.popBackStack()
+                },
             )
         }
 

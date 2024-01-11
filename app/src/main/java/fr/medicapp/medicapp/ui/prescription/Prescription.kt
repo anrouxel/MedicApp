@@ -60,21 +60,24 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Prescription(consultation : MutableList<TreatmentEntity>) {
+fun Prescription(
+    consultation : MutableList<TreatmentEntity>,
+    onClose: () -> Unit
+) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            /*CenterAlignedTopAppBar(
                 colors = topAppBarColors(
                     containerColor = Color.White,
                     titleContentColor = Color.Black,
                 ),
                 title = {
                     Text(
-                        "ORD0001",
+                        "Treatment",
                         fontWeight = FontWeight.Bold
                     )
                 }
-            )
+            )*/
         },
         bottomBar = {
             BottomAppBar(
@@ -87,7 +90,7 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = onClose,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -103,53 +106,6 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5f)
-                    ) {}
-                    Button(
-                        onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(20),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = EUOrange100,
-                            contentColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(3f)
-                    ) {
-                        Text(
-                            text = "Éditer",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5f)
-                    ) {}
-                    Button(
-                        onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(20),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = EUGreen100,
-                            contentColor = Color.White,
-                            disabledContainerColor = EUGreen40,
-                            disabledContentColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(3f)
-                    ) {
-                        Text(
-                            text = "Valider",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
                 }
             }
         }
@@ -160,7 +116,7 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            ElevatedCard(
+            /*ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
                 ),
@@ -205,7 +161,7 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                         )
                     }
                 }
-            }
+            }*/
             Spacer(modifier = Modifier.height(15.dp))
 
             // Itération de la liste des médicaments
@@ -401,5 +357,5 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
 @Composable
 private fun PrescriptionPreview() {
     var tab = mutableListOf<TreatmentEntity>()
-    Prescription(tab)
+    Prescription(tab, {})
 }

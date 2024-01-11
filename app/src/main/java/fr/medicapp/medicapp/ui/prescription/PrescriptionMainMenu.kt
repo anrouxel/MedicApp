@@ -140,7 +140,7 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.duration.toString(),
+                                    i.duration.startDate.toString() + " - " + i.duration.endDate.toString(),
                                     fontSize = 15.sp
                                 )
                             }

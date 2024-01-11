@@ -53,6 +53,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.option.OptionDialog
+import com.maxkeppeler.sheets.option.models.DisplayMode
+import com.maxkeppeler.sheets.option.models.OptionConfig
+import com.maxkeppeler.sheets.option.models.OptionSelection
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
@@ -78,10 +84,12 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun SEDEdit(
     sideeffects : SideEffect,
-    onConfirm: () -> Unit
+    treatments: List<TreatmentEntity>,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit
 ) {
 
-    var nomMedicament by remember { mutableStateOf(sideeffects.medicament) }
+    var nomMedicament by remember { mutableStateOf(sideeffects.medicament?.medication ?: "") }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -135,7 +143,7 @@ fun SEDEdit(
                 ) {
                     Button(
                         onClick = {
-                            //onCancel()
+                            onCancel()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -157,11 +165,11 @@ fun SEDEdit(
 
                     Button(
                         onClick = {
-                            /*if (prescription.treatments.size > 0 && prescription.treatments.all { it.medication != "" && it.posology != "" && it.quantity != "" && it.renew != "" && it.duration != null }) {
+                            if (nomMedicament != null && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
-                            }*/
+                            }
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -230,13 +238,28 @@ fun SEDEdit(
                         .fillMaxSize()
                         .padding(10.dp),
                 ) {
+                    var treatmentOpen by remember { mutableStateOf(false) }
+
+                    if (treatmentOpen) {
+                        OptionDialog(
+                            state = rememberUseCaseState(true, onCloseRequest = {
+                                treatmentOpen = false
+                            }),
+                            selection = OptionSelection.Single(
+                                treatments.map { treatment: TreatmentEntity -> treatment.toOption() }
+                            ) { index, _ ->
+                                nomMedicament = treatments[index].medication
+                                sideeffects.medicament = treatments[index]
+                            },
+                            config = OptionConfig(mode = DisplayMode.LIST)
+                        )
+                    }
+                    
                     OutlinedTextField(
+                        enabled = false,
                         value = nomMedicament,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
-                        onValueChange = {
-                            nomMedicament = it
-                            sideeffects.medicament = it
-                        },
+                        onValueChange = {},
                         label = { Text("Nom du médicament") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -244,8 +267,12 @@ fun SEDEdit(
                             unfocusedLabelColor = Color.White,
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
+                            disabledBorderColor = Color.White,
+                            disabledLabelColor = Color.White,
                         ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().clickable {
+                            treatmentOpen = true
+                        }
                     )
                 }
             }
@@ -325,6 +352,8 @@ fun SEDEdit(
                                 unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color.White,
                                 unfocusedBorderColor = Color.White,
+                                disabledBorderColor = Color.White,
+                                disabledLabelColor = Color.White,
                             ),
                             modifier = Modifier.width(200.dp).clickable{
                                 datePrescriptionOpen = true
@@ -347,7 +376,9 @@ fun SEDEdit(
                                 },
                                 onConfirm = {
                                     sideeffects.hour = frequencyTimeState.hour
+                                    Log.d("Hour", sideeffects.hour.toString())
                                     sideeffects.minute = frequencyTimeState.minute
+                                    Log.d("Minute", sideeffects.minute.toString())
                                     frequencyTimeOpen.value = false
                                 }
                             )
@@ -378,6 +409,8 @@ fun SEDEdit(
                                 unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color.White,
                                 unfocusedBorderColor = Color.White,
+                                disabledBorderColor = Color.White,
+                                disabledLabelColor = Color.White,
                             )
                         )
                     }
@@ -432,7 +465,7 @@ fun SEDEdit(
                             },
                             shape = RoundedCornerShape(20),
                             trailingIcon = {
-                                IconButton(onClick = { sideeffects.effetsConstates.drop(i) }) {
+                                IconButton(onClick = { sideeffects.effetsConstates.removeAt(i) }) {
                                     Icon(
                                         imageVector = Icons.Filled.DeleteForever,
                                         contentDescription = "",
@@ -470,6 +503,7 @@ fun SEDEdit(
 @Composable
 private fun SEDEditPreview() {
     var se = SideEffect()
+    var treatments = listOf<TreatmentEntity>()
     //var se = listOf<TestSideEffect>()
-    SEDEdit(se, {})
+    SEDEdit(se, treatments, {}, {})
 }
