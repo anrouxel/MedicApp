@@ -121,14 +121,14 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                             )
                         }
                     },
-                    actions = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                    /*actions = {
+                        IconButton(onClick = {  }) {
                             Icon(
                                 imageVector = Icons.Filled.Notifications,
                                 contentDescription = "Notifications"
                             )
                         }
-                    }
+                    }*/
                 )
             },
         ) { innerPadding ->
