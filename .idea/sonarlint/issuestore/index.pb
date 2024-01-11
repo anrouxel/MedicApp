@@ -95,3 +95,5 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/NotificationNavGraph.kt,a\6\a6b04e38d487c02ea067de367664a93b236d3031
+w
+Gapp/src/main/java/fr/medicapp/medicapp/ui/home/NavigationDrawerRoute.kt,c\c\ccb01acea6846d233a5dbaca00d79acd4a50d942
