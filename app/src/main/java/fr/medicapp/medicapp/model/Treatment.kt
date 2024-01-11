@@ -15,6 +15,13 @@ data class Treatment(
     var notification: Boolean = false,
     var query: String = ""
 ) {
+    fun toOptionDialog(): OptionDialog {
+        return OptionDialog(
+            id = id,
+            title = medication!!.name,
+            description = posology,
+        )
+    }
 
     fun toEntity(): TreatmentEntity {
         return TreatmentEntity(

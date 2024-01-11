@@ -25,14 +25,6 @@ data class TreatmentEntity(
 
     var notification: Boolean = false
 ) {
-    fun toOptionDialog(): OptionDialog {
-        return OptionDialog(
-            id = id,
-            title = medication,
-            description = posology,
-        )
-    }
-
     fun toTreatment(repositoryMedication: MedicationRepository): Treatment {
         return Treatment(
             id = id,

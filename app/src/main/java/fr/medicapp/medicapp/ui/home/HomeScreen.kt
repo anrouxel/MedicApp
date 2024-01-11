@@ -76,7 +76,7 @@ fun HomeScreen(
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Signaler un effet indesirable")
+            Text(text = "Signaler un effet indésirable")
         }
     }
 }

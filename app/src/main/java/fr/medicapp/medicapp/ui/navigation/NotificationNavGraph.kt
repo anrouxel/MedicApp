@@ -24,6 +24,7 @@ import fr.medicapp.medicapp.entity.SideEffectEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.SideEffect
+import fr.medicapp.medicapp.repository.MedicationRepository
 import fr.medicapp.medicapp.repository.PrescriptionRepository
 import fr.medicapp.medicapp.repository.PrescriptionWithTreatmentRepository
 import fr.medicapp.medicapp.repository.SideEffectRepository
@@ -57,13 +58,14 @@ fun NavGraphBuilder.notificationNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
             var result: MutableList<SideEffect> = mutableListOf()
             Thread {
                 val sideEffectEntityTmp = repositorySideEffect.getAll()
 
                 val sideEffects = sideEffectEntityTmp.map {
-                    val treatmentTmp = repositoryTreatment.getOne(it.medicament)
+                    val treatmentTmp = repositoryTreatment.getOne(it.medicament).toTreatment(repositoryMedication)
                     val sideEffectTmp = it.toSideEffect()
                     sideEffectTmp.medicament = treatmentTmp
                     sideEffectTmp
@@ -94,12 +96,13 @@ fun NavGraphBuilder.notificationNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
             var result: MutableList<SideEffect> = mutableListOf()
 
             Thread {
                 val sideEffectEntityTmp = repositorySideEffect.getOne(id)
-                val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament)
+                val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament).toTreatment(repositoryMedication)
                 val sideEffectTmp = sideEffectEntityTmp.toSideEffect()
                 sideEffectTmp.medicament = treatmentTmp
                 result.clear()
