@@ -26,4 +26,5 @@ object Graph {
     const val HOME = "home_graph"
     const val PRESCRIPTION = "prescription_graph"
     const val SIDE_EFFECTS = "add_side_effects_graph"
+    const val NOTIFICATION = "notification_graph"
 }
