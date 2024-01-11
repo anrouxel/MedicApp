@@ -42,8 +42,6 @@ Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/HomeNavGraph.kt,9/4/944f1
 „
 Tapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/AddButton.kt,4\0\40b2ec264ebedd160ee7b9a305ea6ccfae3e8262
 ˆ
-Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/FrequencyCard.kt,9/d/9d2dfe22363cb9ea19eefeaf30f833f9d04ccbf2
-ˆ
 Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/TreatmentCard.kt,3/e/3e5e632a44454c19e92df7a400c986e2901e37c6
 z
 Japp/src/main/java/fr/medicapp/medicapp/ui/prescription/ListConsultation.kt,8/f/8f79d6ddac60027a75b2ccb36d1e9bd865dd56a2
@@ -76,7 +74,7 @@ g
 x
 Happ/src/main/java/fr/medicapp/medicapp/ui/home/NavigationDrawerScreen.kt,6/5/659c6e03df4745021c17ecbaf23a9ad1983134f2
 P
- app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 Y
 ).github/ISSUE_TEMPLATE/feature_request.md,6/7/67c0231b0ea83057a5f5c051eb28641a29af34a6
 T
@@ -189,8 +187,6 @@ Oapp/src/test/java/fr/medicapp/medicapp/repository/PrescriptionRepositoryTest.kt
 Lapp/src/test/java/fr/medicapp/medicapp/repository/TreatmentRepositoryTest.kt,b/d/bd39c22defc4a731cd8b2aa82eb38b563473b700
 w
 Gapp/src/test/java/fr/medicapp/medicapp/repository/UserRepositoryTest.kt,b/a/ba0c3887196c9c13783a81e79e41eb2916c24cde
-l
-<app/src/main/java/fr/medicapp/medicapp/database/IDatabase.kt,7/4/7437ece252bb1303434e9431c1d805f821fc671e
 o
 ?app/src/main/java/fr/medicapp/medicapp/entity/DurationEntity.kt,5/6/563cadc2e1717920db777595c834f5a57815e8d9
 ˆ
@@ -229,3 +225,7 @@ x
 Happ/src/main/java/fr/medicapp/medicapp/ui/notifications/Notifications.kt,d\a\dac2b14baf785cb5c1053b1724ad1a1023646bff
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsEdit.kt,5\f\5f63227c8045debecf20b33551a9461848735636
+{
+Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\f\6f2ca82311b02ea4da34ab77b3b1c93565ad3b4c
+
+Oapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsService.kt,e\9\e9f56ad1c1bab1412b9ece758beeeb474e2a03d7

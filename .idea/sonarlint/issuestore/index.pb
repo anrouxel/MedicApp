@@ -23,8 +23,6 @@ e
 5app/src/main/java/fr/medicapp/medicapp/dao/UserDAO.kt,6/8/68c621b61a4f4f9dd09b2ae79af810b0855c43df
 j
 :app/src/main/java/fr/medicapp/medicapp/dao/TreatmentDAO.kt,f/1/f19aaa8214dc77f537dee40b329af7c38c6dc879
-l
-<app/src/main/java/fr/medicapp/medicapp/database/IDatabase.kt,7/4/7437ece252bb1303434e9431c1d805f821fc671e
 ˆ
 Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/TreatmentCard.kt,3/e/3e5e632a44454c19e92df7a400c986e2901e37c6
 z
@@ -89,3 +87,9 @@ Papp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsMainMenu.k
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 D
 app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+{
+Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\f\6f2ca82311b02ea4da34ab77b3b1c93565ad3b4c
+
+Oapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsService.kt,e\9\e9f56ad1c1bab1412b9ece758beeeb474e2a03d7
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
