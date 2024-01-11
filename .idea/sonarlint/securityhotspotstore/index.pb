@@ -1,6 +1,6 @@
 
 D
-app/build.gradle.kts,d/2/d2a4383452aad84a18429a5844d31330a012a9e6
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
 S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
 Å
@@ -30,17 +30,17 @@ e
 u
 Eapp/src/main/java/fr/medicapp/medicapp/repository/DoctorRepository.kt,1/0/1038201eb97292c5eeecfc178e13a96c14c8939f
 z
-Japp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription.kt,1/3/136b28d636d27667ea010650d2f405566414e569
+Japp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription.kt,1\3\136b28d636d27667ea010650d2f405566414e569
 v
-Fapp/src/main/java/fr/medicapp/medicapp/ui/prescription/Prescription.kt,b/d/bd50e15b3b0a7e52f6eaed7bb877711a1fb89d91
+Fapp/src/main/java/fr/medicapp/medicapp/ui/prescription/Prescription.kt,b\d\bd50e15b3b0a7e52f6eaed7bb877711a1fb89d91
 {
-Kapp/src/main/java/fr/medicapp/medicapp/ui/navigation/RootNavigationGraph.kt,d/b/dbc03e33c132b6cede60b40677f5c598e0352ee7
+Kapp/src/main/java/fr/medicapp/medicapp/ui/navigation/RootNavigationGraph.kt,d\b\dbc03e33c132b6cede60b40677f5c598e0352ee7
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionNavGraph.kt,0/a/0a4fd3a4b7b64a59d2d009514797e7f1ec5f52b1
 t
 Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/HomeNavGraph.kt,9/4/944f1b39a76b674a5f09d5a4fc661da49a84b42d
 Ñ
-Tapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/AddButton.kt,4/0/40b2ec264ebedd160ee7b9a305ea6ccfae3e8262
+Tapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/AddButton.kt,4\0\40b2ec264ebedd160ee7b9a305ea6ccfae3e8262
 à
 Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/FrequencyCard.kt,9/d/9d2dfe22363cb9ea19eefeaf30f833f9d04ccbf2
 à
@@ -48,9 +48,9 @@ Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/Treatme
 z
 Japp/src/main/java/fr/medicapp/medicapp/ui/prescription/ListConsultation.kt,8/f/8f79d6ddac60027a75b2ccb36d1e9bd865dd56a2
 f
-6app/src/main/java/fr/medicapp/medicapp/MainActivity.kt,6/9/69f8dd06c87c9db45c59088da5c18d2a480fc647
+6app/src/main/java/fr/medicapp/medicapp/MainActivity.kt,6\9\69f8dd06c87c9db45c59088da5c18d2a480fc647
 Ç
-Rapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedAddPrescriptionViewModel.kt,3/1/3153a49fc41a4a742f860d7fff0ef29e865b7ebc
+Rapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedAddPrescriptionViewModel.kt,3\1\3153a49fc41a4a742f860d7fff0ef29e865b7ebc
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/sideeffectsdiary/TestSideEffect.kt,5/1/51f52bd134313b067d701f1bb862dd70a4a56eec
 n
@@ -72,7 +72,7 @@ h
 g
 7app/src/main/java/fr/medicapp/medicapp/ui/theme/Type.kt,a/8/a837218a66465cb834b48c2c4a50dd9f5ac2a61b
 @
-build.gradle.kts,d/b/dbcff70658daf80b53ce624f6adcaa529df5ed8d
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 x
 Happ/src/main/java/fr/medicapp/medicapp/ui/home/NavigationDrawerScreen.kt,6/5/659c6e03df4745021c17ecbaf23a9ad1983134f2
 P
@@ -146,9 +146,9 @@ Aapp/src/main/java/fr/medicapp/medicapp/ui/signupSignin/SignUp2.kt,b/1/b18caf49
 q
 Aapp/src/main/java/fr/medicapp/medicapp/ui/signupSignin/SignUp1.kt,6/f/6f434938009600cbf2f030a17d12399b98f60cb5
 p
-@app/src/main/java/fr/medicapp/medicapp/ui/signupSignin/SignIn.kt,b/f/bf3c3ed6ebfc6f71a832cb30b0bd5b56160e60b5
+@app/src/main/java/fr/medicapp/medicapp/ui/signupSignin/SignIn.kt,b\f\bf3c3ed6ebfc6f71a832cb30b0bd5b56160e60b5
 Ä
-Papp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsMainMenu.kt,9/b/9b94ac70f3ca1a25e5e3ad33eb4254e2d719a785
+Papp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsMainMenu.kt,9\b\9b94ac70f3ca1a25e5e3ad33eb4254e2d719a785
 y
 Iapp/src/main/java/fr/medicapp/medicapp/ui/sideeffectsdiary/SEDMainMenu.kt,d/b/db2136b422885919d6bd5ab83fd7bef61c059a8f
 w
@@ -170,7 +170,7 @@ Napp/src/main/java/fr/medicapp/medicapp/ui/prescription/DateRangePickerModal.kt
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/sideeffectsdiary/SEDEdit.kt,d/d/ddb16dfe4ff1765d087a3da2f615b892219b0301
 Ä
-Papp/src/main/java/fr/medicapp/medicapp/viewModel/signupSignin/SignInViewModel.kt,c/e/ce246e8dfb9e73c4697ac1a3dc19434987225aa9
+Papp/src/main/java/fr/medicapp/medicapp/viewModel/signupSignin/SignInViewModel.kt,c\e\ce246e8dfb9e73c4697ac1a3dc19434987225aa9
 y
 Iapp/src/main/java/fr/medicapp/medicapp/ui/prescription/DatePickerModal.kt,9/3/93ccb19129a685ca26af9aaa64ef8c9bd69ec310
 q
@@ -223,3 +223,9 @@ h
 8app/src/main/java/fr/medicapp/medicapp/model/Duration.kt,8/b/8bd549f8861a511a432a28572f031e42d1cbee13
 f
 6app/src/main/java/fr/medicapp/medicapp/model/Doctor.kt,7/3/73a0c7304054cc5a13d1e3b198e48d6f56399848
+z
+Japp/src/main/java/fr/medicapp/medicapp/ui/navigation/SideEffectNavGraph.kt,0\4\04ddf44da726de57ea9fb808d1eb3c9a09ade93f
+x
+Happ/src/main/java/fr/medicapp/medicapp/ui/notifications/Notifications.kt,d\a\dac2b14baf785cb5c1053b1724ad1a1023646bff
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsEdit.kt,5\f\5f63227c8045debecf20b33551a9461848735636
