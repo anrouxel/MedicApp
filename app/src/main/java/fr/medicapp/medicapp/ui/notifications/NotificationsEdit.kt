@@ -67,6 +67,7 @@ import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
+import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.S)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -164,12 +165,13 @@ fun NotificationsEdit(
                             if (alarmManager.canScheduleExactAlarms()){
                                 val dateFormat = SimpleDateFormat("hhmm")
                                 for (heure in 0 until notification.hours.size){
-                                    val dateString =
-                                        "${notification.hours[heure]}:${notification.minutes[heure]}"
-                                    val date = dateFormat.parse(dateString)
+                                    /*//val dateString =
+                                        //"${notification.hours[heure]}:${notification.minutes[heure]}"
+                                    //val date = dateFormat.parse(dateString)
+                                    val date = LocalTime.of(notification.hours[heure],notification.minutes[heure])
                                     alarmManager.setExactAndAllowWhileIdle(
                                         AlarmManager.RTC_WAKEUP,
-                                        date.toInstant().toEpochMilli(),
+                                        date,
                                         TaskStackBuilder.create(context).run {
                                             addNextIntentWithParentStack(
                                                 Intent(
@@ -182,7 +184,9 @@ fun NotificationsEdit(
                                                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                                             )
                                         }
-                                    )
+                                    )*/
+
+
                                 }
                             }
                             onConfirm()
