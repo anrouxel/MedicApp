@@ -40,7 +40,9 @@ import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SED(
@@ -48,6 +50,7 @@ fun SED(
     onMedication: (String) -> Unit,
     onClose: () -> Unit
 ) {
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -198,8 +201,9 @@ fun SED(
 
                         )
                         Spacer(modifier = Modifier.height(2.dp))
+
                         Text(
-                            text = "${sideeffect.date} à ${sideeffect.hour}h${if (sideeffect.minute!! < 9) "0"+sideeffect.minute else sideeffect.minute}",
+                            text = "${if (sideeffect.date != null) sideeffect.date!!.format(formatter) else ""} à ${sideeffect.hour}h${if (sideeffect.minute!! < 9) "0"+sideeffect.minute else sideeffect.minute}",
                             fontSize = 18.sp
                         )
                     }

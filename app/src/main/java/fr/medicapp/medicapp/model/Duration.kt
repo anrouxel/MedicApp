@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import fr.medicapp.medicapp.entity.DurationEntity
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 data class Duration(
     var startDate: LocalDate,
@@ -15,8 +16,10 @@ data class Duration(
         return startDate.isBefore(endDate)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun toString(): String {
-        return "$startDate - $endDate"
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return "${startDate.format(formatter)} - ${endDate.format(formatter)}"
     }
 
     fun toEntity(): DurationEntity {
