@@ -1,7 +1,6 @@
-package fr.medicapp.medicapp.ui.sideeffectsdiary
+package fr.medicapp.medicapp.ui.notifications
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -18,9 +17,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -29,7 +25,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -53,43 +48,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.option.OptionDialog
-import com.maxkeppeler.sheets.option.models.DisplayMode
-import com.maxkeppeler.sheets.option.models.OptionConfig
-import com.maxkeppeler.sheets.option.models.OptionSelection
-import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.SideEffect
-import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.DatePickerModal
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
-import fr.medicapp.medicapp.ui.theme.EUPurple100
-import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed140
-import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EURed80
+import fr.medicapp.medicapp.ui.theme.EUYellow100
+import fr.medicapp.medicapp.ui.theme.EUYellow110
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SEDEdit(
-    sideeffects : SideEffect,
-    treatments: List<TreatmentEntity>,
-    onConfirm: () -> Unit,
-    onCancel: () -> Unit
+fun NotificationsEdit(
+    notification: TestNotification,
+    onConfirm: () -> Unit
 ) {
 
-    var nomMedicament by remember { mutableStateOf(sideeffects.medicament?.medication ?: "") }
+    var nomMedicament by remember { mutableStateOf(notification.nomMedicament) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -125,7 +107,7 @@ fun SEDEdit(
                 ),
                 title = {
                     Text(
-                        "Journal des effets",
+                        "Gérer les notifications",
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -143,7 +125,7 @@ fun SEDEdit(
                 ) {
                     Button(
                         onClick = {
-                            onCancel()
+                            //onCancel()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -165,13 +147,13 @@ fun SEDEdit(
 
                     Button(
                         onClick = {
-                            if (nomMedicament != null && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
+                            /*if (prescription.treatments.size > 0 && prescription.treatments.all { it.medication != "" && it.posology != "" && it.quantity != "" && it.renew != "" && it.duration != null }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
-                            }
+                            }*/
                         },
-                        enabled = nomMedicament != "" && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" },
+                        enabled = true,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
@@ -229,7 +211,7 @@ fun SEDEdit(
                     .height(height = 85.dp),
                 colors =
                 CardDefaults.cardColors(
-                    containerColor = EURed80,
+                    containerColor = EUYellow110,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
@@ -239,28 +221,13 @@ fun SEDEdit(
                         .fillMaxSize()
                         .padding(10.dp),
                 ) {
-                    var treatmentOpen by remember { mutableStateOf(false) }
-
-                    if (treatmentOpen) {
-                        OptionDialog(
-                            state = rememberUseCaseState(true, onCloseRequest = {
-                                treatmentOpen = false
-                            }),
-                            selection = OptionSelection.Single(
-                                treatments.map { treatment: TreatmentEntity -> treatment.toOption() }
-                            ) { index, _ ->
-                                nomMedicament = treatments[index].medication
-                                sideeffects.medicament = treatments[index]
-                            },
-                            config = OptionConfig(mode = DisplayMode.LIST)
-                        )
-                    }
-                    
                     OutlinedTextField(
-                        enabled = false,
                         value = nomMedicament,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
-                        onValueChange = {},
+                        onValueChange = {
+                            /*nomMedicament = it
+                            sideeffects.medicament = it*/
+                        },
                         label = { Text("Nom du médicament") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -268,12 +235,8 @@ fun SEDEdit(
                             unfocusedLabelColor = Color.White,
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            disabledBorderColor = Color.White,
-                            disabledLabelColor = Color.White,
                         ),
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            treatmentOpen = true
-                        }
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -290,7 +253,7 @@ fun SEDEdit(
                     .height(height = 115.dp),
                 colors =
                 CardDefaults.cardColors(
-                    containerColor = EURed80,
+                    containerColor = EUYellow110,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
@@ -301,120 +264,34 @@ fun SEDEdit(
                         .padding(10.dp)
                 ) {
                     Text(
-                        text = "Signalement :",
+                        text = "Fréquence de rappel :",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
 
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    var datePrescriptionOpen by remember { mutableStateOf(false) }
-                    var datePrescriptionState = rememberDatePickerState()
 
-                    if (datePrescriptionOpen) {
-                        DatePickerModal(
-                            state = datePrescriptionState,
-                            onDismissRequest = {
-                                datePrescriptionOpen = false
-                            },
-                            onConfirm = {
-                                datePrescriptionOpen = false
-                                if (datePrescriptionState.selectedDateMillis != null) {
-                                    sideeffects.date = Instant.ofEpochMilli(datePrescriptionState.selectedDateMillis!!).atZone(
-                                        ZoneId.systemDefault()
-                                    ).toLocalDate()
-                                }
-                            }
+                    OutlinedTextField(
+                        /*modifier = Modifier.clickable{
+                            //
+                        },*/
+                        enabled = false,
+                        value = "",
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            color = Color.White
+                        ),
+                        onValueChange = { },
+                        label = { Text("Fréquence de rappel") },
+                        shape = RoundedCornerShape(20),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.White,
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.White,
                         )
-                    }
-
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
-                    Row() {
-                        OutlinedTextField(
-                            enabled = false,
-                            value = if (sideeffects.date != null) sideeffects.date!!.format(formatter) else "",
-                            textStyle = TextStyle(
-                                fontSize = 16.sp,
-                                color = Color.White
-                            ),
-                            onValueChange = { },
-                            label = { Text("Date") },
-                            shape = RoundedCornerShape(20),
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.CalendarMonth,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedLabelColor = Color.White,
-                                unfocusedLabelColor = Color.White,
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White,
-                                disabledBorderColor = Color.White,
-                                disabledLabelColor = Color.White,
-                            ),
-                            modifier = Modifier.width(200.dp).clickable{
-                                datePrescriptionOpen = true
-                            }
-                        )
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-
-                        var frequencyTimeOpen = remember { mutableStateOf(false) }
-                        var frequencyTimeState = rememberTimePickerState(
-                            is24Hour = true,
-                        )
-
-                        if (frequencyTimeOpen.value) {
-                            TimePickerModal(
-                                state = frequencyTimeState,
-                                onDismissRequest = {
-                                    frequencyTimeOpen.value = false
-                                },
-                                onConfirm = {
-                                    sideeffects.hour = frequencyTimeState.hour
-                                    Log.d("Hour", sideeffects.hour.toString())
-                                    sideeffects.minute = frequencyTimeState.minute
-                                    Log.d("Minute", sideeffects.minute.toString())
-                                    frequencyTimeOpen.value = false
-                                }
-                            )
-                        }
-
-                        OutlinedTextField(
-                            modifier = Modifier.clickable{
-                                frequencyTimeOpen.value = true
-                            },
-                            enabled = false,
-                            value = if (sideeffects.hour != null && sideeffects.minute != null) "${sideeffects.hour}:${sideeffects.minute}" else "",
-                            textStyle = TextStyle(
-                                fontSize = 16.sp,
-                                color = Color.White
-                            ),
-                            onValueChange = { },
-                            label = { Text("Heure") },
-                            shape = RoundedCornerShape(20),
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.Alarm,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedLabelColor = Color.White,
-                                unfocusedLabelColor = Color.White,
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White,
-                                disabledBorderColor = Color.White,
-                                disabledLabelColor = Color.White,
-                            )
-                        )
-                    }
+                    )
                 }
             }
 
@@ -427,10 +304,10 @@ fun SEDEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp + (sideeffects.effetsConstates.size * 63 + sideeffects.effetsConstates.size).dp),
+                    .height(height = 115.dp + (notification.heures.size * 63 + notification.heures.size).dp),
                 colors =
                 CardDefaults.cardColors(
-                    containerColor = EURed80,
+                    containerColor = EUYellow110,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
@@ -441,17 +318,17 @@ fun SEDEdit(
                         .padding(10.dp),
                 ) {
                     Text(
-                        text = "Effets constatés (${sideeffects.effetsConstates.size}) :",
+                        text = "Horaires de rappel (${notification.heures.size}) :",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    for (i in 0 until sideeffects.effetsConstates.size) {
-                        var effetsConstates = remember { mutableStateOf(sideeffects.effetsConstates[i]) }
+                    for (i in 0 until notification.heures.size) {
+                        var effetsConstates = remember { mutableStateOf(notification.heures[i]) }
 
-                        LaunchedEffect(sideeffects.effetsConstates[i]) {
-                            effetsConstates.value = sideeffects.effetsConstates[i]
+                        LaunchedEffect(notification.heures[i]) {
+                            effetsConstates.value = notification.heures[i]
                         }
 
                         OutlinedTextField(
@@ -462,11 +339,11 @@ fun SEDEdit(
                             ),
                             onValueChange = {
                                 effetsConstates.value = it
-                                sideeffects.effetsConstates[i] = it
+                                notification.heures[i] = it
                             },
                             shape = RoundedCornerShape(20),
                             trailingIcon = {
-                                IconButton(onClick = { sideeffects.effetsConstates.removeAt(i) }) {
+                                IconButton(onClick = { notification.heures.drop(i) }) {
                                     Icon(
                                         imageVector = Icons.Filled.DeleteForever,
                                         contentDescription = "",
@@ -486,11 +363,11 @@ fun SEDEdit(
                     }
 
                     AddButton(
-                        text = "Ajouter un effet",
+                        text = "Ajouter un horaire",
                         icone = Icons.Filled.Add,
-                        color = EURed60,
+                        color = EUYellow100,
                         onClick = {
-                            sideeffects.effetsConstates.add("")
+                            //sideeffects.effetsConstates.add("")
                         }
                     )
                 }
@@ -502,9 +379,12 @@ fun SEDEdit(
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-private fun SEDEditPreview() {
-    var se = SideEffect()
-    var treatments = listOf<TreatmentEntity>()
+private fun NotificationsEditPreview() {
+    var notif = TestNotification(
+        "Doliprane",
+        "Tous les jours",
+        mutableListOf("5h00", "10h00", "15h00")
+    )
     //var se = listOf<TestSideEffect>()
-    SEDEdit(se, treatments, {}, {})
+    NotificationsEdit(notif, {})
 }
