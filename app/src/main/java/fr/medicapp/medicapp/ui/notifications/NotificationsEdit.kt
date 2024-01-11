@@ -161,35 +161,7 @@ fun NotificationsEdit(
                             } else {
                                 errorDialogOpen.value = true
                             }*/
-                            if (alarmManager.canScheduleExactAlarms()){
-                                val dateFormat = SimpleDateFormat("hhmm")
-                                for (heure in 0 until notification.hours.size){
-                                    /*//val dateString =
-                                        //"${notification.hours[heure]}:${notification.minutes[heure]}"
-                                    //val date = dateFormat.parse(dateString)
-                                    val date = LocalTime.of(notification.hours[heure],notification.minutes[heure])
-                                    alarmManager.setExactAndAllowWhileIdle(
-                                        AlarmManager.RTC_WAKEUP,
-                                        date,
-                                        TaskStackBuilder.create(context).run {
-                                            addNextIntentWithParentStack(
-                                                Intent(
-                                                    context,
-                                                    MainActivity::class.java
-                                                )
-                                            )
-                                            getPendingIntent(
-                                                0,
-                                                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                                            )
-                                        }
-                                    )*/
 
-
-                                }
-                            } else {
-                                // Handle the situation for Android versions lower than 12
-                            }
                             onConfirm()
                         },
                         enabled = true,
