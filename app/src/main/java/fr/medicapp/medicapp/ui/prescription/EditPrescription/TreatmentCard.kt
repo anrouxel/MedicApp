@@ -66,6 +66,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
+import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,7 +144,7 @@ fun TreatmentCard(
                     ),
                     onValueChange = { },
                     trailingIcon = {
-                        if (treatment.query != "") {
+                        if (treatment.query != "" && medication.value == "") {
                             Icon(
                                 imageVector = Icons.Filled.WarningAmber,
                                 contentDescription = "",
@@ -311,7 +312,7 @@ fun TreatmentCard(
                             label = { Text("Durée") },
                             shape = RoundedCornerShape(20),
                             trailingIcon = {
-                                if (treatment.query != "") {
+                                if (treatment.query != "" && duration.value == Duration(LocalDate.now(), LocalDate.now()).toString()) {
                                     Icon(
                                         imageVector = Icons.Filled.WarningAmber,
                                         contentDescription = "",
