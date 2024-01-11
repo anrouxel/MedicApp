@@ -48,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -65,7 +66,7 @@ fun NotificationsEdit(
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    var nomMedicament by remember { mutableStateOf(notification.nomMedicament) }
+    var medicationName by remember { mutableStateOf(notification.medicationName) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -216,7 +217,7 @@ fun NotificationsEdit(
                         .padding(10.dp),
                 ) {
                     OutlinedTextField(
-                        value = nomMedicament,
+                        value = medicationName,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
                         onValueChange = {
                             /*nomMedicament = it
@@ -244,7 +245,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp),
+                    .height(height = 85.dp),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -257,20 +258,11 @@ fun NotificationsEdit(
                         .fillMaxSize()
                         .padding(10.dp)
                 ) {
-                    Text(
-                        text = "Fréquence de rappel :",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(5.dp))
-
-
                     OutlinedTextField(
                         /*modifier = Modifier.clickable{
                             //
                         },*/
-                        enabled = false,
+                        enabled = true,
                         value = "",
                         textStyle = TextStyle(
                             fontSize = 16.sp,
@@ -298,7 +290,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp + (notification.heures.size * 63 + notification.heures.size).dp),
+                    .height(height = 115.dp + (notification.hours.size * 63 + notification.hours.size).dp),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -312,46 +304,24 @@ fun NotificationsEdit(
                         .padding(10.dp),
                 ) {
                     Text(
-                        text = "Horaires de rappel (${notification.heures.size}) :",
+                        text = "Horaires de rappel (${notification.hours.size}) :",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    for (i in 0 until notification.heures.size) {
-                        var effetsConstates = remember { mutableStateOf(notification.heures[i]) }
+                    for (i in 0 until notification.hours.size) {
+                        var hours = remember { mutableStateOf(notification.hours[i]) }
+                        var minutes = remember { mutableStateOf(notification.minutes[i]) }
 
-                        LaunchedEffect(notification.heures[i]) {
-                            effetsConstates.value = notification.heures[i]
+                        LaunchedEffect(notification.hours[i]) {
+                            hours.value = notification.hours[i]
+                            minutes.value = notification.minutes[i]
                         }
 
-                        OutlinedTextField(
-                            value = effetsConstates.value,
-                            textStyle = TextStyle(
-                                fontSize = 16.sp,
-                                color = Color.White
-                            ),
-                            onValueChange = {
-                                effetsConstates.value = it
-                                notification.heures[i] = it
-                            },
-                            shape = RoundedCornerShape(20),
-                            trailingIcon = {
-                                IconButton(onClick = { notification.heures.drop(i) }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.DeleteForever,
-                                        contentDescription = "",
-                                        tint = Color.White
-                                    )
-                                }
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedLabelColor = Color.White,
-                                unfocusedLabelColor = Color.White,
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White,
-                            ),
-                            modifier = Modifier.fillMaxWidth()
+                        TimeCard(
+                            hours.value,
+                            minutes.value
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
@@ -377,7 +347,8 @@ private fun NotificationsEditPreview() {
     var notif = TestNotification(
         "Doliprane",
         "Tous les jours",
-        mutableListOf("5h00", "10h00", "15h00")
+        mutableListOf(5, 10, 15, 20),
+        mutableListOf(0, 15, 30, 45)
     )
     //var se = listOf<TestSideEffect>()
     NotificationsEdit(notif, {})

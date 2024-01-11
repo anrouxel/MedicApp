@@ -1,7 +1,8 @@
 package fr.medicapp.medicapp.ui.notifications
 
 data class TestNotification (
-    var nomMedicament : String,
-    var frequence : String,
-    var heures : MutableList<String>,
+    var medicationName : String,
+    var frequency : String,
+    var hours : MutableList<Int>,
+    var minutes : MutableList<Int>
 )
