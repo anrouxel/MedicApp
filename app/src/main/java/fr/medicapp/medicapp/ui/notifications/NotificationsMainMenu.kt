@@ -144,7 +144,7 @@ fun NotificationsMainMenu(
                                 Spacer(modifier = Modifier.width(5.dp))
 
                                 Text(
-                                    i.hours.zip(i.minutes).map { (heure, minute) -> "$heure h ${if (minute<9) "0$minute" else minute }" }.toString().replace("[", "").replace("]", ""),
+                                    i.hours.zip(i.minutes).map { (heure, minute) -> "${heure}h${if (minute<9) "0$minute" else minute }" }.toString().replace("[", "").replace("]", ""),
                                     fontSize = 15.sp
                                 )
                             }

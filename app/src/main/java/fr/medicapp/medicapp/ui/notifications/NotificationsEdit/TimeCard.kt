@@ -61,7 +61,7 @@ fun TimeCard(
             frequencyTimeOpen.value = true
         },
         enabled = false,
-        value = if (hour != null && minute != null) "${hour}:${minute}" else "",
+        value = if (hour != null && minute != null) "${hour}h${minute}" else "",
         textStyle = TextStyle(
             fontSize = 16.sp,
             color = Color.White

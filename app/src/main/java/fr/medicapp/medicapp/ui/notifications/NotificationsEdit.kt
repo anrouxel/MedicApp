@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
 import fr.medicapp.medicapp.MainActivity
+import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -65,13 +66,14 @@ import fr.medicapp.medicapp.ui.theme.EUYellow110
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
-    notification: TestNotification,
+    notification: Notification,
     onConfirm: () -> Unit
 ) {
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
     var medicationName by remember { mutableStateOf(notification.medicationName) }
+    var frequency by remember { mutableStateOf(notification.frequency) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -240,8 +242,8 @@ fun NotificationsEdit(
                         value = medicationName,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
                         onValueChange = {
-                            /*nomMedicament = it
-                            sideeffects.medicament = it*/
+                            medicationName = it
+                            notification.medicationName = it
                         },
                         label = { Text("Nom du médicament") },
                         shape = RoundedCornerShape(20),
@@ -265,7 +267,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp),
+                    .height(height = 85.dp),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -283,12 +285,15 @@ fun NotificationsEdit(
                             //
                         },*/
                         enabled = true,
-                        value = "",
+                        value = frequency,
                         textStyle = TextStyle(
                             fontSize = 16.sp,
                             color = Color.White
                         ),
-                        onValueChange = { },
+                        onValueChange = {
+                            frequency = it
+                            notification.frequency = it
+                        },
                         label = { Text("Fréquence de rappel") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -351,7 +356,8 @@ fun NotificationsEdit(
                         icone = Icons.Filled.Add,
                         color = EUYellow100,
                         onClick = {
-                            //sideeffects.effetsConstates.add("")
+                            notification.hours.add(0)
+                            notification.minutes.add(0)
                         }
                     )
                 }
@@ -364,12 +370,12 @@ fun NotificationsEdit(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsEditPreview() {
-    var notif = TestNotification(
+    var notif = Notification(
+        "Rappel doliprane",
         "Doliprane",
         "Tous les jours",
         mutableListOf(5, 10, 15, 20),
         mutableListOf(0, 15, 30, 45)
     )
-    //var se = listOf<TestSideEffect>()
     NotificationsEdit(notif, {})
 }
