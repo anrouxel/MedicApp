@@ -119,10 +119,6 @@ dependencies {
     // Volley
     implementation("com.android.volley:volley:1.2.1")
 
-    // Alarm Scheduler
-    implementation("com.carterchen247:alarm-scheduler:2.1.0")
-
-
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

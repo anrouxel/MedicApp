@@ -1,15 +1,7 @@
 package fr.medicapp.medicapp.ui.notifications
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
-import android.content.Context
-import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -55,10 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.navigation.NavHostController
-import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
-import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
@@ -160,32 +148,6 @@ fun NotificationsEdit(
                             } else {
                                 errorDialogOpen.value = true
                             }*/
-                            if (alarmManager.canScheduleExactAlarms()){
-                                val dateFormat = SimpleDateFormat("hhmm")
-                                for (heure in 0 until notification.hours.size){
-                                    val dateString =
-                                        "${notification.hours[heure]}:${notification.minutes[heure]}"
-                                    val date = dateFormat.parse(dateString)
-                                    alarmManager.setExactAndAllowWhileIdle(
-                                        AlarmManager.RTC_WAKEUP,
-                                        date.toInstant().toEpochMilli(),
-                                        TaskStackBuilder.create(context).run {
-                                            addNextIntentWithParentStack(
-                                                Intent(
-                                                    context,
-                                                    MainActivity::class.java
-                                                )
-                                            )
-                                            getPendingIntent(
-                                                0,
-                                                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                                            )
-                                        }
-                                    )
-                                }
-                            } else {
-                                // Handle the situation for Android versions lower than 12
-                            }
                             onConfirm()
                         },
                         enabled = true,
