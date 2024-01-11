@@ -19,9 +19,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -30,7 +27,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -54,13 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.option.OptionDialog
-import com.maxkeppeler.sheets.option.models.DisplayMode
-import com.maxkeppeler.sheets.option.models.OptionConfig
-import com.maxkeppeler.sheets.option.models.OptionSelection
 import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.DatePickerModal
@@ -69,15 +59,10 @@ import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
-import fr.medicapp.medicapp.ui.theme.EUPurple100
-import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed140
-import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -85,13 +70,13 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDEdit(
-    sideeffects : SideEffect,
-    treatments: List<TreatmentEntity>,
+    sideeffects: SideEffect,
+    treatments: MutableList<Treatment>,
     onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
-    var nomMedicament by remember { mutableStateOf(sideeffects.medicament?.medication ?: "") }
+    var nomMedicament by remember { mutableStateOf(sideeffects.medicament?.medication?.name ?: "") }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -508,7 +493,7 @@ fun SEDEdit(
 @Composable
 private fun SEDEditPreview() {
     var se = SideEffect()
-    var treatments = listOf<TreatmentEntity>()
+    var treatments = mutableListOf<Treatment>()
     //var se = listOf<TestSideEffect>()
-    SEDEdit(se, treatments, {}, {})
+    SEDEdit(se, treatments, {}) {}
 }

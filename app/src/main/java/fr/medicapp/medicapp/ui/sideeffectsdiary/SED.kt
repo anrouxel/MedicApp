@@ -168,7 +168,7 @@ fun SED(
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            text = sideeffect.medicament?.medication ?: "",
+                            text = sideeffect.medicament?.medication?.name ?: "",
                             fontSize = 18.sp
                         )
                     }
@@ -276,18 +276,7 @@ private fun SEDPreview() {
     var se = mutableListOf<SideEffect>(
         SideEffect(
             "1",
-            TreatmentEntity(
-                "1",
-                "Doliprane",
-                "1 comprimé",
-                "1 boîte",
-                "1",
-                DurationEntity(
-                    LocalDate.now(),
-                    LocalDate.now()
-                ),
-                true
-            ),
+            null,
             LocalDate.now(),
             0,
             0,

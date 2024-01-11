@@ -3,42 +3,24 @@ package fr.medicapp.medicapp.ui.navigation
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.entity.DurationEntity
-import fr.medicapp.medicapp.entity.PrescriptionWithTreatmentEntity
-import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.SideEffect
-import fr.medicapp.medicapp.repository.PrescriptionRepository
-import fr.medicapp.medicapp.repository.PrescriptionWithTreatmentRepository
+import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.repository.MedicationRepository
 import fr.medicapp.medicapp.repository.SideEffectRepository
 import fr.medicapp.medicapp.repository.TreatmentRepository
-import fr.medicapp.medicapp.ui.prescription.EditPrescription
-import fr.medicapp.medicapp.ui.prescription.Prescription
-import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
-import fr.medicapp.medicapp.ui.prescription.TestConsultation
-import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SED
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
-import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
 import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.sideEffectNavGraph(
@@ -52,13 +34,14 @@ fun NavGraphBuilder.sideEffectNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
             var result: MutableList<SideEffect> = mutableListOf()
             Thread {
                 val sideEffectEntityTmp = repositorySideEffect.getAll()
 
                 val sideEffects = sideEffectEntityTmp.map {
-                    val treatmentTmp = repositoryTreatment.getOne(it.medicament)
+                    val treatmentTmp = repositoryTreatment.getOne(it.medicament).toTreatment(repositoryMedication)
                     val sideEffectTmp = it.toSideEffect()
                     sideEffectTmp.medicament = treatmentTmp
                     sideEffectTmp
@@ -92,12 +75,13 @@ fun NavGraphBuilder.sideEffectNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
             var result: MutableList<SideEffect> = mutableListOf()
 
             Thread {
                 val sideEffectEntityTmp = repositorySideEffect.getOne(id)
-                val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament)
+                val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament).toTreatment(repositoryMedication)
                 val sideEffectTmp = sideEffectEntityTmp.toSideEffect()
                 sideEffectTmp.medicament = treatmentTmp
                 result.clear()
@@ -129,12 +113,13 @@ fun NavGraphBuilder.sideEffectNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
-            var result: MutableList<TreatmentEntity> = mutableListOf()
+            var result: MutableList<Treatment> = mutableListOf()
 
             Thread {
                 result.clear()
-                result.addAll(repositoryTreatment.getAll())
+                result.addAll(repositoryTreatment.getAll().map { it.toTreatment(repositoryMedication) }.toMutableList())
             }.start()
 
             val treatments = remember {
@@ -150,10 +135,9 @@ fun NavGraphBuilder.sideEffectNavGraph(
                     }.start()
                     navController.popBackStack()
                 },
-                onCancel = {
-                    navController.popBackStack()
-                },
-            )
+            ) {
+                navController.popBackStack()
+            }
         }
     }
 }

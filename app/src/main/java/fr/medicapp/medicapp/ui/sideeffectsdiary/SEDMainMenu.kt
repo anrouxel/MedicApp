@@ -111,7 +111,7 @@ fun SEDMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicament?.medication ?: "",
+                                text = i.medicament?.medication?.name ?: "",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 

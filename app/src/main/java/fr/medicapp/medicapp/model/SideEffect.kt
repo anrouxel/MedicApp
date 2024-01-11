@@ -8,7 +8,7 @@ import java.util.UUID
 
 data class SideEffect(
     var id: String = "",
-    var medicament: TreatmentEntity? = null,
+    var medicament: Treatment? = null,
     var date: LocalDate? = null,
     var hour: Int? = null,
     var minute: Int? = null,
