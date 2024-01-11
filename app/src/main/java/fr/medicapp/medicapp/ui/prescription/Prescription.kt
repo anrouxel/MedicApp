@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.prescription
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,6 +66,7 @@ fun Prescription(
     consultation : MutableList<TreatmentEntity>,
     onClose: () -> Unit
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
         topBar = {
             /*CenterAlignedTopAppBar(
@@ -82,7 +84,7 @@ fun Prescription(
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.White
+                containerColor = Color.Unspecified
             ) {
                 Row(
                     modifier = Modifier

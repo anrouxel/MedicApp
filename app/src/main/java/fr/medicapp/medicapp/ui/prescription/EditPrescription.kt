@@ -3,6 +3,7 @@ package fr.medicapp.medicapp.ui.prescription
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -64,6 +65,7 @@ fun EditPrescription(
     prescription: Prescription,
     medications: List<MedicationEntity>
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     var errorDialogOpen = remember { mutableStateOf(false) }
 
     if (errorDialogOpen.value) {
@@ -108,7 +110,7 @@ fun EditPrescription(
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.White
+                containerColor = Color.Unspecified
             ) {
                 Row(
                     modifier = Modifier

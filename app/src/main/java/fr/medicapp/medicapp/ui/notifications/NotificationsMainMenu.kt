@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.notifications
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,12 +49,13 @@ import fr.medicapp.medicapp.ui.theme.EUYellow120
 fun NotificationsMainMenu(
     notifications : List<TestNotification>
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(

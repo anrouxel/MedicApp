@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.prescription
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,13 +54,14 @@ fun PrescriptionMainMenu(
     onPrescription: (String) -> Unit,
     addPrescription: () -> Unit
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(

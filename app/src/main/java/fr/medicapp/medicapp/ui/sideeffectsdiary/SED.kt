@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.sideeffectsdiary
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,13 +51,14 @@ fun SED(
     onMedication: (String) -> Unit,
     onClose: () -> Unit
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(
@@ -68,7 +70,7 @@ fun SED(
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.White
+                containerColor = Color.Unspecified
             ) {
                 Row(
                     modifier = Modifier
