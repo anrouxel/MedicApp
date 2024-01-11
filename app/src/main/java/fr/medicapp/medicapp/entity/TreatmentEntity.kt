@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.maxkeppeler.sheets.option.models.Option
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.repository.MedicationRepository
 
@@ -25,10 +25,11 @@ data class TreatmentEntity(
 
     var notification: Boolean = false
 ) {
-    fun toOption(): Option {
-        return Option(
-            titleText = medication,
-            subtitleText = posology,
+    fun toOptionDialog(): OptionDialog {
+        return OptionDialog(
+            id = id,
+            title = medication,
+            description = posology,
         )
     }
 

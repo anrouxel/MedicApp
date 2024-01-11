@@ -65,6 +65,7 @@ import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.DatePickerModal
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
+import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -242,17 +243,16 @@ fun SEDEdit(
                     var treatmentOpen by remember { mutableStateOf(false) }
 
                     if (treatmentOpen) {
-                        OptionDialog(
-                            state = rememberUseCaseState(true, onCloseRequest = {
+                        SearchDialog(
+                            options = treatments.map { it.toOptionDialog() },
+                            onDismiss = {
                                 treatmentOpen = false
-                            }),
-                            selection = OptionSelection.Single(
-                                treatments.map { treatment: TreatmentEntity -> treatment.toOption() }
-                            ) { index, _ ->
-                                nomMedicament = treatments[index].medication
-                                sideeffects.medicament = treatments[index]
                             },
-                            config = OptionConfig(mode = DisplayMode.LIST)
+                            onValidate = { option ->
+                                sideeffects.medicament = treatments.find { it.id == option.id }
+                                nomMedicament = option.title
+                                treatmentOpen = false
+                            }
                         )
                     }
                     
@@ -271,9 +271,11 @@ fun SEDEdit(
                             disabledBorderColor = Color.White,
                             disabledLabelColor = Color.White,
                         ),
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            treatmentOpen = true
-                        }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                treatmentOpen = true
+                            }
                     )
                 }
             }
@@ -356,9 +358,11 @@ fun SEDEdit(
                                 disabledBorderColor = Color.White,
                                 disabledLabelColor = Color.White,
                             ),
-                            modifier = Modifier.width(200.dp).clickable{
-                                datePrescriptionOpen = true
-                            }
+                            modifier = Modifier
+                                .width(200.dp)
+                                .clickable {
+                                    datePrescriptionOpen = true
+                                }
                         )
 
                         Spacer(modifier = Modifier.width(10.dp))
