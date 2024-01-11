@@ -32,13 +32,13 @@ fun SearchDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select a medication") },
+        title = { Text("Choisissez un médicament") },
         text = {
             Column {
                 TextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Search") }
+                    label = { Text("Recherche") }
                 )
                 LazyColumn {
                     items(filteredOptions) { option ->
@@ -61,7 +61,7 @@ fun SearchDialog(
             Button(onClick = {
                 selectedOption?.let(onValidate)
             }) {
-                Text("Validate")
+                Text("Valider")
             }
         }
     )
