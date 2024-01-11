@@ -171,7 +171,6 @@ fun SEDEdit(
                                 errorDialogOpen.value = true
                             }
                         },
-                        enabled = nomMedicament != "" && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
