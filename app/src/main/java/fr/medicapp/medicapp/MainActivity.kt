@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                if (data) {
+                if (!data) {
                     RootNavGraph(navController = rememberNavController())
                 } else {
                     getData(this.assets)

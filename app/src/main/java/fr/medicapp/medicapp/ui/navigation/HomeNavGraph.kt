@@ -73,5 +73,6 @@ fun HomeNavGraph(navController: NavHostController) {
         }
         prescriptionNavGraph(navController)
         sideEffectNavGraph(navController)
+        notificationNavGraph(navController)
     }
 }

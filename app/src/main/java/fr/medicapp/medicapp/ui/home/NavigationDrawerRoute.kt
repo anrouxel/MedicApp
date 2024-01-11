@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.navigation.Graph
+import fr.medicapp.medicapp.ui.navigation.NotificationRoute
 import fr.medicapp.medicapp.ui.navigation.PrescriptionRoute
 import fr.medicapp.medicapp.ui.navigation.SideEffectRoute
 import fr.medicapp.medicapp.ui.theme.EUBlue60
@@ -53,7 +54,7 @@ sealed class NavigationDrawerRoute(
     )
 
     object Notifications : NavigationDrawerRoute(
-        route = "notifications",
+        route = NotificationRoute.AddNotification.route,
         title = "Gérer notifications",
         icon = Icons.Filled.RingVolume,
         color = EUYellow60,
