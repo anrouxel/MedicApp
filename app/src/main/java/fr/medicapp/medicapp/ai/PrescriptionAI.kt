@@ -43,19 +43,18 @@ class PrescriptionAI(
 
     }*/
 
-    fun analyse(visionText: String): MutableList<Pair<String, String>> {
-        val latch = CountDownLatch(1)
-        var result = mutableListOf<Pair<String, String>>()
+    fun analyse(
+        visionText: String,
+        onPrediction: (MutableList<Pair<String, String>>) -> Unit
+    ) {
         mBackgroundThread = HandlerThread("BackgroundThread")
         mBackgroundThread.start()
         mHandle = Handler(mBackgroundThread.looper)
         mHandle.post {
             loadModel()
-            result = runModel(visionText)
-            latch.countDown() // Decrements the count of the latch, releasing all waiting threads if the count reaches zero.
+            val result = runModel(visionText)
+            onPrediction(result)
         }
-        latch.await() // Causes the current thread to wait until the latch has counted down to zero.
-        return result
     }
 
     @WorkerThread

@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -79,7 +80,7 @@ fun TreatmentCard(
 ) {
     var medication = remember { mutableStateOf(treatment.medication) }
     var notification = remember { mutableStateOf(treatment.notification) }
-    var duration = remember { mutableStateOf(treatment.duration.toString()) }
+    var duration = remember { mutableStateOf(treatment.duration?.toString() ?: "") }
     var posology = remember { mutableStateOf(treatment.posology) }
     var renew = remember { mutableStateOf(treatment.renew) }
     var quantity = remember { mutableStateOf(treatment.quantity) }
@@ -87,7 +88,7 @@ fun TreatmentCard(
     LaunchedEffect(treatment) {
         medication.value = treatment.medication
         notification.value = treatment.notification
-        duration.value = treatment.duration.toString()
+        duration.value = treatment.duration?.toString() ?: ""
         posology.value = treatment.posology
         renew.value = treatment.renew
         quantity.value = treatment.quantity
