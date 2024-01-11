@@ -59,7 +59,7 @@ fun TimeCard(
     OutlinedTextField(
         modifier = Modifier.clickable{
             frequencyTimeOpen.value = true
-        },
+        }.fillMaxWidth(),
         enabled = false,
         value = if (hour != null && minute != null) "${hour}h${minute}" else "",
         textStyle = TextStyle(
