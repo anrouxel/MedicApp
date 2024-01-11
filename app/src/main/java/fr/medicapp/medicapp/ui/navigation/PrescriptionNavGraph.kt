@@ -174,41 +174,42 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                 loading.value = true
                                 Log.d("MLKit", visionText.text)
                                 val prescriptionAI = PrescriptionAI.getInstance(context)
-                                val prediction = prescriptionAI.analyse(visionText.text)
+                                val prediction = prescriptionAI.analyse(
+                                    visionText.text,
+                                    onPrediction = {prediction ->
+                                        var treatment = Treatment()
+                                        prediction.forEach { (word, label) ->
+                                            when {
+                                                label.startsWith("B-") -> {
+                                                    if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
+                                                        state.treatments.add(treatment)
+                                                        treatment = Treatment()
+                                                    }
+                                                    when (label.removePrefix("B-")) {
+                                                        "Drug" -> treatment.medication += " $word"
+                                                        "DrugQuantity" -> treatment.posology += " $word"
+                                                        "DrugForm" -> treatment.posology += " $word"
+                                                        "DrugFrequency" -> treatment.posology += " $word"
+                                                        "DrugDuration" -> treatment.posology += " $word"
+                                                    }
+                                                }
 
-                                // ajouté les traitements à la liste
-                                var treatment = Treatment()
-                                prediction.forEach { (word, label) ->
-                                    when {
-                                        label.startsWith("B-") -> {
-                                            if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
-                                                state.treatments.add(treatment)
-                                                treatment = Treatment()
-                                            }
-                                            when (label.removePrefix("B-")) {
-                                                "Drug" -> treatment.medication += " $word"
-                                                "DrugQuantity" -> treatment.posology += " $word"
-                                                "DrugForm" -> treatment.posology += " $word"
-                                                "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                label.startsWith("I-") -> {
+                                                    when (label.removePrefix("I-")) {
+                                                        "Drug" -> treatment.medication += " $word"
+                                                        "DrugQuantity" -> treatment.posology += " $word"
+                                                        "DrugForm" -> treatment.posology += " $word"
+                                                        "DrugFrequency" -> treatment.posology += " $word"
+                                                        "DrugDuration" -> treatment.posology += " $word"
+                                                    }
+                                                }
                                             }
                                         }
-
-                                        label.startsWith("I-") -> {
-                                            when (label.removePrefix("I-")) {
-                                                "Drug" -> treatment.medication += " $word"
-                                                "DrugQuantity" -> treatment.posology += " $word"
-                                                "DrugForm" -> treatment.posology += " $word"
-                                                "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
-                                            }
+                                        if (treatment.medication.isNotEmpty()) {
+                                            state.treatments.add(treatment)
                                         }
-                                    }
-                                }
-                                if (treatment.medication.isNotEmpty()) {
-                                    state.treatments.add(treatment)
-                                }
-                                loading.value = false
+                                        loading.value = false
+                                    })
                             }
                             .addOnFailureListener { e ->
                                 Log.d("MLKit", e.toString())
@@ -226,44 +227,47 @@ fun NavGraphBuilder.prescriptionNavGraph(
                         val image = InputImage.fromFilePath(context, imageUri!!)
                         recognizer.process(image)
                             .addOnSuccessListener { visionText ->
-                                loading.value = true
                                 Log.d("MLKit", visionText.text)
                                 val prescriptionAI = PrescriptionAI.getInstance(context)
-                                val prediction = prescriptionAI.analyse(visionText.text)
+                                val prediction = prescriptionAI.analyse(
+                                    visionText.text,
+                                    onPrediction = { prediction ->
+                                        loading.value = true
 
-                                // ajouté les traitements à la liste
-                                var treatment = Treatment()
-                                prediction.forEach { (word, label) ->
-                                    when {
-                                        label.startsWith("B-") -> {
-                                            if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
-                                                state.treatments.add(treatment)
-                                                treatment = Treatment()
-                                            }
-                                            when (label.removePrefix("B-")) {
-                                                "Drug" -> treatment.medication += " $word"
-                                                "DrugQuantity" -> treatment.posology += " $word"
-                                                "DrugForm" -> treatment.posology += " $word"
-                                                "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                        var treatment = Treatment()
+                                        prediction.forEach { (word, label) ->
+                                            when {
+                                                label.startsWith("B-") -> {
+                                                    if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
+                                                        state.treatments.add(treatment)
+                                                        treatment = Treatment()
+                                                    }
+                                                    when (label.removePrefix("B-")) {
+                                                        "Drug" -> treatment.medication += " $word"
+                                                        "DrugQuantity" -> treatment.posology += " $word"
+                                                        "DrugForm" -> treatment.posology += " $word"
+                                                        "DrugFrequency" -> treatment.posology += " $word"
+                                                        "DrugDuration" -> treatment.posology += " $word"
+                                                    }
+                                                }
+
+                                                label.startsWith("I-") -> {
+                                                    when (label.removePrefix("I-")) {
+                                                        "Drug" -> treatment.medication += " $word"
+                                                        "DrugQuantity" -> treatment.posology += " $word"
+                                                        "DrugForm" -> treatment.posology += " $word"
+                                                        "DrugFrequency" -> treatment.posology += " $word"
+                                                        "DrugDuration" -> treatment.posology += " $word"
+                                                    }
+                                                }
                                             }
                                         }
-
-                                        label.startsWith("I-") -> {
-                                            when (label.removePrefix("I-")) {
-                                                "Drug" -> treatment.medication += " $word"
-                                                "DrugQuantity" -> treatment.posology += " $word"
-                                                "DrugForm" -> treatment.posology += " $word"
-                                                "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
-                                            }
+                                        if (treatment.medication.isNotEmpty()) {
+                                            state.treatments.add(treatment)
                                         }
-                                    }
-                                }
-                                if (treatment.medication.isNotEmpty()) {
-                                    state.treatments.add(treatment)
-                                }
-                                loading.value = false
+                                        loading.value = false
+                                    },
+                                )
                             }
                             .addOnFailureListener { e ->
                                 Log.d("MLKit", e.toString())
@@ -275,7 +279,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             if (loading.value) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Chargement en cours...")
+                        Text(text = "Traitement de l'ordonnance en cours...")
                         LinearProgressIndicator()
                     }
                 }
