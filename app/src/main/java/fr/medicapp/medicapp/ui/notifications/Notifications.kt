@@ -173,7 +173,7 @@ fun Notifications(
                             .padding(10.dp),
                     ) {
                         Text(
-                            text = "Effets constatés :",
+                            text = "Horaires de rappel :",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
 
