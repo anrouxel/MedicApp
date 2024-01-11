@@ -4,6 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.maxkeppeler.sheets.option.models.Option
+import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.repository.MedicationRepository
 
 @Entity
 data class TreatmentEntity(
@@ -27,6 +29,18 @@ data class TreatmentEntity(
         return Option(
             titleText = medication,
             subtitleText = posology,
+        )
+    }
+
+    fun toTreatment(repositoryMedication: MedicationRepository): Treatment {
+        return Treatment(
+            id = id,
+            medication = repositoryMedication.getOne(medication),
+            posology = posology,
+            quantity = quantity,
+            renew = renew,
+            duration = duration.toDuration(),
+            notification = notification
         )
     }
 }

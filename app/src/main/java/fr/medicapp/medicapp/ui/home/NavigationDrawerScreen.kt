@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +39,7 @@ import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.navigation.HomeNavGraph
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawerScreen(navController: NavHostController = rememberNavController()) {

@@ -49,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -62,7 +63,7 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Prescription(
-    consultation : MutableList<TreatmentEntity>,
+    consultation : MutableList<Treatment>,
     onClose: () -> Unit
 ) {
     Scaffold(
@@ -222,7 +223,7 @@ fun Prescription(
                             .padding(10.dp)
                     ) {
                         Text(
-                            i.medication,
+                            i.medication?.name ?: "",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -389,6 +390,6 @@ fun Prescription(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionPreview() {
-    var tab = mutableListOf<TreatmentEntity>()
+    var tab = mutableListOf<Treatment>()
     Prescription(tab, {})
 }

@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.Duration
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import java.time.LocalDate
@@ -49,7 +51,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrescriptionMainMenu(
-    ordonnances : MutableList<TreatmentEntity>,
+    ordonnances : MutableList<Treatment>,
     onPrescription: (String) -> Unit,
     addPrescription: () -> Unit
 ) {
@@ -116,7 +118,7 @@ fun PrescriptionMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medication,
+                                text = i.medication?.name ?: "",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -143,7 +145,7 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.duration.startDate.format(formatter) + " - " + i.duration.endDate.format(formatter),
+                                    i.duration!!.startDate.format(formatter) + " - " + i.duration!!.endDate.format(formatter),
                                     fontSize = 15.sp
                                 )
                             }
@@ -176,14 +178,14 @@ fun PrescriptionMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionMainMenuPreview() {
-    var ordonnances = mutableStateListOf<TreatmentEntity>(
-        TreatmentEntity(
+    var ordonnances = mutableListOf<Treatment>(
+        Treatment(
             id = "1",
-            medication = "Doliprane",
+            medication = null,
             posology = "1 comprimé par jour",
             quantity = "1 boite",
             renew = "1 fois",
-            duration = DurationEntity(
+            duration = Duration(
                 startDate = LocalDate.now(),
                 endDate = LocalDate.now()
             ),

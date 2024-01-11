@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -89,11 +88,14 @@ fun NavGraphBuilder.prescriptionNavGraph(
         composable(route = PrescriptionRoute.Main.route) {
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
-            var result: MutableList<TreatmentEntity> = mutableListOf()
+            var result: MutableList<Treatment> = mutableListOf()
             Thread {
+                val treatments = repository.getAll().map { it.toTreatment(repositoryMedication) }
+
                 result.clear()
-                result.addAll(repository.getAll().toMutableList())
+                result.addAll(treatments)
 
                 result.forEach {
                     Log.d("TAG", it.toString())
@@ -119,12 +121,13 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
-            var result: MutableList<TreatmentEntity> = mutableListOf()
+            var result: MutableList<Treatment> = mutableListOf()
 
             Thread {
                 result.clear()
-                result.add(repository.getOne(id))
+                result.add(repository.getOne(id).toTreatment(repositoryMedication))
             }.start()
 
             val prescription = remember {
