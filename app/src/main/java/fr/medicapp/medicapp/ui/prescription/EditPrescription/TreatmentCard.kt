@@ -61,6 +61,7 @@ import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
+import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
 
@@ -116,6 +117,8 @@ fun TreatmentCard(
                 if (medicationOpen) {
                     SearchDialog(
                         options = medications.map { it.toOptionDialog() },
+                        cardColor = EUPurple20,
+                        selectedCardColor = EUPurple80,
                         onDismiss = {
                             medicationOpen = false
                         },

@@ -60,6 +60,7 @@ import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
+import fr.medicapp.medicapp.ui.theme.EURed20
 import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.Instant
@@ -230,6 +231,8 @@ fun SEDEdit(
                     if (treatmentOpen) {
                         SearchDialog(
                             options = treatments.map { it.toOptionDialog() },
+                            cardColor = EURed20,
+                            selectedCardColor = EURed80,
                             onDismiss = {
                                 treatmentOpen = false
                             },
