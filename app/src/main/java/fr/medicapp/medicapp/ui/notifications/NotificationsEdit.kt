@@ -68,7 +68,6 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 
-@RequiresApi(Build.VERSION_CODES.S)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
@@ -184,6 +183,8 @@ fun NotificationsEdit(
                                         }
                                     )
                                 }
+                            } else {
+                                // Handle the situation for Android versions lower than 12
                             }
                             onConfirm()
                         },
