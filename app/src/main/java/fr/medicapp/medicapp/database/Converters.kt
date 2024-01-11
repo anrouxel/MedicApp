@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import java.time.LocalDate
-import java.util.UUID
 
 class Converters {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -19,14 +18,23 @@ class Converters {
     }
 
     @TypeConverter
-    // MutableList<String> to String
-    fun fromEffetsConstates(effetsConstates: MutableList<String>): String {
-        return effetsConstates.joinToString(separator = "\"")
+    fun toMutableList(list: String): MutableList<String> {
+        return toList(list).toMutableList()
     }
 
     @TypeConverter
-    // String to MutableList<String>
-    fun toEffetsConstates(effetsConstates: String): MutableList<String> {
-        return effetsConstates.split("\"").toMutableList()
+    fun toList(list: String): List<String> {
+        val cleanedList = list.substring(1 until list.length - 1)
+        return cleanedList.split(",").map { it.trim() }
+    }
+
+    @TypeConverter
+    fun fromMutableList(list: MutableList<String>): String {
+        return fromList(list)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<String>): String {
+        return list.toString()
     }
 }

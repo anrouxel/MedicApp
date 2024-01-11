@@ -111,6 +111,7 @@ fun NavGraphBuilder.notificationNavGraph(
                     notifications = TestNotification(
                         "",
                         "",
+                        mutableListOf(),
                         mutableListOf()
                     )
                 )
@@ -141,6 +142,7 @@ fun NavGraphBuilder.notificationNavGraph(
                 notification = TestNotification(
                     "",
                     "",
+                    mutableListOf(),
                     mutableListOf()
                 ),
             ) {

@@ -169,7 +169,7 @@ fun Notifications(
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            notifications.nomMedicament,
+                            notifications.medicationName,
                             fontSize = 18.sp
                         )
                     }
@@ -205,7 +205,7 @@ fun Notifications(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            notifications.frequence,
+                            notifications.frequency,
                             fontSize = 18.sp
                         )
                     }
@@ -213,7 +213,7 @@ fun Notifications(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                var heuresSize = notifications.heures.size
+                var heuresSize = notifications.hours.size
                 var heuresCard = if (heuresSize > 5) 115 else heuresSize * 18
 
                 ElevatedCard(
@@ -244,7 +244,7 @@ fun Notifications(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         if (heuresSize > 5) {
-                            for (i in notifications.heures.slice(0..4)) {
+                            for (i in notifications.hours.slice(0..4)) {
                                 Text(
                                     "- $i",
                                     fontSize = 18.sp
@@ -255,7 +255,7 @@ fun Notifications(
                                 fontSize = 18.sp
                             )
                         } else {
-                            for (i in notifications.heures) {
+                            for (i in notifications.hours) {
                                 Text(
                                     "- $i",
                                     fontSize = 18.sp
@@ -275,7 +275,8 @@ private fun NotificationsPreview() {
     var notif = TestNotification(
         "Doliprane",
         "Tous les jours",
-        mutableListOf("5h00", "10h00", "15h00")
+        mutableListOf(),
+        mutableListOf()
     )
     // var se = listOf<TestSideEffect>()
     Notifications(notif)

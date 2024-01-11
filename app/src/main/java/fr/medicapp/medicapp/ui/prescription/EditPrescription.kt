@@ -3,8 +3,6 @@ package fr.medicapp.medicapp.ui.prescription
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,34 +15,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.ImportExport
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,16 +37,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.date_time.DateTimeDialog
-import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
-import com.maxkeppeler.sheets.option.OptionDialog
-import com.maxkeppeler.sheets.option.models.DisplayMode
-import com.maxkeppeler.sheets.option.models.Option
-import com.maxkeppeler.sheets.option.models.OptionConfig
-import com.maxkeppeler.sheets.option.models.OptionSelection
+import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Prescription
@@ -71,17 +46,9 @@ import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
-import fr.medicapp.medicapp.ui.theme.EUOrange20
-import fr.medicapp.medicapp.ui.theme.EUPurple100
-import fr.medicapp.medicapp.ui.theme.EUPurple20
-import fr.medicapp.medicapp.ui.theme.EUPurple60
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed60
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -94,7 +61,8 @@ fun EditPrescription(
     onCameraPermissionRequested: () -> Unit,
     onImagePicker: () -> Unit,
     cameraPermissionState: PermissionState,
-    prescription: Prescription
+    prescription: Prescription,
+    medications: List<MedicationEntity>
 ) {
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -172,7 +140,7 @@ fun EditPrescription(
 
                     Button(
                         onClick = {
-                            if (prescription.treatments.size > 0 && prescription.treatments.all { it.medication != "" && it.posology != "" && it.quantity != "" && it.renew != "" && it.duration != null }) {
+                            if (prescription.treatments.size > 0 && prescription.treatments.all { it.medication != null && it.posology != "" && it.quantity != "" && it.renew != "" && it.duration != null }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
@@ -340,6 +308,7 @@ fun EditPrescription(
                 prescription.treatments.forEachIndexed { index, treatment ->
                     TreatmentCard(
                         treatment = treatment,
+                        medications = medications,
                         onRemove = {
                             prescription.treatments.removeAt(index)
                         }
@@ -426,6 +395,7 @@ private fun EditPrescriptionPreview() {
         onCameraPicker = {},
         onCameraPermissionRequested = {},
         onImagePicker = {},
-        cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+        cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA),
+        medications = emptyList()
     )
 }

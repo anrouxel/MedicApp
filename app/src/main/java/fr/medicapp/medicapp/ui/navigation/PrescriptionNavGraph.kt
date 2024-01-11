@@ -37,9 +37,11 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
+import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.repository.MedicationRepository
 import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
@@ -144,6 +146,18 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
+
+            var result: MutableList<MedicationEntity> = mutableListOf()
+
+            Thread {
+                result.clear()
+                result.addAll(repositoryMedication.getAll())
+            }.start()
+
+            val medication = remember {
+                result
+            }
 
             val cameraPermissionState = rememberPermissionState(
                 android.Manifest.permission.CAMERA
@@ -181,12 +195,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                         prediction.forEach { (word, label) ->
                                             when {
                                                 label.startsWith("B-") -> {
-                                                    if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
+                                                    if (label.removePrefix("B-") == "Drug" && treatment.query.isNotEmpty()) {
                                                         state.treatments.add(treatment)
                                                         treatment = Treatment()
                                                     }
                                                     when (label.removePrefix("B-")) {
-                                                        "Drug" -> treatment.medication += " $word"
+                                                        "Drug" -> treatment.query += " $word"
                                                         "DrugQuantity" -> treatment.posology += " $word"
                                                         "DrugForm" -> treatment.posology += " $word"
                                                         "DrugFrequency" -> treatment.posology += " $word"
@@ -196,7 +210,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
                                                 label.startsWith("I-") -> {
                                                     when (label.removePrefix("I-")) {
-                                                        "Drug" -> treatment.medication += " $word"
+                                                        "Drug" -> treatment.query += " $word"
                                                         "DrugQuantity" -> treatment.posology += " $word"
                                                         "DrugForm" -> treatment.posology += " $word"
                                                         "DrugFrequency" -> treatment.posology += " $word"
@@ -205,7 +219,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                                 }
                                             }
                                         }
-                                        if (treatment.medication.isNotEmpty()) {
+                                        if (treatment.query.isNotEmpty()) {
                                             state.treatments.add(treatment)
                                         }
                                         loading.value = false
@@ -238,12 +252,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                         prediction.forEach { (word, label) ->
                                             when {
                                                 label.startsWith("B-") -> {
-                                                    if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
+                                                    if (label.removePrefix("B-") == "Drug" && treatment.query.isNotEmpty()) {
                                                         state.treatments.add(treatment)
                                                         treatment = Treatment()
                                                     }
                                                     when (label.removePrefix("B-")) {
-                                                        "Drug" -> treatment.medication += " $word"
+                                                        "Drug" -> treatment.query += " $word"
                                                         "DrugQuantity" -> treatment.posology += " $word"
                                                         "DrugForm" -> treatment.posology += " $word"
                                                         "DrugFrequency" -> treatment.posology += " $word"
@@ -253,7 +267,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
                                                 label.startsWith("I-") -> {
                                                     when (label.removePrefix("I-")) {
-                                                        "Drug" -> treatment.medication += " $word"
+                                                        "Drug" -> treatment.query += " $word"
                                                         "DrugQuantity" -> treatment.posology += " $word"
                                                         "DrugForm" -> treatment.posology += " $word"
                                                         "DrugFrequency" -> treatment.posology += " $word"
@@ -262,7 +276,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                                 }
                                             }
                                         }
-                                        if (treatment.medication.isNotEmpty()) {
+                                        if (treatment.query.isNotEmpty()) {
                                             state.treatments.add(treatment)
                                         }
                                         loading.value = false
@@ -317,6 +331,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     onImagePicker = {
                         imagePicker.launch("image/*")
                     },
+                    medications = medication
                 )
             }
         }

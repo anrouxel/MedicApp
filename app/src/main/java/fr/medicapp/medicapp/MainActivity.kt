@@ -22,6 +22,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val db = AppDatabase.getInstance(this)
+        val medicationRepository = db.medicationDAO()
+
+        Thread {
+            medicationRepository.getAll().forEach {
+                it.administrationRoutes.forEach { route ->
+                    Log.d("Medication", "Route: $route")
+                }
+            }
+        }.start()
 
         setContent {
             MedicAppTheme {

@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.prescription.EditPrescription
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,14 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
@@ -35,34 +31,30 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.theme.EUBlack100
 import fr.medicapp.medicapp.ui.theme.EUBlue100
-import fr.medicapp.medicapp.ui.prescription.DateRangePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
@@ -76,9 +68,10 @@ import fr.medicapp.medicapp.ui.theme.EURed60
 @Composable
 fun TreatmentCard(
     treatment: Treatment,
-    onRemove: () -> Unit
+    onRemove: () -> Unit,
+    medications: List<MedicationEntity>
 ) {
-    var medication = remember { mutableStateOf(treatment.medication) }
+    var medication = remember { mutableStateOf(treatment.medication?.name ?: "") }
     var notification = remember { mutableStateOf(treatment.notification) }
     var duration = remember { mutableStateOf(treatment.duration?.toString() ?: "") }
     var posology = remember { mutableStateOf(treatment.posology) }
@@ -86,7 +79,7 @@ fun TreatmentCard(
     var quantity = remember { mutableStateOf(treatment.quantity) }
 
     LaunchedEffect(treatment) {
-        medication.value = treatment.medication
+        medication.value = treatment.medication?.name ?: ""
         notification.value = treatment.notification
         duration.value = treatment.duration?.toString() ?: ""
         posology.value = treatment.posology
@@ -116,17 +109,31 @@ fun TreatmentCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                var medicationOpen by remember { mutableStateOf(false) }
+
+                if (medicationOpen) {
+                    SearchDialog(
+                        options = medications.map { it.toOptionDialog() },
+                        onDismiss = {
+                            medicationOpen = false
+                        },
+                        onValidate = {
+                            medicationOpen = false
+                            medication.value = it.title
+                            treatment.medication = medications.find { medication -> medication.cisCode == it.id }
+                        }
+                    )
+                }
+
                 OutlinedTextField(
+                    enabled = false,
                     value = medication.value,
                     textStyle = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = EUBlack100
                     ),
-                    onValueChange = {
-                        medication.value = it
-                        treatment.medication = it
-                    },
+                    onValueChange = { },
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -139,7 +146,9 @@ fun TreatmentCard(
                         disabledLabelColor = EUPurple100,
                         errorLabelColor = EURed60,
                     ),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).clickable {
+                        medicationOpen = true
+                    }
                 )
 
                 Spacer(modifier = Modifier.width(10.dp))
@@ -419,6 +428,7 @@ fun TreatmentCardPreview() {
             duration = null,
             notification = false,
         ),
-        onRemove = {}
+        onRemove = {},
+        medications = listOf()
     )
 }
