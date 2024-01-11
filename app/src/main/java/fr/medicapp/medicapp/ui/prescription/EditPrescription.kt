@@ -125,7 +125,7 @@ fun EditPrescription(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            CenterAlignedTopAppBar(
+            /*CenterAlignedTopAppBar(
                 colors = topAppBarColors(
                     containerColor = Color.White,
                     titleContentColor = Color.Black,
@@ -136,7 +136,7 @@ fun EditPrescription(
                         fontWeight = FontWeight.Bold
                     )
                 }
-            )
+            )*/
         },
         bottomBar = {
             BottomAppBar(

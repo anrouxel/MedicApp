@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -29,7 +32,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.SideEffectEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.LocalDate
@@ -37,7 +43,9 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SED(
-    sideeffects: MutableList<SideEffectEntity>
+    sideeffects: MutableList<SideEffect>,
+    onMedication: (String) -> Unit,
+    onClose: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -55,17 +63,33 @@ fun SED(
             )
         },
         bottomBar = {
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { },
-                containerColor = EURed100
+            BottomAppBar(
+                containerColor = Color.White
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = "",
-                    tint = Color.White
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp)
+                        .weight(1f)
+                ) {
+                    Button(
+                        onClick = onClose,
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Text(
+                            text = "Fermer",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     ) { innerPadding ->
@@ -77,7 +101,9 @@ fun SED(
                     .padding(10.dp)
             ) {
                 ElevatedCard(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        sideeffect.medicament?.let { onMedication(it.id) }
+                    },
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
@@ -104,7 +130,7 @@ fun SED(
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            "Nurofen",
+                            text = sideeffect.medicament?.medication ?: "",
                             fontSize = 18.sp
                         )
                     }
@@ -140,7 +166,7 @@ fun SED(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            "14/12/2022 à 7h35",
+                            text = "${sideeffect.date} à ${sideeffect.hour}h${sideeffect.minute}",
                             fontSize = 18.sp
                         )
                     }
@@ -208,10 +234,21 @@ fun SED(
 @Preview(showBackground = true)
 @Composable
 private fun SEDPreview() {
-    var se = mutableListOf<SideEffectEntity>(
-        SideEffectEntity(
+    var se = mutableListOf<SideEffect>(
+        SideEffect(
             "1",
-            "Nurofen",
+            TreatmentEntity(
+                "1",
+                "Doliprane",
+                "1 comprimé",
+                "1 boîte",
+                "1",
+                DurationEntity(
+                    LocalDate.now(),
+                    LocalDate.now()
+                ),
+                true
+            ),
             LocalDate.now(),
             0,
             0,
@@ -220,5 +257,5 @@ private fun SEDPreview() {
         )
     )
     // var se = listOf<TestSideEffect>()
-    SED(se)
+    SED(se, {}, {})
 }

@@ -34,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.SideEffectEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
@@ -42,7 +44,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDMainMenu(
-    sideeffects : List<SideEffectEntity>,
+    sideeffects : List<SideEffect>,
     onSideEffect: (String) -> Unit,
     addSideEffect: () -> Unit
 ) {
@@ -107,7 +109,7 @@ fun SEDMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicament,
+                                text = i.medicament?.medication ?: "",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -146,15 +148,17 @@ fun SEDMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun SEDMainMenuPreview() {
-    var se = mutableListOf<SideEffectEntity>(SideEffectEntity(
+    var se = mutableListOf<SideEffect>(
+        SideEffect(
         id = "",
-            "Amoxicilline",
+            null,
         LocalDate.now(),
         12,
         30,
         mutableListOf("Mal de tête", "Nausées"),
         "J'ai eu mal à la tête hier"
-    ))
+    )
+    )
     //var se = listOf<TestSideEffect>() /* TODO */
     SEDMainMenu(se, {}, {})
 }
