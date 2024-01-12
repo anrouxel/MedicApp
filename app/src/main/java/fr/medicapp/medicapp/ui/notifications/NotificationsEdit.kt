@@ -85,11 +85,13 @@ import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed20
+import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 import fr.medicapp.medicapp.ui.theme.EUYellow140
+import fr.medicapp.medicapp.ui.theme.EUYellow20
 import fr.medicapp.medicapp.ui.theme.EUYellow40
 import fr.medicapp.medicapp.ui.theme.EUYellow80
 import java.time.DayOfWeek
@@ -408,6 +410,10 @@ fun NotificationsEdit(
                         if (frequencyTimeOpen.value) {
                             TimePickerModal(
                                 state = frequencyTimeState,
+                                clockBackgroundColor = EUYellow20,
+                                selectorColor = EUYellow100,
+                                timeSelectorSelectedContainerColor = EUYellow40,
+                                timeSelectorUnselectedContainerColor = EUYellow20,
                                 onDismissRequest = {
                                     frequencyTimeOpen.value = false
                                 },

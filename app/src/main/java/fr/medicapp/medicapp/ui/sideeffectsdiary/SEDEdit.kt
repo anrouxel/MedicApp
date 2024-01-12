@@ -62,6 +62,7 @@ import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed20
+import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.Instant
@@ -364,6 +365,10 @@ fun SEDEdit(
                         if (frequencyTimeOpen.value) {
                             TimePickerModal(
                                 state = frequencyTimeState,
+                                clockBackgroundColor = EURed20,
+                                selectorColor = EURed100,
+                                timeSelectorSelectedContainerColor = EURed40,
+                                timeSelectorUnselectedContainerColor = EURed20,
                                 onDismissRequest = {
                                     frequencyTimeOpen.value = false
                                 },
