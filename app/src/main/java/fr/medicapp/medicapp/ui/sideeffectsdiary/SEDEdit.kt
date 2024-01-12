@@ -382,7 +382,7 @@ fun SEDEdit(
                                 frequencyTimeOpen.value = true
                             },
                             enabled = false,
-                            value = if (sideeffects.hour != null && sideeffects.minute != null) "${sideeffects.hour}:${sideeffects.minute}" else "",
+                            value = if (sideeffects.hour != null && sideeffects.minute != null) "${sideeffects.hour}h${if (sideeffects.minute!! < 9) "0"+sideeffects.minute else sideeffects.minute}" else "",
                             textStyle = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.White

@@ -290,7 +290,7 @@ fun Notifications(
                             Log.d("heuresSize", notification.toString())
                             for (i in notification.hours.indices) {
                                 Text(
-                                    "- ${notification.hours[i]}:${notification.minutes[i]}",
+                                    "- ${notification.hours[i]}h${if (notification.minutes[i] < 9 ) "0"+notification.minutes[i] else notification.minutes[i]}",
                                     fontSize = 18.sp
                                 )
                             }

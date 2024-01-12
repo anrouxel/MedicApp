@@ -424,7 +424,7 @@ fun NotificationsEdit(
                                 frequencyTimeOpen.value = true
                             }.fillMaxWidth(),
                             enabled = false,
-                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${notification.minutes[i]}" else "",
+                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${if (notification.minutes[i] < 9) "0"+notification.minutes[i] else notification.minutes[i]}" else "",
                             textStyle = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.White
