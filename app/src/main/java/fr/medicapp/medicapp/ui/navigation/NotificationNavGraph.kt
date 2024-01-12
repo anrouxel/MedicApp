@@ -136,7 +136,11 @@ fun NavGraphBuilder.notificationNavGraph(
                 Notifications(
                     notifications = notification,
                     onClose = {
-                        navController.popBackStack()
+                        navController.navigate(NotificationRoute.Main.route) {
+                            popUpTo(NotificationRoute.ShowNotification.route) {
+                                inclusive = true
+                            }
+                        }
                     },
                     onRemove = {
                         notification.forEach {
@@ -152,7 +156,11 @@ fun NavGraphBuilder.notificationNavGraph(
                                 repositoryNotification.delete(side)
                             }
                         }.start()
-                        navController.popBackStack()
+                        navController.navigate(NotificationRoute.Main.route) {
+                            popUpTo(NotificationRoute.ShowNotification.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -227,8 +235,19 @@ fun NavGraphBuilder.notificationNavGraph(
                     Thread {
                         repository.add(state.toEntity())
                     }.start()
-                    navController.navigate(NotificationRoute.Main.route)
-                }
+                    navController.navigate(NotificationRoute.Main.route) {
+                        popUpTo(NotificationRoute.AddNotification.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onCancel = {
+                    navController.navigate(NotificationRoute.Main.route) {
+                        popUpTo(NotificationRoute.AddNotification.route) {
+                            inclusive = true
+                        }
+                    }
+                },
             )
         }
     }

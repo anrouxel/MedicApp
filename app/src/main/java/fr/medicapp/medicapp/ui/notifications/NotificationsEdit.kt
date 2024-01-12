@@ -102,6 +102,7 @@ import java.util.Date
 fun NotificationsEdit(
     notification: Notification,
     onConfirm: () -> Unit,
+    onCancel: () -> Unit = {},
     treatments: MutableList<Treatment> = mutableListOf()
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
@@ -163,7 +164,7 @@ fun NotificationsEdit(
                 ) {
                     Button(
                         onClick = {
-                            //onCancel()
+                            onCancel()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
