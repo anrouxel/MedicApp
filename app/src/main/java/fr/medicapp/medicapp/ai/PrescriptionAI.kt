@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import androidx.annotation.WorkerThread
-import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -46,16 +45,24 @@ class PrescriptionAI(
 
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    fun analyse(
-        imageUri: Uri,
-        onPrediction: (MutableList<Pair<String, String>>) -> Unit,
-        onDismiss: () -> Unit
-    ) {
+    init {
         mBackgroundThread = HandlerThread("BackgroundThread")
         mBackgroundThread.start()
         mHandle = Handler(mBackgroundThread.looper)
         mHandle.post {
             loadModel()
+        }
+    }
+
+    fun analyse(
+        imageUri: Uri,
+        onPrediction: (MutableList<Pair<String, String>>) -> Unit,
+        onDismiss: () -> Unit
+    ) {
+        mHandle.post {
+            while (mModule == null) {
+                Thread.sleep(100)
+            }
             val visionText = recognizeText(imageUri)
             if (visionText != null) {
                 val sentenceTokenized = runModel(visionText)
