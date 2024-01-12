@@ -15,6 +15,9 @@ interface SideEffectDAO {
     @Query("SELECT * FROM SideEffectEntity WHERE id = :id")
     fun getOne(id: String): SideEffectEntity
 
+    @Query("SELECT * FROM SideEffectEntity WHERE medicament = :medicament")
+    fun getByMedicament(medicament: String): List<SideEffectEntity>
+
     @Insert
     fun add(t: SideEffectEntity)
 

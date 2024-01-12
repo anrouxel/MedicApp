@@ -25,7 +25,7 @@ data class Treatment(
 
     fun toEntity(): TreatmentEntity {
         return TreatmentEntity(
-            id = UUID.randomUUID().toString(),
+            id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
             medication = medication!!.cisCode,
             posology = posology,
             quantity = quantity,

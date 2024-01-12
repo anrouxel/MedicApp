@@ -49,10 +49,6 @@ fun NavGraphBuilder.sideEffectNavGraph(
 
                 result.clear()
                 result.addAll(sideEffects)
-
-                result.forEach {
-                    Log.d("TAG", it.toString())
-                }
             }.start()
 
             val sideEffect = remember {
@@ -80,12 +76,14 @@ fun NavGraphBuilder.sideEffectNavGraph(
             var result: MutableList<SideEffect> = mutableListOf()
 
             Thread {
-                val sideEffectEntityTmp = repositorySideEffect.getOne(id)
-                val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament).toTreatment(repositoryMedication)
-                val sideEffectTmp = sideEffectEntityTmp.toSideEffect()
-                sideEffectTmp.medicament = treatmentTmp
                 result.clear()
-                result.add(sideEffectTmp)
+                val sideEffectEntityTmp = repositorySideEffect.getOne(id)
+                if (sideEffectEntityTmp != null) {
+                    val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament).toTreatment(repositoryMedication)
+                    val sideEffectTmp = sideEffectEntityTmp.toSideEffect()
+                    sideEffectTmp.medicament = treatmentTmp
+                    result.add(sideEffectTmp)
+                }
             }.start()
 
             val sideEffect = remember {
@@ -99,6 +97,14 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         navController.navigate(PrescriptionRoute.Prescription.route.replace("{id}", id))
                     },
                     onClose = {
+                        navController.popBackStack()
+                    },
+                    onRemove = {
+                        Thread {
+                            sideEffect.map { side -> side.toEntity() }.forEach { side ->
+                                repositorySideEffect.delete(side)
+                            }
+                        }.start()
                         navController.popBackStack()
                     }
                 )

@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.sideeffectsdiary.TestSideEffect
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
@@ -51,8 +52,9 @@ import fr.medicapp.medicapp.ui.theme.EUYellow120
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsMainMenu(
-    notifications : List<TestNotification>,
-    onNavigation : () -> Unit
+    notifications : MutableList<Notification>,
+    onNotification : (String) -> Unit = {},
+    addNotification : () -> Unit = {}
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     val context = LocalContext.current
@@ -78,9 +80,7 @@ fun NotificationsMainMenu(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick =
-                    onNavigation
-                ,
+                onClick = addNotification,
                 containerColor = EUYellow120
             ) {
                 Icon(
@@ -101,7 +101,9 @@ fun NotificationsMainMenu(
             if (notifications.isNotEmpty()){
                 for (i in notifications) {
                     ElevatedCard(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onNotification(i.id)
+                        },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
                         ),
@@ -121,7 +123,7 @@ fun NotificationsMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicationName,
+                                text = i.medicationName!!.medication!!.name,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -139,7 +141,7 @@ fun NotificationsMainMenu(
                                 Spacer(modifier = Modifier.width(5.dp))
 
                                 Text(
-                                    i.frequency,
+                                    i.frequency.toString().replace("[", "").replace("]", ""),
                                     fontSize = 15.sp
                                 )
                             }
@@ -188,14 +190,6 @@ fun NotificationsMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsMainMenuPreview() {
-    var notif = listOf(
-        TestNotification(
-            "Doliprane",
-            "Tous les jours",
-            mutableListOf(5,10,15),
-            mutableListOf(0,0,0)
-        )
-    )
     //notif = listOf<TestNotification>()
-    NotificationsMainMenu(notif) {}
+    NotificationsMainMenu(mutableListOf()) {}
 }

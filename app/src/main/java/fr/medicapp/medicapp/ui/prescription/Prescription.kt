@@ -65,7 +65,8 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 @Composable
 fun Prescription(
     consultation : MutableList<Treatment>,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onRemove: () -> Unit
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
@@ -116,9 +117,7 @@ fun Prescription(
                     Spacer(modifier = Modifier.weight(0.3f))
 
                     Button(
-                        onClick = {
-                            //TODO
-                        },
+                        onClick = onRemove,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -393,5 +392,5 @@ fun Prescription(
 @Composable
 private fun PrescriptionPreview() {
     var tab = mutableListOf<Treatment>()
-    Prescription(tab, {})
+    Prescription(tab, {}, {})
 }
