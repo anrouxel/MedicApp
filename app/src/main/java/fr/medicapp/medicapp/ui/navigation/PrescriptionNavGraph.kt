@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
+import android.app.NotificationManager
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -14,6 +15,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,12 +33,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
+import de.coldtea.smplr.smplralarm.alarmNotification
+import de.coldtea.smplr.smplralarm.channel
+import de.coldtea.smplr.smplralarm.smplrAlarmCancel
+import de.coldtea.smplr.smplralarm.smplrAlarmSet
+import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
+import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.repository.MedicationRepository
+import fr.medicapp.medicapp.repository.NotificationRepository
 import fr.medicapp.medicapp.repository.SideEffectRepository
 import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
@@ -45,8 +54,10 @@ import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
 import fr.medicapp.medicapp.ui.prescription.TestConsultation
 import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
 import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
+import okhttp3.internal.notifyAll
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.util.Date
 
 var ordonnances = listOf(
@@ -120,7 +131,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val repository = TreatmentRepository(db.treatmentDAO())
             val repositoryMedication = MedicationRepository(db.medicationDAO())
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
-            val repositoryNotification = SideEffectRepository(db.sideEffectDAO())
+            val repositoryNotification = NotificationRepository(db.notificationDAO())
 
             var result: MutableList<Treatment> = mutableListOf()
 
@@ -135,6 +146,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val prescription = remember {
                 result
             }
+
+            var context = LocalContext.current
 
             Prescription(
                 consultation = prescription,
@@ -156,6 +169,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                 val notifications = repositoryNotification.getByMedicament(treatment.id)
 
                                 notifications.forEach { notification ->
+                                    notification.alarms.forEach { alarm ->
+                                        smplrAlarmCancel(context) {
+                                            requestCode { alarm }
+                                        }
+                                    }
+
                                     repositoryNotification.delete(notification)
                                 }
 
@@ -164,6 +183,29 @@ fun NavGraphBuilder.prescriptionNavGraph(
                         }
                     }.start()
                     navController.popBackStack()
+                },
+                onUpdate = {treatmentId, notificationValue ->
+                    Thread {
+                        val treatment = repository.getOne(treatmentId).toTreatment(repositoryMedication)
+
+                        if (treatment != null) {
+                            val notifications = repositoryNotification.getByMedicament(treatment.id)
+
+                            Log.d("TAG", "Updating treatment: $notificationValue")
+
+                            notifications.forEach { notification ->
+                                notification.alarms.forEach { alarm ->
+                                    smplrAlarmUpdate(context) {
+                                        requestCode { alarm }
+                                        isActive { notificationValue }
+                                    }
+                                }
+                            }
+
+                            treatment.notification = notificationValue
+                            repository.update(treatment.toEntity())
+                        }
+                    }.start()
                 }
             )
         }
@@ -229,7 +271,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
 
@@ -239,7 +281,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
                                     }

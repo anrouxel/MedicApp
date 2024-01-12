@@ -22,7 +22,7 @@ data class SideEffect(
             date = date!!,
             hour = hour!!,
             minute = minute!!,
-            effetsConstates = effetsConstates,
+            effetsConstates = effetsConstates.toMutableList(),
             description = description
         )
     }

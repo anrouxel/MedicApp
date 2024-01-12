@@ -13,7 +13,8 @@ data class NotificationEntity(
     val medicationName: String,
     val frequency: MutableList<DayOfWeek>,
     val hours: MutableList<Int>,
-    val minutes: MutableList<Int>
+    val minutes: MutableList<Int>,
+    val alarms: MutableList<Int>
 ) {
     fun toNotification(): Notification {
         return Notification(
@@ -21,7 +22,8 @@ data class NotificationEntity(
             medicationName = null,
             frequency = frequency,
             hours = hours,
-            minutes = minutes
+            minutes = minutes,
+            alarms = alarms
         )
     }
 }

@@ -20,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import de.coldtea.smplr.smplralarm.alarmNotification
 import de.coldtea.smplr.smplralarm.channel
+import de.coldtea.smplr.smplralarm.smplrAlarmCancel
+import de.coldtea.smplr.smplralarm.smplrAlarmChangeOrRequestListener
 import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.AppDatabase
@@ -54,8 +56,9 @@ import fr.medicapp.medicapp.viewModel.SharedNotificationViewModel
 import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.util.UUID
 
-@RequiresApi(Build.VERSION_CODES.S)
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.notificationNavGraph(
     navController: NavHostController
 ) {
@@ -127,6 +130,8 @@ fun NavGraphBuilder.notificationNavGraph(
                 result
             }
 
+            var context = LocalContext.current
+
             if (notification != null) {
                 Notifications(
                     notifications = notification,
@@ -134,6 +139,14 @@ fun NavGraphBuilder.notificationNavGraph(
                         navController.popBackStack()
                     },
                     onRemove = {
+                        notification.forEach {
+                            it.alarms.forEach { alarm ->
+                                smplrAlarmCancel(context) {
+                                    requestCode { alarm }
+                                }
+                            }
+                        }
+
                         Thread {
                             notification.map { side -> side.toEntity() }.forEach { side ->
                                 repositoryNotification.delete(side)
@@ -159,7 +172,7 @@ fun NavGraphBuilder.notificationNavGraph(
 
             Thread {
                 result.clear()
-                result.addAll(repositoryTreatment.getAll().map { it.toTreatment(repositoryMedication) }.toMutableList())
+                result.addAll(repositoryTreatment.getWithNotification().map { it.toTreatment(repositoryMedication) }.toMutableList())
             }.start()
 
             val treatments = remember {
@@ -172,12 +185,9 @@ fun NavGraphBuilder.notificationNavGraph(
                 notification = state,
                 treatments = treatments,
                 onConfirm = {
-                    Log.d("TAG", "onConfirm: ${state.toEntity()}")
-                    Log.d("TAG", "onConfirm: ${state.toEntity().frequency.toString()}")
-                    Log.d("TAG", "onConfirm: ${state.toEntity().hours.toString()}")
-                    Log.d("TAG", "onConfirm: ${state.toEntity().minutes.toString()}")
                     for (i in 0 until state.hours.size) {
-                        smplrAlarmSet(context) {
+                        val uuid: Int = smplrAlarmSet(context) {
+                            //isActive { state.medicationName!!.notification!! }
                             hour { state.hours[i] }
                             min { state.minutes[i] }
                             weekdays {
@@ -211,6 +221,8 @@ fun NavGraphBuilder.notificationNavGraph(
                                 }
                             }
                         }
+
+                        state.alarms.add(uuid)
                     }
                     Thread {
                         repository.add(state.toEntity())

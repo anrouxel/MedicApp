@@ -37,6 +37,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,7 +67,8 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 fun Prescription(
     consultation : MutableList<Treatment>,
     onClose: () -> Unit,
-    onRemove: () -> Unit
+    onRemove: () -> Unit,
+    onUpdate: (String, Boolean) -> Unit
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
@@ -201,6 +203,10 @@ fun Prescription(
 
             // Itération de la liste des médicaments
             for (i in consultation) {
+                var notification = remember {
+                    mutableStateOf(i.notification)
+                }
+
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
@@ -253,8 +259,12 @@ fun Prescription(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Switch(
-                                checked = i.notification,
-                                onCheckedChange = { },
+                                enabled = false,
+                                checked = notification.value,
+                                onCheckedChange = {
+                                    notification.value = it
+                                    onUpdate(i.id, it)
+                                },
                                 colors = SwitchDefaults.colors(
                                     disabledCheckedThumbColor = Color.White,
                                     disabledCheckedTrackColor = EUGreen40,
@@ -262,7 +272,6 @@ fun Prescription(
                                     disabledUncheckedThumbColor = Color.White,
                                     disabledUncheckedTrackColor = EURed40,
                                 ),
-                                enabled = false
                             )
                             Spacer(modifier = Modifier.width(7.dp))
                             Box(
@@ -392,5 +401,5 @@ fun Prescription(
 @Composable
 private fun PrescriptionPreview() {
     var tab = mutableListOf<Treatment>()
-    Prescription(tab, {}, {})
+    Prescription(tab, {}, {}, { _, _ -> })
 }

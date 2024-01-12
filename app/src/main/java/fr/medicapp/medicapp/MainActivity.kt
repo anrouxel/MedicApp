@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         AppDatabase.getInstance(this)
+        PrescriptionAI.getInstance(this)
 
         setContent {
             MedicAppTheme {

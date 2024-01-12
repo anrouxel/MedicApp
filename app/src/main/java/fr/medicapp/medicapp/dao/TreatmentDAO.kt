@@ -16,6 +16,9 @@ interface TreatmentDAO {
     @Query("SELECT * FROM TreatmentEntity WHERE id = :id")
     fun getOne(id: String): TreatmentEntity
 
+    @Query("SELECT * FROM TreatmentEntity WHERE notification = 1")
+    fun getWithNotification(): List<TreatmentEntity>
+
     @Insert
     fun add(t: TreatmentEntity)
 

@@ -14,6 +14,10 @@ class TreatmentRepository(
         return treatmentDao.getOne(id)
     }
 
+    fun getWithNotification(): List<TreatmentEntity> {
+        return treatmentDao.getWithNotification()
+    }
+
     fun add(t: TreatmentEntity) {
         treatmentDao.add(t)
     }
