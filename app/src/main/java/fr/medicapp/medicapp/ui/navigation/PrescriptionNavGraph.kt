@@ -313,7 +313,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onResult = { success: Boolean ->
                     hasImage = success
 
-                    if (imageUri != null) {
+                    if (imageUri != null && success) {
                         loading.value = true
                         val prescriptionAI = PrescriptionAI.getInstance(context)
                         val prediction = prescriptionAI.analyse(
