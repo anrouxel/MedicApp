@@ -338,7 +338,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
 
@@ -348,7 +348,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
                                     }
