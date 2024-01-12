@@ -109,7 +109,7 @@ fun NotificationsMainMenu(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height = 105.dp),
+                            .wrapContentHeight(),
                         colors =
                         CardDefaults.cardColors(
                             containerColor = EUYellow110,
@@ -119,7 +119,6 @@ fun NotificationsMainMenu(
                     ) {
                         Column(
                             modifier = Modifier
-                                .fillMaxSize()
                                 .padding(10.dp),
                         ) {
                             Text(
