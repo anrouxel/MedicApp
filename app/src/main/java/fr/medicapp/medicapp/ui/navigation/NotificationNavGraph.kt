@@ -196,9 +196,9 @@ fun NavGraphBuilder.notificationNavGraph(
                             notification {
                                 alarmNotification {
                                     smallIcon { R.drawable.medicapp_eu_blue }
-                                    title { "Medication Reminder" }
-                                    message { "It's time to take your ${state.medicationName!!.medication!!.name}" }
-                                    bigText { "It's time to take your ${state.medicationName!!.medication!!.name}" }
+                                    title { "Rappel de prise de médicament" }
+                                    message { "C'est l'heure ! Vous devez prendre ${state.medicationName!!.medication!!.name}" }
+                                    bigText { "C'est l'heure ! Vous devez prendre ${state.medicationName!!.medication!!.name}" }
                                     autoCancel { false }
                                 }
                             }
@@ -206,8 +206,8 @@ fun NavGraphBuilder.notificationNavGraph(
                                 channel {
                                     importance { NotificationManager.IMPORTANCE_HIGH }
                                     showBadge { true }
-                                    name { "Medication Reminder Channel" }
-                                    description { "This notification channel is used for medication reminders" }
+                                    name { "Canal de rappel de médicaments" }
+                                    description { "Ce canal de notification est utilisé pour les rappels" }
                                 }
                             }
                         }
