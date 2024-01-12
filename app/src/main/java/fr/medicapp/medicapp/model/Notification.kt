@@ -21,9 +21,9 @@ data class Notification(
         return NotificationEntity(
             id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
             medicationName = medicationName!!.id,
-            frequency = frequency,
-            hours = hours,
-            minutes = minutes
+            frequency = frequency.toMutableList(),
+            hours = hours.toMutableList(),
+            minutes = minutes.toMutableList(),
         )
     }
 }

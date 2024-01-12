@@ -40,28 +40,6 @@ class Converters {
         return list.toString()
     }
 
-    @TypeConverter
-    fun toMutableListInt(list: String): MutableList<Int> {
-        return toListInt(list).toMutableList()
-    }
-
-    @TypeConverter
-    fun toListInt(list: String): List<Int> {
-        val cleanedList = list.substring(1 until list.length - 1)
-        return cleanedList.split(",").mapNotNull { it.trim().runCatching { Integer.parseInt(this) }.getOrNull() }
-    }
-
-    @TypeConverter
-    fun fromMutableListInt(list: MutableList<Int>): String {
-        return fromListInt(list)
-    }
-
-    @TypeConverter
-    fun fromListInt(list: List<Int>): String {
-        return list.toString()
-    }
-
-    // listof(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)
     @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun toMutableListDayOfWeek(list: String): MutableList<DayOfWeek> {
@@ -72,7 +50,7 @@ class Converters {
     @TypeConverter
     fun toListDayOfWeek(list: String): List<DayOfWeek> {
         val cleanedList = list.substring(1 until list.length - 1)
-        return cleanedList.split(",").mapNotNull { it.trim().runCatching { DayOfWeek.valueOf(this) }.getOrNull() }
+        return cleanedList.split(",").map { DayOfWeek.of(it.trim().toInt()) }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -84,6 +62,27 @@ class Converters {
     @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun fromListDayOfWeek(list: List<DayOfWeek>): String {
+        return list.map { it.value }.toString()
+    }
+
+    @TypeConverter
+    fun toMutableListInt(list: String): MutableList<Int> {
+        return toListInt(list).toMutableList()
+    }
+
+    @TypeConverter
+    fun toListInt(list: String): List<Int> {
+        val cleanedList = list.substring(1 until list.length - 1)
+        return cleanedList.split(",").map { it.trim().toInt() }
+    }
+
+    @TypeConverter
+    fun fromMutableListInt(list: MutableList<Int>): String {
+        return fromListInt(list)
+    }
+
+    @TypeConverter
+    fun fromListInt(list: List<Int>): String {
         return list.toString()
     }
 }
