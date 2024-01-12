@@ -107,3 +107,7 @@ Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/HomeNavGraph.kt,9\4\944f1
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionNavGraph.kt,0\a\0a4fd3a4b7b64a59d2d009514797e7f1ec5f52b1
 Å
 Qapp/src/main/java/fr/medicapp/medicapp/ui/home/AddPrescriptionModalBottomSheet.kt,d\9\d9b0c7199a7c505f6b6c3de9098d05dd03072ec8
+x
+Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3\2\3276ee5603eaaba107d74ee43d61eb4316ba98c6
+|
+Lapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,6\8\68c13a7387c3734c70003723144659f87a284790

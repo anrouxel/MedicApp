@@ -105,7 +105,7 @@ Japp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FeatureConverter.kt,0/d
 A
 gradle.properties,2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4
 x
-Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3/2/3276ee5603eaaba107d74ee43d61eb4316ba98c6
+Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3\2\3276ee5603eaaba107d74ee43d61eb4316ba98c6
 ?
 .gitignore.save,c/e/ce2e69006c7cae4a07faab9371c7f82084c71132
 q
@@ -229,3 +229,5 @@ Lapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsEdit.kt,5
 Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\f\6f2ca82311b02ea4da34ab77b3b1c93565ad3b4c
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/NotificationNavGraph.kt,a\6\a6b04e38d487c02ea067de367664a93b236d3031
+|
+Lapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,6\8\68c13a7387c3734c70003723144659f87a284790
