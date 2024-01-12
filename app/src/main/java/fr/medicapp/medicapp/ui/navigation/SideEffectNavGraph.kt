@@ -97,7 +97,11 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         navController.navigate(PrescriptionRoute.Prescription.route.replace("{id}", id))
                     },
                     onClose = {
-                        navController.popBackStack()
+                        navController.navigate(SideEffectRoute.Main.route) {
+                            popUpTo(SideEffectRoute.SideEffect.route) {
+                                inclusive = true
+                            }
+                        }
                     },
                     onRemove = {
                         Thread {
@@ -105,7 +109,11 @@ fun NavGraphBuilder.sideEffectNavGraph(
                                 repositorySideEffect.delete(side)
                             }
                         }.start()
-                        navController.popBackStack()
+                        navController.navigate(SideEffectRoute.Main.route) {
+                            popUpTo(SideEffectRoute.SideEffect.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -139,11 +147,20 @@ fun NavGraphBuilder.sideEffectNavGraph(
                     Thread {
                         repositorySideEffect.add(state.toEntity())
                     }.start()
-                    navController.popBackStack()
+                    navController.navigate(SideEffectRoute.Main.route) {
+                        popUpTo(SideEffectRoute.AddSideEffect.route) {
+                            inclusive = true
+                        }
+                    }
                 },
-            ) {
-                navController.popBackStack()
-            }
+                onCancel = {
+                    navController.navigate(SideEffectRoute.Main.route) {
+                        popUpTo(SideEffectRoute.AddSideEffect.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
     }
 }
