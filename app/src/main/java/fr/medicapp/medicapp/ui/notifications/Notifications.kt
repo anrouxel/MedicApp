@@ -82,7 +82,7 @@ fun Notifications(
                 ) {
                     Button(
                         onClick = {
-                            onClose() // à décommenter
+                            onClose()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -104,7 +104,7 @@ fun Notifications(
 
                     Button(
                         onClick = {
-                            onRemove() // à décommenter
+                            onRemove()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(

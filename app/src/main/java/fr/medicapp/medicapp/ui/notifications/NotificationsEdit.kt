@@ -11,6 +11,9 @@ import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -23,6 +26,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -39,6 +43,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -54,6 +59,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -81,6 +87,8 @@ import fr.medicapp.medicapp.ui.theme.EURed20
 import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
+import fr.medicapp.medicapp.ui.theme.EUYellow120
+import fr.medicapp.medicapp.ui.theme.EUYellow40
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.util.Date
@@ -254,8 +262,8 @@ fun NotificationsEdit(
                     if (treatmentOpen) {
                         SearchDialog(
                             options = treatments.map { it.toOptionDialog() },
-                            cardColor = EURed20,
-                            selectedCardColor = EURed80,
+                            cardColor = EUYellow40,
+                            selectedCardColor = EUYellow100,
                             onDismiss = {
                                 treatmentOpen = false
                             },
@@ -315,13 +323,14 @@ fun NotificationsEdit(
                             .fillMaxWidth()
 
                     ) {
-                        DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+
                             Row(
                                 Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp)
                             ) {
-                                Checkbox(
+                                DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                                /*Checkbox(
                                     checked = frequency.contains(dayOfWeek),
                                     onCheckedChange = { checked ->
                                         if (checked) {
@@ -330,9 +339,30 @@ fun NotificationsEdit(
                                             frequency.remove(dayOfWeek)
                                         }
                                     },
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))
+                                )*/
+                                var checked by remember { mutableStateOf(false) }
+
+                                val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                val textColor = if (checked) Color.White else Color.Black
+                                IconToggleButton(
+                                    checked = checked,
+                                    onCheckedChange = { checked ->
+                                        if (checked) {
+                                            frequency.add(dayOfWeek)
+                                        } else {
+                                            frequency.remove(dayOfWeek)
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .border(1.dp, EUYellow120, CircleShape)
+                                        .background(tint)
+
+                                ) {
+                                    Text(dayOfWeek.name.take(2), color = textColor)
+                                }
+                                /*Spacer(Modifier.width(8.dp))
+                                Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))*/
                             }
                         }
                     }

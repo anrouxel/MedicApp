@@ -172,6 +172,10 @@ fun NavGraphBuilder.notificationNavGraph(
                 notification = state,
                 treatments = treatments,
                 onConfirm = {
+                    Log.d("TAG", "onConfirm: ${state.toEntity()}")
+                    Log.d("TAG", "onConfirm: ${state.toEntity().frequency.toString()}")
+                    Log.d("TAG", "onConfirm: ${state.toEntity().hours.toString()}")
+                    Log.d("TAG", "onConfirm: ${state.toEntity().minutes.toString()}")
                     for (i in 0 until state.hours.size) {
                         smplrAlarmSet(context) {
                             hour { state.hours[i] }
