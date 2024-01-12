@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -33,6 +34,7 @@ import fr.medicapp.medicapp.ui.theme.EUPurple40
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchDialog(
     options: List<OptionDialog>,
@@ -62,6 +64,9 @@ fun SearchDialog(
                 LazyColumn {
                     items(filteredOptions) { option ->
                         ElevatedCard(
+                            onClick = {
+                                selectedOption = option
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             colors = if (option == selectedOption) {
                                 CardDefaults.cardColors(
@@ -77,9 +82,7 @@ fun SearchDialog(
                         ) {
                             Text(
                                 text = option.title,
-                                modifier = Modifier.clickable {
-                                    selectedOption = option
-                                }.padding(5.dp),
+                                modifier = Modifier.padding(5.dp),
                             )
 
                             option.description?.let {
