@@ -101,21 +101,21 @@ C
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 z
-Japp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FeatureConverter.kt,0/d/0dc2e3b0de986150b6383cb0ba334876d34f2a4e
+Japp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FeatureConverter.kt,0\d\0dc2e3b0de986150b6383cb0ba334876d34f2a4e
 A
 gradle.properties,2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4
 x
-Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3/2/3276ee5603eaaba107d74ee43d61eb4316ba98c6
+Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3\2\3276ee5603eaaba107d74ee43d61eb4316ba98c6
 ?
 .gitignore.save,c/e/ce2e69006c7cae4a07faab9371c7f82084c71132
 q
-Aapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/Feature.kt,d/c/dc926960261f1dc86ea528b3a33bd1b394d3bd04
+Aapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/Feature.kt,d\c\dc926960261f1dc86ea528b3a33bd1b394d3bd04
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/CharChecker.kt,4/3/4360b27ad914be271890809c2fa9825a9fa585ea
 w
-Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a/0/a0f4f2d1a4ab8fe57559abc4c15cff11491f6861
+Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a\0\a0f4f2d1a4ab8fe57559abc4c15cff11491f6861
 |
-Lapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/WordpieceTokenizer.kt,e/6/e6b3b79026807cdcf2ff34f73f18e2c1d2df91e9
+Lapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/WordpieceTokenizer.kt,e\6\e6b3b79026807cdcf2ff34f73f18e2c1d2df91e9
 :
 
 LICENSE.md,4/a/4a8486805915245bbbe2e3c8c1a9d680c6843a82
@@ -158,7 +158,7 @@ i
 H
 config/detekt/detekt.yml,5/a/5a8eccd34aefbab894eaadc3b79e57f6c456425d
 y
-Iapp/src/test/java/fr/medicapp/medicapp/repository/DoctorRepositoryTest.kt,3/1/31bfcc51576bd9a7dac9530adfd4674edf908ac1
+Iapp/src/test/java/fr/medicapp/medicapp/repository/DoctorRepositoryTest.kt,3\1\31bfcc51576bd9a7dac9530adfd4674edf908ac1
 H
 app/sampledata/User.json,5/1/51149ac4cc6a70a2afdb79c966b3a4a440a4d251
 N
@@ -229,3 +229,5 @@ Lapp/src/main/java/fr/medicapp/medicapp/ui/notifications/NotificationsEdit.kt,5
 Kapp/src/main/java/fr/medicapp/medicapp/ui/notifications/TestNotification.kt,6\f\6f2ca82311b02ea4da34ab77b3b1c93565ad3b4c
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/NotificationNavGraph.kt,a\6\a6b04e38d487c02ea067de367664a93b236d3031
+|
+Lapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,6\8\68c13a7387c3734c70003723144659f87a284790
