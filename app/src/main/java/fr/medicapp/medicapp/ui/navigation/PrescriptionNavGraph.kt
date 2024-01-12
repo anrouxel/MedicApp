@@ -374,8 +374,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        //LinearProgressIndicator()
-                        CircularProgressIndicator()
+                        LinearProgressIndicator()
                     }
                 }
             } else {
