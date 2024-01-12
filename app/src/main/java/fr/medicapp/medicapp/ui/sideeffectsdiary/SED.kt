@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -146,7 +147,7 @@ fun SED(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(height = 50.dp),
+                        .wrapContentHeight(),
                     colors =
                     CardDefaults.cardColors(
                         containerColor = EURed80,
@@ -156,7 +157,7 @@ fun SED(
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .wrapContentHeight()
                             .padding(10.dp),
                     ) {
                         Text(
@@ -222,7 +223,8 @@ fun SED(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(height = 77.dp + (effetsConstatesCard).dp),
+                        .wrapContentHeight(),
+                        //.height(height = 77.dp + (effetsConstatesCard).dp),
                     colors =
                     CardDefaults.cardColors(
                         containerColor = EURed80,
@@ -232,7 +234,6 @@ fun SED(
                 ) {
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
                             .padding(10.dp),
                     ) {
                         Text(

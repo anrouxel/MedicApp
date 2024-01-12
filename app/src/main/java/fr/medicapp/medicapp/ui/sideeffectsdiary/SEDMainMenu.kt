@@ -97,7 +97,7 @@ fun SEDMainMenu(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height = 75.dp),
+                            .wrapContentHeight(),
                         colors =
                             CardDefaults.cardColors(
                                 containerColor = EURed80,
@@ -107,7 +107,7 @@ fun SEDMainMenu(
                     ) {
                         Column(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .wrapContentHeight()
                                 .padding(10.dp),
                         ) {
                             Text(

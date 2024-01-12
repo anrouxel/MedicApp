@@ -77,6 +77,7 @@ import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
@@ -88,7 +89,9 @@ import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
+import fr.medicapp.medicapp.ui.theme.EUYellow140
 import fr.medicapp.medicapp.ui.theme.EUYellow40
+import fr.medicapp.medicapp.ui.theme.EUYellow80
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.util.Date
@@ -244,7 +247,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 85.dp),
+                    .wrapContentHeight(),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -287,6 +290,8 @@ fun NotificationsEdit(
                             unfocusedLabelColor = Color.White,
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
+                            disabledBorderColor = Color.White,
+                            disabledLabelColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth().clickable {
                             treatmentOpen = true
@@ -324,45 +329,33 @@ fun NotificationsEdit(
 
                     ) {
 
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp)
-                            ) {
-                                DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
-                                    /*Checkbox(
-                                        checked = frequency.contains(dayOfWeek),
-                                        onCheckedChange = { checked ->
-                                            if (checked) {
-                                                frequency.add(dayOfWeek)
-                                            } else {
-                                                frequency.remove(dayOfWeek)
-                                            }
-                                        },
-                                    )*/
-                                    var checked = frequency.contains(dayOfWeek)
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        ) {
+                            DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                                val checked = frequency.contains(dayOfWeek)
 
-                                    val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
-                                    val textColor = if (checked) Color.White else Color.Black
-                                    IconToggleButton(
-                                        checked = checked,
-                                        onCheckedChange = { checked ->
-                                            if (checked) {
-                                                frequency.add(dayOfWeek)
-                                            } else {
-                                                frequency.remove(dayOfWeek)
-                                            }
-                                        },
-                                        modifier = Modifier
-                                            .clip(CircleShape)
-                                            .border(1.dp, EUYellow120, CircleShape)
-                                            .background(tint)
+                                val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                val textColor = if (checked) Color.White else EUYellow140
+                                IconToggleButton(
+                                    checked = checked,
+                                    onCheckedChange = { checked ->
+                                        if (checked) {
+                                            frequency.add(dayOfWeek)
+                                        } else {
+                                            frequency.remove(dayOfWeek)
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .border(1.dp, EUYellow120, CircleShape)
+                                        .background(tint)
 
-                                    ) {
-                                        Text(dayOfWeek.name.take(2), color = textColor)
-                                    }
-                                    /*Spacer(Modifier.width(8.dp))
-                                    Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))*/
+                                ) {
+                                    Text(getFrenchDayOfWeek(dayOfWeek).take(2), color = textColor)
+                                }
                             }
                         }
                     }

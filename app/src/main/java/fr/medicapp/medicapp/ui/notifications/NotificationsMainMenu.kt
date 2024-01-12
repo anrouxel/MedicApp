@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.notifications
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +43,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.sideeffectsdiary.TestSideEffect
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
@@ -49,6 +52,7 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsMainMenu(
@@ -138,9 +142,15 @@ fun NotificationsMainMenu(
                                 )
 
                                 Spacer(modifier = Modifier.width(5.dp))
-
+                                var text = ""
+                                i.frequency.forEachIndexed { index, dayOfWeek ->
+                                    text+= getFrenchDayOfWeek(dayOfWeek)
+                                    if (index < i.frequency.size-1) {
+                                        text+=", "
+                                    }
+                                }
                                 Text(
-                                    i.frequency.toString().replace("[", "").replace("]", ""),
+                                    text,
                                     fontSize = 15.sp
                                 )
                             }
