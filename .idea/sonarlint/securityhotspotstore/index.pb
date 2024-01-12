@@ -221,3 +221,5 @@ f
 6app/src/main/java/fr/medicapp/medicapp/model/Doctor.kt,7/3/73a0c7304054cc5a13d1e3b198e48d6f56399848
 |
 Lapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,6\8\68c13a7387c3734c70003723144659f87a284790
+y
+Iapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,c\2\c260ed506bde8cd6cc837e984a94b79b0f78d343

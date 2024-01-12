@@ -77,3 +77,5 @@ D
 app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/CharChecker.kt,4\3\4360b27ad914be271890809c2fa9825a9fa585ea
+y
+Iapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,c\2\c260ed506bde8cd6cc837e984a94b79b0f78d343
