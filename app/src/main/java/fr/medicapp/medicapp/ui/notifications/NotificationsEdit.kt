@@ -330,39 +330,39 @@ fun NotificationsEdit(
                                     .padding(vertical = 8.dp)
                             ) {
                                 DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
-                                /*Checkbox(
-                                    checked = frequency.contains(dayOfWeek),
-                                    onCheckedChange = { checked ->
-                                        if (checked) {
-                                            frequency.add(dayOfWeek)
-                                        } else {
-                                            frequency.remove(dayOfWeek)
-                                        }
-                                    },
-                                )*/
-                                var checked by remember { mutableStateOf(false) }
+                                    /*Checkbox(
+                                        checked = frequency.contains(dayOfWeek),
+                                        onCheckedChange = { checked ->
+                                            if (checked) {
+                                                frequency.add(dayOfWeek)
+                                            } else {
+                                                frequency.remove(dayOfWeek)
+                                            }
+                                        },
+                                    )*/
+                                    var checked = frequency.contains(dayOfWeek)
 
-                                val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
-                                val textColor = if (checked) Color.White else Color.Black
-                                IconToggleButton(
-                                    checked = checked,
-                                    onCheckedChange = { checked ->
-                                        if (checked) {
-                                            frequency.add(dayOfWeek)
-                                        } else {
-                                            frequency.remove(dayOfWeek)
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .clip(CircleShape)
-                                        .border(1.dp, EUYellow120, CircleShape)
-                                        .background(tint)
+                                    val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                    val textColor = if (checked) Color.White else Color.Black
+                                    IconToggleButton(
+                                        checked = checked,
+                                        onCheckedChange = { checked ->
+                                            if (checked) {
+                                                frequency.add(dayOfWeek)
+                                            } else {
+                                                frequency.remove(dayOfWeek)
+                                            }
+                                        },
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .border(1.dp, EUYellow120, CircleShape)
+                                            .background(tint)
 
-                                ) {
-                                    Text(dayOfWeek.name.take(2), color = textColor)
-                                }
-                                /*Spacer(Modifier.width(8.dp))
-                                Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))*/
+                                    ) {
+                                        Text(dayOfWeek.name.take(2), color = textColor)
+                                    }
+                                    /*Spacer(Modifier.width(8.dp))
+                                    Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))*/
                             }
                         }
                     }
