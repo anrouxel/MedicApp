@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.ui.theme.EUBlue100
+import fr.medicapp.medicapp.ui.theme.EUPurple10
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple40
@@ -95,6 +96,7 @@ fun SearchDialog(
                 }
             }
         },
+        containerColor = Color.White,
         confirmButton = {
             Button(
                 enabled = selectedOption != null,

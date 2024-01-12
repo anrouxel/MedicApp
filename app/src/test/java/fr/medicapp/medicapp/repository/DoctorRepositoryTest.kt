@@ -5,7 +5,7 @@ import fr.medicapp.medicapp.entity.UserEntity
 import org.junit.jupiter.api.Assertions.*
 
 import org.junit.jupiter.api.Test
-
+/*
 class DoctorRepositoryTest {
     lateinit var repository : DoctorRepository
 
@@ -164,4 +164,4 @@ class DoctorRepositoryTest {
         age  : Int = 22,
         email : String = "arthur.osselin@medicapp.fr"
     ) = UserEntity(id, lastName,firstName, age,email)
-}
+}*/

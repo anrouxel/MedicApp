@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -203,7 +204,6 @@ fun SEDEdit(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
                 .padding(10.dp)
         ) {
             ElevatedCard(
@@ -213,7 +213,7 @@ fun SEDEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 85.dp),
+                    .wrapContentHeight(),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EURed80,
@@ -223,7 +223,6 @@ fun SEDEdit(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
                         .padding(10.dp),
                 ) {
                     var treatmentOpen by remember { mutableStateOf(false) }
@@ -261,6 +260,7 @@ fun SEDEdit(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
+                            .wrapContentHeight()
                             .clickable {
                                 treatmentOpen = true
                             }
@@ -382,7 +382,7 @@ fun SEDEdit(
                                 frequencyTimeOpen.value = true
                             },
                             enabled = false,
-                            value = if (sideeffects.hour != null && sideeffects.minute != null) "${sideeffects.hour}:${sideeffects.minute}" else "",
+                            value = if (sideeffects.hour != null && sideeffects.minute != null) "${sideeffects.hour}h${if (sideeffects.minute!! < 9) "0"+sideeffects.minute else sideeffects.minute}" else "",
                             textStyle = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.White

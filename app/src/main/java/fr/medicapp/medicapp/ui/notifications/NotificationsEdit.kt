@@ -11,6 +11,9 @@ import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -23,6 +26,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -39,6 +43,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -54,6 +59,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -71,6 +77,7 @@ import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
@@ -81,6 +88,10 @@ import fr.medicapp.medicapp.ui.theme.EURed20
 import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
+import fr.medicapp.medicapp.ui.theme.EUYellow120
+import fr.medicapp.medicapp.ui.theme.EUYellow140
+import fr.medicapp.medicapp.ui.theme.EUYellow40
+import fr.medicapp.medicapp.ui.theme.EUYellow80
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.util.Date
@@ -236,7 +247,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 85.dp),
+                    .wrapContentHeight(),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -254,8 +265,8 @@ fun NotificationsEdit(
                     if (treatmentOpen) {
                         SearchDialog(
                             options = treatments.map { it.toOptionDialog() },
-                            cardColor = EURed20,
-                            selectedCardColor = EURed80,
+                            cardColor = EUYellow40,
+                            selectedCardColor = EUYellow100,
                             onDismiss = {
                                 treatmentOpen = false
                             },
@@ -279,6 +290,8 @@ fun NotificationsEdit(
                             unfocusedLabelColor = Color.White,
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
+                            disabledBorderColor = Color.White,
+                            disabledLabelColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth().clickable {
                             treatmentOpen = true
@@ -315,14 +328,19 @@ fun NotificationsEdit(
                             .fillMaxWidth()
 
                     ) {
-                        DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp)
-                            ) {
-                                Checkbox(
-                                    checked = frequency.contains(dayOfWeek),
+
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        ) {
+                            DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                                val checked = frequency.contains(dayOfWeek)
+
+                                val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                val textColor = if (checked) Color.White else EUYellow140
+                                IconToggleButton(
+                                    checked = checked,
                                     onCheckedChange = { checked ->
                                         if (checked) {
                                             frequency.add(dayOfWeek)
@@ -330,9 +348,14 @@ fun NotificationsEdit(
                                             frequency.remove(dayOfWeek)
                                         }
                                     },
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .border(1.dp, EUYellow120, CircleShape)
+                                        .background(tint)
+
+                                ) {
+                                    Text(getFrenchDayOfWeek(dayOfWeek).take(2), color = textColor)
+                                }
                             }
                         }
                     }
@@ -401,7 +424,7 @@ fun NotificationsEdit(
                                 frequencyTimeOpen.value = true
                             }.fillMaxWidth(),
                             enabled = false,
-                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${notification.minutes[i]}" else "",
+                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${if (notification.minutes[i] < 9) "0"+notification.minutes[i] else notification.minutes[i]}" else "",
                             textStyle = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.White

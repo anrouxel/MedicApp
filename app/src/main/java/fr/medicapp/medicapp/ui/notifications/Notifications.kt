@@ -3,6 +3,9 @@ package fr.medicapp.medicapp.ui.notifications
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -27,12 +31,16 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.IconToggleButtonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,13 +48,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.SideEffectEntity
 import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
+import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
+import fr.medicapp.medicapp.ui.theme.EUYellow140
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Notifications(
@@ -82,7 +94,7 @@ fun Notifications(
                 ) {
                     Button(
                         onClick = {
-                            onClose() // à décommenter
+                            onClose()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -104,7 +116,7 @@ fun Notifications(
 
                     Button(
                         onClick = {
-                            onRemove() // à décommenter
+                            onRemove()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -153,13 +165,13 @@ fun Notifications(
             ) {
                 notifications.forEach { notification ->
                     ElevatedCard(
-                        onClick = { /*TODO*/ },
+                        onClick = { },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height = 50.dp),
+                            .wrapContentHeight(),
                         colors =
                         CardDefaults.cardColors(
                             containerColor = EUYellow110,
@@ -169,7 +181,8 @@ fun Notifications(
                     ) {
                         Row(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
+                                .wrapContentHeight()
                                 .padding(10.dp),
                         ) {
                             Text(
@@ -214,14 +227,31 @@ fun Notifications(
                                     .fillMaxWidth()
 
                             ) {
-                                notification.frequency.forEach { dayOfWeek ->
-                                    Row(
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 8.dp)
-                                    ) {
-                                        Text(text = dayOfWeek.name, modifier = Modifier.align(
-                                            Alignment.CenterVertically))
+
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp)
+                                ) {
+                                    DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                                        /*Text(text = getFrenchDayOfWeek(dayOfWeek), modifier = Modifier.align(
+                                            Alignment.CenterVertically))*/
+                                        val checked = notification.frequency.contains(dayOfWeek)
+
+                                        val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                        val textColor = if (checked) Color.White else EUYellow140
+                                        IconToggleButton(
+                                            checked = checked,
+                                            onCheckedChange = {},
+                                            enabled = false,
+                                            modifier = Modifier
+                                                .clip(CircleShape)
+                                                .border(1.dp, EUYellow120, CircleShape)
+                                                .background(tint)
+
+                                        ) {
+                                            Text(getFrenchDayOfWeek(dayOfWeek).take(2), color = textColor)
+                                        }
                                     }
                                 }
                             }
@@ -230,9 +260,6 @@ fun Notifications(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    var heuresSize = notification.hours.size
-                    var heuresCard = if (heuresSize > 5) 115 else heuresSize * 18
-
                     ElevatedCard(
                         onClick = { /*TODO*/ },
                         elevation = CardDefaults.cardElevation(
@@ -240,7 +267,7 @@ fun Notifications(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height = 77.dp + (heuresCard).dp),
+                            .wrapContentHeight(),
                         colors =
                         CardDefaults.cardColors(
                             containerColor = EUYellow110,
@@ -250,7 +277,7 @@ fun Notifications(
                     ) {
                         Column(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
                                 .padding(10.dp),
                         ) {
                             Text(
@@ -263,7 +290,7 @@ fun Notifications(
                             Log.d("heuresSize", notification.toString())
                             for (i in notification.hours.indices) {
                                 Text(
-                                    "- ${notification.hours[i]}:${notification.minutes[i]}",
+                                    "- ${notification.hours[i]}h${if (notification.minutes[i] < 9 ) "0"+notification.minutes[i] else notification.minutes[i]}",
                                     fontSize = 18.sp
                                 )
                             }
