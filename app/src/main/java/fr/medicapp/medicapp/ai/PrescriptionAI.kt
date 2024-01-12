@@ -2,10 +2,14 @@ package fr.medicapp.medicapp.ai
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.net.Uri
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import androidx.annotation.WorkerThread
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import fr.medicapp.medicapp.tokenization.Feature
 import fr.medicapp.medicapp.tokenization.FeatureConverter
 import org.pytorch.IValue
@@ -39,23 +43,50 @@ class PrescriptionAI(
     private val PREDICT_ANS_NUM = 5
     private val NUM_LITE_THREADS = 4
 
-    /*val modelRunnable = Runnable {
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    }*/
-
-    fun analyse(visionText: String): MutableList<Pair<String, String>> {
-        val latch = CountDownLatch(1)
-        var result = mutableListOf<Pair<String, String>>()
+    init {
         mBackgroundThread = HandlerThread("BackgroundThread")
         mBackgroundThread.start()
         mHandle = Handler(mBackgroundThread.looper)
         mHandle.post {
             loadModel()
-            result = runModel(visionText)
-            latch.countDown() // Decrements the count of the latch, releasing all waiting threads if the count reaches zero.
         }
-        latch.await() // Causes the current thread to wait until the latch has counted down to zero.
-        return result
+    }
+
+    fun analyse(
+        imageUri: Uri,
+        onPrediction: (MutableList<Pair<String, String>>) -> Unit,
+        onDismiss: () -> Unit
+    ) {
+        mHandle.post {
+            while (mModule == null) {
+                Thread.sleep(100)
+            }
+            val visionText = recognizeText(imageUri)
+            if (visionText != null) {
+                val sentenceTokenized = runModel(visionText)
+                onPrediction(sentenceTokenized)
+            }
+            onDismiss()
+        }
+    }
+
+    @WorkerThread
+    private fun recognizeText(imageUri: Uri): String? {
+        var visionText: String? = null
+        val latch = CountDownLatch(1)
+        val image = InputImage.fromFilePath(context, imageUri)
+        recognizer.process(image)
+            .addOnSuccessListener {
+                visionText = it.text
+                latch.countDown()
+            }
+            .addOnFailureListener {
+                latch.countDown()
+            }
+        latch.await()
+        return visionText
     }
 
     @WorkerThread
@@ -76,7 +107,7 @@ class PrescriptionAI(
             }
 
             val moduleFileAbsoluteFilePath: String? = assetFilePath(context.assets)
-            mModule = Module.load(moduleFileAbsoluteFilePath)//, mutableMapOf(), Device.CPU)
+            mModule = Module.load(moduleFileAbsoluteFilePath) // , mutableMapOf(), Device.CPU)
             Log.v(TAG, "Model loaded.")
         }
     }
@@ -150,7 +181,10 @@ class PrescriptionAI(
 
             for (i in predictionsLabelList.indices) {
                 if (predictionsLabelList[i] != "O") {
-                    Log.d("AIModel", "Prediction: ${feature.origTokens[i]} -> ${predictionsLabelList[i]}")
+                    Log.d(
+                        "AIModel",
+                        "Prediction: ${feature.origTokens[i]} -> ${predictionsLabelList[i]}"
+                    )
                     sentenceTokenized.add(Pair(feature.origTokens[i], predictionsLabelList[i]))
                 }
             }

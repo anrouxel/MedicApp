@@ -46,7 +46,7 @@ fun DatePickerModal(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text("CANCEL")
+                Text("Annuler")
             }
         }
     ) {

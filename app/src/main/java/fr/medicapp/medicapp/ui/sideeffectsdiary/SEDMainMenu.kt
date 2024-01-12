@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.sideeffectsdiary
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.SideEffectEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
@@ -42,16 +45,17 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDMainMenu(
-    sideeffects : List<SideEffectEntity>,
+    sideeffects : List<SideEffect>,
     onSideEffect: (String) -> Unit,
     addSideEffect: () -> Unit
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(
@@ -93,7 +97,7 @@ fun SEDMainMenu(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height = 75.dp),
+                            .wrapContentHeight(),
                         colors =
                             CardDefaults.cardColors(
                                 containerColor = EURed80,
@@ -103,11 +107,11 @@ fun SEDMainMenu(
                     ) {
                         Column(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .wrapContentHeight()
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicament,
+                                text = i.medicament?.medication?.name ?: "",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -146,15 +150,17 @@ fun SEDMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun SEDMainMenuPreview() {
-    var se = mutableListOf<SideEffectEntity>(SideEffectEntity(
+    var se = mutableListOf<SideEffect>(
+        SideEffect(
         id = "",
-            "Amoxicilline",
+            null,
         LocalDate.now(),
         12,
         30,
         mutableListOf("Mal de tête", "Nausées"),
         "J'ai eu mal à la tête hier"
-    ))
+    )
+    )
     //var se = listOf<TestSideEffect>() /* TODO */
     SEDMainMenu(se, {}, {})
 }

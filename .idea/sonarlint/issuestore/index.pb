@@ -23,8 +23,6 @@ e
 5app/src/main/java/fr/medicapp/medicapp/dao/UserDAO.kt,6/8/68c621b61a4f4f9dd09b2ae79af810b0855c43df
 j
 :app/src/main/java/fr/medicapp/medicapp/dao/TreatmentDAO.kt,f/1/f19aaa8214dc77f537dee40b329af7c38c6dc879
-l
-<app/src/main/java/fr/medicapp/medicapp/database/IDatabase.kt,7/4/7437ece252bb1303434e9431c1d805f821fc671e
 ˆ
 Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/TreatmentCard.kt,3/e/3e5e632a44454c19e92df7a400c986e2901e37c6
 z
@@ -67,3 +65,17 @@ w
 Gapp/src/main/java/fr/medicapp/medicapp/security/EncryptionMotDePasse.kt,2/8/28323265d71c100daac6f268fbf625a916f9cb0a
 „
 Tapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/AddButton.kt,4/0/40b2ec264ebedd160ee7b9a305ea6ccfae3e8262
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+|
+Lapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,6\8\68c13a7387c3734c70003723144659f87a284790
+x
+Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3\2\3276ee5603eaaba107d74ee43d61eb4316ba98c6
+@
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+u
+Eapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/CharChecker.kt,4\3\4360b27ad914be271890809c2fa9825a9fa585ea
+y
+Iapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,c\2\c260ed506bde8cd6cc837e984a94b79b0f78d343

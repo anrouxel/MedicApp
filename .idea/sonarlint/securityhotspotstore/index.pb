@@ -1,6 +1,6 @@
 
 D
-app/build.gradle.kts,d/2/d2a4383452aad84a18429a5844d31330a012a9e6
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
 S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
 Å
@@ -42,8 +42,6 @@ Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/HomeNavGraph.kt,9/4/944f1
 Ñ
 Tapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/AddButton.kt,4/0/40b2ec264ebedd160ee7b9a305ea6ccfae3e8262
 à
-Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/FrequencyCard.kt,9/d/9d2dfe22363cb9ea19eefeaf30f833f9d04ccbf2
-à
 Xapp/src/main/java/fr/medicapp/medicapp/ui/prescription/EditPrescription/TreatmentCard.kt,3/e/3e5e632a44454c19e92df7a400c986e2901e37c6
 z
 Japp/src/main/java/fr/medicapp/medicapp/ui/prescription/ListConsultation.kt,8/f/8f79d6ddac60027a75b2ccb36d1e9bd865dd56a2
@@ -72,7 +70,7 @@ h
 g
 7app/src/main/java/fr/medicapp/medicapp/ui/theme/Type.kt,a/8/a837218a66465cb834b48c2c4a50dd9f5ac2a61b
 @
-build.gradle.kts,d/b/dbcff70658daf80b53ce624f6adcaa529df5ed8d
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 x
 Happ/src/main/java/fr/medicapp/medicapp/ui/home/NavigationDrawerScreen.kt,6/5/659c6e03df4745021c17ecbaf23a9ad1983134f2
 P
@@ -101,19 +99,19 @@ C
 ;
 gradlew.bat,2/a/2a45a911a8f1836b0b6c5b758962572012d8f8c3
 9
-	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 z
 Japp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FeatureConverter.kt,0/d/0dc2e3b0de986150b6383cb0ba334876d34f2a4e
 A
 gradle.properties,2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4
 x
-Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3/2/3276ee5603eaaba107d74ee43d61eb4316ba98c6
+Happ/src/main/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizer.kt,3\2\3276ee5603eaaba107d74ee43d61eb4316ba98c6
 ?
 .gitignore.save,c/e/ce2e69006c7cae4a07faab9371c7f82084c71132
 q
 Aapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/Feature.kt,d/c/dc926960261f1dc86ea528b3a33bd1b394d3bd04
 u
-Eapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/CharChecker.kt,4/3/4360b27ad914be271890809c2fa9825a9fa585ea
+Eapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/CharChecker.kt,4\3\4360b27ad914be271890809c2fa9825a9fa585ea
 w
 Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a/0/a0f4f2d1a4ab8fe57559abc4c15cff11491f6861
 |
@@ -189,8 +187,6 @@ Oapp/src/test/java/fr/medicapp/medicapp/repository/PrescriptionRepositoryTest.kt
 Lapp/src/test/java/fr/medicapp/medicapp/repository/TreatmentRepositoryTest.kt,b/d/bd39c22defc4a731cd8b2aa82eb38b563473b700
 w
 Gapp/src/test/java/fr/medicapp/medicapp/repository/UserRepositoryTest.kt,b/a/ba0c3887196c9c13783a81e79e41eb2916c24cde
-l
-<app/src/main/java/fr/medicapp/medicapp/database/IDatabase.kt,7/4/7437ece252bb1303434e9431c1d805f821fc671e
 o
 ?app/src/main/java/fr/medicapp/medicapp/entity/DurationEntity.kt,5/6/563cadc2e1717920db777595c834f5a57815e8d9
 à
@@ -223,3 +219,7 @@ h
 8app/src/main/java/fr/medicapp/medicapp/model/Duration.kt,8/b/8bd549f8861a511a432a28572f031e42d1cbee13
 f
 6app/src/main/java/fr/medicapp/medicapp/model/Doctor.kt,7/3/73a0c7304054cc5a13d1e3b198e48d6f56399848
+|
+Lapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,6\8\68c13a7387c3734c70003723144659f87a284790
+y
+Iapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,c\2\c260ed506bde8cd6cc837e984a94b79b0f78d343

@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +39,7 @@ import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.navigation.HomeNavGraph
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawerScreen(navController: NavHostController = rememberNavController()) {
@@ -46,7 +49,8 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     val screens = listOf(
         NavigationDrawerRoute.Home,
         NavigationDrawerRoute.Prescriptions,
-        NavigationDrawerRoute.Messages
+        NavigationDrawerRoute.Messages,
+        NavigationDrawerRoute.Notifications
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -99,8 +103,8 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                     title = {
                         Image(
                             painter = painterResource(
-                                // id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
-                                id = R.drawable.medicapp_eu_purple
+                                id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                //id = R.drawable.medicapp_eu_purple
                             ),
                             contentDescription = "MedicApp",
                         )
@@ -117,14 +121,14 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                             )
                         }
                     },
-                    actions = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                    /*actions = {
+                        IconButton(onClick = {  }) {
                             Icon(
                                 imageVector = Icons.Filled.Notifications,
                                 contentDescription = "Notifications"
                             )
                         }
-                    }
+                    }*/
                 )
             },
         ) { innerPadding ->
@@ -141,6 +145,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun NavigationDrawerScreenPreview() {

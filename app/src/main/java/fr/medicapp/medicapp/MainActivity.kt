@@ -1,20 +1,24 @@
 package fr.medicapp.medicapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.entity.DoctorEntity
-import fr.medicapp.medicapp.entity.PrescriptionEntity
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val db = AppDatabase.getInstance(this)
+        AppDatabase.getInstance(this)
+        PrescriptionAI.getInstance(this)
 
         setContent {
             MedicAppTheme {

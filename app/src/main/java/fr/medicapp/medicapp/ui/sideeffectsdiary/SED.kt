@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.sideeffectsdiary
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -29,22 +35,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.SideEffectEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SED(
-    sideeffects: MutableList<SideEffectEntity>
+    sideeffects: MutableList<SideEffect>,
+    onMedication: (String) -> Unit,
+    onClose: () -> Unit,
+    onRemove: () -> Unit
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(
@@ -55,17 +71,63 @@ fun SED(
             )
         },
         bottomBar = {
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { },
-                containerColor = EURed100
+            BottomAppBar(
+                containerColor = Color.Unspecified
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = "",
-                    tint = Color.White
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp)
+                        .weight(1f)
+                ) {
+                    Button(
+                        onClick = {
+                            onClose()
+                        },
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Text(
+                            text = "Annuler",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.3f))
+
+                    Button(
+                        onClick = onRemove,
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = EURed100,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(3f)
+                    ) {
+                        Row() {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "Supprimer",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
             }
         }
     ) { innerPadding ->
@@ -77,13 +139,15 @@ fun SED(
                     .padding(10.dp)
             ) {
                 ElevatedCard(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        sideeffect.medicament?.let { onMedication(it.id) }
+                    },
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(height = 50.dp),
+                        .wrapContentHeight(),
                     colors =
                     CardDefaults.cardColors(
                         containerColor = EURed80,
@@ -93,7 +157,7 @@ fun SED(
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .wrapContentHeight()
                             .padding(10.dp),
                     ) {
                         Text(
@@ -104,7 +168,7 @@ fun SED(
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            "Nurofen",
+                            text = sideeffect.medicament?.medication?.name ?: "",
                             fontSize = 18.sp
                         )
                     }
@@ -139,8 +203,9 @@ fun SED(
 
                         )
                         Spacer(modifier = Modifier.height(2.dp))
+
                         Text(
-                            "14/12/2022 à 7h35",
+                            text = "${if (sideeffect.date != null) sideeffect.date!!.format(formatter) else ""} à ${sideeffect.hour}h${if (sideeffect.minute!! < 9) "0"+sideeffect.minute else sideeffect.minute}",
                             fontSize = 18.sp
                         )
                     }
@@ -158,7 +223,8 @@ fun SED(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(height = 77.dp + (effetsConstatesCard).dp),
+                        .wrapContentHeight(),
+                        //.height(height = 77.dp + (effetsConstatesCard).dp),
                     colors =
                     CardDefaults.cardColors(
                         containerColor = EURed80,
@@ -168,7 +234,6 @@ fun SED(
                 ) {
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
                             .padding(10.dp),
                     ) {
                         Text(
@@ -208,10 +273,10 @@ fun SED(
 @Preview(showBackground = true)
 @Composable
 private fun SEDPreview() {
-    var se = mutableListOf<SideEffectEntity>(
-        SideEffectEntity(
+    var se = mutableListOf<SideEffect>(
+        SideEffect(
             "1",
-            "Nurofen",
+            null,
             LocalDate.now(),
             0,
             0,
@@ -220,5 +285,5 @@ private fun SEDPreview() {
         )
     )
     // var se = listOf<TestSideEffect>()
-    SED(se)
+    SED(se, {}, {}, {})
 }

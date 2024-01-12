@@ -1,5 +1,8 @@
 package fr.medicapp.medicapp.ui.notifications
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,12 +32,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.sideeffectsdiary.TestSideEffect
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EURed100
@@ -43,17 +52,24 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsMainMenu(
-    notifications : List<TestNotification>
+    notifications : MutableList<Notification>,
+    onNotification : (String) -> Unit = {},
+    addNotification : () -> Unit = {}
 ) {
+    var darkmode : Boolean = isSystemInDarkTheme()
+    val context = LocalContext.current
+    val navController = rememberNavController()
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
+                    containerColor = Color.Unspecified,
+                    titleContentColor = if (darkmode) Color.White else Color.Black,
                 ),
                 title = {
                     Text(
@@ -68,7 +84,7 @@ fun NotificationsMainMenu(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = addNotification,
                 containerColor = EUYellow120
             ) {
                 Icon(
@@ -89,13 +105,15 @@ fun NotificationsMainMenu(
             if (notifications.isNotEmpty()){
                 for (i in notifications) {
                     ElevatedCard(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onNotification(i.id)
+                        },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height = 105.dp),
+                            .wrapContentHeight(),
                         colors =
                         CardDefaults.cardColors(
                             containerColor = EUYellow110,
@@ -105,11 +123,10 @@ fun NotificationsMainMenu(
                     ) {
                         Column(
                             modifier = Modifier
-                                .fillMaxSize()
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.nomMedicament,
+                                text = i.medicationName!!.medication!!.name,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -125,9 +142,15 @@ fun NotificationsMainMenu(
                                 )
 
                                 Spacer(modifier = Modifier.width(5.dp))
-
+                                var text = ""
+                                i.frequency.forEachIndexed { index, dayOfWeek ->
+                                    text+= getFrenchDayOfWeek(dayOfWeek)
+                                    if (index < i.frequency.size-1) {
+                                        text+=", "
+                                    }
+                                }
                                 Text(
-                                    i.frequence,
+                                    text,
                                     fontSize = 15.sp
                                 )
                             }
@@ -144,7 +167,7 @@ fun NotificationsMainMenu(
                                 Spacer(modifier = Modifier.width(5.dp))
 
                                 Text(
-                                    i.heures.toString().replace("[", "").replace("]", ""),
+                                    i.hours.zip(i.minutes).map { (heure, minute) -> "${heure}h${if (minute<9) "0$minute" else minute }" }.toString().replace("[", "").replace("]", ""),
                                     fontSize = 15.sp
                                 )
                             }
@@ -159,8 +182,8 @@ fun NotificationsMainMenu(
                         .wrapContentHeight(align = Alignment.CenterVertically)
                 ) {
                     Text(
-                        "Vous n'avez pas constaté d'effets secondaires.\nPour en ajouter un, cliquez sur\nle bouton en bas.",
-                        color = EUBlue100,
+                        "Vous n'avez pas créé de notifications.\nPour en créer une, cliquez sur\nle bouton en bas.",
+                        color = EUYellow100,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
@@ -176,13 +199,6 @@ fun NotificationsMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsMainMenuPreview() {
-    var se = listOf(
-        TestNotification(
-            "Doliprane",
-            "Tous les jours",
-            mutableListOf("5h00, 10h00, 15h00")
-        )
-    )
-    //var se = listOf<TestSideEffect>() /* TODO */
-    NotificationsMainMenu(se)
+    //notif = listOf<TestNotification>()
+    NotificationsMainMenu(mutableListOf()) {}
 }

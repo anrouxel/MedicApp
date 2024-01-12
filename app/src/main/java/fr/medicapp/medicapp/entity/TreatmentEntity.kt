@@ -3,6 +3,9 @@ package fr.medicapp.medicapp.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import fr.medicapp.medicapp.model.OptionDialog
+import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.repository.MedicationRepository
 
 @Entity
 data class TreatmentEntity(
@@ -21,4 +24,16 @@ data class TreatmentEntity(
     val duration: DurationEntity,
 
     var notification: Boolean = false
-)
+) {
+    fun toTreatment(repositoryMedication: MedicationRepository): Treatment {
+        return Treatment(
+            id = id,
+            medication = repositoryMedication.getOne(medication),
+            posology = posology,
+            quantity = quantity,
+            renew = renew,
+            duration = duration.toDuration(),
+            notification = notification
+        )
+    }
+}

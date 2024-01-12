@@ -1,10 +1,22 @@
-package fr.medicapp.medicapp.ui.sideeffectsdiary
+package fr.medicapp.medicapp.ui.notifications
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Context
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +26,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
@@ -26,17 +39,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,17 +58,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.SideEffect
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.NavHostController
+import de.coldtea.smplr.smplralarm.alarmNotification
+import de.coldtea.smplr.smplralarm.channel
+import de.coldtea.smplr.smplralarm.smplrAlarmSet
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
+import fr.medicapp.medicapp.MainActivity
+import fr.medicapp.medicapp.R
+import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.ui.prescription.DatePickerModal
+import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
@@ -63,23 +87,33 @@ import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed20
 import fr.medicapp.medicapp.ui.theme.EURed40
-import fr.medicapp.medicapp.ui.theme.EURed60
 import fr.medicapp.medicapp.ui.theme.EURed80
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import fr.medicapp.medicapp.ui.theme.EUYellow100
+import fr.medicapp.medicapp.ui.theme.EUYellow110
+import fr.medicapp.medicapp.ui.theme.EUYellow120
+import fr.medicapp.medicapp.ui.theme.EUYellow140
+import fr.medicapp.medicapp.ui.theme.EUYellow20
+import fr.medicapp.medicapp.ui.theme.EUYellow40
+import fr.medicapp.medicapp.ui.theme.EUYellow80
+import java.time.DayOfWeek
+import java.time.LocalTime
+import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SEDEdit(
-    sideeffects: SideEffect,
-    treatments: MutableList<Treatment>,
+fun NotificationsEdit(
+    notification: Notification,
     onConfirm: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit = {},
+    treatments: MutableList<Treatment> = mutableListOf()
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
-    var nomMedicament by remember { mutableStateOf(sideeffects.medicament?.medication?.name ?: "") }
+    val context = LocalContext.current
+    val alarmManager = context.getSystemService(AlarmManager::class.java)
+
+    var medicationName by remember { mutableStateOf(notification.medicationName?.medication?.name ?: "") }
+    var frequency by remember { mutableStateOf(notification.frequency) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -115,7 +149,7 @@ fun SEDEdit(
                 ),
                 title = {
                     Text(
-                        "Journal des effets",
+                        "Gérer les notifications",
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -155,12 +189,13 @@ fun SEDEdit(
 
                     Button(
                         onClick = {
-                            if (nomMedicament != null && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
+                            if (medicationName != "" && frequency.size > 0 && notification.hours.size > 0 && notification.hours.all { it != null } && notification.minutes.size > 0 && notification.minutes.all { it != null }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
                             }
                         },
+                        enabled = true,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EUGreen100,
@@ -205,7 +240,9 @@ fun SEDEdit(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .fillMaxSize()
                 .padding(10.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             ElevatedCard(
                 onClick = { /*TODO*/ },
@@ -217,13 +254,14 @@ fun SEDEdit(
                     .wrapContentHeight(),
                 colors =
                 CardDefaults.cardColors(
-                    containerColor = EURed80,
+                    containerColor = EUYellow110,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Column(
                     modifier = Modifier
+                        .fillMaxSize()
                         .padding(10.dp),
                 ) {
                     var treatmentOpen by remember { mutableStateOf(false) }
@@ -231,22 +269,22 @@ fun SEDEdit(
                     if (treatmentOpen) {
                         SearchDialog(
                             options = treatments.map { it.toOptionDialog() },
-                            cardColor = EURed20,
-                            selectedCardColor = EURed80,
+                            cardColor = EUYellow40,
+                            selectedCardColor = EUYellow100,
                             onDismiss = {
                                 treatmentOpen = false
                             },
                             onValidate = { option ->
-                                sideeffects.medicament = treatments.find { it.id == option.id }
-                                nomMedicament = option.title
+                                notification.medicationName = treatments.find { it.id == option.id }
+                                medicationName = option.title
                                 treatmentOpen = false
                             }
                         )
                     }
-                    
+
                     OutlinedTextField(
                         enabled = false,
-                        value = nomMedicament,
+                        value = medicationName,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
                         onValueChange = {},
                         label = { Text("Nom du médicament") },
@@ -257,14 +295,11 @@ fun SEDEdit(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
                             disabledBorderColor = Color.White,
-                            disabledLabelColor = Color.White,
+                            disabledLabelColor = Color.White
                         ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .clickable {
-                                treatmentOpen = true
-                            }
+                        modifier = Modifier.fillMaxWidth().clickable {
+                            treatmentOpen = true
+                        }
                     )
                 }
             }
@@ -278,139 +313,56 @@ fun SEDEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp),
+                    .wrapContentHeight(),
                 colors =
                 CardDefaults.cardColors(
-                    containerColor = EURed80,
+                    containerColor = EUYellow110,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                         .padding(10.dp)
                 ) {
-                    Text(
-                        text = "Signalement :",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
 
-                    Spacer(modifier = Modifier.height(5.dp))
+                    ) {
 
-                    var datePrescriptionOpen by remember { mutableStateOf(false) }
-                    var datePrescriptionState = rememberDatePickerState()
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                                val checked = frequency.contains(dayOfWeek)
 
-                    if (datePrescriptionOpen) {
-                        DatePickerModal(
-                            state = datePrescriptionState,
-                            onDismissRequest = {
-                                datePrescriptionOpen = false
-                            },
-                            onConfirm = {
-                                datePrescriptionOpen = false
-                                if (datePrescriptionState.selectedDateMillis != null) {
-                                    sideeffects.date = Instant.ofEpochMilli(datePrescriptionState.selectedDateMillis!!).atZone(
-                                        ZoneId.systemDefault()
-                                    ).toLocalDate()
+                                val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                val textColor = if (checked) Color.White else EUYellow140
+                                IconToggleButton(
+                                    checked = checked,
+                                    onCheckedChange = { checked ->
+                                        if (checked) {
+                                            frequency.add(dayOfWeek)
+                                        } else {
+                                            frequency.remove(dayOfWeek)
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .border(1.dp, EUYellow120, CircleShape)
+                                        .background(tint)
+
+                                ) {
+                                    Text(getFrenchDayOfWeek(dayOfWeek).take(2), color = textColor)
                                 }
                             }
-                        )
-                    }
-
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
-                    Row() {
-                        OutlinedTextField(
-                            enabled = false,
-                            value = if (sideeffects.date != null) sideeffects.date!!.format(formatter) else "",
-                            textStyle = TextStyle(
-                                fontSize = 16.sp,
-                                color = Color.White
-                            ),
-                            onValueChange = { },
-                            label = { Text("Date") },
-                            shape = RoundedCornerShape(20),
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.CalendarMonth,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedLabelColor = Color.White,
-                                unfocusedLabelColor = Color.White,
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White,
-                                disabledBorderColor = Color.White,
-                                disabledLabelColor = Color.White,
-                            ),
-                            modifier = Modifier
-                                .width(200.dp)
-                                .clickable {
-                                    datePrescriptionOpen = true
-                                }
-                        )
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-
-                        var frequencyTimeOpen = remember { mutableStateOf(false) }
-                        var frequencyTimeState = rememberTimePickerState(
-                            is24Hour = true,
-                        )
-
-                        if (frequencyTimeOpen.value) {
-                            TimePickerModal(
-                                state = frequencyTimeState,
-                                clockBackgroundColor = EURed20,
-                                selectorColor = EURed100,
-                                timeSelectorSelectedContainerColor = EURed40,
-                                timeSelectorUnselectedContainerColor = EURed20,
-                                onDismissRequest = {
-                                    frequencyTimeOpen.value = false
-                                },
-                                onConfirm = {
-                                    sideeffects.hour = frequencyTimeState.hour
-                                    Log.d("Hour", sideeffects.hour.toString())
-                                    sideeffects.minute = frequencyTimeState.minute
-                                    Log.d("Minute", sideeffects.minute.toString())
-                                    frequencyTimeOpen.value = false
-                                }
-                            )
                         }
-
-                        OutlinedTextField(
-                            modifier = Modifier.clickable{
-                                frequencyTimeOpen.value = true
-                            },
-                            enabled = false,
-                            value = if (sideeffects.hour != null && sideeffects.minute != null) "${sideeffects.hour}h${if (sideeffects.minute!! < 9) "0"+sideeffects.minute else sideeffects.minute}" else "",
-                            textStyle = TextStyle(
-                                fontSize = 16.sp,
-                                color = Color.White
-                            ),
-                            onValueChange = { },
-                            label = { Text("Heure") },
-                            shape = RoundedCornerShape(20),
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.Alarm,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
-                            },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedLabelColor = Color.White,
-                                unfocusedLabelColor = Color.White,
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White,
-                                disabledBorderColor = Color.White,
-                                disabledLabelColor = Color.White,
-                            )
-                        )
                     }
                 }
             }
@@ -424,10 +376,10 @@ fun SEDEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 115.dp + (sideeffects.effetsConstates.size * 63 + sideeffects.effetsConstates.size).dp),
+                    .height(height = 115.dp + (notification.hours.size * 63 + notification.hours.size).dp),
                 colors =
                 CardDefaults.cardColors(
-                    containerColor = EURed80,
+                    containerColor = EUYellow110,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(10.dp)
@@ -438,32 +390,61 @@ fun SEDEdit(
                         .padding(10.dp),
                 ) {
                     Text(
-                        text = "Effets constatés (${sideeffects.effetsConstates.size}) :",
+                        text = "Horaires de rappel (${notification.hours.size}) :",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    for (i in 0 until sideeffects.effetsConstates.size) {
-                        var effetsConstates = remember { mutableStateOf(sideeffects.effetsConstates[i]) }
+                    for (i in 0 until notification.hours.size) {
+                        var hours = remember { mutableStateOf(notification.hours[i]) }
+                        var minutes = remember { mutableStateOf(notification.minutes[i]) }
 
-                        LaunchedEffect(sideeffects.effetsConstates[i]) {
-                            effetsConstates.value = sideeffects.effetsConstates[i]
+                        LaunchedEffect(notification.hours[i]) {
+                            hours.value = notification.hours[i]
+                            minutes.value = notification.minutes[i]
+                        }
+
+                        var frequencyTimeOpen = remember { mutableStateOf(false) }
+                        var frequencyTimeState = rememberTimePickerState(
+                            is24Hour = true,
+                        )
+
+                        if (frequencyTimeOpen.value) {
+                            TimePickerModal(
+                                state = frequencyTimeState,
+                                clockBackgroundColor = EUYellow20,
+                                selectorColor = EUYellow100,
+                                timeSelectorSelectedContainerColor = EUYellow40,
+                                timeSelectorUnselectedContainerColor = EUYellow20,
+                                onDismissRequest = {
+                                    frequencyTimeOpen.value = false
+                                },
+                                onConfirm = {
+                                    notification.hours[i] = frequencyTimeState.hour
+                                    notification.minutes[i] = frequencyTimeState.minute
+                                    frequencyTimeOpen.value = false
+                                }
+                            )
                         }
 
                         OutlinedTextField(
-                            value = effetsConstates.value,
+                            modifier = Modifier.clickable{
+                                frequencyTimeOpen.value = true
+                            }.fillMaxWidth(),
+                            enabled = false,
+                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${if (notification.minutes[i] < 9) "0"+notification.minutes[i] else notification.minutes[i]}" else "",
                             textStyle = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.White
                             ),
-                            onValueChange = {
-                                effetsConstates.value = it
-                                sideeffects.effetsConstates[i] = it
-                            },
+                            onValueChange = { },
                             shape = RoundedCornerShape(20),
                             trailingIcon = {
-                                IconButton(onClick = { sideeffects.effetsConstates.removeAt(i) }) {
+                                IconButton(onClick = {
+                                    notification.hours.removeAt(i)
+                                    notification.minutes.removeAt(i)
+                                }) {
                                     Icon(
                                         imageVector = Icons.Filled.DeleteForever,
                                         contentDescription = "",
@@ -476,18 +457,20 @@ fun SEDEdit(
                                 unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color.White,
                                 unfocusedBorderColor = Color.White,
-                            ),
-                            modifier = Modifier.fillMaxWidth()
+                                disabledBorderColor = Color.White,
+                                disabledLabelColor = Color.White,
+                            )
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
 
                     AddButton(
-                        text = "Ajouter un effet",
+                        text = "Ajouter un horaire",
                         icone = Icons.Filled.Add,
-                        color = EURed60,
+                        color = EUYellow100,
                         onClick = {
-                            sideeffects.effetsConstates.add("")
+                            notification.hours.add(0)
+                            notification.minutes.add(0)
                         }
                     )
                 }
@@ -496,12 +479,16 @@ fun SEDEdit(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @Preview(showBackground = true)
 @Composable
-private fun SEDEditPreview() {
-    var se = SideEffect()
-    var treatments = mutableListOf<Treatment>()
-    //var se = listOf<TestSideEffect>()
-    SEDEdit(se, treatments, {}) {}
+private fun NotificationsEditPreview() {
+    var notif = Notification(
+        "Rappel doliprane",
+        null,
+        mutableListOf(),
+        mutableListOf(5, 10, 15, 20),
+        mutableListOf(0, 15, 30, 45)
+    )
+    NotificationsEdit(notif, {})
 }

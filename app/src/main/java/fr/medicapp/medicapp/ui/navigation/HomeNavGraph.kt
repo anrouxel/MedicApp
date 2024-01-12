@@ -69,9 +69,13 @@ fun HomeNavGraph(navController: NavHostController) {
                 onAddSideEffectClick = {
                     navController.navigate(SideEffectRoute.AddSideEffect.route)
                 },
+                onAddNotification = {
+                    navController.navigate(NotificationRoute.AddNotification.route)
+                }
             )
         }
         prescriptionNavGraph(navController)
         sideEffectNavGraph(navController)
+        notificationNavGraph(navController)
     }
 }

@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import fr.medicapp.medicapp.model.SideEffect
 import java.time.LocalDate
 
 @Entity
@@ -20,4 +21,16 @@ data class SideEffectEntity(
     var effetsConstates: MutableList<String>,
 
     var description: String
-)
+) {
+    fun toSideEffect(): SideEffect {
+        return SideEffect(
+            id = id,
+            medicament = null,
+            date = date,
+            hour = hour,
+            minute = minute,
+            effetsConstates = effetsConstates,
+            description = description
+        )
+    }
+}

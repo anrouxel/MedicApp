@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.prescription
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.MoneyOff
@@ -35,6 +37,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -60,25 +64,31 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Prescription(consultation : MutableList<TreatmentEntity>) {
+fun Prescription(
+    consultation : MutableList<Treatment>,
+    onClose: () -> Unit,
+    onRemove: () -> Unit,
+    onUpdate: (String, Boolean) -> Unit
+) {
+    var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            /*CenterAlignedTopAppBar(
                 colors = topAppBarColors(
                     containerColor = Color.White,
                     titleContentColor = Color.Black,
                 ),
                 title = {
                     Text(
-                        "ORD0001",
+                        "Treatment",
                         fontWeight = FontWeight.Bold
                     )
                 }
-            )
+            )*/
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.White
+                containerColor = Color.Unspecified
             ) {
                 Row(
                     modifier = Modifier
@@ -87,7 +97,9 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            onClose()
+                        },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -98,57 +110,38 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                             .weight(3f)
                     ) {
                         Text(
-                            text = "Fermer",
+                            text = "Annuler",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5f)
-                    ) {}
+
+                    Spacer(modifier = Modifier.weight(0.3f))
+
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = onRemove,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = EUOrange100,
+                            containerColor = EURed100,
                             contentColor = Color.White
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(3f)
                     ) {
-                        Text(
-                            text = "Éditer",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5f)
-                    ) {}
-                    Button(
-                        onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(20),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = EUGreen100,
-                            contentColor = Color.White,
-                            disabledContainerColor = EUGreen40,
-                            disabledContentColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(3f)
-                    ) {
-                        Text(
-                            text = "Valider",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Row() {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "Supprimer",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }
@@ -160,7 +153,7 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            ElevatedCard(
+            /*ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
                 ),
@@ -205,11 +198,15 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                         )
                     }
                 }
-            }
+            }*/
             Spacer(modifier = Modifier.height(15.dp))
 
             // Itération de la liste des médicaments
             for (i in consultation) {
+                var notification = remember {
+                    mutableStateOf(i.notification)
+                }
+
                 ElevatedCard(
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
@@ -233,7 +230,7 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                             .padding(10.dp)
                     ) {
                         Text(
-                            i.medication,
+                            i.medication?.name ?: "",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -262,8 +259,12 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Switch(
-                                checked = i.notification,
-                                onCheckedChange = { },
+                                enabled = false,
+                                checked = notification.value,
+                                onCheckedChange = {
+                                    notification.value = it
+                                    onUpdate(i.id, it)
+                                },
                                 colors = SwitchDefaults.colors(
                                     disabledCheckedThumbColor = Color.White,
                                     disabledCheckedTrackColor = EUGreen40,
@@ -271,7 +272,6 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
                                     disabledUncheckedThumbColor = Color.White,
                                     disabledUncheckedTrackColor = EURed40,
                                 ),
-                                enabled = false
                             )
                             Spacer(modifier = Modifier.width(7.dp))
                             Box(
@@ -400,6 +400,6 @@ fun Prescription(consultation : MutableList<TreatmentEntity>) {
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionPreview() {
-    var tab = mutableListOf<TreatmentEntity>()
-    Prescription(tab)
+    var tab = mutableListOf<Treatment>()
+    Prescription(tab, {}, {}, { _, _ -> })
 }

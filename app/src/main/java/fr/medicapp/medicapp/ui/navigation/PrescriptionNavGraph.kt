@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
+import android.app.NotificationManager
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -9,18 +10,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,14 +37,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import de.coldtea.smplr.smplralarm.alarmNotification
+import de.coldtea.smplr.smplralarm.channel
+import de.coldtea.smplr.smplralarm.smplrAlarmCancel
+import de.coldtea.smplr.smplralarm.smplrAlarmSet
+import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
+import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.repository.MedicationRepository
+import fr.medicapp.medicapp.repository.NotificationRepository
+import fr.medicapp.medicapp.repository.SideEffectRepository
 import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
@@ -47,8 +58,10 @@ import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
 import fr.medicapp.medicapp.ui.prescription.TestConsultation
 import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
 import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
+import okhttp3.internal.notifyAll
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.util.Date
 
 var ordonnances = listOf(
@@ -87,11 +100,14 @@ fun NavGraphBuilder.prescriptionNavGraph(
         composable(route = PrescriptionRoute.Main.route) {
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
 
-            var result: MutableList<TreatmentEntity> = mutableListOf()
+            var result: MutableList<Treatment> = mutableListOf()
             Thread {
+                val treatments = repository.getAll().map { it.toTreatment(repositoryMedication) }
+
                 result.clear()
-                result.addAll(repository.getAll().toMutableList())
+                result.addAll(treatments)
 
                 result.forEach {
                     Log.d("TAG", it.toString())
@@ -117,20 +133,92 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
+            val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
+            val repositoryNotification = NotificationRepository(db.notificationDAO())
 
-            var result: MutableList<TreatmentEntity> = mutableListOf()
+            var result: MutableList<Treatment> = mutableListOf()
 
             Thread {
                 result.clear()
-                result.add(repository.getOne(id))
+                val treatmentEntity = repository.getOne(id)
+                if (treatmentEntity != null) {
+                    result.add(treatmentEntity.toTreatment(repositoryMedication))
+                }
             }.start()
 
             val prescription = remember {
                 result
             }
 
+            var context = LocalContext.current
+
             Prescription(
                 consultation = prescription,
+                onClose = {
+                    navController.navigate(PrescriptionRoute.Main.route) {
+                        popUpTo(PrescriptionRoute.Prescription.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onRemove = {
+                    Thread {
+                        prescription.map { treatment ->  treatment?.toEntity() }.forEach { treatment ->
+                            if (treatment != null) {
+                                Log.d("TAG", "Deleting treatment: $treatment")
+
+                                val sideEffects = repositorySideEffect.getByMedicament(treatment.id)
+
+                                sideEffects.forEach { sideEffect ->
+                                    repositorySideEffect.delete(sideEffect)
+                                }
+
+                                val notifications = repositoryNotification.getByMedicament(treatment.id)
+
+                                notifications.forEach { notification ->
+                                    notification.alarms.forEach { alarm ->
+                                        smplrAlarmCancel(context) {
+                                            requestCode { alarm }
+                                        }
+                                    }
+
+                                    repositoryNotification.delete(notification)
+                                }
+
+                                repository.delete(treatment)
+                            }
+                        }
+                    }.start()
+                    navController.navigate(PrescriptionRoute.Main.route) {
+                        popUpTo(PrescriptionRoute.Prescription.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onUpdate = {treatmentId, notificationValue ->
+                    Thread {
+                        val treatment = repository.getOne(treatmentId).toTreatment(repositoryMedication)
+
+                        if (treatment != null) {
+                            val notifications = repositoryNotification.getByMedicament(treatment.id)
+
+                            Log.d("TAG", "Updating treatment: $notificationValue")
+
+                            notifications.forEach { notification ->
+                                notification.alarms.forEach { alarm ->
+                                    smplrAlarmUpdate(context) {
+                                        requestCode { alarm }
+                                        isActive { notificationValue }
+                                    }
+                                }
+                            }
+
+                            treatment.notification = notificationValue
+                            repository.update(treatment.toEntity())
+                        }
+                    }.start()
+                }
             )
         }
 
@@ -141,12 +229,22 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
+            val repositoryMedication = MedicationRepository(db.medicationDAO())
+
+            var result: MutableList<MedicationEntity> = mutableListOf()
+
+            Thread {
+                result.clear()
+                result.addAll(repositoryMedication.getAllWithoutNotTreadings())
+            }.start()
+
+            val medication = remember {
+                result
+            }
 
             val cameraPermissionState = rememberPermissionState(
                 android.Manifest.permission.CAMERA
             )
-
-            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
             val context = LocalContext.current
 
@@ -165,51 +263,51 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     imageUri = uri
 
                     if (imageUri != null) {
-                        val image = InputImage.fromFilePath(context, imageUri!!)
-                        recognizer.process(image)
-                            .addOnSuccessListener { visionText ->
-                                loading.value = true
-                                Log.d("MLKit", visionText.text)
-                                val prescriptionAI = PrescriptionAI.getInstance(context)
-                                val prediction = prescriptionAI.analyse(visionText.text)
-
-                                // ajouté les traitements à la liste
+                        loading.value = true
+                        val prescriptionAI = PrescriptionAI.getInstance(context)
+                        val prediction = prescriptionAI.analyse(
+                            imageUri!!,
+                            onPrediction = { prediction ->
                                 var treatment = Treatment()
                                 prediction.forEach { (word, label) ->
                                     when {
                                         label.startsWith("B-") -> {
-                                            if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
+                                            if (label.removePrefix("B-") == "Drug" && treatment.query.isNotEmpty()) {
+                                                treatment.query = treatment.query.trim()
+                                                treatment.posology = treatment.posology.trim()
                                                 state.treatments.add(treatment)
                                                 treatment = Treatment()
                                             }
                                             when (label.removePrefix("B-")) {
-                                                "Drug" -> treatment.medication += " $word"
+                                                "Drug" -> treatment.query += " $word"
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
 
                                         label.startsWith("I-") -> {
                                             when (label.removePrefix("I-")) {
-                                                "Drug" -> treatment.medication += " $word"
+                                                "Drug" -> treatment.query += " $word"
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
                                     }
                                 }
-                                if (treatment.medication.isNotEmpty()) {
+                                if (treatment.query.isNotEmpty()) {
+                                    treatment.query = treatment.query.trim()
+                                    treatment.posology = treatment.posology.trim()
                                     state.treatments.add(treatment)
                                 }
+                            },
+                            onDismiss = {
                                 loading.value = false
                             }
-                            .addOnFailureListener { e ->
-                                Log.d("MLKit", e.toString())
-                            }
+                        )
                     }
                 }
             )
@@ -219,52 +317,52 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onResult = { success: Boolean ->
                     hasImage = success
 
-                    if (imageUri != null) {
-                        val image = InputImage.fromFilePath(context, imageUri!!)
-                        recognizer.process(image)
-                            .addOnSuccessListener { visionText ->
-                                loading.value = true
-                                Log.d("MLKit", visionText.text)
-                                val prescriptionAI = PrescriptionAI.getInstance(context)
-                                val prediction = prescriptionAI.analyse(visionText.text)
-
-                                // ajouté les traitements à la liste
+                    if (imageUri != null && success) {
+                        loading.value = true
+                        val prescriptionAI = PrescriptionAI.getInstance(context)
+                        val prediction = prescriptionAI.analyse(
+                            imageUri!!,
+                            onPrediction = { prediction ->
                                 var treatment = Treatment()
                                 prediction.forEach { (word, label) ->
                                     when {
                                         label.startsWith("B-") -> {
-                                            if (label.removePrefix("B-") == "Drug" && treatment.medication.isNotEmpty()) {
+                                            if (label.removePrefix("B-") == "Drug" && treatment.query.isNotEmpty()) {
+                                                treatment.query = treatment.query.trim()
+                                                treatment.posology = treatment.posology.trim()
                                                 state.treatments.add(treatment)
                                                 treatment = Treatment()
                                             }
                                             when (label.removePrefix("B-")) {
-                                                "Drug" -> treatment.medication += " $word"
+                                                "Drug" -> treatment.query += " $word"
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
 
                                         label.startsWith("I-") -> {
                                             when (label.removePrefix("I-")) {
-                                                "Drug" -> treatment.medication += " $word"
+                                                "Drug" -> treatment.query += " $word"
                                                 "DrugQuantity" -> treatment.posology += " $word"
                                                 "DrugForm" -> treatment.posology += " $word"
                                                 "DrugFrequency" -> treatment.posology += " $word"
-                                                "DrugDuration" -> treatment.posology += " $word"
+                                                "DrugDuration" -> treatment.renew += " $word"
                                             }
                                         }
                                     }
                                 }
-                                if (treatment.medication.isNotEmpty()) {
+                                if (treatment.query.isNotEmpty()) {
+                                    treatment.query = treatment.query.trim()
+                                    treatment.posology = treatment.posology.trim()
                                     state.treatments.add(treatment)
                                 }
+                            },
+                            onDismiss = {
                                 loading.value = false
                             }
-                            .addOnFailureListener { e ->
-                                Log.d("MLKit", e.toString())
-                            }
+                        )
                     }
                 }
             )
@@ -272,7 +370,10 @@ fun NavGraphBuilder.prescriptionNavGraph(
             if (loading.value) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Chargement en cours...")
+                        Text(text = "Traitement de l'ordonnance en cours...")
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
                         LinearProgressIndicator()
                     }
                 }
@@ -297,7 +398,25 @@ fun NavGraphBuilder.prescriptionNavGraph(
                             repository.addAll(*state.treatments.map { it.toEntity() }
                                 .toTypedArray())
                         }.start()
-                        navController.popBackStack()
+                        state.treatments.forEach {
+                            Log.d("TEST", it.notification.toString())
+                        }
+
+                        Log.d("TEST", "Notification: ${state.treatments.any { it.notification }}")
+
+                        if (state.treatments.any { it.notification }) {
+                            navController.navigate(NotificationRoute.AddNotification.route) {
+                                popUpTo(PrescriptionRoute.AddPrescription.route) {
+                                    inclusive = true
+                                }
+                            }
+                        } else {
+                            navController.navigate(PrescriptionRoute.Main.route) {
+                                popUpTo(PrescriptionRoute.AddPrescription.route) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     },
                     onCameraPicker = {
                         imageUri = context.createImageFile()
@@ -310,6 +429,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     onImagePicker = {
                         imagePicker.launch("image/*")
                     },
+                    medications = medication
                 )
             }
         }

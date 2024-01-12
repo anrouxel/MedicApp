@@ -16,6 +16,10 @@ class SideEffectRepository(
         return userDao.getOne(id)
     }
 
+    fun getByMedicament(medicament: String): List<SideEffectEntity> {
+        return userDao.getByMedicament(medicament)
+    }
+
     fun add(t: SideEffectEntity) {
         userDao.add(t)
     }
