@@ -24,7 +24,8 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 @Composable
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
-    onAddSideEffectClick: () -> Unit
+    onAddSideEffectClick: () -> Unit,
+    onAddNotification: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -78,6 +79,22 @@ fun HomeScreen(
         ) {
             Text(text = "Signaler un effet indésirable")
         }
+        Button(
+            onClick = {
+                onAddNotification()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp, bottom = 0.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = EUGreen100
+            ),
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Text(
+                text = "Ajouter un rappel",
+            )
+        }
     }
 }
 
@@ -86,6 +103,7 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     HomeScreen(
         onAddPrescriptionClick = { },
-        onAddSideEffectClick = { }
+        onAddSideEffectClick = { },
+        onAddNotification = { }
     )
 }
