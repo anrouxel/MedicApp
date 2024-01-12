@@ -7,6 +7,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -231,11 +232,10 @@ fun Notifications(
                                 Row(
                                     Modifier
                                         .fillMaxWidth()
-                                        .padding(vertical = 8.dp)
+                                        .padding(vertical = 8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
-                                        /*Text(text = getFrenchDayOfWeek(dayOfWeek), modifier = Modifier.align(
-                                            Alignment.CenterVertically))*/
                                         val checked = notification.frequency.contains(dayOfWeek)
 
                                         val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
