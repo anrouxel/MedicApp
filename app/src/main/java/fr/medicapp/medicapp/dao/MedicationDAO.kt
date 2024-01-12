@@ -13,7 +13,7 @@ interface MedicationDAO {
     @Query("SELECT * FROM Medications")
     fun getAll(): List<MedicationEntity>
 
-    @Query("SELECT * FROM Medications WHERE CommercializationStatus LIKE 'NON COMMERCIALISÉE'")
+    @Query("SELECT * FROM Medications WHERE CommercializationStatus NOT LIKE 'NON COMMERCIALISÉE'")
     fun getAllWithoutNotTreadings(): List<MedicationEntity>
 
     @Query("SELECT * FROM Medications WHERE cisCode = :id")

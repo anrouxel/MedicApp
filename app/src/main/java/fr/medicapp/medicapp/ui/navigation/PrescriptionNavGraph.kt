@@ -37,6 +37,7 @@ import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.repository.MedicationRepository
+import fr.medicapp.medicapp.repository.SideEffectRepository
 import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
@@ -118,12 +119,17 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
             val repositoryMedication = MedicationRepository(db.medicationDAO())
+            val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
+            val repositoryNotification = SideEffectRepository(db.sideEffectDAO())
 
             var result: MutableList<Treatment> = mutableListOf()
 
             Thread {
                 result.clear()
-                result.add(repository.getOne(id).toTreatment(repositoryMedication))
+                val treatmentEntity = repository.getOne(id)
+                if (treatmentEntity != null) {
+                    result.add(treatmentEntity.toTreatment(repositoryMedication))
+                }
             }.start()
 
             val prescription = remember {
@@ -135,6 +141,30 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onClose = {
                     navController.popBackStack()
                 },
+                onRemove = {
+                    Thread {
+                        prescription.map { treatment ->  treatment?.toEntity() }.forEach { treatment ->
+                            if (treatment != null) {
+                                Log.d("TAG", "Deleting treatment: $treatment")
+
+                                val sideEffects = repositorySideEffect.getByMedicament(treatment.id)
+
+                                sideEffects.forEach { sideEffect ->
+                                    repositorySideEffect.delete(sideEffect)
+                                }
+
+                                val notifications = repositoryNotification.getByMedicament(treatment.id)
+
+                                notifications.forEach { notification ->
+                                    repositoryNotification.delete(notification)
+                                }
+
+                                repository.delete(treatment)
+                            }
+                        }
+                    }.start()
+                    navController.popBackStack()
+                }
             )
         }
 

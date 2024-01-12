@@ -49,7 +49,8 @@ import java.time.format.DateTimeFormatter
 fun SED(
     sideeffects: MutableList<SideEffect>,
     onMedication: (String) -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onRemove: () -> Unit
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -101,9 +102,7 @@ fun SED(
                     Spacer(modifier = Modifier.weight(0.3f))
 
                     Button(
-                        onClick = {
-                            //TODO
-                        },
+                        onClick = onRemove,
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = EURed100,
@@ -285,5 +284,5 @@ private fun SEDPreview() {
         )
     )
     // var se = listOf<TestSideEffect>()
-    SED(se, {}, {})
+    SED(se, {}, {}, {})
 }

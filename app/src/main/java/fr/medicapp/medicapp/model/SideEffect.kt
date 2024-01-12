@@ -17,7 +17,7 @@ data class SideEffect(
 ) {
     fun toEntity(): SideEffectEntity {
         return SideEffectEntity(
-            id = UUID.randomUUID().toString(),
+            id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
             medicament = medicament!!.id,
             date = date!!,
             hour = hour!!,

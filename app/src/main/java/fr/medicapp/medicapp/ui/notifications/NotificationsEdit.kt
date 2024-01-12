@@ -20,7 +20,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteForever
@@ -30,6 +34,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,6 +52,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -57,36 +63,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavHostController
-import com.carterchen247.alarmscheduler.AlarmScheduler
-import com.carterchen247.alarmscheduler.model.AlarmConfig
-import com.carterchen247.alarmscheduler.model.DataPayload
-import com.carterchen247.alarmscheduler.model.ScheduleResult
-import com.carterchen247.alarmscheduler.task.AlarmTask
-import com.carterchen247.alarmscheduler.task.AlarmTaskFactory
+import de.coldtea.smplr.smplralarm.alarmNotification
+import de.coldtea.smplr.smplralarm.channel
+import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
 import fr.medicapp.medicapp.MainActivity
+import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
+import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
+import fr.medicapp.medicapp.ui.theme.EURed20
+import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
+import java.time.DayOfWeek
 import java.time.LocalTime
 import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
     notification: Notification,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    treatments: MutableList<Treatment> = mutableListOf()
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    var medicationName by remember { mutableStateOf(notification.medicationName) }
+    var medicationName by remember { mutableStateOf(notification.medicationName?.medication?.name ?: "") }
     var frequency by remember { mutableStateOf(notification.frequency) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
@@ -163,41 +174,11 @@ fun NotificationsEdit(
 
                     Button(
                         onClick = {
-                            /*if (prescription.treatments.size > 0 && prescription.treatments.all { it.medication != "" && it.posology != "" && it.quantity != "" && it.renew != "" && it.duration != null }) {
+                            if (medicationName != "" && frequency.size > 0 && notification.hours.size > 0 && notification.hours.all { it != null } && notification.minutes.size > 0 && notification.minutes.all { it != null }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
-                            }*/
-                            AlarmScheduler.setAlarmTaskFactory(object : AlarmTaskFactory {
-                                override fun createAlarmTask(alarmType: Int): AlarmTask {
-                                    return MyAlarmTask()
-                                }
-                            })
-                            val config = AlarmConfig(
-                                Date().time + 10000L, // trigger time
-                                MyAlarmTask.TYPE
-                            ) {
-                                dataPayload("reminder" to "have a meeting")
                             }
-
-                            AlarmScheduler.schedule(config) { result: ScheduleResult ->
-                                when (result) {
-                                    is ScheduleResult.Success -> {
-                                        // alarm scheduling success!
-                                    }
-                                    is ScheduleResult.Failure -> {
-                                        when (result) {
-                                            ScheduleResult.Failure.CannotScheduleExactAlarm -> {
-                                                // handle scenarios like user disables exact alarm permission
-                                            }
-                                            is ScheduleResult.Failure.Error -> {
-                                                // handle error
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            onConfirm()
                         },
                         enabled = true,
                         shape = RoundedCornerShape(20),
@@ -246,6 +227,7 @@ fun NotificationsEdit(
                 .padding(innerPadding)
                 .fillMaxSize()
                 .padding(10.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             ElevatedCard(
                 onClick = { /*TODO*/ },
@@ -267,13 +249,29 @@ fun NotificationsEdit(
                         .fillMaxSize()
                         .padding(10.dp),
                 ) {
+                    var treatmentOpen by remember { mutableStateOf(false) }
+
+                    if (treatmentOpen) {
+                        SearchDialog(
+                            options = treatments.map { it.toOptionDialog() },
+                            cardColor = EURed20,
+                            selectedCardColor = EURed80,
+                            onDismiss = {
+                                treatmentOpen = false
+                            },
+                            onValidate = { option ->
+                                notification.medicationName = treatments.find { it.id == option.id }
+                                medicationName = option.title
+                                treatmentOpen = false
+                            }
+                        )
+                    }
+
                     OutlinedTextField(
+                        enabled = false,
                         value = medicationName,
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
-                        onValueChange = {
-                            medicationName = it
-                            notification.medicationName = it
-                        },
+                        onValueChange = {},
                         label = { Text("Nom du médicament") },
                         shape = RoundedCornerShape(20),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -282,7 +280,9 @@ fun NotificationsEdit(
                             focusedBorderColor = Color.White,
                             unfocusedBorderColor = Color.White,
                         ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().clickable {
+                            treatmentOpen = true
+                        }
                     )
                 }
             }
@@ -296,7 +296,7 @@ fun NotificationsEdit(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 85.dp),
+                    .wrapContentHeight(),
                 colors =
                 CardDefaults.cardColors(
                     containerColor = EUYellow110,
@@ -306,30 +306,36 @@ fun NotificationsEdit(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
+                        .wrapContentHeight()
                         .padding(10.dp)
                 ) {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = true,
-                        value = frequency,
-                        textStyle = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.White
-                        ),
-                        onValueChange = {
-                            frequency = it
-                            notification.frequency = it
-                        },
-                        label = { Text("Fréquence de rappel") },
-                        shape = RoundedCornerShape(20),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedLabelColor = Color.White,
-                            unfocusedLabelColor = Color.White,
-                            focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White,
-                        )
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    ) {
+                        DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                            ) {
+                                Checkbox(
+                                    checked = frequency.contains(dayOfWeek),
+                                    onCheckedChange = { checked ->
+                                        if (checked) {
+                                            frequency.add(dayOfWeek)
+                                        } else {
+                                            frequency.remove(dayOfWeek)
+                                        }
+                                    },
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(text = dayOfWeek.name, modifier = Modifier.align(Alignment.CenterVertically))
+                            }
+                        }
+                    }
                 }
             }
 
@@ -447,20 +453,10 @@ fun NotificationsEdit(
 private fun NotificationsEditPreview() {
     var notif = Notification(
         "Rappel doliprane",
-        "Doliprane",
-        "Tous les jours",
+        null,
+        mutableListOf(),
         mutableListOf(5, 10, 15, 20),
         mutableListOf(0, 15, 30, 45)
     )
     NotificationsEdit(notif, {})
-}
-
-class MyAlarmTask : AlarmTask {
-    override fun onAlarmFires(alarmId: Int, dataPayload: DataPayload) {
-        // do something with dataPayload you set
-    }
-
-    companion object {
-        const val TYPE = 1
-    }
 }
