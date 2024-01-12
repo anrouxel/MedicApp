@@ -16,6 +16,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -85,11 +86,13 @@ import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed20
+import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 import fr.medicapp.medicapp.ui.theme.EUYellow140
+import fr.medicapp.medicapp.ui.theme.EUYellow20
 import fr.medicapp.medicapp.ui.theme.EUYellow40
 import fr.medicapp.medicapp.ui.theme.EUYellow80
 import java.time.DayOfWeek
@@ -102,6 +105,7 @@ import java.util.Date
 fun NotificationsEdit(
     notification: Notification,
     onConfirm: () -> Unit,
+    onCancel: () -> Unit = {},
     treatments: MutableList<Treatment> = mutableListOf()
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
@@ -163,7 +167,7 @@ fun NotificationsEdit(
                 ) {
                     Button(
                         onClick = {
-                            //onCancel()
+                            onCancel()
                         },
                         shape = RoundedCornerShape(20),
                         colors = ButtonDefaults.buttonColors(
@@ -332,7 +336,8 @@ fun NotificationsEdit(
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 8.dp)
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
                                 val checked = frequency.contains(dayOfWeek)
@@ -408,6 +413,10 @@ fun NotificationsEdit(
                         if (frequencyTimeOpen.value) {
                             TimePickerModal(
                                 state = frequencyTimeState,
+                                clockBackgroundColor = EUYellow20,
+                                selectorColor = EUYellow100,
+                                timeSelectorSelectedContainerColor = EUYellow40,
+                                timeSelectorUnselectedContainerColor = EUYellow20,
                                 onDismissRequest = {
                                     frequencyTimeOpen.value = false
                                 },

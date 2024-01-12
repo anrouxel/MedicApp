@@ -152,7 +152,11 @@ fun NavGraphBuilder.prescriptionNavGraph(
             Prescription(
                 consultation = prescription,
                 onClose = {
-                    navController.popBackStack()
+                    navController.navigate(PrescriptionRoute.Main.route) {
+                        popUpTo(PrescriptionRoute.Prescription.route) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onRemove = {
                     Thread {
@@ -182,7 +186,11 @@ fun NavGraphBuilder.prescriptionNavGraph(
                             }
                         }
                     }.start()
-                    navController.popBackStack()
+                    navController.navigate(PrescriptionRoute.Main.route) {
+                        popUpTo(PrescriptionRoute.Prescription.route) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onUpdate = {treatmentId, notificationValue ->
                     Thread {
@@ -383,7 +391,25 @@ fun NavGraphBuilder.prescriptionNavGraph(
                             repository.addAll(*state.treatments.map { it.toEntity() }
                                 .toTypedArray())
                         }.start()
-                        navController.popBackStack()
+                        state.treatments.forEach {
+                            Log.d("TEST", it.notification.toString())
+                        }
+
+                        Log.d("TEST", "Notification: ${state.treatments.any { it.notification }}")
+
+                        if (state.treatments.any { it.notification }) {
+                            navController.navigate(NotificationRoute.AddNotification.route) {
+                                popUpTo(PrescriptionRoute.AddPrescription.route) {
+                                    inclusive = true
+                                }
+                            }
+                        } else {
+                            navController.navigate(PrescriptionRoute.Main.route) {
+                                popUpTo(PrescriptionRoute.AddPrescription.route) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     },
                     onCameraPicker = {
                         imageUri = context.createImageFile()
