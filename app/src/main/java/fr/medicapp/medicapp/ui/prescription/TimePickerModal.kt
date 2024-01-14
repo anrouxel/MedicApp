@@ -39,6 +39,17 @@ import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple40
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 
+/**
+ * Cette fonction affiche une boîte de dialogue de sélection de l'heure avec des options spécifiques.
+ *
+ * @param state L'état du sélecteur de temps.
+ * @param clockBackgroundColor La couleur de fond de l'horloge.
+ * @param selectorColor La couleur du marqueur pour changer l'heure.
+ * @param timeSelectorSelectedContainerColor La couleur du fond de l'objet sélectionné.
+ * @param timeSelectorUnselectedContainerColor La couleur du fond de l'objet non sélectionné.
+ * @param onDismissRequest La fonction à exécuter lorsque l'utilisateur ferme la boîte de dialogue.
+ * @param onConfirm La fonction à exécuter lorsque l'utilisateur confirme la sélection.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerModal(

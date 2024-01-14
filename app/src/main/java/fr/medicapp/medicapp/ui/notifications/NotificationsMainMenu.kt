@@ -39,15 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
-import fr.medicapp.medicapp.ui.sideeffectsdiary.TestSideEffect
-import fr.medicapp.medicapp.ui.theme.EUBlue100
-import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120

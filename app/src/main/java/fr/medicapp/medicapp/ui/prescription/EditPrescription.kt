@@ -51,6 +51,19 @@ import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import java.time.LocalDate
 
+/**
+ * Cette fonction affiche l'écran d'édition de prescription avec des informations spécifiques.
+ *
+ * @param doctors La liste des docteurs disponibles.
+ * @param onCancel La fonction à exécuter lorsque l'utilisateur annule l'édition.
+ * @param onConfirm La fonction à exécuter lorsque l'utilisateur confirme l'édition.
+ * @param onCameraPicker La fonction à exécuter lorsque l'utilisateur choisit d'importer une ordonnance via la caméra.
+ * @param onCameraPermissionRequested La fonction à exécuter lorsque l'utilisateur demande l'accès à la caméra.
+ * @param onImagePicker La fonction à exécuter lorsque l'utilisateur choisit d'importer une ordonnance via la galerie d'images.
+ * @param cameraPermissionState L'état de la permission d'accès à la caméra.
+ * @param prescription La prescription à éditer.
+ * @param medications La liste des médicaments disponibles.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable

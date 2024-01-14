@@ -44,6 +44,15 @@ import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Cette fonction est utilisée pour afficher une liste d'effets secondaires.
+ * Elle utilise le thème sombre du système pour définir les couleurs de l'interface utilisateur.
+ *
+ * @param sideeffects Une liste mutable d'effets secondaires à afficher.
+ * @param onMedication Une fonction lambda qui est appelée lorsque l'utilisateur clique sur un médicament. Elle prend l'ID du médicament en paramètre.
+ * @param onClose Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Annuler".
+ * @param onRemove Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Supprimer".
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

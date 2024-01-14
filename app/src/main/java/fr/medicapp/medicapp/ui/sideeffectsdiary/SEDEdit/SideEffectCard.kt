@@ -74,6 +74,11 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.UUID
 
+/**
+ * Cette fonction affiche une carte d'effet secondaire avec des informations spécifiques.
+ *
+ * @param nomMedicament Le nom du médicament pour lequel l'effet secondaire est enregistré.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

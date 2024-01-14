@@ -43,6 +43,13 @@ import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EURed100
 
+/**
+ * Cette fonction est utilisée pour afficher l'écran d'inscription.
+ * Elle utilise le thème sombre du système pour définir les couleurs de l'interface utilisateur.
+ *
+ * @param back Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Annuler".
+ * @param validate Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Suivant".
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUp1(

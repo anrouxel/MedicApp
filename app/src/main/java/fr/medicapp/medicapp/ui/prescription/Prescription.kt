@@ -62,6 +62,14 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed40
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 
+/**
+ * Cette fonction affiche la prescription avec des informations spécifiques.
+ *
+ * @param consultation La liste des traitements pour la consultation.
+ * @param onClose La fonction à exécuter lorsque l'utilisateur ferme la prescription.
+ * @param onRemove La fonction à exécuter lorsque l'utilisateur supprime la prescription.
+ * @param onUpdate La fonction à exécuter lorsque l'utilisateur met à jour la prescription.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Prescription(
