@@ -52,6 +52,13 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 
+/**
+ * Cette fonction affiche le menu principal des notifications.
+ *
+ * @param notifications La liste des notifications à afficher.
+ * @param onNotification La fonction à exécuter lorsque l'utilisateur sélectionne une notification.
+ * @param addNotification La fonction à exécuter lorsque l'utilisateur ajoute une notification.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -196,9 +203,11 @@ fun NotificationsMainMenu(
     }
 }
 
+/**
+ * Cette fonction affiche un aperçu du menu principal des notifications.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsMainMenuPreview() {
-    //notif = listOf<TestNotification>()
     NotificationsMainMenu(mutableListOf()) {}
 }

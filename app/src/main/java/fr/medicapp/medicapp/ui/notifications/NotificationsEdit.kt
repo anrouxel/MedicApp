@@ -1,15 +1,7 @@
 package fr.medicapp.medicapp.ui.notifications
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
-import android.content.Context
-import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -24,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,7 +30,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -58,7 +48,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -68,14 +57,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.navigation.NavHostController
-import de.coldtea.smplr.smplralarm.alarmNotification
-import de.coldtea.smplr.smplralarm.channel
-import de.coldtea.smplr.smplralarm.smplrAlarmSet
-import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.TimeCard
-import fr.medicapp.medicapp.MainActivity
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
@@ -85,20 +66,22 @@ import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed20
-import fr.medicapp.medicapp.ui.theme.EURed40
-import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 import fr.medicapp.medicapp.ui.theme.EUYellow140
 import fr.medicapp.medicapp.ui.theme.EUYellow20
 import fr.medicapp.medicapp.ui.theme.EUYellow40
-import fr.medicapp.medicapp.ui.theme.EUYellow80
 import java.time.DayOfWeek
-import java.time.LocalTime
-import java.util.Date
 
+/**
+ * Cette fonction permet de modifier les notifications pour un médicament spécifique.
+ *
+ * @param notification La notification à modifier.
+ * @param onConfirm La fonction à exécuter lorsque l'utilisateur confirme les modifications.
+ * @param onCancel La fonction à exécuter lorsque l'utilisateur annule les modifications.
+ * @param treatments La liste des traitements disponibles pour la notification.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,11 +91,15 @@ fun NotificationsEdit(
     onCancel: () -> Unit = {},
     treatments: MutableList<Treatment> = mutableListOf()
 ) {
-    var darkmode : Boolean = isSystemInDarkTheme()
+    var darkmode: Boolean = isSystemInDarkTheme()
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    var medicationName by remember { mutableStateOf(notification.medicationName?.medication?.name ?: "") }
+    var medicationName by remember {
+        mutableStateOf(
+            notification.medicationName?.medication?.name ?: ""
+        )
+    }
     var frequency by remember { mutableStateOf(notification.frequency) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
@@ -236,7 +223,7 @@ fun NotificationsEdit(
                 )
             }*/
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -285,7 +272,11 @@ fun NotificationsEdit(
                     OutlinedTextField(
                         enabled = false,
                         value = medicationName,
-                        textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
+                        textStyle = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        ),
                         onValueChange = {},
                         label = { Text("Nom du médicament") },
                         shape = RoundedCornerShape(20),
@@ -297,9 +288,11 @@ fun NotificationsEdit(
                             disabledBorderColor = Color.White,
                             disabledLabelColor = Color.White
                         ),
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            treatmentOpen = true
-                        }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                treatmentOpen = true
+                            }
                     )
                 }
             }
@@ -429,11 +422,13 @@ fun NotificationsEdit(
                         }
 
                         OutlinedTextField(
-                            modifier = Modifier.clickable{
-                                frequencyTimeOpen.value = true
-                            }.fillMaxWidth(),
+                            modifier = Modifier
+                                .clickable {
+                                    frequencyTimeOpen.value = true
+                                }
+                                .fillMaxWidth(),
                             enabled = false,
-                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${if (notification.minutes[i] < 9) "0"+notification.minutes[i] else notification.minutes[i]}" else "",
+                            value = if (notification.hours[i] != null && notification.minutes[i] != null) "${notification.hours[i]}h${if (notification.minutes[i] < 9) "0" + notification.minutes[i] else notification.minutes[i]}" else "",
                             textStyle = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.White
@@ -479,6 +474,9 @@ fun NotificationsEdit(
     }
 }
 
+/**
+ * Cette fonction affiche un aperçu de la page de modification des notifications.
+ */
 @RequiresApi(Build.VERSION_CODES.S)
 @Preview(showBackground = true)
 @Composable
