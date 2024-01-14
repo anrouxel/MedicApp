@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.repository
 
-import fr.medicapp.medicapp.dao.PrescriptionAndDoctorDAO
 import fr.medicapp.medicapp.entity.PrescriptionAndDoctorEntity
 
 class PrescriptionAndDoctorRepository(
