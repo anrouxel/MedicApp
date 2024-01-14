@@ -2,21 +2,16 @@ package fr.medicapp.medicapp.ui.messages
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.DocumentScanner
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -36,19 +31,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
-import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
-import fr.medicapp.medicapp.ui.theme.EUBlue10
 import fr.medicapp.medicapp.ui.theme.EUBlue100
-import fr.medicapp.medicapp.ui.theme.EUBlue60
 import fr.medicapp.medicapp.ui.theme.EUBlue80
-import fr.medicapp.medicapp.ui.theme.EUPurple100
-import fr.medicapp.medicapp.ui.theme.EUPurple80
 
+/**
+ * Composable représentant le menu principal des messages de l'application MedicApp.
+ *
+ * Ce menu affiche la liste des conversations de messages de l'utilisateur. Chaque conversation est représentée par une carte qui affiche le dernier message de la conversation.
+ * Si l'utilisateur n'a pas de messages, un message d'information est affiché.
+ *
+ * @param messages La liste des conversations de messages à afficher.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessagesMainMenu(
-    messages : List<TestMessages>
+    messages: List<TestMessages>
 ) {
     Scaffold(
         topBar = {
@@ -70,7 +67,7 @@ fun MessagesMainMenu(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = { },
                 containerColor = EUBlue100
             ) {
                 Icon(
@@ -81,14 +78,14 @@ fun MessagesMainMenu(
             }
 
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            if (messages.isNotEmpty()){
+            if (messages.isNotEmpty()) {
                 for (i in messages) {
                     ElevatedCard(
                         onClick = { /*TODO*/ },
@@ -127,7 +124,7 @@ fun MessagesMainMenu(
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                i.messages[i.messages.size-1],
+                                i.messages[i.messages.size - 1],
                                 fontSize = 15.sp
                             )
                         }
@@ -155,20 +152,30 @@ fun MessagesMainMenu(
     }
 }
 
+/**
+ * Prévisualisation du menu principal des messages.
+ *
+ * Cette prévisualisation permet de voir à quoi ressemble le menu principal des messages sans avoir à lancer l'application.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun MessagesMainMenuPreview() {
     var messages = listOf(
-        TestMessages("Dr. MOTTU",
+        TestMessages(
+            "Dr. MOTTU",
             false,
-            listOf("Bonjour","Bonjour","Au revoir")),
-        TestMessages("Dr. CAZALAS",
+            listOf("Bonjour", "Bonjour", "Au revoir")
+        ),
+        TestMessages(
+            "Dr. CAZALAS",
             true,
-            listOf("")),
-        TestMessages("Dr. BERDJUGIN",
+            listOf("")
+        ),
+        TestMessages(
+            "Dr. BERDJUGIN",
             true,
-            listOf("Bonjour je veux mon médicament s'il vous plait"))
+            listOf("Bonjour je veux mon médicament s'il vous plait")
+        )
     )
-    //var messages = listOf<TestMessages>()
     MessagesMainMenu(messages)
 }

@@ -16,10 +16,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+/**
+ * Composable représentant l'écran des messages de l'application MedicApp.
+ *
+ * Cet écran affiche les messages échangés entre l'utilisateur et un destinataire spécifique.
+ *
+ * @param message Les informations du message à afficher.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Messages(
-    message : TestMessages
+    message: TestMessages
 ) {
     Scaffold(
         topBar = {
@@ -42,7 +49,7 @@ fun Messages(
 
             }
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -54,13 +61,18 @@ fun Messages(
     }
 }
 
+/**
+ * Prévisualisation de l'écran des messages.
+ *
+ * Cette prévisualisation permet de voir à quoi ressemble l'écran des messages sans avoir à lancer l'application.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun MessagesPreview() {
     val msg = TestMessages(
         "Dr. MOTTU",
         true,
-        listOf("Bonjour","Bonjour","Au revoir")
+        listOf("Bonjour", "Bonjour", "Au revoir")
     )
     Messages(msg)
 }

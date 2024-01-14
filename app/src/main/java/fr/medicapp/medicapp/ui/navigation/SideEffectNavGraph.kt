@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -22,14 +21,26 @@ import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
 import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
 
+/**
+ * Construit le graphique de navigation des effets secondaires.
+ * @param navController Le contrôleur de navigation.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.sideEffectNavGraph(
     navController: NavHostController
 ) {
+
+    /**
+     * Définit la navigation pour le graphe des effets secondaires.
+     */
     navigation(
         route = Graph.SIDE_EFFECTS,
         startDestination = SideEffectRoute.Main.route,
     ) {
+
+        /**
+         * Composable pour l'écran principal des effets secondaires.
+         */
         composable(route = SideEffectRoute.Main.route) {
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
@@ -41,7 +52,8 @@ fun NavGraphBuilder.sideEffectNavGraph(
                 val sideEffectEntityTmp = repositorySideEffect.getAll()
 
                 val sideEffects = sideEffectEntityTmp.map {
-                    val treatmentTmp = repositoryTreatment.getOne(it.medicament).toTreatment(repositoryMedication)
+                    val treatmentTmp =
+                        repositoryTreatment.getOne(it.medicament).toTreatment(repositoryMedication)
                     val sideEffectTmp = it.toSideEffect()
                     sideEffectTmp.medicament = treatmentTmp
                     sideEffectTmp
@@ -66,6 +78,9 @@ fun NavGraphBuilder.sideEffectNavGraph(
             )
         }
 
+        /**
+         * Composable pour l'écran d'un effet secondaire.
+         */
         composable(route = SideEffectRoute.SideEffect.route) {
             val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
@@ -79,7 +94,8 @@ fun NavGraphBuilder.sideEffectNavGraph(
                 result.clear()
                 val sideEffectEntityTmp = repositorySideEffect.getOne(id)
                 if (sideEffectEntityTmp != null) {
-                    val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament).toTreatment(repositoryMedication)
+                    val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament)
+                        .toTreatment(repositoryMedication)
                     val sideEffectTmp = sideEffectEntityTmp.toSideEffect()
                     sideEffectTmp.medicament = treatmentTmp
                     result.add(sideEffectTmp)
@@ -94,7 +110,12 @@ fun NavGraphBuilder.sideEffectNavGraph(
                 SED(
                     sideeffects = sideEffect,
                     onMedication = { id ->
-                        navController.navigate(PrescriptionRoute.Prescription.route.replace("{id}", id))
+                        navController.navigate(
+                            PrescriptionRoute.Prescription.route.replace(
+                                "{id}",
+                                id
+                            )
+                        )
                     },
                     onClose = {
                         navController.navigate(SideEffectRoute.Main.route) {
@@ -119,6 +140,9 @@ fun NavGraphBuilder.sideEffectNavGraph(
             }
         }
 
+        /**
+         * Composable pour l'écran d'ajout d'un effet secondaire.
+         */
         composable(route = SideEffectRoute.AddSideEffect.route) {
             val viewModel =
                 it.sharedViewModel<SharedSideEffectViewModel>(navController = navController)
@@ -133,7 +157,10 @@ fun NavGraphBuilder.sideEffectNavGraph(
 
             Thread {
                 result.clear()
-                result.addAll(repositoryTreatment.getAll().map { it.toTreatment(repositoryMedication) }.toMutableList())
+                result.addAll(
+                    repositoryTreatment.getAll().map { it.toTreatment(repositoryMedication) }
+                        .toMutableList()
+                )
             }.start()
 
             val treatments = remember {
@@ -165,8 +192,23 @@ fun NavGraphBuilder.sideEffectNavGraph(
     }
 }
 
+/**
+ * Cette classe représente une route d'effet secondaire.
+ * @property route La route sous forme de chaîne de caractères.
+ */
 sealed class SideEffectRoute(val route: String) {
+    /**
+     * Représente la route principale des effets secondaires.
+     */
     object Main : SideEffectRoute(route = "main_side_effects")
+
+    /**
+     * Représente une route spécifique pour afficher un effet secondaire.
+     */
     object SideEffect : SideEffectRoute(route = "show_side_effect/{id}")
+
+    /**
+     * Représente une route pour ajouter un nouvel effet secondaire.
+     */
     object AddSideEffect : SideEffectRoute(route = "add_side_effect")
 }

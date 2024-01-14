@@ -8,11 +8,24 @@ import fr.medicapp.medicapp.ui.signupSignin.SignIn
 import fr.medicapp.medicapp.ui.signupSignin.SignUp1
 import fr.medicapp.medicapp.ui.signupSignin.SignUp2
 
+/**
+ * Construit le graphe de navigation pour l'authentification.
+ *
+ * @param navController Le contrôleur de navigation.
+ */
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
+
+    /**
+     * Définit la navigation pour le graphe de notification.
+     */
     navigation(
         route = Graph.AUTHENTICATION,
         startDestination = AuthScreen.Login.route
     ) {
+
+        /**
+         * Composable pour l'écran de connexion.
+         */
         composable(AuthScreen.Login.route) {
             SignIn(
                 login = {
@@ -24,6 +37,10 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 }
             )
         }
+
+        /**
+         * Composable pour l'écran d'enregistrement par mail et mot de passe.
+         */
         composable(AuthScreen.RegisterMailPW.route) {
             SignUp1(
                 back = {
@@ -37,6 +54,10 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 }
             )
         }
+
+        /**
+         * Composable pour l'écran d'enregistrement du nom.
+         */
         composable(AuthScreen.RegisterName.route) {
             SignUp2(
                 back = {
@@ -54,9 +75,28 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     }
 }
 
+/**
+ * Ceci est une classe d'écran d'authentification.
+ * Elle contient les routes pour les différents écrans d'authentification.
+ */
 sealed class AuthScreen(val route: String) {
+    /**
+     * Écran de connexion.
+     */
     object Login : AuthScreen(route = "login")
+
+    /**
+     * Écran d'enregistrement par mail et mot de passe.
+     */
     object RegisterMailPW : AuthScreen(route = "registermailpw")
+
+    /**
+     * Écran d'enregistrement du nom.
+     */
     object RegisterName : AuthScreen(route = "registername")
+
+    /**
+     * Écran d'oubli du mot de passe.
+     */
     object Forgot : AuthScreen(route = "forgot")
 }

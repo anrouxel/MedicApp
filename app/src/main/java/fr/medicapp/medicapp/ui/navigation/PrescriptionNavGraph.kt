@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.navigation
 
-import android.app.NotificationManager
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -13,12 +12,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,12 +34,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import de.coldtea.smplr.smplralarm.alarmNotification
-import de.coldtea.smplr.smplralarm.channel
 import de.coldtea.smplr.smplralarm.smplrAlarmCancel
-import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.entity.MedicationEntity
@@ -55,48 +48,33 @@ import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
 import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
-import fr.medicapp.medicapp.ui.prescription.TestConsultation
-import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
 import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
-import okhttp3.internal.notifyAll
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.util.Date
 
-var ordonnances = listOf(
-    TestOrdonnance(
-        1,
-        "Dr. MOTTU",
-        "01/01/2023"
-    ),
-    TestOrdonnance(
-        2,
-        "Dr. CAZALAS",
-        "02/10/2023"
-    ),
-    TestOrdonnance(
-        3,
-        "Dr. BERDJUGIN",
-        "10/06/2023"
-    )
-)
-
-var consultation = TestConsultation(
-    "Dr. MOTTU",
-    "22/11/2023",
-    mutableListOf()
-)
-
+/**
+ * Cette fonction construit le graphe de navigation pour les prescriptions.
+ *
+ * @param navController Le contrôleur de navigation.
+ */
 @OptIn(ExperimentalPermissionsApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.prescriptionNavGraph(
     navController: NavHostController
 ) {
+
+    /**
+     * Définit la navigation pour le graphe de prescription.
+     */
     navigation(
         route = Graph.PRESCRIPTION,
         startDestination = PrescriptionRoute.Main.route,
     ) {
+
+        /**
+         * Composable pour la route principale de prescription.
+         */
         composable(route = PrescriptionRoute.Main.route) {
             val db = AppDatabase.getInstance(LocalContext.current)
             val repository = TreatmentRepository(db.treatmentDAO())
@@ -129,6 +107,9 @@ fun NavGraphBuilder.prescriptionNavGraph(
             )
         }
 
+        /**
+         * Composable pour afficher une prescription spécifique.
+         */
         composable(route = PrescriptionRoute.Prescription.route) {
             val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
@@ -164,31 +145,34 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 },
                 onRemove = {
                     Thread {
-                        prescription.map { treatment ->  treatment?.toEntity() }.forEach { treatment ->
-                            if (treatment != null) {
-                                Log.d("TAG", "Deleting treatment: $treatment")
+                        prescription.map { treatment -> treatment?.toEntity() }
+                            .forEach { treatment ->
+                                if (treatment != null) {
+                                    Log.d("TAG", "Deleting treatment: $treatment")
 
-                                val sideEffects = repositorySideEffect.getByMedicament(treatment.id)
+                                    val sideEffects =
+                                        repositorySideEffect.getByMedicament(treatment.id)
 
-                                sideEffects.forEach { sideEffect ->
-                                    repositorySideEffect.delete(sideEffect)
-                                }
-
-                                val notifications = repositoryNotification.getByMedicament(treatment.id)
-
-                                notifications.forEach { notification ->
-                                    notification.alarms.forEach { alarm ->
-                                        smplrAlarmCancel(context) {
-                                            requestCode { alarm }
-                                        }
+                                    sideEffects.forEach { sideEffect ->
+                                        repositorySideEffect.delete(sideEffect)
                                     }
 
-                                    repositoryNotification.delete(notification)
-                                }
+                                    val notifications =
+                                        repositoryNotification.getByMedicament(treatment.id)
 
-                                repository.delete(treatment)
+                                    notifications.forEach { notification ->
+                                        notification.alarms.forEach { alarm ->
+                                            smplrAlarmCancel(context) {
+                                                requestCode { alarm }
+                                            }
+                                        }
+
+                                        repositoryNotification.delete(notification)
+                                    }
+
+                                    repository.delete(treatment)
+                                }
                             }
-                        }
                     }.start()
                     navController.navigate(PrescriptionRoute.Main.route) {
                         popUpTo(PrescriptionRoute.Prescription.route) {
@@ -196,9 +180,10 @@ fun NavGraphBuilder.prescriptionNavGraph(
                         }
                     }
                 },
-                onUpdate = {treatmentId, notificationValue ->
+                onUpdate = { treatmentId, notificationValue ->
                     Thread {
-                        val treatment = repository.getOne(treatmentId).toTreatment(repositoryMedication)
+                        val treatment =
+                            repository.getOne(treatmentId).toTreatment(repositoryMedication)
 
                         if (treatment != null) {
                             val notifications = repositoryNotification.getByMedicament(treatment.id)
@@ -222,6 +207,9 @@ fun NavGraphBuilder.prescriptionNavGraph(
             )
         }
 
+        /**
+         * Composable pour ajouter une nouvelle prescription.
+         */
         composable(route = PrescriptionRoute.AddPrescription.route) {
             val viewModel =
                 it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
@@ -395,14 +383,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     },
                     onConfirm = {
                         Thread {
-                            repository.addAll(*state.treatments.map { it.toEntity() }
-                                .toTypedArray())
+                            val treatments =
+                                state.treatments.map { treatment -> treatment.toEntity() }
+                            treatments.forEach { treatment ->
+                                repository.add(treatment)
+                            }
                         }.start()
-                        state.treatments.forEach {
-                            Log.d("TEST", it.notification.toString())
-                        }
-
-                        Log.d("TEST", "Notification: ${state.treatments.any { it.notification }}")
 
                         if (state.treatments.any { it.notification }) {
                             navController.navigate(NotificationRoute.AddNotification.route) {
@@ -436,6 +422,11 @@ fun NavGraphBuilder.prescriptionNavGraph(
     }
 }
 
+/**
+ * Crée un fichier image temporaire et retourne son Uri.
+ *
+ * @return L'Uri du fichier image créé.
+ */
 fun Context.createImageFile(): Uri {
     val provider: String = "${applicationContext.packageName}.fileprovider"
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
@@ -452,6 +443,13 @@ fun Context.createImageFile(): Uri {
     return FileProvider.getUriForFile(applicationContext, provider, image)
 }
 
+/**
+ * Récupère une instance partagée du ViewModel spécifié.
+ * Cette fonction est utile pour partager des données entre plusieurs composables dans le même graphe de navigation.
+ *
+ * @param navController Le contrôleur de navigation.
+ * @return Une instance partagée du ViewModel.
+ */
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavHostController,
@@ -463,8 +461,22 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     return viewModel(parentEntry)
 }
 
+/**
+ * Cette classe scellée définit les différentes routes pour les prescriptions.
+ */
 sealed class PrescriptionRoute(val route: String) {
+    /**
+     * Route pour la page principale des prescriptions.
+     */
     object Main : PrescriptionRoute(route = "mainmenu")
+
+    /**
+     * Route pour afficher une prescription spécifique.
+     */
     object Prescription : PrescriptionRoute(route = "prescription/{id}")
+
+    /**
+     * Route pour ajouter une nouvelle prescription.
+     */
     object AddPrescription : PrescriptionRoute(route = "add_prescriptions")
 }
