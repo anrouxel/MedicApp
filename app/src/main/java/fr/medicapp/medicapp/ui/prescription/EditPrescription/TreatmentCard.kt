@@ -68,6 +68,13 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
 import java.time.LocalDate
 
+/**
+ * Cette fonction affiche une carte de traitement avec des informations spécifiques.
+ *
+ * @param treatment Le traitement à afficher sur la carte.
+ * @param onRemove La fonction à exécuter lorsque l'utilisateur supprime le traitement.
+ * @param medications La liste des médicaments à afficher.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

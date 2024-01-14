@@ -39,19 +39,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
-import fr.medicapp.medicapp.ui.sideeffectsdiary.TestSideEffect
-import fr.medicapp.medicapp.ui.theme.EUBlue100
-import fr.medicapp.medicapp.ui.theme.EURed100
-import fr.medicapp.medicapp.ui.theme.EURed80
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 import fr.medicapp.medicapp.ui.theme.EUYellow120
 
+/**
+ * Cette fonction affiche le menu principal des notifications.
+ *
+ * @param notifications La liste des notifications à afficher.
+ * @param onNotification La fonction à exécuter lorsque l'utilisateur sélectionne une notification.
+ * @param addNotification La fonction à exécuter lorsque l'utilisateur ajoute une notification.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -196,9 +197,11 @@ fun NotificationsMainMenu(
     }
 }
 
+/**
+ * Cette fonction affiche un aperçu du menu principal des notifications.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsMainMenuPreview() {
-    //notif = listOf<TestNotification>()
     NotificationsMainMenu(mutableListOf()) {}
 }

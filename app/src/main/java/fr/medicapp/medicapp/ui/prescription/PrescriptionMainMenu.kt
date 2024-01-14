@@ -49,6 +49,13 @@ import fr.medicapp.medicapp.ui.theme.EUPurple80
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Cette fonction affiche le menu principal de prescription avec des informations spécifiques.
+ *
+ * @param ordonnances La liste des traitements pour les ordonnances.
+ * @param onPrescription La fonction à exécuter lorsque l'utilisateur sélectionne une prescription.
+ * @param addPrescription La fonction à exécuter lorsque l'utilisateur ajoute une prescription.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

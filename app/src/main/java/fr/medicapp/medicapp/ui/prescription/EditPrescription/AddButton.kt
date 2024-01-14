@@ -29,6 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 
+/**
+ * Cette fonction affiche un bouton d'ajout avec un texte, une icône et une couleur spécifiés.
+ *
+ * @param text Le texte à afficher sur le bouton.
+ * @param icone L'icône à afficher sur le bouton.
+ * @param color La couleur du bouton.
+ * @param onClick La fonction à exécuter lorsque l'utilisateur clique sur le bouton.
+ */
 @Composable
 fun AddButton(
     text: String,

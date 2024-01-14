@@ -10,7 +10,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,7 +19,18 @@ import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen120
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Écran d'accueil de l'application MedicApp.
+ *
+ * Cet écran affiche un message de bienvenue à l'utilisateur et propose plusieurs actions :
+ * - Ajouter une ordonnance
+ * - Signaler un effet indésirable
+ * - Ajouter un rappel
+ *
+ * @param onAddPrescriptionClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter une ordonnance".
+ * @param onAddSideEffectClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Signaler un effet indésirable".
+ * @param onAddNotification Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter un rappel".
+ */
 @Composable
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
@@ -98,6 +108,11 @@ fun HomeScreen(
     }
 }
 
+/**
+ * Prévisualisation de l'écran d'accueil.
+ *
+ * Cette prévisualisation permet de voir à quoi ressemble l'écran d'accueil sans avoir à lancer l'application.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {

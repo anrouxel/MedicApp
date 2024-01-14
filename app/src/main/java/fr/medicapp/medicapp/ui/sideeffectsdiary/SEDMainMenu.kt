@@ -42,6 +42,14 @@ import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
 import java.time.LocalDate
 
+/**
+ * Cette fonction affiche le menu principal du journal des effets secondaires.
+ * Elle utilise le thème sombre du système pour définir les couleurs de l'interface utilisateur.
+ *
+ * @param sideeffects Une liste d'effets secondaires à afficher.
+ * @param onSideEffect Une fonction lambda qui est appelée lorsque l'utilisateur clique sur un effet secondaire. Elle prend l'ID de l'effet secondaire en paramètre.
+ * @param addSideEffect Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Ajouter".
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDMainMenu(

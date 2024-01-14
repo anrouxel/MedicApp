@@ -21,6 +21,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 
+/**
+ * Cette fonction affiche un modal de sélection de plage de dates.
+ *
+ * @param state L'état du DateRangePicker, contenant la plage de dates sélectionnée.
+ * @param onDismissRequest La fonction à exécuter lorsque l'utilisateur ferme le modal.
+ * @param onConfirm La fonction à exécuter lorsque l'utilisateur confirme la plage de dates sélectionnée.
+ * @param colors Les couleurs du DateRangePicker.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerModal(

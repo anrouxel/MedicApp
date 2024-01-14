@@ -34,6 +34,16 @@ import fr.medicapp.medicapp.ui.theme.EUPurple40
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EUYellow110
 
+/**
+ * Cette fonction affiche une boîte de dialogue de recherche avec des options spécifiques.
+ *
+ * @param options La liste des options pour la boîte de dialogue.
+ * @param cardColor La couleur des cartes dans la boîte de dialogue.
+ * @param selectedCardColor La couleur de la carte sélectionnée dans la boîte de dialogue.
+ * @param onDismiss La fonction à exécuter lorsque l'utilisateur ferme la boîte de dialogue.
+ * @param onValidate La fonction à exécuter lorsque l'utilisateur valide une option.
+ * @param preQuery La requête de recherche pré-remplie.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchDialog(

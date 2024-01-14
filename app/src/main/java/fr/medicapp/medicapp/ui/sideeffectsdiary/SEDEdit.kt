@@ -69,6 +69,15 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+/**
+ * Cette fonction est utilisée pour éditer un effet secondaire.
+ * Elle utilise le thème sombre du système pour définir les couleurs de l'interface utilisateur.
+ *
+ * @param sideeffects L'effet secondaire à éditer.
+ * @param treatments Une liste mutable de traitements à afficher.
+ * @param onConfirm Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Confirmer".
+ * @param onCancel Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Annuler".
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -7,14 +7,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,12 +24,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 
+/**
+ * Cette fonction affiche une carte avec l'heure et la minute spécifiées.
+ *
+ * @param hour L'heure à afficher sur la carte.
+ * @param minute La minute à afficher sur la carte.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeCard(
     hour: Int,
-    minute : Int
+    minute: Int
 ) {
     var hourR = remember { mutableStateOf(hour) }
 
@@ -57,9 +61,11 @@ fun TimeCard(
     }
 
     OutlinedTextField(
-        modifier = Modifier.clickable{
-            frequencyTimeOpen.value = true
-        }.fillMaxWidth(),
+        modifier = Modifier
+            .clickable {
+                frequencyTimeOpen.value = true
+            }
+            .fillMaxWidth(),
         enabled = false,
         value = if (hour != null && minute != null) "${hour}h${minute}" else "",
         textStyle = TextStyle(
@@ -115,6 +121,9 @@ fun TimeCard(
 
 }
 
+/**
+ * Cette fonction affiche un aperçu de la carte de temps.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable

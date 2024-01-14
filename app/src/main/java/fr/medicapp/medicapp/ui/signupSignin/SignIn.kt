@@ -43,6 +43,13 @@ import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 
+/**
+ * Cette fonction est utilisée pour afficher l'écran de connexion.
+ * Elle utilise le thème sombre du système pour définir les couleurs de l'interface utilisateur.
+ *
+ * @param login Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le bouton "Connexion".
+ * @param register Une fonction lambda qui est appelée lorsque l'utilisateur clique sur le lien "Créer un compte".
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignIn(

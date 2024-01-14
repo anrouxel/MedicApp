@@ -4,16 +4,10 @@ import android.app.NotificationManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -21,51 +15,41 @@ import androidx.navigation.navigation
 import de.coldtea.smplr.smplralarm.alarmNotification
 import de.coldtea.smplr.smplralarm.channel
 import de.coldtea.smplr.smplralarm.smplrAlarmCancel
-import de.coldtea.smplr.smplralarm.smplrAlarmChangeOrRequestListener
 import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.entity.DurationEntity
-import fr.medicapp.medicapp.entity.PrescriptionWithTreatmentEntity
-import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.repository.MedicationRepository
 import fr.medicapp.medicapp.repository.NotificationRepository
-import fr.medicapp.medicapp.repository.PrescriptionRepository
-import fr.medicapp.medicapp.repository.PrescriptionWithTreatmentRepository
-import fr.medicapp.medicapp.repository.SideEffectRepository
 import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.notifications.Notifications
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit
 import fr.medicapp.medicapp.ui.notifications.NotificationsMainMenu
-import fr.medicapp.medicapp.ui.notifications.TestNotification
-import fr.medicapp.medicapp.ui.prescription.EditPrescription
-import fr.medicapp.medicapp.ui.prescription.Prescription
-import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
-import fr.medicapp.medicapp.ui.prescription.TestConsultation
-import fr.medicapp.medicapp.ui.prescription.TestOrdonnance
-import fr.medicapp.medicapp.ui.sideeffectsdiary.SED
-import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
-import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
-import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
 import fr.medicapp.medicapp.viewModel.SharedNotificationViewModel
-import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
 import java.time.DayOfWeek
-import java.time.LocalDate
-import java.util.UUID
 
+/**
+ * Cette fonction construit le graphe de navigation pour les notifications.
+ *
+ * @param navController Le contrôleur de navigation.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.notificationNavGraph(
     navController: NavHostController
 ) {
+
+    /**
+     * Définit la navigation pour le graphe de notification.
+     */
     navigation(
         route = Graph.NOTIFICATION,
         startDestination = SideEffectRoute.Main.route,
     ) {
+
+        /**
+         * Composable pour la route principale de notification.
+         */
         composable(route = NotificationRoute.Main.route) {
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositoryNotification = NotificationRepository(db.notificationDAO())
@@ -77,7 +61,8 @@ fun NavGraphBuilder.notificationNavGraph(
                 val notificationEntityTmp = repositoryNotification.getAll()
 
                 val notifications = notificationEntityTmp.map {
-                    val treatmentTmp = repositoryTreatment.getOne(it.medicationName).toTreatment(repositoryMedication)
+                    val treatmentTmp = repositoryTreatment.getOne(it.medicationName)
+                        .toTreatment(repositoryMedication)
                     val notificationTmp = it.toNotification()
                     notificationTmp.medicationName = treatmentTmp
                     notificationTmp
@@ -97,8 +82,13 @@ fun NavGraphBuilder.notificationNavGraph(
 
             NotificationsMainMenu(
                 notifications = notification,
-                onNotification = {id ->
-                    navController.navigate(NotificationRoute.ShowNotification.route.replace("{id}", id))
+                onNotification = { id ->
+                    navController.navigate(
+                        NotificationRoute.ShowNotification.route.replace(
+                            "{id}",
+                            id
+                        )
+                    )
                 },
                 addNotification = {
                     navController.navigate(NotificationRoute.AddNotification.route)
@@ -106,6 +96,9 @@ fun NavGraphBuilder.notificationNavGraph(
             )
         }
 
+        /**
+         * Composable pour afficher une notification spécifique.
+         */
         composable(route = NotificationRoute.ShowNotification.route) {
             val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
@@ -119,7 +112,9 @@ fun NavGraphBuilder.notificationNavGraph(
                 result.clear()
                 val notificationEntityTmp = repositoryNotification.getOne(id)
                 if (notificationEntityTmp != null) {
-                    val treatmentTmp = repositoryTreatment.getOne(notificationEntityTmp.medicationName).toTreatment(repositoryMedication)
+                    val treatmentTmp =
+                        repositoryTreatment.getOne(notificationEntityTmp.medicationName)
+                            .toTreatment(repositoryMedication)
                     val notificationTmp = notificationEntityTmp.toNotification()
                     notificationTmp.medicationName = treatmentTmp
                     result.add(notificationTmp)
@@ -166,6 +161,9 @@ fun NavGraphBuilder.notificationNavGraph(
             }
         }
 
+        /**
+         * Composable pour ajouter une nouvelle notification.
+         */
         composable(route = NotificationRoute.AddNotification.route) {
             val viewModel =
                 it.sharedViewModel<SharedNotificationViewModel>(navController = navController)
@@ -180,7 +178,10 @@ fun NavGraphBuilder.notificationNavGraph(
 
             Thread {
                 result.clear()
-                result.addAll(repositoryTreatment.getWithNotification().map { it.toTreatment(repositoryMedication) }.toMutableList())
+                result.addAll(
+                    repositoryTreatment.getWithNotification()
+                        .map { it.toTreatment(repositoryMedication) }.toMutableList()
+                )
             }.start()
 
             val treatments = remember {
@@ -253,8 +254,22 @@ fun NavGraphBuilder.notificationNavGraph(
     }
 }
 
+/**
+ * Cette classe scellée définit les différentes routes pour les notifications.
+ */
 sealed class NotificationRoute(val route: String) {
+    /**
+     * Route pour la page principale des notifications.
+     */
     object Main : NotificationRoute(route = "main_notification")
+
+    /**
+     * Route pour afficher une notification spécifique.
+     */
     object ShowNotification : NotificationRoute(route = "show_notification/{id}")
+
+    /**
+     * Route pour ajouter une nouvelle notification.
+     */
     object AddNotification : NotificationRoute(route = "add_notification")
 }

@@ -15,12 +15,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+/**
+ * Définition des couleurs pour le thème sombre.
+ */
 private val darkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
 )
 
+/**
+ * Définition des couleurs pour le thème clair.
+ */
 private val lightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
@@ -37,6 +43,13 @@ private val lightColorScheme = lightColorScheme(
      */
 )
 
+/**
+ * Cette fonction définit le thème de l'application en fonction des paramètres.
+ *
+ * @param darkTheme Un booléen indiquant si le thème sombre doit être utilisé.
+ * @param dynamicColor Un booléen indiquant si les couleurs dynamiques doivent être utilisées (disponible à partir d'Android 12).
+ * @param content Le contenu à afficher à l'intérieur du thème.
+ */
 @Composable
 fun MedicAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

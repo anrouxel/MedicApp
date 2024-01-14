@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,6 +38,18 @@ import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.navigation.HomeNavGraph
 import kotlinx.coroutines.launch
 
+/**
+ * Écran avec tiroir de navigation de l'application MedicApp.
+ *
+ * Cet écran contient un tiroir de navigation qui permet à l'utilisateur de naviguer entre les différents écrans de l'application.
+ * Le tiroir de navigation contient les éléments suivants :
+ * - Accueil
+ * - Mes traitements
+ * - Journal des effets
+ * - Gérer notifications
+ *
+ * @param navController Le contrôleur de navigation pour naviguer entre les différents écrans.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,7 +114,8 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
                     title = {
                         Image(
                             painter = painterResource(
-                                id = navigationDrawerDestination?.logo ?: R.drawable.medicapp_eu_green
+                                id = navigationDrawerDestination?.logo
+                                    ?: R.drawable.medicapp_eu_green
                                 //id = R.drawable.medicapp_eu_purple
                             ),
                             contentDescription = "MedicApp",
@@ -145,6 +157,11 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
     }
 }
 
+/**
+ * Prévisualisation de l'écran avec tiroir de navigation.
+ *
+ * Cette prévisualisation permet de voir à quoi ressemble l'écran avec tiroir de navigation sans avoir à lancer l'application.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
