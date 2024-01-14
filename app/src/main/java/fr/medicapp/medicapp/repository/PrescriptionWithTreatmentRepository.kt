@@ -1,7 +1,5 @@
 package fr.medicapp.medicapp.repository
 
-import fr.medicapp.medicapp.entity.PrescriptionWithTreatmentEntity
-
 class PrescriptionWithTreatmentRepository(
     private val prescriptionWithTreatmentDao: PrescriptionWithTreatmentDAO
 ) {

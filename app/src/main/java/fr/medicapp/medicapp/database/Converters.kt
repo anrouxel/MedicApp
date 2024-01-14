@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.database
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import java.time.DayOfWeek
