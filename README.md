@@ -8,9 +8,9 @@ This project is licensed under the EUPL 1.2. For more details, see the [LICENSE]
 * Arthur Osselin ([tuturita](https://github.com/tuturita))
 * Lana Heyrendt ([Renarde-dev](https://github.com/Renarde-dev))
 
-## Dépôt Git connexe :
-* Application Android : [MedicApp](https://github.com/anrouxel/MedicApp.git)
-* Nettoyeur des données C# : [MedicAppToolsDatasets](https://github.com/anrouxel/MedicAppToolsDatasets.git)
-* Générateur de l’intelligence artificielle (Reconnaissance d'entités nommées) : [MedicAppAI](https://github.com/anrouxel/MedicAppAI.git)
-* Modèle d’IA Reconnaissance d'entités nommées pour les ordonnances (utilisé comme sous module) : [MedicAppAssets](https://gitlab.univ-nantes.fr/E213726L/MedicAppAssets.git)
+## Related Git repository :
+* Android application: [MedicApp](https://github.com/anrouxel/MedicApp.git)
+* C# data cleaner: [MedicAppToolsDatasets](https://github.com/anrouxel/MedicAppToolsDatasets.git)
+* Artificial Intelligence Generator (Named Entity Recognition): [MedicAppAI](https://github.com/anrouxel/MedicAppAI.git)
+* Named Entity Recognition AI model for prescriptions (usable as a sub-module): [MedicAppAssets](https://gitlab.univ-nantes.fr/E213726L/MedicAppAssets.git)
 * API : [MedicAppAPI](https://github.com/Renarde-dev/MedicApp-API.git)
