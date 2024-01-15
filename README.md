@@ -1,5 +1,21 @@
-# MedicApp
-This project is licensed under the EUPL 1.2. For more details, see the [LICENSE](LICENSE.md) file.
+<h1 align="center">
+  <img src="https://github.com/anrouxel/MedicApp/blob/02373590cd1fc3938491188a81df2d55a9ec47aa/app/src/main/ic_launcher-playstore.png" alt="MedicAppToolsDatasets" height="200">
+  <br />
+</h1>
+
+<p align="center"><b>This project is licensed under the EUPL 1.2. For more details, see the <a href="LICENSE.md">LICENSE</a> file.</b></p>
+<p align="center"><i>"A Toolkit that downloads and cleans french medication database"</i></p>
+
+<p align="center">
+<a href="https://snapcraft.io/medicapptoolsdatasets">
+  <img alt="medicapptoolsdatasets" src="https://snapcraft.io/medicapptoolsdatasets/badge.svg" />
+</a>
+<a href="https://snapcraft.io/medicapptoolsdatasets">
+  <img alt="medicapptoolsdatasets" src="https://snapcraft.io/medicapptoolsdatasets/trending.svg?name=0" />
+</a>
+</p>
+
+<p align="center">Published for <img src="https://raw.githubusercontent.com/anythingcodes/slack-emoji-for-techies/gh-pages/emoji/tux.png" align="top" width="24" /> with :gift_heart: by anrouxel</p>
 
 ## Authors
 * Antonin Rouxel ([anrouxel](https://github.com/anrouxel))
