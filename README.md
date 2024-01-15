@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/anrouxel/MedicApp/blob/02373590cd1fc3938491188a81df2d55a9ec47aa/app/src/main/ic_launcher-playstore.png" alt="MedicAppToolsDatasets" height="200">
+  <img src="https://github.com/anrouxel/MedicApp/blob/02373590cd1fc3938491188a81df2d55a9ec47aa/app/src/main/ic_launcher-playstore.png" alt="MedicApp" height="200">
   <br />
 </h1>
 
