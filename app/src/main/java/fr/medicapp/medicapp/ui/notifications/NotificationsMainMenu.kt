@@ -200,6 +200,7 @@ fun NotificationsMainMenu(
 /**
  * Cette fonction affiche un aperçu du menu principal des notifications.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsMainMenuPreview() {

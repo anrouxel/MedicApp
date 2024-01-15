@@ -158,7 +158,7 @@ fun SEDMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun SEDMainMenuPreview() {
-    var se = mutableListOf<SideEffect>(
+    var se = mutableListOf(
         SideEffect(
         id = "",
             null,
@@ -167,8 +167,7 @@ private fun SEDMainMenuPreview() {
         30,
         mutableListOf("Mal de tête", "Nausées"),
         "J'ai eu mal à la tête hier"
+        )
     )
-    )
-    //var se = listOf<TestSideEffect>() /* TODO */
     SEDMainMenu(se, {}, {})
 }

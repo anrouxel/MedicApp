@@ -143,18 +143,6 @@ fun Notifications(
                     }
                 }
             }
-        },
-        floatingActionButton = {
-            /*FloatingActionButton(
-                onClick = { },
-                containerColor = EUYellow120
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = "",
-                    tint = Color.White
-                )
-            }*/
         }
     ) { innerPadding ->
         Column(
@@ -202,7 +190,7 @@ fun Notifications(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 ElevatedCard(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
@@ -263,7 +251,7 @@ fun Notifications(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 ElevatedCard(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),

@@ -80,20 +80,6 @@ fun Prescription(
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     Scaffold(
-        topBar = {
-            /*CenterAlignedTopAppBar(
-                colors = topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.Black,
-                ),
-                title = {
-                    Text(
-                        "Treatment",
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            )*/
-        },
         bottomBar = {
             BottomAppBar(
                 containerColor = Color.Unspecified
@@ -161,52 +147,6 @@ fun Prescription(
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            /*ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 80.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = EUPurple80,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
-                ) {
-                    Row() {
-                        Text(
-                            "Médecin : ",
-                            fontSize = 20.sp,
-                            color = EUPurple20,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            "",
-                            fontSize = 20.sp,
-                            color = EUPurple20
-                        )
-                    }
-                    Row() {
-                        Text(
-                            "Date : ",
-                            fontSize = 20.sp,
-                            color = EUPurple20,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            "",
-                            fontSize = 20.sp,
-                            color = EUPurple20
-                        )
-                    }
-                }
-            }*/
             Spacer(modifier = Modifier.height(15.dp))
 
             // Itération de la liste des médicaments
@@ -242,26 +182,6 @@ fun Prescription(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
-
-                        /*if (i.erreur.isNotEmpty()) {
-                            Row() {
-                                Icon(
-                                    imageVector = Icons.Filled.Warning,
-                                    contentDescription = "",
-                                    tint = EURed100,
-                                    modifier = Modifier
-                                        .padding(top = 2.dp)
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    i.erreur,
-                                    fontSize = 20.sp,
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Light,
-                                    color = EURed100
-                                )
-                            }
-                        }*/
 
                         Row(
                             modifier = Modifier.fillMaxWidth()
@@ -361,42 +281,6 @@ fun Prescription(
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                         }
-
-                        /*if (i.remboursable) {
-                            Row() {
-                                Icon(
-                                    imageVector = Icons.Filled.AttachMoney,
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .background(color = EUYellow100)
-                                        .clip(RoundedCornerShape(20.dp)),
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    "Médicament remboursable",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        } else {
-                            Row() {
-                                Icon(
-                                    imageVector = Icons.Filled.MoneyOff,
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .background(color = EUYellow100)
-                                        .clip(RoundedCornerShape(20.dp)),
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    "Médicament non-remboursable",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }*/
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))

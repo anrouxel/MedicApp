@@ -188,7 +188,7 @@ fun PrescriptionMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionMainMenuPreview() {
-    var ordonnances = mutableListOf<Treatment>(
+    var ordonnances = mutableListOf(
         Treatment(
             id = "1",
             medication = null,

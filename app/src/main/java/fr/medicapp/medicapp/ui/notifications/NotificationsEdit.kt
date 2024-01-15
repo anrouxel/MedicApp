@@ -203,25 +203,6 @@ fun NotificationsEdit(
                 }
             }
 
-        },
-        floatingActionButton = {
-            /*FloatingActionButton(
-                onClick = {
-                    // Vérification des champs
-                    if (nomMedicament != "" && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
-                        onConfirm()
-                    } else {
-                        errorDialogOpen.value = true
-                    }
-                },
-                containerColor = EURed100
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Save,
-                    contentDescription = "",
-                    tint = Color.White
-                )
-            }*/
         }
     ) { innerPadding ->
         Column(
@@ -300,7 +281,7 @@ fun NotificationsEdit(
             Spacer(modifier = Modifier.height(10.dp))
 
             ElevatedCard(
-                onClick = { /*TODO*/ },
+                onClick = { },
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
                 ),
@@ -363,7 +344,7 @@ fun NotificationsEdit(
             Spacer(modifier = Modifier.height(10.dp))
 
             ElevatedCard(
-                onClick = { /*TODO*/ },
+                onClick = {  },
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
                 ),

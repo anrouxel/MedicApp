@@ -186,7 +186,7 @@ fun SED(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 ElevatedCard(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
@@ -223,17 +223,15 @@ fun SED(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 var effetsConstatesSize = sideeffect.effetsConstates.size
-                var effetsConstatesCard = if (sideeffect.effetsConstates.size > 5) 118 else effetsConstatesSize * 18
 
                 ElevatedCard(
-                    onClick = { /*TODO*/ },
+                    onClick = { },
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 6.dp
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                        //.height(height = 77.dp + (effetsConstatesCard).dp),
                     colors =
                     CardDefaults.cardColors(
                         containerColor = EURed80,
