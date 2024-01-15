@@ -24,7 +24,7 @@
 * Arthur Osselin ([tuturita](https://github.com/tuturita))
 * Lana Heyrendt ([Renarde-dev](https://github.com/Renarde-dev))
 
-## Related Git repository :
+## Related Git repository
 * Android application: [MedicApp](https://github.com/anrouxel/MedicApp.git)
 * C# data cleaner: [MedicAppToolsDatasets](https://github.com/anrouxel/MedicAppToolsDatasets.git)
 * Artificial Intelligence Generator (Named Entity Recognition): [MedicAppAI](https://github.com/anrouxel/MedicAppAI.git)
