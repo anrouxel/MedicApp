@@ -1,12 +1,12 @@
-<h1 align="center">
+<h1 style="text-align:center">
   <img src="MedicApp.png" alt="MedicApp" height="200">
   <br />
 </h1>
 
-<p align="center"><b>This project is licensed under the EUPL 1.2. For more details, see the <a href="LICENSE.md">LICENSE</a> file.</b></p>
-<p align="center"><i>"An Application that allows users to scan prescriptions, medications, and sends notifications for intakes"</i></p>
+<p style="text-align:center"><b>This project is licensed under the EUPL 1.2. For more details, see the <a href="LICENSE.md">LICENSE</a> file.</b></p>
+<p style="text-align:center"><i>"An Application that allows users to scan prescriptions, medications, and sends notifications for intakes"</i></p>
 
-<p align="center">Published for <img src="https://raw.githubusercontent.com/anythingcodes/slack-emoji-for-techies/gh-pages/emoji/tux.png" align="top" width="24" /> with :gift_heart: by anrouxel</p>
+<p style="text-align:center">Published for <img src="https://raw.githubusercontent.com/anythingcodes/slack-emoji-for-techies/gh-pages/emoji/tux.png" align="top" width="24" /> with :gift_heart: by anrouxel</p>
 
 ## Development
 
