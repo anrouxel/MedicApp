@@ -88,6 +88,11 @@ abstract class AppDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "dataLocal.db"
 
         /**
+         * Le nom de la base de données préchargée.
+         */
+        private const val PREDATABASE_NAME = "database/dataLocal.db"
+
+        /**
          * L'instance de la base de données.
          */
         private var INSTANCE: AppDatabase? = null
@@ -105,7 +110,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DATABASE_NAME
-                ).createFromAsset("dataLocal.db").build()
+                ).createFromAsset(PREDATABASE_NAME).build()
                 INSTANCE = instance
                 instance
             }

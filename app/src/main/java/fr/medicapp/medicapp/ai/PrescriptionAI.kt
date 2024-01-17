@@ -51,6 +51,11 @@ class PrescriptionAI(
     private val TAG = "CamemBERT"
 
     /**
+     * Chemin vers le dossier contenant les fichiers du modèle PyTorch.
+     */
+    private val FOLDER_PATH = "ai/"
+
+    /**
      * Chemin vers le fichier du modèle PyTorch.
      */
     private val MODEL_PATH = "model.pt"
@@ -358,7 +363,7 @@ class PrescriptionAI(
      */
     private fun assetFilePath(assetManager: AssetManager): String? {
         // Ouvre le fichier du modèle à partir des assets de l'application.
-        assetManager.open(MODEL_PATH).use { ins ->
+        assetManager.open(FOLDER_PATH + MODEL_PATH).use { ins ->
             // Crée un fichier dans le cache de l'application avec le même nom que le fichier du modèle.
             val file = File(context.cacheDir, MODEL_PATH)
 
@@ -390,7 +395,7 @@ class PrescriptionAI(
      */
     private fun loadDictionaryFile(assetManager: AssetManager) {
         // Ouvre le fichier de dictionnaire à partir des assets de l'application.
-        assetManager.open(DIC_PATH).use { ins ->
+        assetManager.open(FOLDER_PATH + DIC_PATH).use { ins ->
             // Crée un BufferedReader pour lire le fichier de dictionnaire.
             BufferedReader(InputStreamReader(ins)).use { reader ->
                 // Initialise un index à 0 pour associer chaque mot du dictionnaire à un index.
@@ -415,7 +420,7 @@ class PrescriptionAI(
      */
     private fun loadIdToLabelFile(assetManager: AssetManager) {
         // Ouvre le fichier des labels à partir des assets de l'application.
-        assetManager.open(LABEL_PATH).use { ins ->
+        assetManager.open(FOLDER_PATH + LABEL_PATH).use { ins ->
             // Crée un BufferedReader pour lire le fichier des labels.
             BufferedReader(InputStreamReader(ins)).use { reader ->
                 // Initialise un index à 0 pour associer chaque label à un index.
