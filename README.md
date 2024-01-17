@@ -29,7 +29,7 @@
 ## Authors
 * Antonin Rouxel ([anrouxel](https://github.com/anrouxel))
 * Quentin Tegny ([Qt144](https://github.com/Qt144))
-* Paul BOUTET ([Kartinlage](https://github.com/Kartinlage))
+* Paul Boutet ([Kartinlage](https://github.com/Kartinlage))
 * Arthur Osselin ([tuturita](https://github.com/tuturita))
 * Lana Heyrendt ([Renarde-dev](https://github.com/Renarde-dev))
 
