@@ -8,6 +8,24 @@
 
 <p align="center">Published for <img src="https://raw.githubusercontent.com/anythingcodes/slack-emoji-for-techies/gh-pages/emoji/tux.png" align="top" width="24" /> with :gift_heart: by anrouxel</p>
 
+## Development
+
+### Requirements
+
+- Android Studio Hedgehog | 2023.1.1 Patch 1 or later
+- JDK 17 or later
+- Gradle 8.2.1 or later
+- Git LFS
+
+### Setup
+
+1. Clone the repository: `git clone https://github.com/anrouxel/MedicApp.git`
+2. Install Git LFS: `git lfs install`
+3. Initialize and fetch the submodules: `git submodule update --init --recursive`
+4. Open the project in Android Studio.
+5. Sync the project with Gradle files.
+6. Run the project on an emulator or a real device.
+
 ## Authors
 * Antonin Rouxel ([anrouxel](https://github.com/anrouxel))
 * Quentin Tegny ([Qt144](https://github.com/Qt144))
