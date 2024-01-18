@@ -77,8 +77,6 @@ F
 app/proguard-rules.pro,9/e/9e08934d811afe28fbc77aaa3c0d747b94348db9
 7
 gradlew,5/b/5bbfa66edb4db3c7c33c5181f43510990d3307f9
-=
-app/README.MD,2\e\2e9260d79d3c4ecc37d97a54e4c07422c269b057
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
@@ -137,10 +135,6 @@ H
 config/detekt/detekt.yml,5/a/5a8eccd34aefbab894eaadc3b79e57f6c456425d
 y
 Iapp/src/test/java/fr/medicapp/medicapp/repository/DoctorRepositoryTest.kt,3/1/31bfcc51576bd9a7dac9530adfd4674edf908ac1
-H
-app/sampledata/User.json,5/1/51149ac4cc6a70a2afdb79c966b3a4a440a4d251
-N
-app/sampledata/Medication.json,e/a/eac2ff382e1bef2aa9da53acd0e851678a25332e
 ~
 Napp/src/main/java/fr/medicapp/medicapp/ui/prescription/DateRangePickerModal.kt,c\4\c4683396c31114d668a46a8b1766ac22e45de519
 u
@@ -149,14 +143,6 @@ y
 Iapp/src/main/java/fr/medicapp/medicapp/ui/prescription/DatePickerModal.kt,9\3\93ccb19129a685ca26af9aaa64ef8c9bd69ec310
 q
 Aapp/src/main/java/fr/medicapp/medicapp/ui/sideeffectsdiary/SED.kt,f\9\f9097d9ce40aeceea7b2977666faa6cba07957e3
-M
-app/sampledata/Treatment.json,e/b/ebdbc5e11e33573cfbb44c724c03635403fc7d7f
-P
- app/sampledata/Prescription.json,c/0/c0885d8580b9097dcdf2a082a383c4c707bca654
-J
-app/sampledata/Doctor.json,3/3/3387435ddb6a5e2fc7be0b488fb4e5986b02c84b
-P
- app/sampledata/Consultation.json,2/c/2c3628811f85e0b75e2d09f0f17b619fb3bf5015
 
 Oapp/src/test/java/fr/medicapp/medicapp/repository/PrescriptionRepositoryTest.kt,3/1/3119cce3d81e73286df5a0d35c24c3621cb45fcc
 |

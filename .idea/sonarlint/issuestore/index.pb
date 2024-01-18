@@ -183,5 +183,3 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/sideeffectsdiary/SEDEdit.kt,d\d\ddb16dfe4ff1765d087a3da2f615b892219b0301
 y
 Iapp/src/main/java/fr/medicapp/medicapp/ui/sideeffectsdiary/SEDMainMenu.kt,d\b\db2136b422885919d6bd5ab83fd7bef61c059a8f
-=
-app/README.MD,2\e\2e9260d79d3c4ecc37d97a54e4c07422c269b057
