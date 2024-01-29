@@ -59,7 +59,7 @@ data class NotificationEntity(
         return Notification(
             id = id,
             medicationName = null,
-            frequency = frequency,
+            frequency = frequency.sortedBy{it.ordinal}.toMutableList(),
             hours = hours,
             minutes = minutes,
             alarms = alarms
