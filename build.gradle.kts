@@ -2,6 +2,6 @@
 plugins {
     id("com.android.application") version "8.2.2" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("io.gitlab.arturbosch.detekt") version("1.23.3")
+    id("io.gitlab.arturbosch.detekt") version("1.23.5")
     id("com.google.devtools.ksp") version("1.8.10-1.0.9") apply false
 }
