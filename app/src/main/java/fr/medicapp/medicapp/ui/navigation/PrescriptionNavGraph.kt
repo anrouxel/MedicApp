@@ -38,7 +38,6 @@ import de.coldtea.smplr.smplralarm.smplrAlarmCancel
 import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.repository.MedicationRepository

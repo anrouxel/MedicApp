@@ -112,6 +112,9 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
+    // ObjectBox
+    implementation("io.objectbox:objectbox-kotlin:3.7.1")
+
     // Room
     implementation("androidx.room:room-runtime:2.5.0")
     ksp("androidx.room:room-compiler:2.5.0")

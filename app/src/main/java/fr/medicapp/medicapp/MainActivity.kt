@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ai.PrescriptionAI
-import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
@@ -26,9 +25,6 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialisation de la base de données
-        AppDatabase.getInstance(this)
 
         // Initialisation de l'IA de prescription
         PrescriptionAI.getInstance(this)

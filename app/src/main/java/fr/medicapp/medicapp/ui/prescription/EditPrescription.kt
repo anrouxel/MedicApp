@@ -38,7 +38,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Prescription

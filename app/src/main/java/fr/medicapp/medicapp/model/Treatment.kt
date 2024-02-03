@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.model
 
-import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import java.util.UUID
 

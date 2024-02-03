@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
@@ -52,7 +51,6 @@ import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
