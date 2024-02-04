@@ -3,9 +3,12 @@ package fr.medicapp.medicapp.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.ForeignKey
 
 
-@Entity(tableName = "GenericGroups")
+@Entity(tableName = "GenericGroups", foreignKeys =
+arrayOf(ForeignKey(entity = MedicationEntity::class, parentColumns = ["Id"], childColumns = ["MedicationId"]))
+)
 data class GenericGroupsEntity(
 
     /**

@@ -2,9 +2,16 @@ package fr.medicapp.medicapp.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "TransparencyCommissionOpinionLinks")
+@Entity(tableName = "TransparencyCommissionOpinionLinks", foreignKeys =
+    arrayOf(
+        ForeignKey(entity = HasAsmrOpinionsEntity::class, parentColumns = ["Id"], childColumns = ["HasAsmrOpinionId"]),
+        ForeignKey(entity = HasSmrOpinionsEntity::class, parentColumns = ["Id"], childColumns = ["HasSmrOpinionId"])
+    )
+)
+
 data class TransparencyCommissionOpinionLinksEntity(
 
     /**
@@ -29,6 +36,7 @@ data class TransparencyCommissionOpinionLinksEntity(
     /**
      * id de l'opinion asmr
      */
+
     @ColumnInfo(name = "HasAsmrOpinionId")
     val hasAsmrOpinionId: String,
 

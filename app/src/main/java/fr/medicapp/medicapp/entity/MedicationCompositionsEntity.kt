@@ -1,9 +1,11 @@
 package fr.medicapp.medicapp.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "MedicationCompositions")
+@Entity(tableName = "MedicationCompositions", foreignKeys =
+arrayOf(ForeignKey(entity = MedicationEntity::class, parentColumns = ["Id"], childColumns = ["MedicationId"])))
 data class MedicationCompositionsEntity(
 
     /**

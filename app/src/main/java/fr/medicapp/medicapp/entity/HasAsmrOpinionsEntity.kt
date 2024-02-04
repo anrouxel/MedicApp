@@ -2,10 +2,13 @@ package fr.medicapp.medicapp.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
-@Entity(tableName = "HasAsmrOpinions")
+@Entity(tableName = "HasAsmrOpinions", foreignKeys =
+arrayOf(ForeignKey(entity = MedicationEntity::class, parentColumns = ["Id"], childColumns = ["MedicationId"]))
+)
 data class HasAsmrOpinionsEntity(
 
     /**

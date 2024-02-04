@@ -14,7 +14,6 @@ import fr.medicapp.medicapp.entity.DoctorEntity
  */
 @Dao
 interface DoctorDAO {
-
     /**
      * Récupère tous les médecins de la base de données.
      *
