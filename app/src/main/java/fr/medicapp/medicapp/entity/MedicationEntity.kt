@@ -26,9 +26,17 @@ import java.time.LocalDate
 data class MedicationEntity(
 
     /**
-     * Le code CIS du médicament.
+     * L'identifiant unique du médicament.
      */
     @PrimaryKey
+    @ColumnInfo(name = "Id")
+    val id: String,
+
+
+    /**
+     * Le code CIS du médicament.
+     */
+
     @ColumnInfo(name = "CISCode")
     val cisCode: String,
 
