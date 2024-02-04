@@ -1,14 +1,13 @@
 package fr.medicapp.medicapp.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 
 /**
  * Entité représentant un médecin dans la base de données.
  *
  * @property id L'identifiant unique du médecin.
- * @property lastName Le nom de famille du médecin.
- * @property firstName Le prénom du médecin.
+ * @property name Le nom du médecin.
  */
 @Entity
 data class DoctorEntity(
@@ -16,16 +15,11 @@ data class DoctorEntity(
     /**
      * L'identifiant unique du médecin.
      */
-    @PrimaryKey
-    val id: String,
+    @Id
+    var id: Long = 0L,
 
     /**
      * Le nom de famille du médecin.
      */
-    val lastName: String,
-
-    /**
-     * Le prénom du médecin.
-     */
-    var firstName: String,
+    var name: String = "",
 )

@@ -1,6 +1,14 @@
 package fr.medicapp.medicapp.entity
 
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+
+@Entity
 data class TransparencyCommissionOpinionLinksEntity(
-    var hasDossierCode: String,
-    var commissionOpinionLink: String?
+    @Id
+    var id: Long = 0L,
+
+    var hasDossierCode: String = "",
+
+    var commissionOpinionLink: String? = null
 )

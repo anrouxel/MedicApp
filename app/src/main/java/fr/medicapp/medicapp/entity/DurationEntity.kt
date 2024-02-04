@@ -1,6 +1,10 @@
 package fr.medicapp.medicapp.entity
 
+import fr.medicapp.medicapp.database.LocalDateConverter
 import fr.medicapp.medicapp.model.Duration
+import io.objectbox.annotation.Convert
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 import java.time.LocalDate
 
 /**
@@ -9,28 +13,21 @@ import java.time.LocalDate
  * @property startDate La date de début de la durée.
  * @property endDate La date de fin de la durée.
  */
+@Entity
 data class DurationEntity(
+
+    @Id
+    var id: Long = 0L,
 
     /**
      * La date de début de la durée.
      */
-    var startDate: LocalDate,
+    @Convert(converter = LocalDateConverter::class, dbType = String::class)
+    var startDate: LocalDate? = null,
 
     /**
      * La date de fin de la durée.
      */
-    var endDate: LocalDate
-) {
-
-    /**
-     * Convertit cette entité en un objet Duration.
-     *
-     * @return Un objet Duration correspondant à cette entité.
-     */
-    fun toDuration(): Duration {
-        return Duration(
-            startDate = startDate,
-            endDate = endDate
-        )
-    }
-}
+    @Convert(converter = LocalDateConverter::class, dbType = String::class)
+    var endDate: LocalDate? = null
+)

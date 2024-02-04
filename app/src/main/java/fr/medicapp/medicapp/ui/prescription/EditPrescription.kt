@@ -38,6 +38,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import fr.medicapp.medicapp.entity.MedicationEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Prescription
@@ -211,16 +213,7 @@ fun EditPrescription(
                     icone = Icons.Filled.Add,
                     color = EUPurple80,
                     onClick = {
-                        Log.d("EditPrescription", "AddButton: onClick")
-                        var treatment = Treatment(
-                            duration = Duration(
-                                startDate = LocalDate.now(),
-                                endDate = LocalDate.now(),
-                            ),
-                            notification = false,
-                        )
-                        Log.d("EditPrescription", "AddButton: treatment = $treatment")
-                        prescription.treatments.add(treatment)
+                        prescription.treatments.add(TreatmentEntity())
                         Log.d(
                             "EditPrescription",
                             "AddButton: prescription.treatments = ${prescription.treatments}"

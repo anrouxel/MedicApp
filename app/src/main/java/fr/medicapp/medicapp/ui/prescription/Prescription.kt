@@ -16,18 +16,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
-import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,17 +31,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,10 +48,8 @@ import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
-import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed40
-import fr.medicapp.medicapp.ui.theme.EUYellow100
 
 /**
  * Cette fonction affiche la prescription avec des informations spécifiques.
@@ -73,12 +62,12 @@ import fr.medicapp.medicapp.ui.theme.EUYellow100
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Prescription(
-    consultation : MutableList<Treatment>,
+    consultation: TreatmentEntity,
     onClose: () -> Unit,
     onRemove: () -> Unit,
-    onUpdate: (String, Boolean) -> Unit
+    onUpdate: (Long, Boolean) -> Unit
 ) {
-    var darkmode : Boolean = isSystemInDarkTheme()
+    var darkmode: Boolean = isSystemInDarkTheme()
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -140,7 +129,7 @@ fun Prescription(
                 }
             }
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -149,141 +138,133 @@ fun Prescription(
         ) {
             Spacer(modifier = Modifier.height(15.dp))
 
-            // Itération de la liste des médicaments
-            for (i in consultation) {
-                var notification = remember {
-                    mutableStateOf(i.notification)
-                }
-
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = EUPurple20,
+                    contentColor = Color.Black
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = EUPurple20,
-                        contentColor = Color.Black
-                    ),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
-                        modifier = Modifier
-                            .verticalScroll(
-                                enabled = true,
-                                state = rememberScrollState()
-                            )
-                            .fillMaxSize()
-                            .padding(10.dp)
-                    ) {
-                        Text(
-                            i.medication?.name ?: "",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
+                        .verticalScroll(
+                            enabled = true,
+                            state = rememberScrollState()
                         )
+                        .fillMaxSize()
+                        .padding(10.dp)
+                ) {
+                    /*Text(
+                        i.medication?.name ?: "",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )*/
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
+                    /*Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Switch(
+                            enabled = false,
+                            checked = notification.value,
+                            onCheckedChange = {
+                                notification.value = it
+                                onUpdate(consultation.id, it)
+                            },
+                            colors = SwitchDefaults.colors(
+                                disabledCheckedThumbColor = Color.White,
+                                disabledCheckedTrackColor = EUGreen40,
+                                disabledUncheckedBorderColor = EURed40,
+                                disabledUncheckedThumbColor = Color.White,
+                                disabledUncheckedTrackColor = EURed40,
+                            ),
+                        )
+                        Spacer(modifier = Modifier.width(7.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 10.dp)
                         ) {
-                            Switch(
-                                enabled = false,
-                                checked = notification.value,
-                                onCheckedChange = {
-                                    notification.value = it
-                                    onUpdate(i.id, it)
-                                },
-                                colors = SwitchDefaults.colors(
-                                    disabledCheckedThumbColor = Color.White,
-                                    disabledCheckedTrackColor = EUGreen40,
-                                    disabledUncheckedBorderColor = EURed40,
-                                    disabledUncheckedThumbColor = Color.White,
-                                    disabledUncheckedTrackColor = EURed40,
-                                ),
+                            Text(
+                                "Notification de rappel ${if (i.notification) "activée" else "désactivée"}",
+                                fontSize = 18.sp
                             )
-                            Spacer(modifier = Modifier.width(7.dp))
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 10.dp)
-                            ) {
-                                Text(
-                                    "Notification de rappel ${ if (i.notification) "activée" else "désactivée" }",
-                                    fontSize = 18.sp
-                                )
-                            }
                         }
+                    }*/
 
+                    Row() {
+                        Box(
+                            modifier = Modifier
+                                .background(color = EUGreen100)
+                                .clip(RoundedCornerShape(100.dp))
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.HourglassTop,
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            consultation.posology,
+                            fontSize = 18.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    if (consultation.renew != "") {
                         Row() {
-                            Box(
+                            Icon(
+                                imageVector = Icons.Filled.Repeat,
+                                contentDescription = "",
                                 modifier = Modifier
-                                    .background(color = EUGreen100)
-                                    .clip(RoundedCornerShape(100.dp))
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.HourglassTop,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
-                            }
+                                    .background(color = EUBlue100)
+                                    .clip(RoundedCornerShape(20.dp)),
+                                tint = Color.White
+                            )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                i.posology,
+                                "A renouveler : ",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                consultation.renew.toString() + " fois",
                                 fontSize = 18.sp
                             )
                         }
                         Spacer(modifier = Modifier.width(5.dp))
+                    }
 
-                        if (i.renew != "") {
-                            Row() {
-                                Icon(
-                                    imageVector = Icons.Filled.Repeat,
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .background(color = EUBlue100)
-                                        .clip(RoundedCornerShape(20.dp)),
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    "A renouveler : ",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    i.renew.toString() + " fois",
-                                    fontSize = 18.sp
-                                )
-                            }
+                    if (consultation.quantity != "") {
+                        Row() {
+                            Icon(
+                                imageVector = Icons.Filled.Medication,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .background(color = EUOrange100)
+                                    .clip(RoundedCornerShape(20.dp)),
+                                tint = Color.White
+                            )
                             Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                "Quantité suffisante pour : ",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                consultation.quantity,
+                                fontSize = 18.sp
+                            )
                         }
-
-                        if (i.quantity != "") {
-                            Row() {
-                                Icon(
-                                    imageVector = Icons.Filled.Medication,
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .background(color = EUOrange100)
-                                        .clip(RoundedCornerShape(20.dp)),
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    "Quantité suffisante pour : ",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    i.quantity,
-                                    fontSize = 18.sp
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(5.dp))
-                        }
+                        Spacer(modifier = Modifier.width(5.dp))
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -292,6 +273,6 @@ fun Prescription(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionPreview() {
-    var tab = mutableListOf<Treatment>()
-    Prescription(tab, {}, {}, { _, _ -> })
+    var tab = TreatmentEntity()
+    Prescription(tab, {}, {}) { _, _ -> }
 }

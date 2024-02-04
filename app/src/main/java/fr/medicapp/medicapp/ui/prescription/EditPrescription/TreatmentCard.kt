@@ -51,9 +51,10 @@ import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import fr.medicapp.medicapp.entity.MedicationEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.theme.EUBlack100
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
@@ -61,7 +62,6 @@ import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
-import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
 import java.time.LocalDate
@@ -77,26 +77,26 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TreatmentCard(
-    treatment: Treatment,
+    treatment: TreatmentEntity,
     onRemove: () -> Unit,
     medications: List<MedicationEntity>
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
-    var medication = remember { mutableStateOf(treatment.medication?.name ?: "") }
+    var medication = remember { mutableStateOf(treatment.medication.target?.name ?: "") }
     var notification = remember { mutableStateOf(treatment.notification) }
-    var duration = remember { mutableStateOf(treatment.duration?.toString() ?: "") }
+    //var duration = remember { mutableStateOf(treatment.duration.target.toString() ?: "") }
     var posology = remember { mutableStateOf(treatment.posology) }
     var renew = remember { mutableStateOf(treatment.renew) }
     var quantity = remember { mutableStateOf(treatment.quantity) }
 
-    LaunchedEffect(treatment) {
+    /*LaunchedEffect(treatment) {
         medication.value = treatment.medication?.name ?: ""
         notification.value = treatment.notification
         duration.value = treatment.duration?.toString() ?: ""
         posology.value = treatment.posology
         renew.value = treatment.renew
         quantity.value = treatment.quantity
-    }
+    }*/
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -122,7 +122,7 @@ fun TreatmentCard(
             ) {
                 var medicationOpen by remember { mutableStateOf(false) }
 
-                if (medicationOpen) {
+                /*if (medicationOpen) {
                     SearchDialog(
                         options = medications.map { it.toOptionDialog() },
                         cardColor = EUPurple20,
@@ -137,9 +137,9 @@ fun TreatmentCard(
                         },
                         preQuery = treatment.query
                     )
-                }
+                }*/
 
-                OutlinedTextField(
+                /*OutlinedTextField(
                     enabled = false,
                     value = medication.value,
                     textStyle = TextStyle(
@@ -172,7 +172,7 @@ fun TreatmentCard(
                     modifier = Modifier.weight(1f).clickable {
                         medicationOpen = true
                     }
-                )
+                )*/
 
                 Spacer(modifier = Modifier.width(10.dp))
 
@@ -272,7 +272,7 @@ fun TreatmentCard(
 
                     var durationOpen by remember { mutableStateOf(false) }
 
-                    if (durationOpen) {
+                    /*if (durationOpen) {
                         CalendarDialog(
                             state = rememberUseCaseState(true, onCloseRequest = {
                                 durationOpen = false
@@ -283,7 +283,7 @@ fun TreatmentCard(
                                 durationOpen = false
                             },
                         )
-                    }
+                    }*/
 
                     Column() {
 
@@ -309,7 +309,7 @@ fun TreatmentCard(
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        OutlinedTextField(
+                        /*OutlinedTextField(
                             enabled = false,
                             value = duration.value,
                             textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
@@ -340,7 +340,7 @@ fun TreatmentCard(
                                 .clickable {
                                     durationOpen = true
                                 }
-                        )
+                        )*/
 
                     }
                 }
@@ -456,10 +456,7 @@ fun TreatmentCard(
 @Composable
 fun TreatmentCardPreview() {
     TreatmentCard(
-        treatment = Treatment(
-            duration = null,
-            notification = false,
-        ),
+        treatment = TreatmentEntity(),
         onRemove = {},
         medications = listOf()
     )

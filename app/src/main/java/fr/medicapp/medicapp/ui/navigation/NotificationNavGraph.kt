@@ -17,12 +17,8 @@ import de.coldtea.smplr.smplralarm.channel
 import de.coldtea.smplr.smplralarm.smplrAlarmCancel
 import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import fr.medicapp.medicapp.R
-import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.repository.MedicationRepository
-import fr.medicapp.medicapp.repository.NotificationRepository
-import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.notifications.Notifications
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit
 import fr.medicapp.medicapp.ui.notifications.NotificationsMainMenu
@@ -51,7 +47,7 @@ fun NavGraphBuilder.notificationNavGraph(
          * Composable pour la route principale de notification.
          */
         composable(route = NotificationRoute.Main.route) {
-            val db = AppDatabase.getInstance(LocalContext.current)
+            /*val db = AppDatabase.getInstance(LocalContext.current)
             val repositoryNotification = NotificationRepository(db.notificationDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
             val repositoryMedication = MedicationRepository(db.medicationDAO())
@@ -93,14 +89,14 @@ fun NavGraphBuilder.notificationNavGraph(
                 addNotification = {
                     navController.navigate(NotificationRoute.AddNotification.route)
                 },
-            )
+            )*/
         }
 
         /**
          * Composable pour afficher une notification spécifique.
          */
         composable(route = NotificationRoute.ShowNotification.route) {
-            val id = it.arguments?.getString("id") ?: return@composable
+            /*val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositoryNotification = NotificationRepository(db.notificationDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
@@ -158,14 +154,14 @@ fun NavGraphBuilder.notificationNavGraph(
                         }
                     }
                 )
-            }
+            }*/
         }
 
         /**
          * Composable pour ajouter une nouvelle notification.
          */
         composable(route = NotificationRoute.AddNotification.route) {
-            val viewModel =
+            /*val viewModel =
                 it.sharedViewModel<SharedNotificationViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
@@ -249,7 +245,7 @@ fun NavGraphBuilder.notificationNavGraph(
                         }
                     }
                 },
-            )
+            )*/
         }
     }
 }

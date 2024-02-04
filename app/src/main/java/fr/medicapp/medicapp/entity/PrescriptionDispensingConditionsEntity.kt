@@ -1,6 +1,14 @@
 package fr.medicapp.medicapp.entity
 
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+
+@Entity
 data class PrescriptionDispensingConditionsEntity(
-    var cisCode: Long,
-    var prescriptionDispensingCondition: String
+    @Id
+    var id: Long = 0L,
+
+    var cisCode: Long = 0L,
+
+    var prescriptionDispensingCondition: String = ""
 )

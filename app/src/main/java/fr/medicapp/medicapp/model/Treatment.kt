@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import fr.medicapp.medicapp.entity.MedicationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import java.util.UUID
 
@@ -76,7 +77,7 @@ data class Treatment(
      *
      * @return Une entité TreatmentEntity correspondant à ce traitement.
      */
-    fun toEntity(): TreatmentEntity {
+    /*fun toEntity(): TreatmentEntity {
         return TreatmentEntity(
             id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
             medication = medication!!.cisCode,
@@ -86,5 +87,5 @@ data class Treatment(
             duration = duration?.toEntity()!!,
             notification = notification
         )
-    }
+    }*/
 }

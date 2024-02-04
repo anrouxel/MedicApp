@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.ui.navigation
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -34,16 +33,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import de.coldtea.smplr.smplralarm.smplrAlarmCancel
-import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
-import fr.medicapp.medicapp.ai.PrescriptionAI
-import fr.medicapp.medicapp.database.AppDatabase
+import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.entity.MedicationEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Doctor
-import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.repository.MedicationRepository
-import fr.medicapp.medicapp.repository.NotificationRepository
-import fr.medicapp.medicapp.repository.SideEffectRepository
-import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
 import fr.medicapp.medicapp.ui.prescription.Prescription
 import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
@@ -62,7 +55,6 @@ import java.util.Date
 fun NavGraphBuilder.prescriptionNavGraph(
     navController: NavHostController
 ) {
-
     /**
      * Définit la navigation pour le graphe de prescription.
      */
@@ -70,29 +62,15 @@ fun NavGraphBuilder.prescriptionNavGraph(
         route = Graph.PRESCRIPTION,
         startDestination = PrescriptionRoute.Main.route,
     ) {
-
         /**
          * Composable pour la route principale de prescription.
          */
         composable(route = PrescriptionRoute.Main.route) {
-            val db = AppDatabase.getInstance(LocalContext.current)
-            val repository = TreatmentRepository(db.treatmentDAO())
-            val repositoryMedication = MedicationRepository(db.medicationDAO())
-
-            var result: MutableList<Treatment> = mutableListOf()
-            Thread {
-                val treatments = repository.getAll().map { it.toTreatment(repositoryMedication) }
-
-                result.clear()
-                result.addAll(treatments)
-
-                result.forEach {
-                    Log.d("TAG", it.toString())
-                }
-            }.start()
+            val store = ObjectBox.getInstance(LocalContext.current)
+            val treatmentBox = store.boxFor(TreatmentEntity::class.java)
 
             val ordonnance = remember {
-                result
+                treatmentBox.all
             }
 
             PrescriptionMainMenu(
@@ -100,10 +78,9 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onPrescription = { id ->
                     navController.navigate(PrescriptionRoute.Prescription.route.replace("{id}", id))
                 },
-                addPrescription = {
-                    navController.navigate(PrescriptionRoute.AddPrescription.route)
-                },
-            )
+            ) {
+                navController.navigate(PrescriptionRoute.AddPrescription.route)
+            }
         }
 
         /**
@@ -111,27 +88,14 @@ fun NavGraphBuilder.prescriptionNavGraph(
          */
         composable(route = PrescriptionRoute.Prescription.route) {
             val id = it.arguments?.getString("id") ?: return@composable
-            val db = AppDatabase.getInstance(LocalContext.current)
-            val repository = TreatmentRepository(db.treatmentDAO())
-            val repositoryMedication = MedicationRepository(db.medicationDAO())
-            val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
-            val repositoryNotification = NotificationRepository(db.notificationDAO())
 
-            var result: MutableList<Treatment> = mutableListOf()
+            val store = ObjectBox.getInstance(LocalContext.current)
 
-            Thread {
-                result.clear()
-                val treatmentEntity = repository.getOne(id)
-                if (treatmentEntity != null) {
-                    result.add(treatmentEntity.toTreatment(repositoryMedication))
-                }
-            }.start()
+            val treatmentBox = store.boxFor(TreatmentEntity::class.java)
 
             val prescription = remember {
-                result
+                treatmentBox.get(id.toLong())
             }
-
-            var context = LocalContext.current
 
             Prescription(
                 consultation = prescription,
@@ -143,67 +107,18 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     }
                 },
                 onRemove = {
-                    Thread {
-                        prescription.map { treatment -> treatment?.toEntity() }
-                            .forEach { treatment ->
-                                if (treatment != null) {
-                                    Log.d("TAG", "Deleting treatment: $treatment")
-
-                                    val sideEffects =
-                                        repositorySideEffect.getByMedicament(treatment.id)
-
-                                    sideEffects.forEach { sideEffect ->
-                                        repositorySideEffect.delete(sideEffect)
-                                    }
-
-                                    val notifications =
-                                        repositoryNotification.getByMedicament(treatment.id)
-
-                                    notifications.forEach { notification ->
-                                        notification.alarms.forEach { alarm ->
-                                            smplrAlarmCancel(context) {
-                                                requestCode { alarm }
-                                            }
-                                        }
-
-                                        repositoryNotification.delete(notification)
-                                    }
-
-                                    repository.delete(treatment)
-                                }
-                            }
-                    }.start()
+                    treatmentBox.remove(prescription)
                     navController.navigate(PrescriptionRoute.Main.route) {
                         popUpTo(PrescriptionRoute.Prescription.route) {
                             inclusive = true
                         }
                     }
-                },
-                onUpdate = { treatmentId, notificationValue ->
-                    Thread {
-                        val treatment =
-                            repository.getOne(treatmentId).toTreatment(repositoryMedication)
-
-                        if (treatment != null) {
-                            val notifications = repositoryNotification.getByMedicament(treatment.id)
-
-                            Log.d("TAG", "Updating treatment: $notificationValue")
-
-                            notifications.forEach { notification ->
-                                notification.alarms.forEach { alarm ->
-                                    smplrAlarmUpdate(context) {
-                                        requestCode { alarm }
-                                        isActive { notificationValue }
-                                    }
-                                }
-                            }
-
-                            treatment.notification = notificationValue
-                            repository.update(treatment.toEntity())
-                        }
-                    }.start()
                 }
-            )
+            ) { treatmentId, notificationValue ->
+                val treatment = treatmentBox.get(treatmentId.toLong())
+                treatment.notification = notificationValue
+                treatmentBox.put(treatment)
+            }
         }
 
         /**
@@ -214,26 +129,20 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
-            val db = AppDatabase.getInstance(LocalContext.current)
-            val repository = TreatmentRepository(db.treatmentDAO())
-            val repositoryMedication = MedicationRepository(db.medicationDAO())
-
-            var result: MutableList<MedicationEntity> = mutableListOf()
-
-            Thread {
-                result.clear()
-                result.addAll(repositoryMedication.getAllWithoutNotTreadings())
-            }.start()
-
-            val medication = remember {
-                result
-            }
-
             val cameraPermissionState = rememberPermissionState(
                 android.Manifest.permission.CAMERA
             )
 
             val context = LocalContext.current
+
+            var store = ObjectBox.getInstance(context)
+
+            val medicationStore = store.boxFor(MedicationEntity::class.java)
+            val treatmentsStore = store.boxFor(TreatmentEntity::class.java)
+
+            val medications = remember {
+                medicationStore.all
+            }
 
             var hasImage by remember { mutableStateOf(false) }
 
@@ -249,13 +158,13 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     hasImage = uri != null
                     imageUri = uri
 
-                    if (imageUri != null) {
+                    /*if (imageUri != null) {
                         loading.value = true
                         val prescriptionAI = PrescriptionAI.getInstance(context)
                         val prediction = prescriptionAI.analyse(
                             imageUri!!,
                             onPrediction = { prediction ->
-                                var treatment = Treatment()
+                                var treatment = TreatmentEntity()
                                 prediction.forEach { (word, label) ->
                                     when {
                                         label.startsWith("B-") -> {
@@ -295,7 +204,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                 loading.value = false
                             }
                         )
-                    }
+                    }*/
                 }
             )
 
@@ -304,7 +213,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onResult = { success: Boolean ->
                     hasImage = success
 
-                    if (imageUri != null && success) {
+                    /*if (imageUri != null && success) {
                         loading.value = true
                         val prescriptionAI = PrescriptionAI.getInstance(context)
                         val prediction = prescriptionAI.analyse(
@@ -350,7 +259,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                                 loading.value = false
                             }
                         )
-                    }
+                    }*/
                 }
             )
 
@@ -381,13 +290,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                         navController.popBackStack()
                     },
                     onConfirm = {
-                        Thread {
-                            val treatments =
-                                state.treatments.map { treatment -> treatment.toEntity() }
-                            treatments.forEach { treatment ->
-                                repository.add(treatment)
-                            }
-                        }.start()
+                        treatmentsStore.put(state.treatments)
 
                         if (state.treatments.any { it.notification }) {
                             navController.navigate(NotificationRoute.AddNotification.route) {
@@ -414,7 +317,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     onImagePicker = {
                         imagePicker.launch("image/*")
                     },
-                    medications = medication
+                    medications = medications
                 )
             }
         }

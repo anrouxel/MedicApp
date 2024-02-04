@@ -29,7 +29,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,7 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Treatment
@@ -60,7 +58,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrescriptionMainMenu(
-    ordonnances : MutableList<Treatment>,
+    ordonnances: MutableList<TreatmentEntity>,
     onPrescription: (String) -> Unit,
     addPrescription: () -> Unit
 ) {
@@ -108,7 +106,7 @@ fun PrescriptionMainMenu(
                 for (i in ordonnances) {
                     ElevatedCard(
                         onClick = {
-                            onPrescription(i.id)
+                            onPrescription(i.id.toString())
                         },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
@@ -128,13 +126,13 @@ fun PrescriptionMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medication?.name ?: "",
+                                text = i.posology,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
                             )
                             Spacer(modifier = Modifier.height(5.dp))
-                            Row() {
+                            Row {
                                 Icon(
                                     imageVector = Icons.Filled.Person,
                                     contentDescription = "",
@@ -147,7 +145,7 @@ fun PrescriptionMainMenu(
                                 )
                             }
                             Spacer(modifier = Modifier.height(5.dp))
-                            Row() {
+                            /*Row() {
                                 Icon(
                                     imageVector = Icons.Filled.CalendarToday,
                                     contentDescription = "",
@@ -155,10 +153,10 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.duration!!.startDate.format(formatter) + " - " + i.duration!!.endDate.format(formatter),
+                                    i.duration.target.startDate?.format(formatter) + " - " + i.duration.target.endDate?.format(formatter),
                                     fontSize = 15.sp
                                 )
-                            }
+                            }*/
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -188,21 +186,7 @@ fun PrescriptionMainMenu(
 @Preview(showBackground = true)
 @Composable
 private fun PrescriptionMainMenuPreview() {
-    var ordonnances = mutableListOf(
-        Treatment(
-            id = "1",
-            medication = null,
-            posology = "1 comprimé par jour",
-            quantity = "1 boite",
-            renew = "1 fois",
-            duration = Duration(
-                startDate = LocalDate.now(),
-                endDate = LocalDate.now()
-            ),
-            notification = false
-        ),
-    )
+    var ordonnances = mutableListOf<TreatmentEntity>()
 
-
-    PrescriptionMainMenu(ordonnances, {}, {})
+    PrescriptionMainMenu(ordonnances, {}) {}
 }

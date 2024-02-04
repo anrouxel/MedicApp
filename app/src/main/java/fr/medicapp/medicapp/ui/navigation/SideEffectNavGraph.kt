@@ -10,12 +10,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.repository.MedicationRepository
-import fr.medicapp.medicapp.repository.SideEffectRepository
-import fr.medicapp.medicapp.repository.TreatmentRepository
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SED
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
@@ -42,7 +38,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
          * Composable pour l'écran principal des effets secondaires.
          */
         composable(route = SideEffectRoute.Main.route) {
-            val db = AppDatabase.getInstance(LocalContext.current)
+            /*val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
             val repositoryMedication = MedicationRepository(db.medicationDAO())
@@ -75,14 +71,14 @@ fun NavGraphBuilder.sideEffectNavGraph(
                 addSideEffect = {
                     navController.navigate(SideEffectRoute.AddSideEffect.route)
                 },
-            )
+            )*/
         }
 
         /**
          * Composable pour l'écran d'un effet secondaire.
          */
         composable(route = SideEffectRoute.SideEffect.route) {
-            val id = it.arguments?.getString("id") ?: return@composable
+            /*val id = it.arguments?.getString("id") ?: return@composable
             val db = AppDatabase.getInstance(LocalContext.current)
             val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
             val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
@@ -137,14 +133,14 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         }
                     }
                 )
-            }
+            }*/
         }
 
         /**
          * Composable pour l'écran d'ajout d'un effet secondaire.
          */
         composable(route = SideEffectRoute.AddSideEffect.route) {
-            val viewModel =
+            /*val viewModel =
                 it.sharedViewModel<SharedSideEffectViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
@@ -187,7 +183,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         }
                     }
                 }
-            )
+            )*/
         }
     }
 }

@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
     id("com.google.devtools.ksp")
+    id("io.objectbox")
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -112,15 +113,14 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    // ObjectBox
-    implementation("io.objectbox:objectbox-kotlin:3.7.1")
-
-    // Room
-    implementation("androidx.room:room-runtime:2.5.0")
-    ksp("androidx.room:room-compiler:2.5.0")
-
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
+
+    // Volley
+    implementation("com.android.volley:volley:1.2.1")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
