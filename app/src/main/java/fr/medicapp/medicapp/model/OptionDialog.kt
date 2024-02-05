@@ -12,7 +12,7 @@ data class OptionDialog(
     /**
      * L'identifiant unique de l'option de dialogue.
      */
-    val id: String,
+    val id: Long,
 
     /**
      * Le titre de l'option de dialogue.

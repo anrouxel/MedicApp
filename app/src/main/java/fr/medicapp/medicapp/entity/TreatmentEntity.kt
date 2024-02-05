@@ -1,13 +1,9 @@
 package fr.medicapp.medicapp.entity
 
-import fr.medicapp.medicapp.database.LocalDateConverter
-import fr.medicapp.medicapp.model.Treatment
-import io.objectbox.annotation.Convert
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
-import io.objectbox.relation.ToMany
 import io.objectbox.relation.ToOne
-import java.time.LocalDate
 
 /**
  * Entité représentant un traitement dans la base de données.

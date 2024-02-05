@@ -47,18 +47,14 @@ import fr.medicapp.medicapp.ui.theme.EUYellow110
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchDialog(
-    options: List<OptionDialog>,
+    options: (String) -> List<OptionDialog>,
     cardColor : Color,
     selectedCardColor : Color,
     onDismiss: () -> Unit,
     onValidate: (OptionDialog) -> Unit,
-    preQuery: String = ""
 ) {
-    var searchQuery by remember { mutableStateOf(preQuery) }
+    var searchQuery by remember { mutableStateOf("") }
     var selectedOption by remember { mutableStateOf<OptionDialog?>(null) }
-    val filteredOptions = options.filter {
-        it.title.contains(searchQuery, ignoreCase = true)
-    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -72,7 +68,7 @@ fun SearchDialog(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyColumn {
-                    items(filteredOptions) { option ->
+                    items(options(searchQuery)) { option ->
                         ElevatedCard(
                             onClick = {
                                 selectedOption = option

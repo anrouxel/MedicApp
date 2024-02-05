@@ -590,7 +590,7 @@
     },
     {
       "id": "13:8077677203011916094",
-      "lastPropertyId": "8:3896285804105889843",
+      "lastPropertyId": "9:2661140238924251399",
       "name": "TreatmentEntity",
       "properties": [
         {
@@ -598,11 +598,6 @@
           "name": "id",
           "type": 6,
           "flags": 1
-        },
-        {
-          "id": "2:7382063140541865508",
-          "name": "medication",
-          "type": 9
         },
         {
           "id": "3:95177952649684947",
@@ -631,6 +626,14 @@
           "type": 11,
           "flags": 520,
           "relationTarget": "DurationEntity"
+        },
+        {
+          "id": "9:2661140238924251399",
+          "name": "medicationId",
+          "indexId": "3:3063619302302475484",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "MedicationEntity"
         }
       ],
       "relations": []
@@ -656,7 +659,7 @@
     }
   ],
   "lastEntityId": "14:5138986304881207242",
-  "lastIndexId": "2:7126710003563888325",
+  "lastIndexId": "3:3063619302302475484",
   "lastRelationId": "11:4704107518097647459",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
@@ -664,7 +667,8 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    5865801292696153424
+    5865801292696153424,
+    7382063140541865508
   ],
   "retiredRelationUids": [],
   "version": 1

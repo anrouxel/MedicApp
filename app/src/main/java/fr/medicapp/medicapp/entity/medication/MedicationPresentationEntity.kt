@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.entity
+package fr.medicapp.medicapp.entity.medication
 
 import fr.medicapp.medicapp.database.LocalDateConverter
 import fr.medicapp.medicapp.database.MutableListFloatConverter

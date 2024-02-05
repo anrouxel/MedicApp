@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.HourglassTop
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.WarningAmber
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -34,7 +33,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,18 +41,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import fr.medicapp.medicapp.entity.MedicationEntity
+import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Duration
-import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.model.OptionDialog
+import fr.medicapp.medicapp.osaDistance
+import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.theme.EUBlack100
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
@@ -62,9 +60,9 @@ import fr.medicapp.medicapp.ui.theme.EUOrange100
 import fr.medicapp.medicapp.ui.theme.EUPurple100
 import fr.medicapp.medicapp.ui.theme.EUPurple20
 import fr.medicapp.medicapp.ui.theme.EUPurple60
+import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed60
-import java.time.LocalDate
 
 /**
  * Cette fonction affiche une carte de traitement avec des informations spécifiques.
@@ -79,10 +77,9 @@ import java.time.LocalDate
 fun TreatmentCard(
     treatment: TreatmentEntity,
     onRemove: () -> Unit,
-    medications: List<MedicationEntity>
 ) {
-    var darkmode : Boolean = isSystemInDarkTheme()
-    var medication = remember { mutableStateOf(treatment.medication.target?.name ?: "") }
+    var darkmode: Boolean = isSystemInDarkTheme()
+    var context = LocalContext.current
     var notification = remember { mutableStateOf(treatment.notification) }
     //var duration = remember { mutableStateOf(treatment.duration.target.toString() ?: "") }
     var posology = remember { mutableStateOf(treatment.posology) }
@@ -122,9 +119,20 @@ fun TreatmentCard(
             ) {
                 var medicationOpen by remember { mutableStateOf(false) }
 
-                /*if (medicationOpen) {
+                if (medicationOpen) {
                     SearchDialog(
-                        options = medications.map { it.toOptionDialog() },
+                        options = { query ->
+                            val store = ObjectBox.getInstance(context)
+                            val medicationStore = store.boxFor(MedicationEntity::class.java)
+                            medicationStore.query().build().find()
+                                .sortedBy { osaDistance(it.name, query) }.map {
+                                OptionDialog(
+                                    id = it.id,
+                                    title = it.name,
+                                    description = it.pharmaceuticalForm
+                                )
+                            }
+                        },
                         cardColor = EUPurple20,
                         selectedCardColor = EUPurple80,
                         onDismiss = {
@@ -132,23 +140,20 @@ fun TreatmentCard(
                         },
                         onValidate = {
                             medicationOpen = false
-                            medication.value = it.title
-                            treatment.medication = medications.find { medication -> medication.cisCode == it.id }
                         },
-                        preQuery = treatment.query
                     )
-                }*/
+                }
 
-                /*OutlinedTextField(
+                OutlinedTextField(
                     enabled = false,
-                    value = medication.value,
+                    value = treatment.medication.target?.name ?: "",
                     textStyle = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = EUBlack100
                     ),
                     onValueChange = { },
-                    trailingIcon = {
+                    /*trailingIcon = {
                         if (treatment.query != "" && medication.value == "") {
                             Icon(
                                 imageVector = Icons.Filled.WarningAmber,
@@ -156,7 +161,7 @@ fun TreatmentCard(
                                 tint = EURed100
                             )
                         }
-                    },
+                    },*/
                     label = { Text("Nom du médicament") },
                     shape = RoundedCornerShape(20),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -169,10 +174,12 @@ fun TreatmentCard(
                         disabledLabelColor = EUPurple100,
                         errorLabelColor = EURed60,
                     ),
-                    modifier = Modifier.weight(1f).clickable {
-                        medicationOpen = true
-                    }
-                )*/
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            medicationOpen = true
+                        }
+                )
 
                 Spacer(modifier = Modifier.width(10.dp))
 
@@ -458,6 +465,5 @@ fun TreatmentCardPreview() {
     TreatmentCard(
         treatment = TreatmentEntity(),
         onRemove = {},
-        medications = listOf()
     )
 }

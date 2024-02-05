@@ -34,7 +34,7 @@ import androidx.navigation.navigation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.entity.MedicationEntity
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.ui.prescription.EditPrescription
@@ -317,7 +317,6 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     onImagePicker = {
                         imagePicker.launch("image/*")
                     },
-                    medications = medications
                 )
             }
         }

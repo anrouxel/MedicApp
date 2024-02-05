@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.entity
+package fr.medicapp.medicapp.entity.medication
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id

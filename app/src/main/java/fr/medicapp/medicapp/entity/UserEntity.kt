@@ -1,8 +1,5 @@
 package fr.medicapp.medicapp.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 /**
  * Entité représentant un utilisateur dans la base de données.
  *
@@ -12,12 +9,10 @@ import androidx.room.PrimaryKey
  * @property age L'âge de l'utilisateur.
  * @property email L'email de l'utilisateur.
  */
-@Entity
 data class UserEntity(
     /**
      * L'identifiant unique de l'utilisateur.
      */
-    @PrimaryKey
     val id: String,
 
     /**

@@ -21,10 +21,12 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,19 +40,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import fr.medicapp.medicapp.entity.MedicationEntity
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Doctor
-import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.TreatmentCard
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
 import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
-import java.time.LocalDate
 
 /**
  * Cette fonction affiche l'écran d'édition de prescription avec des informations spécifiques.
@@ -77,7 +76,6 @@ fun EditPrescription(
     onImagePicker: () -> Unit,
     cameraPermissionState: PermissionState,
     prescription: Prescription,
-    medications: List<MedicationEntity>
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     var errorDialogOpen = remember { mutableStateOf(false) }
@@ -109,18 +107,18 @@ fun EditPrescription(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            /*CenterAlignedTopAppBar(
+            CenterAlignedTopAppBar(
                 colors = topAppBarColors(
                     containerColor = Color.White,
                     titleContentColor = Color.Black,
                 ),
                 title = {
                     Text(
-                        "ORD0001",
+                        "ORD ${prescription.id}",
                         fontWeight = FontWeight.Bold
                     )
                 }
-            )*/
+            )
         },
         bottomBar = {
             BottomAppBar(
@@ -200,7 +198,6 @@ fun EditPrescription(
                 prescription.treatments.forEachIndexed { index, treatment ->
                     TreatmentCard(
                         treatment = treatment,
-                        medications = medications,
                         onRemove = {
                             prescription.treatments.removeAt(index)
                         }
@@ -279,6 +276,5 @@ private fun EditPrescriptionPreview() {
         onCameraPermissionRequested = {},
         onImagePicker = {},
         cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA),
-        medications = emptyList()
     )
 }
