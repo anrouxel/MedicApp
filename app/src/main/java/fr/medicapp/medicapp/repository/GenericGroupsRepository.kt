@@ -37,6 +37,16 @@ class GenericGroupsRepository (
     }
 
     /**
+     * Récupère tous les groupes génériques associés à un cis code de médicament spécifique.
+     *
+     * @param cisCode Le cis code du médicament pour lequel récupérer les groupes génériques.
+     * @return Une liste de toutes les entités de groupes génériques associées au cis code donné.
+     */
+    fun getByCisCode(cisCode: String): List<GenericGroupsEntity> {
+        return genericGroupsDao.getByCisCode(cisCode)
+    }
+
+    /**
     * Ajoute une nouvelle entité GenericGroups à la base de données.
     *
     * @param t L'entité GenericGroups à ajouter à la base de données.

@@ -41,7 +41,7 @@ class MedicationCompositionsRepository(
      * @param medicament Le médicament pour lequel récupérer les compositions.
      * @return Une entité MedicationCompositions associée au médicament donné.
      */
-    fun getByCisCode(cisCode: String): MedicationCompositionsEntity {
+    fun getByCisCode(cisCode: String): List<MedicationCompositionsEntity> {
         return medicationCompositionsDao.getByCisCode(cisCode)
     }
 

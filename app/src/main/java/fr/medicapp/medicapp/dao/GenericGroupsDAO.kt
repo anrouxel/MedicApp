@@ -31,6 +31,14 @@ interface GenericGroupsDAO {
     @Query("SELECT * FROM GenericGroups WHERE genericGroupId = :id")
     fun getOne(id: String): GenericGroupsEntity
 
+    /**
+     * Récupère tous les groupes génériques associés à un cis code de médicament spécifique.
+     * @param cisCode Le cis code du médicament pour lequel récupérer les groupes génériques.
+     * @return Une liste de toutes les entités de groupes génériques associées au cis code donné.
+     */
+    @Query("SELECT * FROM GenericGroups WHERE cisCode = :cisCode")
+    fun getByCisCode(cisCode: String): List<GenericGroupsEntity>
+
 
     /**
      * Ajoute un nouveau groupe générique à la base de données.

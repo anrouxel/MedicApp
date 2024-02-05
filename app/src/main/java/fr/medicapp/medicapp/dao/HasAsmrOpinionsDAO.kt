@@ -32,6 +32,15 @@ interface HasAsmrOpinionsDAO {
     fun getOne(id: String): HasAsmrOpinionsEntity
 
     /**
+     * Récupère à partir du cis code du medicament les avis ASMR de la base de données.
+     *
+     * @param cisCode Le code CIS du médicament.
+     * @return Une liste de toutes les entités d'avis ASMR.
+     */
+    @Query("SELECT * FROM HasAsmrOpinions WHERE cisCode = :cisCode")
+    fun getByCisCode(cisCode: String): List<HasAsmrOpinionsEntity>
+
+    /**
      * Ajoute un nouvel avis ASMR à la base de données.
      * @param t L'entité de l'avis ASMR à ajouter.
      */

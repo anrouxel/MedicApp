@@ -39,9 +39,9 @@ class ImportantInformationsRepository(
      * Récupère toutes les entités ImportantInformations associées au cis code d'un médicament spécifique.
      *
      * @param cisCodeMedicament Le Cis Code du médicament pour lequel récupérer les informations importantes.
-     * @return Une entité ImportantInformations associées au médicament donné.
+     * @return Une liste d'entités ImportantInformations associées au médicament donné.
      */
-    fun getByCisCode(cisCodeMedicament: String): ImportantInformationsEntity {
+    fun getByCisCode(cisCodeMedicament: String): List<ImportantInformationsEntity> {
         return importantInformationsDao.getByCisCode(cisCodeMedicament)
     }
 

@@ -35,10 +35,10 @@ interface ImportantInformationsDAO {
      * Récupère une information importante spécifique de la base de données par le code cis du médicament associé.
      *
      * @param cisCode Le code cis du médicament associé à l'information importante à récupérer.
-     * @return L'entité de l'information importante correspondant au code cis donné.
+     * @return Liste d'entité de l'information importante correspondant au code cis donné.
      */
     @Query("SELECT * FROM ImportantInformations WHERE cisCode = :cisCode")
-    fun getByCisCode(cisCode: String): ImportantInformationsEntity
+    fun getByCisCode(cisCode: String): List<ImportantInformationsEntity>
 
     /**
      * Ajoute une nouvelle information importante à la base de données.

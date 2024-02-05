@@ -31,6 +31,15 @@ interface HasSmrOpinionsDAO {
     fun getOne(id: String): HasSmrOpinionsEntity
 
     /**
+     * Récupère tous les avis SMR de la base de données avec le cis code pour un médicament spécifique.
+     *
+     * @param cisCode Le code CIS du médicament pour lequel récupérer les avis SMR.
+     * @return Une liste de toutes les entités d'avis SMR correspondant au code CIS donné.
+     */
+    @Query("SELECT * FROM HasSmrOpinions WHERE cisCode = :cisCode")
+    fun getByCisCode(cisCode: String): List<HasSmrOpinionsEntity>
+
+    /**
      * Ajoute un nouvel avis SMR à la base de données.
      * @param t L'entité de l'avis SMR à ajouter.
      */

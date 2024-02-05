@@ -39,9 +39,9 @@ class PharmaceuticalSpecialtiesRepository(
      * Récupère une entité PharmaceuticalSpecialties associée à un médicament spécifique par son cisCode.
      *
      * @param cisCode Le cisCode du médicament pour lequel récupérer les spécialités pharmaceutiques.
-     * @return Une entité PharmaceuticalSpecialties associée au médicament donné.
+     * @return Une liste d'entités PharmaceuticalSpecialties associée au médicament donné.
      */
-    fun getByCisCode(cisCode: String): PharmaceuticalSpecialtiesEntity {
+    fun getByCisCode(cisCode: String): List<PharmaceuticalSpecialtiesEntity> {
         return pharmaceuticalSpecialtiesDao.getByCisCode(cisCode)
     }
 

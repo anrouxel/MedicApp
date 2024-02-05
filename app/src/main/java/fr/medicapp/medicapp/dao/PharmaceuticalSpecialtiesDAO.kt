@@ -35,10 +35,10 @@ interface PharmaceuticalSpecialtiesDAO {
      * Récupère une spécialité pharmaceutique spécifique de la base de données par le code cis du médicament associé.
      *
      * @param cisCode Le code cis du médicament associé à la spécialité pharmaceutique à récupérer.
-     * @return L'entité de la spécialité pharmaceutique correspondant au code cis donné.
+     * @return Les entités de la spécialité pharmaceutique correspondant au code cis donné.
      */
     @Query("SELECT * FROM PharmaceuticalSpecialties WHERE cisCode = :cisCode")
-    fun getByCisCode(cisCode: String): PharmaceuticalSpecialtiesEntity
+    fun getByCisCode(cisCode: String): List<PharmaceuticalSpecialtiesEntity>
 
     /**
      * Ajoute une nouvelle spécialité pharmaceutique à la base de données.

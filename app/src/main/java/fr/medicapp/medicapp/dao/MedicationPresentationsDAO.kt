@@ -38,7 +38,7 @@ interface MedicationPresentationsDAO {
      * @return L'entité de la présentation de médicament correspondant au code cis donné.
      */
     @Query("SELECT * FROM MedicationPresentations WHERE cisCode = :cisCode")
-    fun getByCisCode(cisCode: String): MedicationPresentationsEntity
+    fun getByCisCode(cisCode: String): List<MedicationPresentationsEntity>
 
     /**
      * Ajoute une nouvelle présentation de médicament à la base de données.
