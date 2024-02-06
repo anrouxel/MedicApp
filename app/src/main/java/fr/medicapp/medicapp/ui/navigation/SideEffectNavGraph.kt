@@ -43,14 +43,9 @@ fun NavGraphBuilder.sideEffectNavGraph(
          */
         composable(route = SideEffectRoute.Main.route) {
             val store = ObjectBox.getInstance(LocalContext.current)
-//            val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
-//            val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
-//            val repositoryMedication = MedicationRepository(db.medicationDAO())
             val sideEffectStore = store.boxFor(SideEffectEntity::class.java)
-            val treatmentStore = store.boxFor(TreatmentEntity::class.java)
-            val medicationStore = store.boxFor(MedicationEntity::class.java)
 
-            val result: MutableList<SideEffect> = mutableListOf()
+
 //            Thread {
 //                val sideEffectEntityTmp = repositorySideEffect.getAll()
 //
@@ -66,14 +61,12 @@ fun NavGraphBuilder.sideEffectNavGraph(
 //                result.addAll(sideEffects)
 //            }.start()
 
-            val sideEffect = remember {
-                result
-            }
+            val sideEffect = remember { sideEffectStore.all}
 
             SEDMainMenu(
                 sideeffects = sideEffect,
                 onSideEffect = { id ->
-                    navController.navigate(SideEffectRoute.SideEffect.route.replace("{id}", id))
+                    navController.navigate(SideEffectRoute.SideEffect.route.replace("{id}", id.toString()))
                 },
                 addSideEffect = {
                     navController.navigate(SideEffectRoute.AddSideEffect.route)
