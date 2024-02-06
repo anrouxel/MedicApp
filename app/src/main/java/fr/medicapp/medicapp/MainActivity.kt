@@ -12,8 +12,8 @@ import com.google.gson.GsonBuilder
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.entity.MedicationEntity
-import fr.medicapp.medicapp.entity.MedicationEntity_
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.entity.medication.MedicationEntity_
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate

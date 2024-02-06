@@ -51,7 +51,7 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.model.OptionDialog
-import fr.medicapp.medicapp.osaDistance
+//import fr.medicapp.medicapp.osaDistance
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.theme.EUBlack100
 import fr.medicapp.medicapp.ui.theme.EUBlue100
@@ -125,7 +125,7 @@ fun TreatmentCard(
                             val store = ObjectBox.getInstance(context)
                             val medicationStore = store.boxFor(MedicationEntity::class.java)
                             medicationStore.query().build().find()
-                                .sortedBy { osaDistance(it.name, query) }.map {
+                                .filter { it.name.contains(query) }.map {
                                 OptionDialog(
                                     id = it.id,
                                     title = it.name,
