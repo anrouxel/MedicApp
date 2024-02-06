@@ -282,7 +282,7 @@ fun SED(
 private fun SEDPreview() {
     var se = mutableListOf<SideEffect>(
         SideEffect(
-            "1",
+            1,
             null,
             LocalDate.now(),
             0,

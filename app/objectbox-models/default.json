@@ -656,10 +656,99 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "15:1321211264478270582",
+      "lastPropertyId": "6:4733909839253389367",
+      "name": "NotificationEntity",
+      "properties": [
+        {
+          "id": "1:5193113032200700076",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6270206061563318138",
+          "name": "frequency",
+          "type": 9
+        },
+        {
+          "id": "3:3239992782662251016",
+          "name": "hours",
+          "type": 9
+        },
+        {
+          "id": "4:6459404082910094061",
+          "name": "minutes",
+          "type": 9
+        },
+        {
+          "id": "5:2918105307921535024",
+          "name": "alarms",
+          "type": 9
+        },
+        {
+          "id": "6:4733909839253389367",
+          "name": "medicationNameId",
+          "indexId": "4:7294783665401050088",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "TreatmentEntity"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "16:4731642243511610801",
+      "lastPropertyId": "7:721601941045691972",
+      "name": "SideEffectEntity",
+      "properties": [
+        {
+          "id": "1:2137194677501825010",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3171952987808865783",
+          "name": "date",
+          "type": 9
+        },
+        {
+          "id": "3:1014915800800466571",
+          "name": "hour",
+          "type": 5
+        },
+        {
+          "id": "4:6768295413255419804",
+          "name": "minute",
+          "type": 5
+        },
+        {
+          "id": "5:6445119334258512737",
+          "name": "effetsConstates",
+          "type": 30
+        },
+        {
+          "id": "6:4076245921097741434",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "7:721601941045691972",
+          "name": "medicamentId",
+          "indexId": "5:7006702378958803193",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "MedicationEntity"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "14:5138986304881207242",
-  "lastIndexId": "3:3063619302302475484",
+  "lastEntityId": "16:4731642243511610801",
+  "lastIndexId": "5:7006702378958803193",
   "lastRelationId": "11:4704107518097647459",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
