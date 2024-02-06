@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.navigation.compose.rememberNavController
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.LocalDateTypeAdapter
@@ -81,5 +80,10 @@ class MainActivity : ComponentActivity() {
                 RootNavGraph(navController = rememberNavController())
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ObjectBox.getInstance(this).close()
     }
 }
