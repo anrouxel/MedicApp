@@ -1,7 +1,11 @@
 package fr.medicapp.medicapp.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import fr.medicapp.medicapp.database.LocalDateConverter
+import io.objectbox.annotation.Convert
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+import io.objectbox.relation.ToMany
+import io.objectbox.relation.ToOne
 import java.time.LocalDate
 
 /**
@@ -16,11 +20,19 @@ data class PrescriptionEntity(
     /**
      * L'identifiant unique de la prescription.
      */
-    @PrimaryKey
-    val id: String,
+    @Id
+    var id: Long = 0L,
 
     /**
      * La date de la prescription.
      */
-    var date: LocalDate,
-)
+    @Convert(converter = LocalDateConverter::class, dbType = String::class)
+    var date: LocalDate? = null,
+) {
+    lateinit var doctor: ToOne<DoctorEntity>
+
+    /**
+     * La liste des traitements prescrits.
+     */
+    lateinit var treatments: ToMany<TreatmentEntity>
+}

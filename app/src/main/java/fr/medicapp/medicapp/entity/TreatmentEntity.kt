@@ -1,10 +1,9 @@
 package fr.medicapp.medicapp.entity
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.repository.MedicationRepository
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+import io.objectbox.relation.ToOne
 
 /**
  * Entité représentant un traitement dans la base de données.
@@ -23,56 +22,36 @@ data class TreatmentEntity(
     /**
      * L'identifiant unique du traitement.
      */
-    @PrimaryKey
-    val id: String,
-
-    /**
-     * Le nom du médicament associé au traitement.
-     */
-    var medication: String,
+    @Id
+    var id: Long = 0L,
 
     /**
      * La posologie du traitement.
      */
-    var posology: String,
+    var posology: String = "",
 
     /**
      * La quantité du traitement.
      */
-    var quantity: String,
+    var quantity: String = "",
 
     /**
      * Le renouvellement du traitement.
      */
-    var renew: String,
-
-    /**
-     * La durée du traitement.
-     */
-    @Embedded
-    val duration: DurationEntity,
+    var renew: String = "",
 
     /**
      * Indique si une notification est associée au traitement.
      */
     var notification: Boolean = false
 ) {
+    /**
+     * Le nom du médicament associé au traitement.
+     */
+    lateinit var medication: ToOne<MedicationEntity>
 
     /**
-     * Convertit cette entité en un objet Treatment.
-     *
-     * @param repositoryMedication Le référentiel des médicaments.
-     * @return Un objet Treatment correspondant à cette entité.
+     * La durée du traitement.
      */
-    fun toTreatment(repositoryMedication: MedicationRepository): Treatment {
-        return Treatment(
-            id = id,
-            medication = repositoryMedication.getOne(medication),
-            posology = posology,
-            quantity = quantity,
-            renew = renew,
-            duration = duration.toDuration(),
-            notification = notification
-        )
-    }
+    lateinit var duration: ToOne<DurationEntity>
 }

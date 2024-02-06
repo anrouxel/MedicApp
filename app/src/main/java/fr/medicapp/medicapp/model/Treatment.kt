@@ -1,8 +1,6 @@
 package fr.medicapp.medicapp.model
 
-import fr.medicapp.medicapp.entity.MedicationEntity
-import fr.medicapp.medicapp.entity.TreatmentEntity
-import java.util.UUID
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
 
 /**
  * Modèle représentant un traitement.
@@ -64,20 +62,20 @@ data class Treatment(
      *
      * @return Une option de dialogue correspondant à ce traitement.
      */
-    fun toOptionDialog(): OptionDialog {
+    /*fun toOptionDialog(): OptionDialog {
         return OptionDialog(
             id = id,
             title = medication!!.name,
             description = posology,
         )
-    }
+    }*/
 
     /**
      * Convertit ce traitement en une entité TreatmentEntity.
      *
      * @return Une entité TreatmentEntity correspondant à ce traitement.
      */
-    fun toEntity(): TreatmentEntity {
+    /*fun toEntity(): TreatmentEntity {
         return TreatmentEntity(
             id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
             medication = medication!!.cisCode,
@@ -87,5 +85,5 @@ data class Treatment(
             duration = duration?.toEntity()!!,
             notification = notification
         )
-    }
+    }*/
 }

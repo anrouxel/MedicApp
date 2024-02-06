@@ -218,7 +218,7 @@ fun SEDEdit(
                 ) {
                     var treatmentOpen by remember { mutableStateOf(false) }
 
-                    if (treatmentOpen) {
+                    /*if (treatmentOpen) {
                         SearchDialog(
                             options = treatments.map { it.toOptionDialog() },
                             cardColor = EURed20,
@@ -232,7 +232,7 @@ fun SEDEdit(
                                 treatmentOpen = false
                             }
                         )
-                    }
+                    }*/
                     
                     OutlinedTextField(
                         enabled = false,

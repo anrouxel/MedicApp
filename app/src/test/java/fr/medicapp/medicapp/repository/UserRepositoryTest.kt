@@ -2,12 +2,10 @@ package fr.medicapp.medicapp.repository
 
 import android.database.sqlite.SQLiteException
 import fr.medicapp.medicapp.MainActivity
-import fr.medicapp.medicapp.database.AppDatabase
 import fr.medicapp.medicapp.entity.UserEntity
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class UserRepositoryTest {
 

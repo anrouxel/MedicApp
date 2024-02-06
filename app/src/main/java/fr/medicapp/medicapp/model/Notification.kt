@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.model
 
 import androidx.compose.runtime.mutableStateListOf
-import fr.medicapp.medicapp.entity.NotificationEntity
 import java.time.DayOfWeek
 import java.util.UUID
 
@@ -46,21 +45,4 @@ data class Notification(
      * Les alarmes de la notification.
      */
     var alarms: MutableList<Int> = mutableStateListOf(),
-) {
-
-    /**
-     * Convertit cette notification en une entité NotificationEntity.
-     *
-     * @return Une entité NotificationEntity correspondant à cette notification.
-     */
-    fun toEntity(): NotificationEntity {
-        return NotificationEntity(
-            id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
-            medicationName = medicationName!!.id,
-            frequency = frequency.toMutableList(),
-            hours = hours.toMutableList(),
-            minutes = minutes.toMutableList(),
-            alarms = alarms.toMutableList()
-        )
-    }
-}
+)

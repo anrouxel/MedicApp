@@ -1,8 +1,5 @@
 package fr.medicapp.medicapp.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.medicapp.medicapp.model.SideEffect
 import java.time.LocalDate
 
 /**
@@ -16,13 +13,11 @@ import java.time.LocalDate
  * @property effetsConstates Les effets constatés.
  * @property description La description de l'effet secondaire.
  */
-@Entity
 data class SideEffectEntity(
 
     /**
      * L'identifiant unique de l'effet secondaire.
      */
-    @PrimaryKey
     var id: String,
 
     /**
@@ -61,7 +56,7 @@ data class SideEffectEntity(
      *
      * @return Un objet SideEffect correspondant à cette entité.
      */
-    fun toSideEffect(): SideEffect {
+    /*fun toSideEffect(): SideEffect {
         return SideEffect(
             id = id,
             medicament = null,
@@ -71,5 +66,5 @@ data class SideEffectEntity(
             effetsConstates = effetsConstates,
             description = description
         )
-    }
+    }*/
 }

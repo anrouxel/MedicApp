@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.model
 
 import androidx.compose.runtime.mutableStateListOf
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import java.time.LocalDate
 
 /**
@@ -31,7 +32,7 @@ data class Prescription(
     /**
      * Les traitements inclus dans la prescription.
      */
-    var treatments: MutableList<Treatment> = mutableStateListOf()
+    var treatments: MutableList<TreatmentEntity> = mutableStateListOf()
 ) {
 
     /**

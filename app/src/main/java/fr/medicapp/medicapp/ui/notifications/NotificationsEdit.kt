@@ -234,7 +234,7 @@ fun NotificationsEdit(
                 ) {
                     var treatmentOpen by remember { mutableStateOf(false) }
 
-                    if (treatmentOpen) {
+                    /*if (treatmentOpen) {
                         SearchDialog(
                             options = treatments.map { it.toOptionDialog() },
                             cardColor = EUYellow40,
@@ -248,7 +248,7 @@ fun NotificationsEdit(
                                 treatmentOpen = false
                             }
                         )
-                    }
+                    }*/
 
                     OutlinedTextField(
                         enabled = false,
