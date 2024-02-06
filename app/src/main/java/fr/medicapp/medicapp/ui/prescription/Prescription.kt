@@ -42,7 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.theme.EUBlue100
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
@@ -160,20 +159,20 @@ fun Prescription(
                         .fillMaxSize()
                         .padding(10.dp)
                 ) {
-                    /*Text(
-                        i.medication?.name ?: "",
+                    Text(
+                        consultation.medication.target?.name ?: "",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
-                    )*/
+                    )
 
-                    /*Row(
+                    Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Switch(
                             enabled = false,
-                            checked = notification.value,
+                            checked = consultation.notification,
                             onCheckedChange = {
-                                notification.value = it
+                                consultation.notification = it
                                 onUpdate(consultation.id, it)
                             },
                             colors = SwitchDefaults.colors(
@@ -191,11 +190,11 @@ fun Prescription(
                                 .padding(top = 10.dp)
                         ) {
                             Text(
-                                "Notification de rappel ${if (i.notification) "activée" else "désactivée"}",
+                                "Notification de rappel ${if (consultation.notification) "activée" else "désactivée"}",
                                 fontSize = 18.sp
                             )
                         }
-                    }*/
+                    }
 
                     Row() {
                         Box(

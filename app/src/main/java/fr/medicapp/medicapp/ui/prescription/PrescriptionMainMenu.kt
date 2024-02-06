@@ -126,7 +126,7 @@ fun PrescriptionMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.posology,
+                                text = i.medication.target?.name ?: "Médicament",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 

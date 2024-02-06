@@ -140,6 +140,9 @@ fun TreatmentCard(
                         },
                         onValidate = {
                             medicationOpen = false
+                            val store = ObjectBox.getInstance(context)
+                            val medicationStore = store.boxFor(MedicationEntity::class.java)
+                            treatment.medication.target = medicationStore.get(it.id)
                         },
                     )
                 }
