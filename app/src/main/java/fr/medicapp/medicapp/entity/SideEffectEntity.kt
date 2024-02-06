@@ -1,5 +1,11 @@
 package fr.medicapp.medicapp.entity
 
+import fr.medicapp.medicapp.database.LocalDateConverter
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import io.objectbox.annotation.Convert
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+import io.objectbox.relation.ToOne
 import java.time.LocalDate
 
 /**
@@ -13,58 +19,44 @@ import java.time.LocalDate
  * @property effetsConstates Les effets constatés.
  * @property description La description de l'effet secondaire.
  */
+@Entity
 data class SideEffectEntity(
 
     /**
      * L'identifiant unique de l'effet secondaire.
      */
-    var id: String,
-
-    /**
-     * Le nom du médicament associé à l'effet secondaire.
-     */
-    var medicament: String,
+    @Id
+    var id: Long = 0L,
 
     /**
      * La date de l'effet secondaire.
      */
-    var date: LocalDate,
+    @Convert(converter = LocalDateConverter::class, dbType = String::class)
+    var date: LocalDate? = null,
 
     /**
      * L'heure de l'effet secondaire.
      */
-    var hour: Int,
+    var hour: Int= 0,
 
     /**
      * La minute de l'effet secondaire.
      */
-    var minute: Int,
+    var minute: Int= 0,
 
     /**
      * Les effets constatés.
      */
-    var effetsConstates: MutableList<String>,
+    var effetsConstates: MutableList<String> = mutableListOf(),
 
     /**
      * La description de l'effet secondaire.
      */
-    var description: String
+    var description: String = ""
 ) {
 
     /**
-     * Convertit cette entité en un objet SideEffect.
-     *
-     * @return Un objet SideEffect correspondant à cette entité.
+     * Le nom du médicament associé à l'effet secondaire.
      */
-    /*fun toSideEffect(): SideEffect {
-        return SideEffect(
-            id = id,
-            medicament = null,
-            date = date,
-            hour = hour,
-            minute = minute,
-            effetsConstates = effetsConstates,
-            description = description
-        )
-    }*/
+    lateinit var medicament: ToOne<MedicationEntity>
 }
