@@ -24,7 +24,7 @@ data class DoctorEntity(
     var rpps: Long = 0L,
 
     /**
-     * Le nom de famille du médecin.
+     * Le nom de famille du médecin
      */
     var name: String = "",
 )
