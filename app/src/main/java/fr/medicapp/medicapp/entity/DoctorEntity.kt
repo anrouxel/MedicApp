@@ -19,6 +19,11 @@ data class DoctorEntity(
     var id: Long = 0L,
 
     /**
+     * Le numéro RPPS du médecin.
+     */
+    var rpps: Long = 0L,
+
+    /**
      * Le nom de famille du médecin.
      */
     var name: String = "",
