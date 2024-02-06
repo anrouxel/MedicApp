@@ -47,9 +47,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity_.duration
 import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.OptionDialog
 //import fr.medicapp.medicapp.osaDistance
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
@@ -282,18 +288,20 @@ fun TreatmentCard(
 
                     var durationOpen by remember { mutableStateOf(false) }
 
-                    /*if (durationOpen) {
+                    if (durationOpen) {
                         CalendarDialog(
                             state = rememberUseCaseState(true, onCloseRequest = {
                                 durationOpen = false
                             }),
                             selection = CalendarSelection.Period { startDate, endDate ->
-                                treatment.duration = Duration(startDate, endDate)
-                                duration.value = treatment.duration.toString()
+                                treatment.duration.target = DurationEntity(
+                                    startDate = startDate,
+                                    endDate = endDate
+                                )
                                 durationOpen = false
                             },
                         )
-                    }*/
+                    }
 
                     Column() {
 
@@ -319,22 +327,13 @@ fun TreatmentCard(
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        /*OutlinedTextField(
+                        OutlinedTextField(
                             enabled = false,
-                            value = duration.value,
+                            value = treatment.duration.target?.startDate.toString() + " - " + treatment.duration.target?.endDate.toString(),
                             textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                             onValueChange = { },
                             label = { Text("Durée") },
                             shape = RoundedCornerShape(20),
-                            trailingIcon = {
-                                if (treatment.query != "" && duration.value == Duration(LocalDate.now(), LocalDate.now()).toString()) {
-                                    Icon(
-                                        imageVector = Icons.Filled.WarningAmber,
-                                        contentDescription = "",
-                                        tint = EURed100
-                                    )
-                                }
-                            },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = EUPurple100,
                                 unfocusedBorderColor = EUPurple100,
@@ -350,7 +349,7 @@ fun TreatmentCard(
                                 .clickable {
                                     durationOpen = true
                                 }
-                        )*/
+                        )
 
                     }
                 }

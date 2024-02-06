@@ -145,7 +145,7 @@ fun PrescriptionMainMenu(
                                 )
                             }
                             Spacer(modifier = Modifier.height(5.dp))
-                            /*Row() {
+                            Row() {
                                 Icon(
                                     imageVector = Icons.Filled.CalendarToday,
                                     contentDescription = "",
@@ -153,10 +153,11 @@ fun PrescriptionMainMenu(
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    i.duration.target.startDate?.format(formatter) + " - " + i.duration.target.endDate?.format(formatter),
+                                    (i.duration.target?.startDate?.format(formatter) ?: "") + " - " + (i.duration.target?.endDate?.format(formatter)
+                                        ?: ""),
                                     fontSize = 15.sp
                                 )
-                            }*/
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
