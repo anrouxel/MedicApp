@@ -329,7 +329,7 @@ fun TreatmentCard(
 
                         OutlinedTextField(
                             enabled = false,
-                            value = treatment.duration.target?.startDate.toString() + " - " + treatment.duration.target?.endDate.toString(),
+                            value = treatment.duration.target?.toString() ?: "",
                             textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                             onValueChange = { },
                             label = { Text("Durée") },

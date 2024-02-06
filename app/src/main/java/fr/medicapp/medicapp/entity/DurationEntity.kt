@@ -30,4 +30,8 @@ data class DurationEntity(
      */
     @Convert(converter = LocalDateConverter::class, dbType = String::class)
     var endDate: LocalDate? = null
-)
+) {
+    override fun toString(): String {
+        return "$startDate - $endDate"
+    }
+}
