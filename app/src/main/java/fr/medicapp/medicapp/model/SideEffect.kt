@@ -21,7 +21,7 @@ data class SideEffect(
     /**
      * L'identifiant unique de l'effet secondaire.
      */
-    var id: String = "",
+    var id: Long = 0L,
 
     /**
      * Le traitement associé à l'effet secondaire.
@@ -59,15 +59,15 @@ data class SideEffect(
      *
      * @return Une entité SideEffectEntity correspondant à cet effet secondaire.
      */
-    fun toEntity(): SideEffectEntity {
-        return SideEffectEntity(
-            id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
-            medicament = medicament!!.id,
-            date = date!!,
-            hour = hour!!,
-            minute = minute!!,
-            effetsConstates = effetsConstates.toMutableList(),
-            description = description
-        )
-    }
+//    fun toEntity(): SideEffectEntity {
+//        return SideEffectEntity(
+//            id = (if (id==0L) UUID.randomUUID() else id) as Long,
+//            medicament = medicament!!.id,
+//            date = date!!,
+//            hour = hour!!,
+//            minute = minute!!,
+//            effetsConstates = effetsConstates.toMutableList(),
+//            description = description
+//        )
+//    }
 }

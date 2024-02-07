@@ -173,3 +173,15 @@ Papp/src/main/java/fr/medicapp/medicapp/entity/medication/HasAsmrOpinionEntity.k
 Oapp/src/main/java/fr/medicapp/medicapp/entity/medication/HasSmrOpinionEntity.kt,a\f\afe4cf31d7274ab9249b6289b1e4b3d4fa8951ff
 |
 Lapp/src/main/java/fr/medicapp/medicapp/entity/medication/MedicationEntity.kt,c\2\c24c2800174287620cdda315d1e9083cbbfe2a0d
+s
+Capp/src/main/java/fr/medicapp/medicapp/entity/NotificationEntity.kt,7\9\79585f09d75990e07db5c2aa0758533e69c6cbda
+u
+Eapp/src/main/java/fr/medicapp/medicapp/database/DayOfWeekConverter.kt,d\7\d74bef3cc5027b1febf45173de24c56d5104222a
+o
+?app/src/main/java/fr/medicapp/medicapp/database/IntConverter.kt,9\e\9e3822221170e28ebd6b24fae95122fe9d391125
+ˆ
+Xapp/src/main/java/fr/medicapp/medicapp/entity/medication/MedicationPresentationEntity.kt,a\d\ad8e939023a7257cba371410f720137bd55b13e2
+z
+Japp/src/main/java/fr/medicapp/medicapp/database/MutableListIntConverter.kt,9\d\9d8f21d4fc5485aab4070a6d851005d94e5e841b
+€
+Papp/src/main/java/fr/medicapp/medicapp/database/MutableListDayOfWeekConverter.kt,4\7\47387d87179100c3c6edb097655f865669041120

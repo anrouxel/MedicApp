@@ -53,8 +53,8 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDMainMenu(
-    sideeffects : List<SideEffect>,
-    onSideEffect: (String) -> Unit,
+    sideeffects : List<SideEffectEntity>,
+    onSideEffect: (Long) -> Unit,
     addSideEffect: () -> Unit
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
@@ -119,7 +119,7 @@ fun SEDMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicament?.medication?.name ?: "",
+                                text = i.medicament?.target?.name ?: "",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 
@@ -160,7 +160,7 @@ fun SEDMainMenu(
 private fun SEDMainMenuPreview() {
     var se = mutableListOf(
         SideEffect(
-        id = "",
+        id = 0L,
             null,
         LocalDate.now(),
         12,
@@ -169,5 +169,5 @@ private fun SEDMainMenuPreview() {
         "J'ai eu mal à la tête hier"
         )
     )
-    SEDMainMenu(se, {}, {})
+    //SEDMainMenu(se, {}, {})
 }
