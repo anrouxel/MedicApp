@@ -175,10 +175,6 @@ Oapp/src/main/java/fr/medicapp/medicapp/entity/medication/HasSmrOpinionEntity.kt
 Lapp/src/main/java/fr/medicapp/medicapp/entity/medication/MedicationEntity.kt,c\2\c24c2800174287620cdda315d1e9083cbbfe2a0d
 s
 Capp/src/main/java/fr/medicapp/medicapp/entity/NotificationEntity.kt,7\9\79585f09d75990e07db5c2aa0758533e69c6cbda
-u
-Eapp/src/main/java/fr/medicapp/medicapp/database/DayOfWeekConverter.kt,d\7\d74bef3cc5027b1febf45173de24c56d5104222a
-o
-?app/src/main/java/fr/medicapp/medicapp/database/IntConverter.kt,9\e\9e3822221170e28ebd6b24fae95122fe9d391125
 ˆ
 Xapp/src/main/java/fr/medicapp/medicapp/entity/medication/MedicationPresentationEntity.kt,a\d\ad8e939023a7257cba371410f720137bd55b13e2
 z
