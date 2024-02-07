@@ -57,14 +57,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.entity.NotificationEntity
+import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Treatment
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.prescription.EditPrescription.AddButton
 import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
+import fr.medicapp.medicapp.ui.theme.EUPurple20
+import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
@@ -72,6 +77,7 @@ import fr.medicapp.medicapp.ui.theme.EUYellow120
 import fr.medicapp.medicapp.ui.theme.EUYellow140
 import fr.medicapp.medicapp.ui.theme.EUYellow20
 import fr.medicapp.medicapp.ui.theme.EUYellow40
+import okhttp3.internal.notify
 import java.time.DayOfWeek
 
 /**
@@ -86,20 +92,14 @@ import java.time.DayOfWeek
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsEdit(
-    notification: Notification,
+    notification: NotificationEntity,
     onConfirm: () -> Unit,
     onCancel: () -> Unit = {},
-    treatments: MutableList<Treatment> = mutableListOf()
 ) {
     var darkmode: Boolean = isSystemInDarkTheme()
     val context = LocalContext.current
     val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    var medicationName by remember {
-        mutableStateOf(
-            notification.medicationName?.medication?.name ?: ""
-        )
-    }
     var frequency by remember { mutableStateOf(notification.frequency) }
 
     var errorDialogOpen = remember { mutableStateOf(false) }
@@ -176,7 +176,7 @@ fun NotificationsEdit(
 
                     Button(
                         onClick = {
-                            if (medicationName != "" && frequency.size > 0 && notification.hours.size > 0 && notification.hours.all { it != null } && notification.minutes.size > 0 && notification.minutes.all { it != null }) {
+                            if (frequency.size > 0 && notification.hours.size > 0 && notification.hours.all { it != null } && notification.minutes.size > 0 && notification.minutes.all { it != null }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
@@ -234,25 +234,37 @@ fun NotificationsEdit(
                 ) {
                     var treatmentOpen by remember { mutableStateOf(false) }
 
-                    /*if (treatmentOpen) {
+                    if (treatmentOpen) {
                         SearchDialog(
-                            options = treatments.map { it.toOptionDialog() },
-                            cardColor = EUYellow40,
-                            selectedCardColor = EUYellow100,
+                            options = { query ->
+                                val store = ObjectBox.getInstance(context)
+                                val treatmentStore = store.boxFor(TreatmentEntity::class.java)
+                                treatmentStore.query().build().find()
+                                    .filter { it.medication.target.name.contains(query) }.map {
+                                        OptionDialog(
+                                            id = it.id,
+                                            title = it.medication.target.name,
+                                            description = it.posology
+                                        )
+                                    }
+                            },
+                            cardColor = EUPurple20,
+                            selectedCardColor = EUPurple80,
                             onDismiss = {
                                 treatmentOpen = false
                             },
-                            onValidate = { option ->
-                                notification.medicationName = treatments.find { it.id == option.id }
-                                medicationName = option.title
+                            onValidate = {
                                 treatmentOpen = false
-                            }
+                                val store = ObjectBox.getInstance(context)
+                                val treatmentStore = store.boxFor(TreatmentEntity::class.java)
+                                notification.treatment.target = treatmentStore.get(it.id)
+                            },
                         )
-                    }*/
+                    }
 
                     OutlinedTextField(
                         enabled = false,
-                        value = medicationName,
+                        value = notification.treatment.target?.medication?.target?.name ?: "",
                         textStyle = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
@@ -462,12 +474,6 @@ fun NotificationsEdit(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsEditPreview() {
-    var notif = Notification(
-        "Rappel doliprane",
-        null,
-        mutableListOf(),
-        mutableListOf(5, 10, 15, 20),
-        mutableListOf(0, 15, 30, 45)
-    )
+    var notif = NotificationEntity()
     NotificationsEdit(notif, {})
 }

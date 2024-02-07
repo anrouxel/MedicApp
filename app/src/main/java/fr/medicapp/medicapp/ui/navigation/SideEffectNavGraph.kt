@@ -12,10 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.entity.medication.MedicationEntity
-import fr.medicapp.medicapp.model.SideEffect
-import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SED
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
 import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
@@ -56,43 +52,23 @@ fun NavGraphBuilder.sideEffectNavGraph(
                     navController.navigate(SideEffectRoute.AddSideEffect.route)
                 },
             )
-
-            //change the code above to accomodate the nex database in objectbox
-
         }
 
         /**
          * Composable pour l'écran d'un effet secondaire.
          */
         composable(route = SideEffectRoute.SideEffect.route) {
-            /*val id = it.arguments?.getString("id") ?: return@composable
-            val db = AppDatabase.getInstance(LocalContext.current)
-            val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
-            val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
-            val repositoryMedication = MedicationRepository(db.medicationDAO())
+            val id = it.arguments?.getString("id") ?: return@composable
 
-            var result: MutableList<SideEffect> = mutableListOf()
+            val store = ObjectBox.getInstance(LocalContext.current)
+            val notificationStore = store.boxFor(SideEffectEntity::class.java)
 
-            Thread {
-                result.clear()
-                val sideEffectEntityTmp = repositorySideEffect.getOne(id)
-                if (sideEffectEntityTmp != null) {
-                    val treatmentTmp = repositoryTreatment.getOne(sideEffectEntityTmp.medicament)
-                        .toTreatment(repositoryMedication)
-                    val sideEffectTmp = sideEffectEntityTmp.toSideEffect()
-                    sideEffectTmp.medicament = treatmentTmp
-                    result.add(sideEffectTmp)
-                }
-            }.start()
-
-            val sideEffect = remember {
-                result
-            }
+            val sideEffect = remember { notificationStore.get(id.toLong()) }
 
             if (sideEffect != null) {
                 SED(
-                    sideeffects = sideEffect,
-                    onMedication = { id ->
+                    sideeffect = sideEffect,
+                    onTreatment = { id ->
                         navController.navigate(
                             PrescriptionRoute.Prescription.route.replace(
                                 "{id}",
@@ -106,21 +82,17 @@ fun NavGraphBuilder.sideEffectNavGraph(
                                 inclusive = true
                             }
                         }
-                    },
-                    onRemove = {
-                        Thread {
-                            sideEffect.map { side -> side.toEntity() }.forEach { side ->
-                                repositorySideEffect.delete(side)
-                            }
-                        }.start()
-                        navController.navigate(SideEffectRoute.Main.route) {
-                            popUpTo(SideEffectRoute.SideEffect.route) {
-                                inclusive = true
-                            }
+                    }
+                ) {
+                    notificationStore.remove(id.toLong())
+
+                    navController.navigate(SideEffectRoute.Main.route) {
+                        popUpTo(SideEffectRoute.SideEffect.route) {
+                            inclusive = true
                         }
                     }
-                )
-            }*/
+                }
+            }
         }
 
         /**

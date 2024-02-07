@@ -57,5 +57,5 @@ data class NotificationEntity(
     /**
      * Le traitement associé à la notification.
      */
-    lateinit var medicationName: ToOne<TreatmentEntity>
+    lateinit var treatment: ToOne<TreatmentEntity>
 }

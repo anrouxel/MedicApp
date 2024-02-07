@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -23,7 +22,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,9 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.entity.DurationEntity
 import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed80
@@ -57,12 +53,12 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SED(
-    sideeffects: MutableList<SideEffect>,
-    onMedication: (String) -> Unit,
+    sideeffect: SideEffectEntity,
+    onTreatment: (String) -> Unit,
     onClose: () -> Unit,
     onRemove: () -> Unit
 ) {
-    var darkmode : Boolean = isSystemInDarkTheme()
+    var darkmode: Boolean = isSystemInDarkTheme()
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     Scaffold(
         topBar = {
@@ -140,134 +136,132 @@ fun SED(
             }
         }
     ) { innerPadding ->
-        for (sideeffect in sideeffects) {
-            Column(
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+            ElevatedCard(
+                onClick = {
+                    onTreatment(sideeffect.treatment.target.id.toString())
+                },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
                 modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                colors =
+                CardDefaults.cardColors(
+                    containerColor = EURed80,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
             ) {
-                ElevatedCard(
-                    onClick = {
-                        sideeffect.medicament?.let { onMedication(it.id) }
-                    },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    colors =
-                    CardDefaults.cardColors(
-                        containerColor = EURed80,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                        .wrapContentHeight()
+                        .padding(10.dp),
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .padding(10.dp),
-                    ) {
-                        Text(
-                            text = "Médicament :",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    Text(
+                        text = "Médicament :",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
 
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Text(
-                            text = sideeffect.medicament?.medication?.name ?: "",
-                            fontSize = 18.sp
-                        )
-                    }
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = sideeffect.treatment.target.medication.target.name,
+                        fontSize = 18.sp
+                    )
                 }
+            }
 
-                Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-                ElevatedCard(
-                    onClick = { },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(height = 75.dp),
+                colors =
+                CardDefaults.cardColors(
+                    containerColor = EURed80,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = 75.dp),
-                    colors =
-                    CardDefaults.cardColors(
-                        containerColor = EURed80,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                        .fillMaxSize()
+                        .padding(10.dp),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp),
-                    ) {
-                        Text(
-                            text = "Date/Heure de signalement :",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    Text(
+                        text = "Date/Heure de signalement :",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
 
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
 
-                        Text(
-                            text = "${if (sideeffect.date != null) sideeffect.date!!.format(formatter) else ""} à ${sideeffect.hour}h${if (sideeffect.minute!! < 9) "0"+sideeffect.minute else sideeffect.minute}",
-                            fontSize = 18.sp
-                        )
-                    }
+                    Text(
+                        text = "${if (sideeffect.date != null) sideeffect.date!!.format(formatter) else ""} à ${sideeffect.hour}h${if (sideeffect.minute!! < 9) "0" + sideeffect.minute else sideeffect.minute}",
+                        fontSize = 18.sp
+                    )
                 }
+            }
 
-                Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-                var effetsConstatesSize = sideeffect.effetsConstates.size
+            var effetsConstatesSize = sideeffect.effetsConstates.size
 
-                ElevatedCard(
-                    onClick = { },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                colors =
+                CardDefaults.cardColors(
+                    containerColor = EURed80,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    colors =
-                    CardDefaults.cardColors(
-                        containerColor = EURed80,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                        .padding(10.dp),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(10.dp),
-                    ) {
-                        Text(
-                            text = "Effets constatés :",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    Text(
+                        text = "Effets constatés :",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
 
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        if (effetsConstatesSize > 5) {
-                            for (i in sideeffect.effetsConstates.slice(0..4)) {
-                                Text(
-                                    "- $i",
-                                    fontSize = 18.sp
-                                )
-                            }
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    if (effetsConstatesSize > 5) {
+                        for (i in sideeffect.effetsConstates.slice(0..4)) {
                             Text(
-                                "Et plus...",
+                                "- $i",
                                 fontSize = 18.sp
                             )
-                        } else {
-                            for (i in sideeffect.effetsConstates) {
-                                Text(
-                                    "- $i",
-                                    fontSize = 18.sp
-                                )
-                            }
+                        }
+                        Text(
+                            "Et plus...",
+                            fontSize = 18.sp
+                        )
+                    } else {
+                        for (i in sideeffect.effetsConstates) {
+                            Text(
+                                "- $i",
+                                fontSize = 18.sp
+                            )
                         }
                     }
                 }
@@ -280,17 +274,7 @@ fun SED(
 @Preview(showBackground = true)
 @Composable
 private fun SEDPreview() {
-    var se = mutableListOf<SideEffect>(
-        SideEffect(
-            1,
-            null,
-            LocalDate.now(),
-            0,
-            0,
-            mutableListOf("Mal de tête", "Nausées", "Malaise", "Vomissements", "Diarrhée", "Mal aux yeux"),
-            "J'ai eu mal à la tête hier"
-        )
-    )
+    var se = SideEffectEntity()
     // var se = listOf<TestSideEffect>()
-    SED(se, {}, {}, {})
+    SED(se, {}, {}) {}
 }

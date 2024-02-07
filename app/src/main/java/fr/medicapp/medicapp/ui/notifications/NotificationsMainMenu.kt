@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
-import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.entity.NotificationEntity
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.theme.EUYellow100
 import fr.medicapp.medicapp.ui.theme.EUYellow110
@@ -57,9 +57,9 @@ import fr.medicapp.medicapp.ui.theme.EUYellow120
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationsMainMenu(
-    notifications : MutableList<Notification>,
-    onNotification : (String) -> Unit = {},
-    addNotification : () -> Unit = {}
+    notifications: MutableList<NotificationEntity>,
+    onNotification: (String) -> Unit = {},
+    addNotification: () -> Unit = {}
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
     val context = LocalContext.current
@@ -107,7 +107,6 @@ fun NotificationsMainMenu(
                 for (i in notifications) {
                     ElevatedCard(
                         onClick = {
-                            onNotification(i.id)
                         },
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
@@ -127,7 +126,7 @@ fun NotificationsMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicationName!!.medication!!.name,
+                                text = "",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
 

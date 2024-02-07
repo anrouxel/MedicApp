@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.entity.NotificationEntity
 import fr.medicapp.medicapp.ui.notifications.NotificationsEdit.getFrenchDayOfWeek
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EUYellow100
@@ -62,7 +62,7 @@ import java.time.DayOfWeek
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Notifications(
-    notifications: MutableList<Notification>,
+    notification: NotificationEntity,
     onClose: () -> Unit = {},
     onRemove: () -> Unit = {}
 ) {
@@ -151,139 +151,137 @@ fun Notifications(
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            notifications.forEach { notification ->
-                ElevatedCard(
-                    onClick = { },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                colors =
+                CardDefaults.cardColors(
+                    containerColor = EUYellow110,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    colors =
-                    CardDefaults.cardColors(
-                        containerColor = EUYellow110,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                        .wrapContentHeight()
+                        .padding(10.dp),
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(10.dp),
-                    ) {
-                        Text(
-                            text = "Médicament :",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    Text(
+                        text = "Médicament :",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
 
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Text(
-                            notification.medicationName!!.medication!!.name,
-                            fontSize = 18.sp
-                        )
-                    }
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        notification.treatment.target.medication.target.name,
+                        fontSize = 18.sp
+                    )
                 }
+            }
 
-                Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-                ElevatedCard(
-                    onClick = { },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                colors =
+                CardDefaults.cardColors(
+                    containerColor = EUYellow110,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    colors =
-                    CardDefaults.cardColors(
-                        containerColor = EUYellow110,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                        .wrapContentHeight()
+                        .padding(10.dp)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(10.dp)
+
                     ) {
-                        Column(
-                            modifier = Modifier
+
+                        Row(
+                            Modifier
                                 .fillMaxWidth()
-
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
+                                val checked = notification.frequency.contains(dayOfWeek)
 
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                DayOfWeek.values().forEachIndexed { index, dayOfWeek ->
-                                    val checked = notification.frequency.contains(dayOfWeek)
+                                val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
+                                val textColor = if (checked) Color.White else EUYellow140
+                                IconToggleButton(
+                                    checked = checked,
+                                    onCheckedChange = {},
+                                    enabled = false,
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .border(1.dp, EUYellow120, CircleShape)
+                                        .background(tint)
 
-                                    val tint by animateColorAsState(if (checked) EUYellow120 else EUYellow100)
-                                    val textColor = if (checked) Color.White else EUYellow140
-                                    IconToggleButton(
-                                        checked = checked,
-                                        onCheckedChange = {},
-                                        enabled = false,
-                                        modifier = Modifier
-                                            .clip(CircleShape)
-                                            .border(1.dp, EUYellow120, CircleShape)
-                                            .background(tint)
-
-                                    ) {
-                                        Text(
-                                            getFrenchDayOfWeek(dayOfWeek).take(2),
-                                            color = textColor
-                                        )
-                                    }
+                                ) {
+                                    Text(
+                                        getFrenchDayOfWeek(dayOfWeek).take(2),
+                                        color = textColor
+                                    )
                                 }
                             }
                         }
                     }
                 }
+            }
 
-                Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-                ElevatedCard(
-                    onClick = { },
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                colors =
+                CardDefaults.cardColors(
+                    containerColor = EUYellow110,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    colors =
-                    CardDefaults.cardColors(
-                        containerColor = EUYellow110,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                        .padding(10.dp),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
-                    ) {
-                        Text(
-                            text = "Horaires de rappel :",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    Text(
+                        text = "Horaires de rappel :",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
 
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Log.d("heuresSize", notification.toString())
+                    for (i in notification.hours.indices) {
+                        Text(
+                            "- ${notification.hours[i]}h${if (notification.minutes[i] < 9) "0" + notification.minutes[i] else notification.minutes[i]}",
+                            fontSize = 18.sp
                         )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Log.d("heuresSize", notification.toString())
-                        for (i in notification.hours.indices) {
-                            Text(
-                                "- ${notification.hours[i]}h${if (notification.minutes[i] < 9) "0" + notification.minutes[i] else notification.minutes[i]}",
-                                fontSize = 18.sp
-                            )
-                        }
                     }
                 }
             }
@@ -298,5 +296,5 @@ fun Notifications(
 @Preview(showBackground = true)
 @Composable
 private fun NotificationsPreview() {
-    Notifications(mutableListOf())
+    Notifications(NotificationEntity())
 }
