@@ -46,12 +46,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.entity.SideEffectEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
+import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.prescription.DatePickerModal
@@ -60,6 +65,8 @@ import fr.medicapp.medicapp.ui.prescription.SearchDialog
 import fr.medicapp.medicapp.ui.prescription.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen40
+import fr.medicapp.medicapp.ui.theme.EUPurple20
+import fr.medicapp.medicapp.ui.theme.EUPurple80
 import fr.medicapp.medicapp.ui.theme.EURed100
 import fr.medicapp.medicapp.ui.theme.EURed20
 import fr.medicapp.medicapp.ui.theme.EURed40
@@ -82,13 +89,13 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SEDEdit(
-    sideeffects: SideEffect,
-    treatments: MutableList<Treatment>,
+    sideeffects: SideEffectEntity,
     onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
     var darkmode : Boolean = isSystemInDarkTheme()
-    var nomMedicament by remember { mutableStateOf(sideeffects.medicament?.medication?.name ?: "") }
+
+    var context = LocalContext.current
 
     var errorDialogOpen = remember { mutableStateOf(false) }
 
@@ -164,7 +171,7 @@ fun SEDEdit(
 
                     Button(
                         onClick = {
-                            if (nomMedicament != null && sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
+                            if (sideeffects.date != null && sideeffects.hour != null && sideeffects.minute != null && sideeffects.effetsConstates.size > 0 && sideeffects.effetsConstates.all { it != "" }) {
                                 onConfirm()
                             } else {
                                 errorDialogOpen.value = true
@@ -218,25 +225,37 @@ fun SEDEdit(
                 ) {
                     var treatmentOpen by remember { mutableStateOf(false) }
 
-                    /*if (treatmentOpen) {
+                    if (treatmentOpen) {
                         SearchDialog(
-                            options = treatments.map { it.toOptionDialog() },
-                            cardColor = EURed20,
-                            selectedCardColor = EURed80,
+                            options = { query ->
+                                val store = ObjectBox.getInstance(context)
+                                val treatmentStore = store.boxFor(TreatmentEntity::class.java)
+                                treatmentStore.query().build().find()
+                                    .filter { it.medication.target.name.contains(query) }.map {
+                                        OptionDialog(
+                                            id = it.id,
+                                            title = it.medication.target.name,
+                                            description = it.posology
+                                        )
+                                    }
+                            },
+                            cardColor = EUPurple20,
+                            selectedCardColor = EUPurple80,
                             onDismiss = {
                                 treatmentOpen = false
                             },
-                            onValidate = { option ->
-                                sideeffects.medicament = treatments.find { it.id == option.id }
-                                nomMedicament = option.title
+                            onValidate = {
                                 treatmentOpen = false
-                            }
+                                val store = ObjectBox.getInstance(context)
+                                val treatmentStore = store.boxFor(TreatmentEntity::class.java)
+                                sideeffects.treatment.target = treatmentStore.get(it.id)
+                            },
                         )
-                    }*/
+                    }
                     
                     OutlinedTextField(
                         enabled = false,
-                        value = nomMedicament,
+                        value = sideeffects.treatment.target?.medication?.target?.name ?: "",
                         textStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color= Color.White),
                         onValueChange = {},
                         label = { Text("Nom du médicament") },
@@ -490,8 +509,6 @@ fun SEDEdit(
 @Preview(showBackground = true)
 @Composable
 private fun SEDEditPreview() {
-    var se = SideEffect()
-    var treatments = mutableListOf<Treatment>()
-    //var se = listOf<TestSideEffect>()
-    SEDEdit(se, treatments, {}) {}
+    var se = SideEffectEntity()
+    SEDEdit(se, {}) {}
 }

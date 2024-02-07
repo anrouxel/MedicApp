@@ -706,7 +706,7 @@
     },
     {
       "id": "16:4731642243511610801",
-      "lastPropertyId": "7:721601941045691972",
+      "lastPropertyId": "8:9213944247125958634",
       "name": "SideEffectEntity",
       "properties": [
         {
@@ -741,28 +741,31 @@
           "type": 9
         },
         {
-          "id": "7:721601941045691972",
-          "name": "medicamentId",
-          "indexId": "5:7006702378958803193",
+          "id": "8:9213944247125958634",
+          "name": "treatmentId",
+          "indexId": "6:3904145447867145655",
           "type": 11,
           "flags": 520,
-          "relationTarget": "MedicationEntity"
+          "relationTarget": "TreatmentEntity"
         }
       ],
       "relations": []
     }
   ],
   "lastEntityId": "16:4731642243511610801",
-  "lastIndexId": "5:7006702378958803193",
+  "lastIndexId": "6:3904145447867145655",
   "lastRelationId": "11:4704107518097647459",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
+  "retiredIndexUids": [
+    7006702378958803193
+  ],
   "retiredPropertyUids": [
     5865801292696153424,
-    7382063140541865508
+    7382063140541865508,
+    721601941045691972
   ],
   "retiredRelationUids": [],
   "version": 1

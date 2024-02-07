@@ -45,22 +45,6 @@ fun NavGraphBuilder.sideEffectNavGraph(
             val store = ObjectBox.getInstance(LocalContext.current)
             val sideEffectStore = store.boxFor(SideEffectEntity::class.java)
 
-
-//            Thread {
-//                val sideEffectEntityTmp = repositorySideEffect.getAll()
-//
-//                val sideEffects = sideEffectEntityTmp.map {
-//                    val treatmentTmp =
-//                        repositoryTreatment.getOne(it.medicament).toTreatment(repositoryMedication)
-//                    val sideEffectTmp = it.toSideEffect()
-//                    sideEffectTmp.medicament = treatmentTmp
-//                    sideEffectTmp
-//                }
-//
-//                result.clear()
-//                result.addAll(sideEffects)
-//            }.start()
-
             val sideEffect = remember { sideEffectStore.all}
 
             SEDMainMenu(
@@ -143,36 +127,19 @@ fun NavGraphBuilder.sideEffectNavGraph(
          * Composable pour l'écran d'ajout d'un effet secondaire.
          */
         composable(route = SideEffectRoute.AddSideEffect.route) {
-            /*val viewModel =
+            val viewModel =
                 it.sharedViewModel<SharedSideEffectViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
-            val db = AppDatabase.getInstance(LocalContext.current)
-            val repositorySideEffect = SideEffectRepository(db.sideEffectDAO())
-            val repositoryTreatment = TreatmentRepository(db.treatmentDAO())
-            val repositoryMedication = MedicationRepository(db.medicationDAO())
+            val store = ObjectBox.getInstance(LocalContext.current)
 
-            var result: MutableList<Treatment> = mutableListOf()
-
-            Thread {
-                result.clear()
-                result.addAll(
-                    repositoryTreatment.getAll().map { it.toTreatment(repositoryMedication) }
-                        .toMutableList()
-                )
-            }.start()
-
-            val treatments = remember {
-                result
-            }
+            val sideEffectStore = store.boxFor(SideEffectEntity::class.java)
 
             SEDEdit(
                 sideeffects = state,
-                treatments = treatments,
                 onConfirm = {
-                    Thread {
-                        repositorySideEffect.add(state.toEntity())
-                    }.start()
+                    sideEffectStore.put(state)
+
                     navController.navigate(SideEffectRoute.Main.route) {
                         popUpTo(SideEffectRoute.AddSideEffect.route) {
                             inclusive = true
@@ -186,7 +153,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         }
                     }
                 }
-            )*/
+            )
         }
     }
 }

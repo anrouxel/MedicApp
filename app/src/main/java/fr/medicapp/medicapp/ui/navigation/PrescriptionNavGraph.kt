@@ -137,12 +137,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             var store = ObjectBox.getInstance(context)
 
-            val medicationStore = store.boxFor(MedicationEntity::class.java)
             val treatmentsStore = store.boxFor(TreatmentEntity::class.java)
-
-            val medications = remember {
-                medicationStore.all
-            }
 
             var hasImage by remember { mutableStateOf(false) }
 

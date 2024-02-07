@@ -58,5 +58,5 @@ data class SideEffectEntity(
     /**
      * Le nom du médicament associé à l'effet secondaire.
      */
-    lateinit var medicament: ToOne<MedicationEntity>
+    lateinit var treatment: ToOne<TreatmentEntity>
 }

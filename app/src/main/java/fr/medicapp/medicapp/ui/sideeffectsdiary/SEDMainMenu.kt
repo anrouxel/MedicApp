@@ -119,10 +119,9 @@ fun SEDMainMenu(
                                 .padding(10.dp),
                         ) {
                             Text(
-                                text = i.medicament?.target?.name ?: "",
+                                text = i.treatment.target.medication.target.name,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
-
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
