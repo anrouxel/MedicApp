@@ -3,13 +3,16 @@ package fr.medicapp.medicapp.ui.components.button
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
@@ -18,7 +21,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun ReusableOutlinedTextFieldButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     value: String,
-    label: @Composable () -> Unit = {},
+    label: String,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {}
 ) {
@@ -32,7 +35,11 @@ fun ReusableOutlinedTextFieldButton(
         readOnly = true,
         value = value,
         onValueChange = {},
-        label = label,
+        label = {
+            Text(
+                text = label
+            )
+        },
         shape = MaterialTheme.shapes.medium,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -62,6 +69,7 @@ private fun ReusableOutlinedTextFieldButtonPreview() {
     ) {
         ReusableOutlinedTextFieldButton(
             value = "Hello",
+            label = "",
             onClick = {}
         )
     }
@@ -77,6 +85,39 @@ private fun ReusableOutlinedTextFieldButtonDarkPreview() {
     ) {
         ReusableOutlinedTextFieldButton(
             value = "Hello",
+            label = "",
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Light Theme", showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun ReusableOutlinedTextFieldLabelButtonPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        theme = EUYellowColorShema,
+        dynamicColor = false
+    ) {
+        ReusableOutlinedTextFieldButton(
+            value = "Hello",
+            label = "World",
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Theme", showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun ReusableOutlinedTextFieldLabelButtonDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        theme = EUYellowColorShema,
+        dynamicColor = false
+    ) {
+        ReusableOutlinedTextFieldButton(
+            value = "Hello",
+            label = "World",
             onClick = {}
         )
     }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,14 +17,18 @@ fun ReusableOutlinedTextField(
     enabled: Boolean = true,
     value: String,
     onValueChange: (String) -> Unit,
-    label: @Composable () -> Unit = {},
+    label: String,
 ) {
     OutlinedTextField(
         modifier = modifier,
         enabled = enabled,
         value = value,
         onValueChange = onValueChange,
-        label = label,
+        label = {
+            Text(
+                text = label
+            )
+        },
         shape = MaterialTheme.shapes.medium,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -53,7 +58,8 @@ private fun ReusableOutlinedTextFieldPreview() {
     ) {
         ReusableOutlinedTextField(
             value = "Hello",
-            onValueChange = {}
+            onValueChange = {},
+            label = ""
         )
     }
 }
@@ -68,7 +74,40 @@ private fun ReusableOutlinedTextFieldDarkPreview() {
     ) {
         ReusableOutlinedTextField(
             value = "Hello",
-            onValueChange = {}
+            onValueChange = {},
+            label = ""
+        )
+    }
+}
+
+@Preview(name = "Light Theme", showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun ReusableOutlinedTextFieldLabelPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        theme = EUYellowColorShema,
+        dynamicColor = false
+    ) {
+        ReusableOutlinedTextField(
+            value = "Hello",
+            onValueChange = {},
+            label = "World"
+        )
+    }
+}
+
+@Preview(name = "Dark Theme", showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun ReusableOutlinedTextFieldLabelDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        theme = EUYellowColorShema,
+        dynamicColor = false
+    ) {
+        ReusableOutlinedTextField(
+            value = "Hello",
+            onValueChange = {},
+            label = "World"
         )
     }
 }

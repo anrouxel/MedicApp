@@ -7,6 +7,7 @@ plugins {
     id("io.objectbox")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    kotlin("kapt")
 }
 
 tasks.withType<Detekt>().configureEach {

@@ -34,9 +34,7 @@ fun PrescriptionEditInformation(
             ) {
                 ReusableOutlinedTextFieldButton(
                     value = "",
-                    label = {
-                        Text("Docteur")
-                    },
+                    label = "Docteur",
                     onClick = {}
                 )
 
@@ -44,9 +42,7 @@ fun PrescriptionEditInformation(
 
                 ReusableOutlinedTextFieldButton(
                     value = "",
-                    label = {
-                        Text("Date")
-                    },
+                    label = "Date",
                     onClick = {}
                 )
             }
