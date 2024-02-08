@@ -12,7 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.ui.sideeffect.SideEffectHome
+import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectEdit
+import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectHome
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
@@ -96,6 +97,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
          * Composable pour l'écran d'ajout d'un effet secondaire.
          */
         composable(route = SideEffectRoute.AddSideEffect.route) {
+            onThemeChange(EURedColorShema)
             val viewModel =
                 it.sharedViewModel<SharedSideEffectViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
@@ -104,25 +106,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
 
             val sideEffectStore = store.boxFor(SideEffectEntity::class.java)
 
-            /*SEDEdit(
-                sideeffects = state,
-                onConfirm = {
-                    sideEffectStore.put(state)
-
-                    navController.navigate(SideEffectRoute.Main.route) {
-                        popUpTo(SideEffectRoute.AddSideEffect.route) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onCancel = {
-                    navController.navigate(SideEffectRoute.Main.route) {
-                        popUpTo(SideEffectRoute.AddSideEffect.route) {
-                            inclusive = true
-                        }
-                    }
-                }
-            )*/
+            SideEffectEdit()
         }
     }
 }

@@ -34,7 +34,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun CardContent(
     title : String,
-    description : String,
+    description : String = ""
 ) {
     Column(
         modifier = Modifier

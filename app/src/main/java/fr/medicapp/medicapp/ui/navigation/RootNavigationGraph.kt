@@ -16,7 +16,11 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun RootNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
+fun RootNavGraph(
+    navController: NavHostController,
+    theme: ThemeColorScheme,
+    onThemeChange: (ThemeColorScheme) -> Unit,
+) {
 
     /**
      * Définit le hôte de navigation pour le graphe de navigation racine.
@@ -37,6 +41,7 @@ fun RootNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          */
         composable(route = Graph.HOME) {
             NavigationDrawerScreen(
+                theme = theme,
                 onThemeChange = onThemeChange
             )
         }

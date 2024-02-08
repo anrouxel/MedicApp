@@ -25,7 +25,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.ui.prescription.PrescriptionHome
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEdit
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
@@ -61,7 +62,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             val treatments = remember { treatmentBox.all.map { it.convert() } }
 
-            PrescriptionHome(treatments = treatments)
+            PrescriptionHome(
+                treatments = treatments,
+                onAddPrescriptionClick = {
+                    navController.navigate(PrescriptionRoute.AddPrescription.route)
+                },
+            )
         }
 
         /**
@@ -106,6 +112,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
          * Composable pour ajouter une nouvelle prescription.
          */
         composable(route = PrescriptionRoute.AddPrescription.route) {
+            onThemeChange(EUPurpleColorShema)
             val viewModel =
                 it.sharedViewModel<SharedAddPrescriptionViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
@@ -239,53 +246,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 }
             )
 
-            /*if (loading.value) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Traitement de l'ordonnance en cours...")
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        LinearProgressIndicator()
-                    }
-                }
-            } else {
-                EditPrescription(
-                    prescription = state,
-                    doctors = listOf(),
-                    onCancel = {
-                        navController.popBackStack()
-                    },
-                    onConfirm = {
-                        treatmentsStore.put(state.treatments)
-
-                        if (state.treatments.any { it.notification }) {
-                            navController.navigate(NotificationRoute.AddNotification.route) {
-                                popUpTo(PrescriptionRoute.AddPrescription.route) {
-                                    inclusive = true
-                                }
-                            }
-                        } else {
-                            navController.navigate(PrescriptionRoute.Main.route) {
-                                popUpTo(PrescriptionRoute.AddPrescription.route) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-                    },
-                    onCameraPicker = {
-                        imageUri = context.createImageFile()
-                        cameraLauncher.launch(imageUri)
-                    },
-                    cameraPermissionState = cameraPermissionState,
-                    onCameraPermissionRequested = {
-                        cameraPermissionState.launchPermissionRequest()
-                    },
-                    onImagePicker = {*/
-                        //imagePicker.launch("image/*")
-                    /*},
-                )
-            }*/
+            PrescriptionEdit()
         }
     }
 }

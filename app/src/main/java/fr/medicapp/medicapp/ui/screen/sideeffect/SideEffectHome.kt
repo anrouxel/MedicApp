@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ui.sideeffect
+package fr.medicapp.medicapp.ui.screen.sideeffect
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -89,7 +89,7 @@ fun NoSideEffectAvailable() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
-private fun SideEffectDetailPreview() {
+private fun SideEffectHomePreview() {
     val sideEffect = SideEffect(
         treatment = Treatment(
             medication = Medication(
@@ -113,7 +113,7 @@ private fun SideEffectDetailPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
-private fun SideEffectDetailDarkPreview() {
+private fun SideEffectHomeDarkPreview() {
     val sideEffect = SideEffect(
         treatment = Treatment(
             medication = Medication(

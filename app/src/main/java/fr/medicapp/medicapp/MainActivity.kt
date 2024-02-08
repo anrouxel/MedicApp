@@ -87,6 +87,7 @@ class MainActivity : ComponentActivity() {
                 // Création du graphe de navigation racine
                 RootNavGraph(
                     navController = rememberNavController(),
+                    theme = theme,
                     onThemeChange = { theme = it }
                 )
             }

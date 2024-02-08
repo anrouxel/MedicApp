@@ -29,24 +29,25 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun ButtonContent(
     text: String,
-    icon: ImageVector
+    icon: ImageVector? = null
 ) {
     Row(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
+            .padding(5.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            modifier = Modifier
-                .size(24.dp)
-                .clip(RoundedCornerShape(100.dp)),
-            imageVector = icon,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+        if (icon != null) {
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(RoundedCornerShape(100.dp)),
+                imageVector = icon,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+        }
         Text(
             text = text,
             fontSize = 18.sp,

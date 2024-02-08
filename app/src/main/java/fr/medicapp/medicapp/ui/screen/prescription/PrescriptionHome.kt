@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ui.prescription
+package fr.medicapp.medicapp.ui.screen.prescription
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -16,6 +16,7 @@ import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
@@ -83,7 +84,7 @@ fun NoPrescriptionAvailable() {
 
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
-private fun PrescriptionDetailPreview() {
+private fun PrescriptionHomePreview() {
     val treatment = Treatment(
         medication = Medication(name = "Doliprane"),
         posology = "1 comprimé par jour"
@@ -92,7 +93,7 @@ private fun PrescriptionDetailPreview() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
-        theme = EUYellowColorShema
+        theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
             treatments = listOf(treatment)
@@ -102,7 +103,7 @@ private fun PrescriptionDetailPreview() {
 
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
-private fun PrescriptionDetailDarkPreview() {
+private fun PrescriptionHomeDarkPreview() {
     val treatment = Treatment(
         medication = Medication(name = "Doliprane"),
         posology = "1 comprimé par jour"
@@ -111,7 +112,7 @@ private fun PrescriptionDetailDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
-        theme = EUYellowColorShema
+        theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
             treatments = listOf(treatment)
@@ -125,7 +126,7 @@ private fun NoPrescriptionAvailablePreview() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
-        theme = EUYellowColorShema
+        theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
             treatments = emptyList()
@@ -139,7 +140,7 @@ private fun NoPrescriptionAvailableDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
-        theme = EUYellowColorShema
+        theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
             treatments = emptyList()

@@ -1,27 +1,29 @@
 package fr.medicapp.medicapp.ui.components.button
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 
 @Composable
-fun AddButton(
+fun ReusableButton(
+    modifier: Modifier = Modifier,
     text: String,
-    icon: ImageVector,
     onClick: () -> Unit
 ) {
     ButtonCard(
+        modifier = modifier,
         onClick = onClick,
         content = {
             ButtonContent(
-                text = text,
-                icon = icon
+                text = text
             )
         }
     )
@@ -29,15 +31,14 @@ fun AddButton(
 
 @Preview(name = "Light Theme")
 @Composable
-private fun AddButtonPreview() {
+private fun ReusableButtonPreview() {
     MedicAppTheme(
-        darkTheme = true,
+        darkTheme = false,
         theme = EUYellowColorShema,
         dynamicColor = false
     ) {
-        AddButton(
+        ReusableButton(
             text = "Add",
-            icon = Icons.Default.Add,
             onClick = {}
         )
     }
@@ -45,15 +46,14 @@ private fun AddButtonPreview() {
 
 @Preview(name = "Dark Theme")
 @Composable
-private fun AddButtonDarkPreview() {
+private fun ReusableButtonDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         theme = EUYellowColorShema,
         dynamicColor = false
     ) {
-        AddButton(
+        ReusableButton(
             text = "Add",
-            icon = Icons.Default.Add,
             onClick = {}
         )
     }

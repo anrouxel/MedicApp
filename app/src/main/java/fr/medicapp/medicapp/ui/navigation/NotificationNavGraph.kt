@@ -12,6 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.NotificationEntity
+import fr.medicapp.medicapp.ui.screen.notification.NotificationEdit
+import fr.medicapp.medicapp.ui.screen.notification.NotificationHome
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedNotificationViewModel
 
@@ -36,25 +40,19 @@ fun NavGraphBuilder.notificationNavGraph(
          * Composable pour la route principale de notification.
          */
         composable(route = NotificationRoute.Main.route) {
+            onThemeChange(EUYellowColorShema)
             val store = ObjectBox.getInstance(LocalContext.current)
 
             val notificationStore = store.boxFor(NotificationEntity::class.java)
 
-            val notification = remember { notificationStore.all }
+            val notification = remember { notificationStore.all.map { it.convert() } }
 
-            /*NotificationsMainMenu(
+            NotificationHome(
                 notifications = notification,
-                onNotification = { id ->
-                    navController.navigate(
-                        NotificationRoute.ShowNotification.route.replace(
-                            "{id}",
-                            id
-                        )
-                    )
+                onAddNotificationClick = {
+                    navController.navigate(NotificationRoute.AddNotification.route)
                 },
-            ) {
-                navController.navigate(NotificationRoute.AddNotification.route)
-            }*/
+            )
         }
 
         /**
@@ -103,6 +101,7 @@ fun NavGraphBuilder.notificationNavGraph(
          * Composable pour ajouter une nouvelle notification.
          */
         composable(route = NotificationRoute.AddNotification.route) {
+            onThemeChange(EUYellowColorShema)
             val viewModel =
                 it.sharedViewModel<SharedNotificationViewModel>(navController = navController)
             val state by viewModel.sharedState.collectAsStateWithLifecycle()
@@ -113,64 +112,7 @@ fun NavGraphBuilder.notificationNavGraph(
 
             val notificationStore = store.boxFor(NotificationEntity::class.java)
 
-            /*NotificationsEdit(
-                notification = state,
-                onConfirm = {
-                    for (i in 0 until state.hours.size) {
-                        val uuid: Int = smplrAlarmSet(context) {
-                            //isActive { state.medicationName!!.notification!! }
-                            hour { state.hours[i] }
-                            min { state.minutes[i] }
-                            weekdays {
-                                state.frequency.forEach { dayOfWeek ->
-                                    when (dayOfWeek) {
-                                        DayOfWeek.MONDAY -> monday()
-                                        DayOfWeek.TUESDAY -> tuesday()
-                                        DayOfWeek.WEDNESDAY -> wednesday()
-                                        DayOfWeek.THURSDAY -> thursday()
-                                        DayOfWeek.FRIDAY -> friday()
-                                        DayOfWeek.SATURDAY -> saturday()
-                                        DayOfWeek.SUNDAY -> sunday()
-                                    }
-                                }
-                            }
-                            notification {
-                                alarmNotification {
-                                    smallIcon { R.drawable.medicapp_eu_blue }
-                                    title { "Rappel de prise de médicament" }
-                                    message { "C'est l'heure ! Vous devez prendre ${state.treatment.target.medication.target.name}" }
-                                    bigText { "C'est l'heure ! Vous devez prendre ${state.treatment.target.medication.target.name}" }
-                                    autoCancel { false }
-                                }
-                            }
-                            notificationChannel {
-                                channel {
-                                    importance { NotificationManager.IMPORTANCE_HIGH }
-                                    showBadge { true }
-                                    name { "Canal de rappel de médicaments" }
-                                    description { "Ce canal de notification est utilisé pour les rappels" }
-                                }
-                            }
-                        }
-
-                        state.alarms.add(uuid)
-                    }
-
-                    notificationStore.put(state)
-
-                    navController.navigate(NotificationRoute.Main.route) {
-                        popUpTo(NotificationRoute.AddNotification.route) {
-                            inclusive = true
-                        }
-                    }
-                },
-            ) {
-                navController.navigate(NotificationRoute.Main.route) {
-                    popUpTo(NotificationRoute.AddNotification.route) {
-                        inclusive = true
-                    }
-                }
-            }*/
+            NotificationEdit()
         }
     }
 }

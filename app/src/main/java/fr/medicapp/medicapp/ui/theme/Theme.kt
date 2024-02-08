@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import fr.medicapp.medicapp.R
 
 val EUYellowColorShema = ThemeColorScheme(
     lightColorScheme = lightColorScheme(
@@ -24,7 +25,8 @@ val EUYellowColorShema = ThemeColorScheme(
     darkColorScheme = darkColorScheme(
         primary = EUYellow100,
         onPrimary = EUWhite100
-    )
+    ),
+    icon = R.drawable.medicapp_eu_yellow
 )
 
 val EUPurpleColorShema = ThemeColorScheme(
@@ -35,7 +37,8 @@ val EUPurpleColorShema = ThemeColorScheme(
     darkColorScheme = darkColorScheme(
         primary = EUPurple100,
         onPrimary = EUWhite100
-    )
+    ),
+    icon = R.drawable.medicapp_eu_purple
 )
 
 val EURedColorShema = ThemeColorScheme(
@@ -46,7 +49,20 @@ val EURedColorShema = ThemeColorScheme(
     darkColorScheme = darkColorScheme(
         primary = EURed100,
         onPrimary = EUWhite100
-    )
+    ),
+    icon = R.drawable.medicapp_eu_red
+)
+
+val EUGreenColorShema = ThemeColorScheme(
+    lightColorScheme = lightColorScheme(
+        primary = EUGreen100,
+        onPrimary = EUBlack100
+    ),
+    darkColorScheme = darkColorScheme(
+        primary = EUGreen100,
+        onPrimary = EUWhite100
+    ),
+    icon = R.drawable.medicapp_eu_green
 )
 
 @Composable
