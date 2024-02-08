@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.entity
 
 import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
+import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Prescription
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -20,14 +21,17 @@ data class PrescriptionEntity(
 ) : EntityToModelMapper<Prescription> {
     lateinit var doctor: ToOne<DoctorEntity>
 
-    lateinit var treatments: ToMany<TreatmentEntity>
+    lateinit var treatment: ToOne<TreatmentEntity>
+
+    lateinit var notifications : ToMany<NotificationEntity>
 
     override fun convert(): Prescription {
         return Prescription(
             id,
             date,
             doctor.target.convert(),
-            treatments.map { it.convert() }.toMutableList()
+            treatment.target.convert(),
+            notifications.map { it.convert() }.toMutableList()
         )
     }
 }

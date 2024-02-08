@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
@@ -12,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.entity.medication.Medication
+import fr.medicapp.medicapp.model.Doctor
+import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
@@ -19,10 +23,11 @@ import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import java.time.LocalDate
 
 @Composable
 fun PrescriptionHome(
-    treatments: List<Treatment>,
+    prescriptions: List<Prescription>,
     onPrescriptionClick: () -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
@@ -31,11 +36,11 @@ fun PrescriptionHome(
         floatingActionButtonOnClick = onAddPrescriptionClick,
         floatActionButtonIcon = Icons.Default.DocumentScanner
     ) {
-        if (treatments.isEmpty()) {
+        if (prescriptions.isEmpty()) {
             NoPrescriptionAvailable()
         } else {
             PrescriptionList(
-                treatments = treatments,
+                prescriptions = prescriptions,
                 onPrescriptionClick = onPrescriptionClick
             )
         }
@@ -44,12 +49,12 @@ fun PrescriptionHome(
 
 @Composable
 fun PrescriptionList(
-    treatments: List<Treatment>,
+    prescriptions: List<Prescription>,
     onPrescriptionClick: () -> Unit = {}
 ) {
-    treatments.forEach { treatment ->
+    prescriptions.forEach { prescription ->
         PrescriptionItem(
-            treatment = treatment,
+            prescription = prescription,
             onPrescriptionClick = onPrescriptionClick
         )
     }
@@ -57,15 +62,15 @@ fun PrescriptionList(
 
 @Composable
 fun PrescriptionItem(
-    treatment: Treatment,
+    prescription: Prescription,
     onPrescriptionClick: () -> Unit
 ) {
     ReusableElevatedCard(
         onClick = onPrescriptionClick
     ) {
         CardContent(
-            title = treatment.medication?.name ?: "",
-            description = treatment.posology
+            title = prescription.doctor?.name ?: "Médecin inconnu",
+            description = prescription.date?.toString() ?: "Date inconnue",
         )
     }
 }
@@ -82,12 +87,15 @@ fun NoPrescriptionAvailable() {
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomePreview() {
-    val treatment = Treatment(
-        medication = Medication(name = "Doliprane"),
-        posology = "1 comprimé par jour"
+    val prescription = Prescription(
+        doctor = Doctor(
+            name = "Dr. Mottu"
+        ),
+        date = LocalDate.now()
     )
 
     MedicAppTheme(
@@ -96,17 +104,20 @@ private fun PrescriptionHomePreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            treatments = listOf(treatment)
+            prescriptions = listOf(prescription)
         )
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomeDarkPreview() {
-    val treatment = Treatment(
-        medication = Medication(name = "Doliprane"),
-        posology = "1 comprimé par jour"
+    val prescription = Prescription(
+        doctor = Doctor(
+            name = "Dr. Mottu"
+        ),
+        date = LocalDate.now()
     )
 
     MedicAppTheme(
@@ -115,7 +126,7 @@ private fun PrescriptionHomeDarkPreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            treatments = listOf(treatment)
+            prescriptions = listOf(prescription)
         )
     }
 }
@@ -129,7 +140,7 @@ private fun NoPrescriptionAvailablePreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            treatments = emptyList()
+            prescriptions = emptyList()
         )
     }
 }
@@ -143,7 +154,7 @@ private fun NoPrescriptionAvailableDarkPreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            treatments = emptyList()
+            prescriptions = emptyList()
         )
     }
 }

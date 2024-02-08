@@ -65,10 +65,8 @@ fun NavigationDrawerScreen(
     val scope = rememberCoroutineScope()
 
     val screens = listOf(
-        NavigationDrawerRoute.Home,
-        NavigationDrawerRoute.Prescriptions,
-        NavigationDrawerRoute.Messages,
-        NavigationDrawerRoute.Notifications
+        NavigationDrawerRoute.NavigationDrawerHomeRoute,
+        NavigationDrawerRoute.NavigationDrawerPrescriptionRoute,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

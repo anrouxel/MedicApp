@@ -21,7 +21,9 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun Edit(
     title: String,
-    content: @Composable () -> Unit = {}
+    bottomText: String,
+    onClick: () -> Unit = {},
+    content: @Composable () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -44,8 +46,8 @@ fun Edit(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableButton(
-                    text = "Ajouter",
-                    onClick = {}
+                    text = bottomText,
+                    onClick = onClick
                 )
             }
         }
@@ -71,6 +73,7 @@ private fun EditPreview() {
     ) {
         Edit(
             title = "Ajouter une ordonnance",
+            bottomText = "Ajouter"
         )
     }
 }
@@ -85,6 +88,7 @@ private fun EditDarkPreview() {
     ) {
         Edit(
             title = "Ajouter une ordonnance",
+            bottomText = "Ajouter"
         )
     }
 }

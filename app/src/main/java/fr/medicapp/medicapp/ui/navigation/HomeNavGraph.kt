@@ -28,24 +28,18 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = NavigationDrawerRoute.Home.route
+        startDestination = NavigationDrawerRoute.NavigationDrawerHomeRoute.route
     ) {
 
         /**
          * Composable pour l'écran d'accueil.
          */
-        composable(route = NavigationDrawerRoute.Home.route) {
+        composable(route = NavigationDrawerRoute.NavigationDrawerHomeRoute.route) {
             onThemeChange(EUGreenColorShema)
             HomeScreen(
                 onAddPrescriptionClick = {
-                    navController.navigate(PrescriptionRoute.AddPrescription.route)
+                    navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
                 },
-                onAddSideEffectClick = {
-                    navController.navigate(SideEffectRoute.AddSideEffect.route)
-                },
-                onAddNotification = {
-                    navController.navigate(NotificationRoute.AddNotification.route)
-                }
             )
         }
 
@@ -53,22 +47,6 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          * Appelle la fonction prescriptionNavGraph pour construire le graphe de navigation des prescriptions.
          */
         prescriptionNavGraph(
-            navController = navController,
-            onThemeChange = onThemeChange
-        )
-
-        /**
-         * Appelle la fonction sideEffectNavGraph pour construire le graphe de navigation des effets indésirables.
-         */
-        sideEffectNavGraph(
-            navController = navController,
-            onThemeChange = onThemeChange
-        )
-
-        /**
-         * Appelle la fonction notificationNavGraph pour construire le graphe de navigation des notifications.
-         */
-        notificationNavGraph(
             navController = navController,
             onThemeChange = onThemeChange
         )

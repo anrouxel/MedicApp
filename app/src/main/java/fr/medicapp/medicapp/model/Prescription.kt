@@ -9,5 +9,7 @@ data class Prescription(
 
     var doctor: Doctor? = null,
 
-    var treatments: MutableList<Treatment> = mutableListOf(),
+    var treatment: Treatment = Treatment(),
+
+    var notifications: MutableList<Notification> = mutableListOf()
 )

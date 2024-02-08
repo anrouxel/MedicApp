@@ -66,19 +66,4 @@ object Graph {
      * Route pour l'écran d'accueil.
      */
     const val HOME = "home_graph"
-
-    /**
-     * Route pour le graphe de navigation des prescriptions.
-     */
-    const val PRESCRIPTION = "prescription_graph"
-
-    /**
-     * Route pour le graphe de navigation des effets indésirables.
-     */
-    const val SIDE_EFFECTS = "add_side_effects_graph"
-
-    /**
-     * Route pour le graphe de navigation des notifications.
-     */
-    const val NOTIFICATION = "notification_graph"
 }

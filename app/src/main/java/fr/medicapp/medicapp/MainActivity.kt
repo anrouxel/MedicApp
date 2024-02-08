@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.GsonBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.ObjectBox
@@ -26,6 +27,7 @@ import java.time.LocalDate
  * Activité principale de l'application.
  * Elle initialise la base de données et l'IA de prescription, et définit le contenu de l'activité.
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     /**

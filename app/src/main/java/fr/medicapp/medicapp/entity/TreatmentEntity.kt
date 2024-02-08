@@ -14,11 +14,7 @@ data class TreatmentEntity(
 
     var posology: String = "",
 
-    var quantity: String = "",
-
-    var renew: String = "",
-
-    var notification: Boolean = false
+    var frequency: String = "",
 ) : EntityToModelMapper<Treatment> {
     lateinit var medication: ToOne<MedicationEntity>
 
@@ -28,9 +24,7 @@ data class TreatmentEntity(
         return Treatment(
             id,
             posology,
-            quantity,
-            renew,
-            notification,
+            frequency,
             medication.target.convert(),
             duration.target.convert()
         )

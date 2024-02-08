@@ -11,11 +11,7 @@ data class Treatment(
 
     var posology: String = "",
 
-    var quantity: String = "",
-
-    var renew: String = "",
-
-    var notification: Boolean = false,
+    var frequency: String = "",
 
     var medication: Medication? = null,
 
