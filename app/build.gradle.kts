@@ -4,9 +4,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
-    id("com.google.devtools.ksp")
     id("io.objectbox")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -118,8 +118,8 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48")
-    ksp("com.google.dagger:dagger-compiler:2.48")
-    ksp("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("com.google.dagger:dagger-compiler:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // Volley

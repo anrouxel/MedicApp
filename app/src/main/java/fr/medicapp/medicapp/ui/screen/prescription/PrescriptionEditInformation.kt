@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
@@ -31,22 +32,22 @@ fun PrescriptionEditInformation(
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
-                ReusableOutlinedTextField(
+                ReusableOutlinedTextFieldButton(
                     value = "",
-                    onValueChange = { },
                     label = {
                         Text("Docteur")
-                    }
+                    },
+                    onClick = {}
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
-                ReusableOutlinedTextField(
+                ReusableOutlinedTextFieldButton(
                     value = "",
-                    onValueChange = { },
                     label = {
                         Text("Date")
-                    }
+                    },
+                    onClick = {}
                 )
             }
         }
