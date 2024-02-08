@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.entity.medication
 
+import fr.medicapp.medicapp.database.EntityToModelMapper
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 
@@ -19,4 +20,16 @@ data class GenericGroupEntity(
     var genericName: String = "",
 
     var sortNumber: Int? = null
-)
+) : EntityToModelMapper<GenericGroup> {
+    override fun convert(): GenericGroup {
+        return GenericGroup(
+            id = id,
+            genericGroupId = genericGroupId,
+            genericGroupLabel = genericGroupLabel,
+            cisCode = cisCode,
+            genericType = genericType,
+            genericName = genericName,
+            sortNumber = sortNumber
+        )
+    }
+}

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.entity.medication
 
+import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
 import fr.medicapp.medicapp.database.MutableListFloatConverter
 import io.objectbox.annotation.Convert
@@ -39,4 +40,24 @@ data class MedicationPresentationEntity(
     var priceHonoraryInEuro: Float? = null,
 
     var reimbursementIndications: String = "",
-)
+) : EntityToModelMapper<MedicationPresentation> {
+    override fun convert(): MedicationPresentation {
+        return MedicationPresentation(
+            id,
+            cisCode,
+            cip7Code,
+            presentationLabel,
+            presentationStatus,
+            presentationCommercializationStatus,
+            commercializationDeclarationDate,
+            cip13Code,
+            approvalForCommunities,
+            reimbursementRates,
+            priceWithoutHonoraryInEuro,
+            priceWithHonoraryInEuro,
+            priceHonoraryInEuro,
+            reimbursementIndications
+        )
+    }
+}
+

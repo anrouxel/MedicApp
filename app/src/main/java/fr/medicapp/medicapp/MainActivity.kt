@@ -6,6 +6,10 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.GsonBuilder
 import fr.medicapp.medicapp.ai.PrescriptionAI
@@ -14,6 +18,7 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.entity.medication.MedicationEntity_
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
+import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate
 
@@ -74,16 +79,17 @@ class MainActivity : ComponentActivity() {
 
         // Définition du contenu de l'activité
         setContent {
+            var theme by remember { mutableStateOf(EUYellowColorShema) }
             // Utilisation du thème de l'application
-            MedicAppTheme {
+            MedicAppTheme(
+                theme = theme
+            ) {
                 // Création du graphe de navigation racine
-                RootNavGraph(navController = rememberNavController())
+                RootNavGraph(
+                    navController = rememberNavController(),
+                    onThemeChange = { theme = it }
+                )
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        ObjectBox.getInstance(this).close()
     }
 }

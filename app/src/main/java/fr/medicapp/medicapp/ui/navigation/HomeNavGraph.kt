@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fr.medicapp.medicapp.ui.home.HomeScreen
 import fr.medicapp.medicapp.ui.home.NavigationDrawerRoute
+import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
  * Ceci est une classe de navigation pour l'écran d'accueil.
@@ -15,7 +16,7 @@ import fr.medicapp.medicapp.ui.home.NavigationDrawerRoute
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
 
     /**
      * Construit le graphe de navigation pour l'écran d'accueil.
@@ -48,16 +49,25 @@ fun HomeNavGraph(navController: NavHostController) {
         /**
          * Appelle la fonction prescriptionNavGraph pour construire le graphe de navigation des prescriptions.
          */
-        prescriptionNavGraph(navController)
+        prescriptionNavGraph(
+            navController = navController,
+            onThemeChange = onThemeChange
+        )
 
         /**
          * Appelle la fonction sideEffectNavGraph pour construire le graphe de navigation des effets indésirables.
          */
-        sideEffectNavGraph(navController)
+        sideEffectNavGraph(
+            navController = navController,
+            onThemeChange = onThemeChange
+        )
 
         /**
          * Appelle la fonction notificationNavGraph pour construire le graphe de navigation des notifications.
          */
-        notificationNavGraph(navController)
+        notificationNavGraph(
+            navController = navController,
+            onThemeChange = onThemeChange
+        )
     }
 }

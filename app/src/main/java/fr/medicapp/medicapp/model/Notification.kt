@@ -1,48 +1,23 @@
 package fr.medicapp.medicapp.model
 
-import androidx.compose.runtime.mutableStateListOf
+import fr.medicapp.medicapp.database.MutableListDayOfWeekConverter
+import fr.medicapp.medicapp.database.MutableListIntConverter
+import io.objectbox.annotation.Convert
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+import io.objectbox.relation.ToOne
 import java.time.DayOfWeek
-import java.util.UUID
 
-/**
- * Modèle représentant une notification.
- *
- * @property id L'identifiant unique de la notification.
- * @property medicationName Le traitement associé à la notification.
- * @property frequency La fréquence de la notification.
- * @property hours Les heures de la notification.
- * @property minutes Les minutes de la notification.
- * @property alarms Les alarmes de la notification.
- */
 data class Notification(
+    val id: Long = 0L,
 
-    /**
-     * L'identifiant unique de la notification.
-     */
-    var id: String = "",
+    var frequency: MutableList<DayOfWeek> = mutableListOf(),
 
-    /**
-     * Le traitement associé à la notification.
-     */
-    var medicationName: Treatment? = null,
+    var hours: MutableList<Int> = mutableListOf(),
 
-    /**
-     * La fréquence de la notification.
-     */
-    var frequency: MutableList<DayOfWeek> = mutableStateListOf(),
+    var minutes: MutableList<Int> = mutableListOf(),
 
-    /**
-     * Les heures de la notification.
-     */
-    var hours: MutableList<Int> = mutableStateListOf(),
+    var alarms: MutableList<Int> = mutableListOf(),
 
-    /**
-     * Les minutes de la notification.
-     */
-    var minutes: MutableList<Int> = mutableStateListOf(),
-
-    /**
-     * Les alarmes de la notification.
-     */
-    var alarms: MutableList<Int> = mutableStateListOf(),
+    var treatment: Treatment? = null
 )

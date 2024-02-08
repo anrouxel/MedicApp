@@ -6,22 +6,12 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,12 +24,10 @@ import androidx.navigation.navigation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.entity.TreatmentEntity
-import fr.medicapp.medicapp.model.Doctor
-import fr.medicapp.medicapp.ui.prescription.EditPrescription
-import fr.medicapp.medicapp.ui.prescription.Prescription
-import fr.medicapp.medicapp.ui.prescription.PrescriptionMainMenu
+import fr.medicapp.medicapp.ui.prescription.PrescriptionHome
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedAddPrescriptionViewModel
 import java.io.File
 import java.text.SimpleDateFormat
@@ -53,7 +41,8 @@ import java.util.Date
 @OptIn(ExperimentalPermissionsApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.prescriptionNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     /**
      * Définit la navigation pour le graphe de prescription.
@@ -66,21 +55,13 @@ fun NavGraphBuilder.prescriptionNavGraph(
          * Composable pour la route principale de prescription.
          */
         composable(route = PrescriptionRoute.Main.route) {
+            onThemeChange(EUPurpleColorShema)
             val store = ObjectBox.getInstance(LocalContext.current)
             val treatmentBox = store.boxFor(TreatmentEntity::class.java)
 
-            val ordonnance = remember {
-                treatmentBox.all
-            }
+            val treatments = remember { treatmentBox.all.map { it.convert() } }
 
-            PrescriptionMainMenu(
-                ordonnances = ordonnance,
-                onPrescription = { id ->
-                    navController.navigate(PrescriptionRoute.Prescription.route.replace("{id}", id))
-                },
-            ) {
-                navController.navigate(PrescriptionRoute.AddPrescription.route)
-            }
+            PrescriptionHome(treatments = treatments)
         }
 
         /**
@@ -97,7 +78,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 treatmentBox.get(id.toLong())
             }
 
-            Prescription(
+            /*Prescription(
                 consultation = prescription,
                 onClose = {
                     navController.navigate(PrescriptionRoute.Main.route) {
@@ -118,7 +99,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 val treatment = treatmentBox.get(treatmentId.toLong())
                 treatment.notification = notificationValue
                 treatmentBox.put(treatment)
-            }
+            }*/
         }
 
         /**
@@ -258,7 +239,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 }
             )
 
-            if (loading.value) {
+            /*if (loading.value) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Traitement de l'ordonnance en cours...")
@@ -271,16 +252,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             } else {
                 EditPrescription(
                     prescription = state,
-                    doctors = listOf(
-                        Doctor(
-                            lastName = "Doe",
-                            firstName = "John",
-                        ),
-                        Doctor(
-                            lastName = "Doe",
-                            firstName = "Jane",
-                        ),
-                    ),
+                    doctors = listOf(),
                     onCancel = {
                         navController.popBackStack()
                     },
@@ -309,11 +281,11 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     onCameraPermissionRequested = {
                         cameraPermissionState.launchPermissionRequest()
                     },
-                    onImagePicker = {
-                        imagePicker.launch("image/*")
-                    },
+                    onImagePicker = {*/
+                        //imagePicker.launch("image/*")
+                    /*},
                 )
-            }
+            }*/
         }
     }
 }

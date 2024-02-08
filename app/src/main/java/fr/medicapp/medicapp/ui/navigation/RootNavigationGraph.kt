@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fr.medicapp.medicapp.ui.home.NavigationDrawerScreen
+import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
  * Cette fonction construit le graphe de navigation racine.
@@ -15,7 +16,7 @@ import fr.medicapp.medicapp.ui.home.NavigationDrawerScreen
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun RootNavGraph(navController: NavHostController) {
+fun RootNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
 
     /**
      * Définit le hôte de navigation pour le graphe de navigation racine.
@@ -35,7 +36,9 @@ fun RootNavGraph(navController: NavHostController) {
          * Composable pour l'écran d'accueil.
          */
         composable(route = Graph.HOME) {
-            NavigationDrawerScreen()
+            NavigationDrawerScreen(
+                onThemeChange = onThemeChange
+            )
         }
     }
 }

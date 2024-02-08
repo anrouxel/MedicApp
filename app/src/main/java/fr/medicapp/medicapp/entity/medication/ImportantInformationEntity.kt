@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.entity.medication
 
+import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -20,4 +21,14 @@ data class ImportantInformationEntity(
     var safetyInformationEndDate: LocalDate? = null,
 
     var safetyInformationLink: String = ""
-)
+) : EntityToModelMapper<ImportantInformation>{
+    override fun convert(): ImportantInformation {
+        return ImportantInformation(
+            id,
+            cisCode,
+            safetyInformationStartDate,
+            safetyInformationEndDate,
+            safetyInformationLink
+        )
+    }
+}

@@ -4,9 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.ui.signupSignin.SignIn
-import fr.medicapp.medicapp.ui.signupSignin.SignUp1
-import fr.medicapp.medicapp.ui.signupSignin.SignUp2
 
 /**
  * Construit le graphe de navigation pour l'authentification.
@@ -27,7 +24,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
          * Composable pour l'écran de connexion.
          */
         composable(AuthScreen.Login.route) {
-            SignIn(
+            /*SignIn(
                 login = {
                     navController.popBackStack()
                     navController.navigate(Graph.HOME)
@@ -35,14 +32,14 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 register = {
                     navController.navigate(AuthScreen.RegisterMailPW.route)
                 }
-            )
+            )*/
         }
 
         /**
          * Composable pour l'écran d'enregistrement par mail et mot de passe.
          */
         composable(AuthScreen.RegisterMailPW.route) {
-            SignUp1(
+            /*SignUp1(
                 back = {
                     /*navController.navigate("oi") {
                         popUpTo()
@@ -52,14 +49,14 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 validate = {
                     navController.navigate(AuthScreen.RegisterName.route)
                 }
-            )
+            )*/
         }
 
         /**
          * Composable pour l'écran d'enregistrement du nom.
          */
         composable(AuthScreen.RegisterName.route) {
-            SignUp2(
+            /*SignUp2(
                 back = {
                     /*navController.navigate("oi") {
                         popUpTo()
@@ -70,7 +67,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                     navController.popBackStack()
                     navController.navigate(Graph.HOME)
                 }
-            )
+            )*/
         }
     }
 }

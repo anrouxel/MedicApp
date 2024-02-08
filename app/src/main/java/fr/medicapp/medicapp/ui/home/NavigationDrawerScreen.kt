@@ -36,6 +36,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.ui.navigation.HomeNavGraph
+import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import kotlinx.coroutines.launch
 
 /**
@@ -53,7 +54,10 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavigationDrawerScreen(navController: NavHostController = rememberNavController()) {
+fun NavigationDrawerScreen(
+    navController: NavHostController = rememberNavController(),
+    onThemeChange: (ThemeColorScheme) -> Unit
+) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -151,6 +155,7 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
             ) {
                 HomeNavGraph(
                     navController = navController,
+                    onThemeChange = onThemeChange
                 )
             }
         }
@@ -166,5 +171,5 @@ fun NavigationDrawerScreen(navController: NavHostController = rememberNavControl
 @Preview
 @Composable
 private fun NavigationDrawerScreenPreview() {
-    NavigationDrawerScreen()
+    NavigationDrawerScreen(onThemeChange = {})
 }

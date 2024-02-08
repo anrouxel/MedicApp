@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.entity.medication
 
+import fr.medicapp.medicapp.database.EntityToModelMapper
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 
@@ -11,4 +12,12 @@ data class PrescriptionDispensingConditionsEntity(
     var cisCode: Long = 0L,
 
     var prescriptionDispensingCondition: String = ""
-)
+) : EntityToModelMapper<PrescriptionDispensingConditions> {
+    override fun convert(): PrescriptionDispensingConditions {
+        return PrescriptionDispensingConditions(
+            id,
+            cisCode,
+            prescriptionDispensingCondition
+        )
+    }
+}

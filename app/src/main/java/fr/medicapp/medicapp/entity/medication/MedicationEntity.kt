@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.entity.medication
 
+import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -36,7 +37,7 @@ data class MedicationEntity(
     var holders: MutableList<String> = mutableListOf(),
 
     var enhancedMonitoring: Boolean? = null,
-) {
+) : EntityToModelMapper<Medication> {
     var medicationCompositions: MutableList<MedicationCompositionEntity> = ToMany(this,
         MedicationEntity_.medicationCompositions
     )
@@ -68,4 +69,30 @@ data class MedicationEntity(
     var pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialtyEntity> = ToMany(this,
         MedicationEntity_.pharmaceuticalSpecialties
     )
+
+    override fun convert(): Medication {
+        return Medication(
+            id,
+            cisCode,
+            name,
+            pharmaceuticalForm,
+            administrationRoutes,
+            marketingAuthorizationStatus,
+            marketingAuthorizationProcedureType,
+            commercializationStatus,
+            marketingAuthorizationDate,
+            bdmStatus,
+            europeanAuthorizationNumber,
+            holders,
+            enhancedMonitoring,
+            medicationCompositions.map { it.convert() }.toMutableList(),
+            medicationPresentations.map { it.convert() }.toMutableList(),
+            genericGroups.map { it.convert() }.toMutableList(),
+            hasSmrOpinions.map { it.convert() }.toMutableList(),
+            hasAsmrOpinions.map { it.convert() }.toMutableList(),
+            importantInformations.map { it.convert() }.toMutableList(),
+            prescriptionDispensingConditions.map { it.convert() }.toMutableList(),
+            pharmaceuticalSpecialties.map { it.convert() }.toMutableList()
+        )
+    }
 }

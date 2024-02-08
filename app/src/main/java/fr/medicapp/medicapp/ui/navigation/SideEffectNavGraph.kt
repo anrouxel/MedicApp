@@ -12,9 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.SideEffectEntity
-import fr.medicapp.medicapp.ui.sideeffectsdiary.SED
-import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDEdit
-import fr.medicapp.medicapp.ui.sideeffectsdiary.SEDMainMenu
+import fr.medicapp.medicapp.ui.sideeffect.SideEffectHome
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.EURedColorShema
+import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
 
 /**
@@ -23,7 +24,8 @@ import fr.medicapp.medicapp.viewModel.SharedSideEffectViewModel
  */
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.sideEffectNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
 
     /**
@@ -38,19 +40,14 @@ fun NavGraphBuilder.sideEffectNavGraph(
          * Composable pour l'écran principal des effets secondaires.
          */
         composable(route = SideEffectRoute.Main.route) {
+            onThemeChange(EURedColorShema)
             val store = ObjectBox.getInstance(LocalContext.current)
             val sideEffectStore = store.boxFor(SideEffectEntity::class.java)
 
-            val sideEffect = remember { sideEffectStore.all}
+            val sideEffects = remember { sideEffectStore.all.map { it.convert() } }
 
-            SEDMainMenu(
-                sideeffects = sideEffect,
-                onSideEffect = { id ->
-                    navController.navigate(SideEffectRoute.SideEffect.route.replace("{id}", id.toString()))
-                },
-                addSideEffect = {
-                    navController.navigate(SideEffectRoute.AddSideEffect.route)
-                },
+            SideEffectHome(
+                sideEffects = sideEffects,
             )
         }
 
@@ -65,7 +62,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
 
             val sideEffect = remember { notificationStore.get(id.toLong()) }
 
-            if (sideEffect != null) {
+            /*if (sideEffect != null) {
                 SED(
                     sideeffect = sideEffect,
                     onTreatment = { id ->
@@ -92,7 +89,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         }
                     }
                 }
-            }
+            }*/
         }
 
         /**
@@ -107,7 +104,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
 
             val sideEffectStore = store.boxFor(SideEffectEntity::class.java)
 
-            SEDEdit(
+            /*SEDEdit(
                 sideeffects = state,
                 onConfirm = {
                     sideEffectStore.put(state)
@@ -125,7 +122,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
                         }
                     }
                 }
-            )
+            )*/
         }
     }
 }

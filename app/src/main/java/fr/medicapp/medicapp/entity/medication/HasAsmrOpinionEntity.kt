@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.entity.medication
 
+import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -24,8 +25,21 @@ data class HasAsmrOpinionEntity(
     var asmrValue: String = "",
 
     var asmrLabel: String = "",
-) {
+) : EntityToModelMapper<HasAsmrOpinion>{
     var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinksEntity> = ToMany(this,
         HasAsmrOpinionEntity_.transparencyCommissionOpinionLinks
     )
+
+    override fun convert(): HasAsmrOpinion {
+        return HasAsmrOpinion(
+            id,
+            cisCode,
+            hasDossierCode,
+            evaluationReason,
+            transparencyCommissionOpinionDate,
+            asmrValue,
+            asmrLabel,
+            transparencyCommissionOpinionLinks.map { it.convert() }.toMutableList()
+        )
+    }
 }

@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.navigation
 
-import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
@@ -11,18 +10,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import de.coldtea.smplr.smplralarm.alarmNotification
-import de.coldtea.smplr.smplralarm.channel
-import de.coldtea.smplr.smplralarm.smplrAlarmCancel
-import de.coldtea.smplr.smplralarm.smplrAlarmSet
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.entity.NotificationEntity
-import fr.medicapp.medicapp.ui.notifications.Notifications
-import fr.medicapp.medicapp.ui.notifications.NotificationsEdit
-import fr.medicapp.medicapp.ui.notifications.NotificationsMainMenu
+import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedNotificationViewModel
-import java.time.DayOfWeek
 
 /**
  * Cette fonction construit le graphe de navigation pour les notifications.
@@ -31,7 +22,8 @@ import java.time.DayOfWeek
  */
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.notificationNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     /**
      * Définit la navigation pour le graphe de notification.
@@ -50,7 +42,7 @@ fun NavGraphBuilder.notificationNavGraph(
 
             val notification = remember { notificationStore.all }
 
-            NotificationsMainMenu(
+            /*NotificationsMainMenu(
                 notifications = notification,
                 onNotification = { id ->
                     navController.navigate(
@@ -62,7 +54,7 @@ fun NavGraphBuilder.notificationNavGraph(
                 },
             ) {
                 navController.navigate(NotificationRoute.AddNotification.route)
-            }
+            }*/
         }
 
         /**
@@ -79,7 +71,7 @@ fun NavGraphBuilder.notificationNavGraph(
 
             var context = LocalContext.current
 
-            if (notification != null) {
+            /*if (notification != null) {
                 Notifications(
                     notification = notification,
                     onClose = {
@@ -104,7 +96,7 @@ fun NavGraphBuilder.notificationNavGraph(
                         }
                     }
                 }
-            }
+            }*/
         }
 
         /**
@@ -121,7 +113,7 @@ fun NavGraphBuilder.notificationNavGraph(
 
             val notificationStore = store.boxFor(NotificationEntity::class.java)
 
-            NotificationsEdit(
+            /*NotificationsEdit(
                 notification = state,
                 onConfirm = {
                     for (i in 0 until state.hours.size) {
@@ -178,7 +170,7 @@ fun NavGraphBuilder.notificationNavGraph(
                         inclusive = true
                     }
                 }
-            }
+            }*/
         }
     }
 }
