@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.tokenization
+package fr.medicapp.medicapp.ai.tokenization
 
 /**
  * Classe WordpieceTokenizer pour la tokenization du texte en morceaux de mots.

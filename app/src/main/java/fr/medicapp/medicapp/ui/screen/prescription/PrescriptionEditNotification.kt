@@ -17,7 +17,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,7 +33,6 @@ import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTimePickerButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
-import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
@@ -197,22 +195,6 @@ fun PrescriptionEditNotification(
 @Preview(name = "Light Theme")
 @Composable
 private fun PrescriptionEditNotificationPreview() {
-    val prescription = Prescription(
-        notifications = mutableListOf(
-            Notification(
-                alarms = mutableListOf(
-                    Alarm()
-                )
-            ),
-            Notification(
-                alarms = mutableListOf(
-                    Alarm(),
-                    Alarm()
-                )
-            ),
-        )
-    )
-
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -229,22 +211,6 @@ private fun PrescriptionEditNotificationPreview() {
 @Preview(name = "Dark Theme")
 @Composable
 private fun PrescriptionEditNotificationDarkPreview() {
-    val prescription = Prescription(
-        notifications = mutableListOf(
-            Notification(
-                alarms = mutableListOf(
-                    Alarm()
-                )
-            ),
-            Notification(
-                alarms = mutableListOf(
-                    Alarm(),
-                    Alarm()
-                )
-            ),
-        )
-    )
-
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,

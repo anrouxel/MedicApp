@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.database.converter
 import io.objectbox.converter.PropertyConverter
 import java.time.DayOfWeek
 
-class MutableListDayOfWeekConverter: PropertyConverter<MutableList<DayOfWeek>, String> {
+class MutableListDayOfWeekConverter : PropertyConverter<MutableList<DayOfWeek>, String> {
     override fun convertToDatabaseValue(entityProperty: MutableList<DayOfWeek>?): String? {
         return entityProperty?.joinToString(separator = ",")
     }

@@ -1,9 +1,7 @@
-package fr.medicapp.medicapp.entity.medication
+package fr.medicapp.medicapp.model.medication
 
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.GenericGroupEntity
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
 
 data class GenericGroup(
     val id: Long = 0L,

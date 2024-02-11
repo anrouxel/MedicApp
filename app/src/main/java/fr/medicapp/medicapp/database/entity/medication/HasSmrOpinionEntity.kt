@@ -2,7 +2,7 @@ package fr.medicapp.medicapp.database.entity.medication
 
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.LocalDateConverter
-import fr.medicapp.medicapp.entity.medication.HasSmrOpinion
+import fr.medicapp.medicapp.model.medication.HasSmrOpinion
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -27,7 +27,8 @@ data class HasSmrOpinionEntity(
 
     var smrLabel: String = "",
 ) : EntityToModelMapper<HasSmrOpinion> {
-    var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinksEntity> = ToMany(this,
+    var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinksEntity> = ToMany(
+        this,
         HasSmrOpinionEntity_.transparencyCommissionOpinionLinks
     )
 

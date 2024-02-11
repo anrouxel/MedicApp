@@ -22,7 +22,7 @@ data class PrescriptionEntity(
 
     lateinit var treatment: ToOne<TreatmentEntity>
 
-    lateinit var notifications : ToMany<NotificationEntity>
+    lateinit var notifications: ToMany<NotificationEntity>
 
     override fun convert(): Prescription {
         return Prescription(

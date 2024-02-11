@@ -1,5 +1,5 @@
 package fr.medicapp.medicapp.database.converter
 
-interface EntityToModelMapper<Model> {
+fun interface EntityToModelMapper<Model> {
     fun convert(): Model
 }

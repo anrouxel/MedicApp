@@ -1,9 +1,7 @@
 package fr.medicapp.medicapp.ui.components.card
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +18,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun ReusableElevatedCard(
     modifier: Modifier = Modifier.fillMaxWidth(),
     onClick: () -> Unit = {},
-    content : @Composable ColumnScope.() -> Unit = {}
+    content: @Composable ColumnScope.() -> Unit = {}
 ) {
     ElevatedCard(
         modifier = modifier,

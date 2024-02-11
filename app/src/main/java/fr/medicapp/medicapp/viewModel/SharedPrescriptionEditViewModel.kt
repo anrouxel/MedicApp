@@ -1,8 +1,6 @@
 package fr.medicapp.medicapp.viewModel
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.ObjectBox
@@ -15,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.DayOfWeek
 import java.time.LocalDate
-import javax.inject.Inject
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -123,10 +120,7 @@ class SharedPrescriptionEditViewModel(
     fun save(context: Context) {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        Log.d("SharedPrescriptionEditViewModel", "Saving prescription: ${sharedState.value}")
-        Log.d("SharedPrescriptionEditViewModel", "Saving prescription: ${sharedState.value.date}")
-        val prescription = sharedState.value.convert()
-        Log.d("SharedPrescriptionEditViewModel", "Saving prescription: $prescription")
+        val prescription = _sharedState.value.convert()
         store.put(prescription)
     }
 }

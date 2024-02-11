@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.ui.screen.sideeffect
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.ui.components.screen.Edit
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 

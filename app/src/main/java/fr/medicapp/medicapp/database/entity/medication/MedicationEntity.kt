@@ -2,7 +2,7 @@ package fr.medicapp.medicapp.database.entity.medication
 
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.LocalDateConverter
-import fr.medicapp.medicapp.entity.medication.Medication
+import fr.medicapp.medicapp.model.medication.Medication
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -39,35 +39,43 @@ data class MedicationEntity(
 
     var enhancedMonitoring: Boolean? = null,
 ) : EntityToModelMapper<Medication> {
-    var medicationCompositions: MutableList<MedicationCompositionEntity> = ToMany(this,
+    var medicationCompositions: MutableList<MedicationCompositionEntity> = ToMany(
+        this,
         MedicationEntity_.medicationCompositions
     )
 
-    var medicationPresentations: MutableList<MedicationPresentationEntity> = ToMany(this,
+    var medicationPresentations: MutableList<MedicationPresentationEntity> = ToMany(
+        this,
         MedicationEntity_.medicationPresentations
     )
 
-    var genericGroups: MutableList<GenericGroupEntity> = ToMany(this,
+    var genericGroups: MutableList<GenericGroupEntity> = ToMany(
+        this,
         MedicationEntity_.genericGroups
     )
 
-    var hasSmrOpinions: MutableList<HasSmrOpinionEntity> = ToMany(this,
+    var hasSmrOpinions: MutableList<HasSmrOpinionEntity> = ToMany(
+        this,
         MedicationEntity_.hasSmrOpinions
     )
 
-    var hasAsmrOpinions: MutableList<HasAsmrOpinionEntity> = ToMany(this,
+    var hasAsmrOpinions: MutableList<HasAsmrOpinionEntity> = ToMany(
+        this,
         MedicationEntity_.hasAsmrOpinions
     )
 
-    var importantInformations: MutableList<ImportantInformationEntity> = ToMany(this,
+    var importantInformations: MutableList<ImportantInformationEntity> = ToMany(
+        this,
         MedicationEntity_.importantInformations
     )
 
-    var prescriptionDispensingConditions: MutableList<PrescriptionDispensingConditionsEntity> = ToMany(this,
+    var prescriptionDispensingConditions: MutableList<PrescriptionDispensingConditionsEntity> = ToMany(
+        this,
         MedicationEntity_.prescriptionDispensingConditions
     )
 
-    var pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialtyEntity> = ToMany(this,
+    var pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialtyEntity> = ToMany(
+        this,
         MedicationEntity_.pharmaceuticalSpecialties
     )
 

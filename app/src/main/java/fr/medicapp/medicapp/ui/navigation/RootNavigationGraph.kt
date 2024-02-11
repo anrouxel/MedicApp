@@ -21,7 +21,6 @@ fun RootNavGraph(
     theme: ThemeColorScheme,
     onThemeChange: (ThemeColorScheme) -> Unit,
 ) {
-
     /**
      * Définit le hôte de navigation pour le graphe de navigation racine.
      */
@@ -30,12 +29,6 @@ fun RootNavGraph(
         route = Graph.ROOT,
         startDestination = Graph.HOME
     ) {
-
-        /**
-         * Appelle la fonction authNavGraph pour construire le graphe de navigation d'authentification.
-         */
-        authNavGraph(navController = navController)
-
         /**
          * Composable pour l'écran d'accueil.
          */

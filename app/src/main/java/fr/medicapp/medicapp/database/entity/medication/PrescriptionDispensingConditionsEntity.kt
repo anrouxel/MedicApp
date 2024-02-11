@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.database.entity.medication
 
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
-import fr.medicapp.medicapp.entity.medication.PrescriptionDispensingConditions
+import fr.medicapp.medicapp.model.medication.PrescriptionDispensingConditions
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 

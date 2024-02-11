@@ -39,8 +39,8 @@ import fr.medicapp.medicapp.model.OptionDialog
 @Composable
 fun SearchDialog(
     options: (String) -> List<OptionDialog>,
-    cardColor : Color,
-    selectedCardColor : Color,
+    cardColor: Color,
+    selectedCardColor: Color,
     onDismiss: () -> Unit,
     onValidate: (OptionDialog) -> Unit,
 ) {
@@ -107,8 +107,9 @@ fun SearchDialog(
                     contentColor = Color.White,
                 ),
                 onClick = {
-                selectedOption?.let(onValidate)
-            }) {
+                    selectedOption?.let(onValidate)
+                }
+            ) {
                 Text("Valider")
             }
         }

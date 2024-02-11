@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.database.entity.medication
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.LocalDateConverter
 import fr.medicapp.medicapp.database.converter.MutableListFloatConverter
-import fr.medicapp.medicapp.entity.medication.MedicationPresentation
+import fr.medicapp.medicapp.model.medication.MedicationPresentation
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -61,4 +61,3 @@ data class MedicationPresentationEntity(
         )
     }
 }
-

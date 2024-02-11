@@ -19,7 +19,6 @@ import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -58,11 +57,10 @@ fun PrescriptionEditInformation(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Light Theme")
 @Composable
 private fun PrescriptionEditInformationPreview() {
-    val prescription = Prescription()
-
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -75,11 +73,10 @@ private fun PrescriptionEditInformationPreview() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Dark Theme")
 @Composable
 private fun PrescriptionEditInformationDarkPreview() {
-    val prescription = Prescription()
-
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,

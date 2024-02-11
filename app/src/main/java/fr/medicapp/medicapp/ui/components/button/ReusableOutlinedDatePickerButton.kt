@@ -38,7 +38,9 @@ fun ReusableOutlinedDatePickerButton(
             onDismissRequest = { open = false },
             onConfirm = {
                 open = false
-                val localDate =  Instant.ofEpochMilli(state.selectedDateMillis!!).atZone(ZoneId.systemDefault()).toLocalDate()
+                val localDate = Instant.ofEpochMilli(
+                    state.selectedDateMillis!!
+                ).atZone(ZoneId.systemDefault()).toLocalDate()
                 onSelected(localDate)
             }
         )

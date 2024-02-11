@@ -2,11 +2,7 @@ package fr.medicapp.medicapp.model
 
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.TreatmentEntity
-import fr.medicapp.medicapp.entity.medication.Medication
-import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
-import io.objectbox.relation.ToOne
+import fr.medicapp.medicapp.model.medication.Medication
 
 data class Treatment(
     var id: Long = 0L,

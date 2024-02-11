@@ -18,7 +18,6 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
-
     /**
      * Construit le graphe de navigation pour l'écran d'accueil.
      *
@@ -29,7 +28,6 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
         route = Graph.HOME,
         startDestination = RootRoute.RootRouteHomeRoute.route
     ) {
-
         /**
          * Composable pour l'écran d'accueil.
          */

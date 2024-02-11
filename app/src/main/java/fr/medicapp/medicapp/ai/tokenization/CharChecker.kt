@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.tokenization
+package fr.medicapp.medicapp.ai.tokenization
 
 /**
  * Classe CharChecker pour vérifier les caractères spécifiques.

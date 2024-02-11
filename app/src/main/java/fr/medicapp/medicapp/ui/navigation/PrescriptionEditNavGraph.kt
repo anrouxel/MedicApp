@@ -11,7 +11,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditInformation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditNotification
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditTreatment

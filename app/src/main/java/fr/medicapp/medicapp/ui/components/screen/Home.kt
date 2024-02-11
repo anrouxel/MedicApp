@@ -29,7 +29,6 @@ fun Home(
     title: String,
     floatingActionButtonOnClick: () -> Unit,
     floatActionButtonIcon: ImageVector,
-    bottomBar: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
@@ -47,13 +46,6 @@ fun Home(
                     )
                 }
             )
-        },
-        bottomBar = {
-            Box(
-                modifier = Modifier.padding(10.dp)
-            ) {
-                bottomBar()
-            }
         },
         floatingActionButton = {
             FloatingActionButton(
