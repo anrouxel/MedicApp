@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,11 +49,17 @@ fun PrescriptionEditNotification(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
+
+    Log.d("SharedPrescriptionEditViewModel", "state: ${state.value}")
 
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
-        onClick = onClick
+        onClick = {
+            viewModel.save(context)
+            onClick()
+        }
     ) {
         Column {
             ReusableButton(

@@ -4,6 +4,5 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("io.gitlab.arturbosch.detekt") version("1.23.5")
     id("io.objectbox") version("3.7.1") apply false
-    id("com.google.dagger.hilt.android") version "2.48" apply false
     id("com.google.devtools.ksp") version("1.8.10-1.0.9") apply false
 }

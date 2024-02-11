@@ -1,9 +1,8 @@
 package fr.medicapp.medicapp.entity.medication
 
-import fr.medicapp.medicapp.database.LocalDateConverter
-import io.objectbox.annotation.Convert
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
+import fr.medicapp.medicapp.database.converter.EntityToModelMapper
+import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
+import fr.medicapp.medicapp.database.entity.medication.PharmaceuticalSpecialtyEntity
 import java.time.LocalDate
 
 data class PharmaceuticalSpecialty(
@@ -24,4 +23,18 @@ data class PharmaceuticalSpecialty(
     var returnToDate: LocalDate? = null,
 
     var ansmSiteLink: String = "",
-)
+) : ModelToEntityMapper<PharmaceuticalSpecialtyEntity> {
+    override fun convert(): PharmaceuticalSpecialtyEntity {
+        return PharmaceuticalSpecialtyEntity(
+            id,
+            cisCode,
+            cip13Code,
+            statusCode,
+            statusLabel,
+            startDate,
+            updateDate,
+            returnToDate,
+            ansmSiteLink
+        )
+    }
+}

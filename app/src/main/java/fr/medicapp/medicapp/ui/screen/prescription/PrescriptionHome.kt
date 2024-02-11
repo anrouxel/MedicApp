@@ -2,7 +2,10 @@ package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DocumentScanner
@@ -13,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.entity.medication.Medication
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Prescription
@@ -52,11 +56,17 @@ fun PrescriptionList(
     prescriptions: List<Prescription>,
     onPrescriptionClick: () -> Unit = {}
 ) {
-    prescriptions.forEach { prescription ->
-        PrescriptionItem(
-            prescription = prescription,
-            onPrescriptionClick = onPrescriptionClick
-        )
+    Column {
+        prescriptions.forEachIndexed { index, prescription ->
+            PrescriptionItem(
+                prescription = prescription,
+                onPrescriptionClick = onPrescriptionClick
+            )
+
+            if (index != prescriptions.size - 1) {
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
+        }
     }
 }
 
@@ -83,7 +93,9 @@ fun NoPrescriptionAvailable() {
         fontStyle = MaterialTheme.typography.bodyLarge.fontStyle,
         fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxSize().wrapContentHeight(align = Alignment.CenterVertically)
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(align = Alignment.CenterVertically)
     )
 }
 

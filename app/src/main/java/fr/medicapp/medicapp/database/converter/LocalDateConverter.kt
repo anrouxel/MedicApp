@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.database
+package fr.medicapp.medicapp.database.converter
 
 import android.os.Build
 import androidx.annotation.RequiresApi

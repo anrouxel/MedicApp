@@ -1,9 +1,11 @@
 package fr.medicapp.medicapp.viewModel
 
+import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.medicapp.medicapp.database.entity.NotificationEntity
+import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.model.Alarm
 import fr.medicapp.medicapp.model.Duration
@@ -11,7 +13,6 @@ import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Prescription
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import java.time.DayOfWeek
 import java.time.LocalDate
 import javax.inject.Inject
@@ -20,8 +21,7 @@ import javax.inject.Inject
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
  * Il contient un état partagé qui est un flux de prescriptions.
  */
-@HiltViewModel
-class SharedPrescriptionEditViewModel @Inject constructor(
+class SharedPrescriptionEditViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
@@ -118,5 +118,15 @@ class SharedPrescriptionEditViewModel @Inject constructor(
         updatedNotifications[notificationIndex] = updatedNotification
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
+    }
+
+    fun save(context: Context) {
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(PrescriptionEntity::class.java)
+        Log.d("SharedPrescriptionEditViewModel", "Saving prescription: ${sharedState.value}")
+        Log.d("SharedPrescriptionEditViewModel", "Saving prescription: ${sharedState.value.date}")
+        val prescription = sharedState.value.convert()
+        Log.d("SharedPrescriptionEditViewModel", "Saving prescription: $prescription")
+        store.put(prescription)
     }
 }

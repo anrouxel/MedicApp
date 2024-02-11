@@ -5,9 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
     id("io.objectbox")
-    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
-    kotlin("kapt")
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -96,32 +94,11 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    // Sheets Compose Dialogs
-    val sheetsComposeDialogsVersion = "1.2.1"
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:info:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:duration:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:option:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:list:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:input:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:emoji:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:state:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:color:$sheetsComposeDialogsVersion")
-
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
-
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:dagger-compiler:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // Volley
     implementation("com.android.volley:volley:1.2.1")

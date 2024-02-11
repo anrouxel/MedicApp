@@ -1,6 +1,6 @@
 package fr.medicapp.medicapp.database.entity
 
-import fr.medicapp.medicapp.database.EntityToModelMapper
+import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.model.Doctor
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id

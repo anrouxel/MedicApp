@@ -1,6 +1,6 @@
 package fr.medicapp.medicapp.database.entity
 
-import fr.medicapp.medicapp.database.EntityToModelMapper
+import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.model.Treatment
 import io.objectbox.annotation.Entity
@@ -25,8 +25,8 @@ data class TreatmentEntity(
             id,
             posology,
             frequency,
-            medication.target.convert(),
-            duration.target.convert()
+            medication.target?.convert(),
+            duration.target?.convert()
         )
     }
 }

@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.database.entity
 
-import fr.medicapp.medicapp.database.EntityToModelMapper
-import fr.medicapp.medicapp.database.LocalDateConverter
+import fr.medicapp.medicapp.database.converter.EntityToModelMapper
+import fr.medicapp.medicapp.database.converter.LocalDateConverter
 import fr.medicapp.medicapp.model.Duration
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -18,7 +18,7 @@ data class DurationEntity(
 
     @Convert(converter = LocalDateConverter::class, dbType = String::class)
     var endDate: LocalDate? = null
-) : EntityToModelMapper<Duration>{
+) : EntityToModelMapper<Duration> {
     override fun convert(): Duration {
         return Duration(
             id,

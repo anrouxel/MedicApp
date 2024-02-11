@@ -1,10 +1,7 @@
 package fr.medicapp.medicapp.entity.medication
 
-import fr.medicapp.medicapp.database.LocalDateConverter
-import io.objectbox.annotation.Convert
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
-import io.objectbox.relation.ToMany
+import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
+import fr.medicapp.medicapp.database.entity.medication.HasSmrOpinionEntity
 import java.time.LocalDate
 
 data class HasSmrOpinion(
@@ -23,4 +20,20 @@ data class HasSmrOpinion(
     var smrLabel: String = "",
 
     var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinks> = mutableListOf()
-)
+) : ModelToEntityMapper<HasSmrOpinionEntity> {
+    override fun convert(): HasSmrOpinionEntity {
+        val hasSmrOpinionEntity = HasSmrOpinionEntity(
+            id,
+            cisCode,
+            hasDossierCode,
+            evaluationReason,
+            transparencyCommissionOpinionDate,
+            smrValue,
+            smrLabel
+        )
+        hasSmrOpinionEntity.transparencyCommissionOpinionLinks.addAll(
+            transparencyCommissionOpinionLinks.map { it.convert() }
+        )
+        return hasSmrOpinionEntity
+    }
+}

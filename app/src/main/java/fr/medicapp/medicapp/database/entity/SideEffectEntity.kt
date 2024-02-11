@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.database.entity
 
-import fr.medicapp.medicapp.database.EntityToModelMapper
-import fr.medicapp.medicapp.database.LocalDateConverter
+import fr.medicapp.medicapp.database.converter.EntityToModelMapper
+import fr.medicapp.medicapp.database.converter.LocalDateConverter
 import fr.medicapp.medicapp.model.SideEffect
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -24,7 +24,7 @@ data class SideEffectEntity(
     var effetsConstates: MutableList<String> = mutableListOf(),
 
     var description: String = ""
-) : EntityToModelMapper<SideEffect>{
+) : EntityToModelMapper<SideEffect> {
     lateinit var treatment: ToOne<TreatmentEntity>
 
     override fun convert(): SideEffect {

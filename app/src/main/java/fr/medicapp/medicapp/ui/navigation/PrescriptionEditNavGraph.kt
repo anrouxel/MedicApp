@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
@@ -30,7 +29,7 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
         startDestination = PrescriptionEditRoute.PrescriptionEditInformationRoute.route
     ) {
         composable(route = PrescriptionEditRoute.PrescriptionEditInformationRoute.route) {
-            val viewModel = hiltViewModel<SharedPrescriptionEditViewModel>()
+            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
             onThemeChange(EUPurpleColorShema)
 
@@ -42,11 +41,8 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             )
         }
 
-        composable(route = PrescriptionEditRoute.PrescriptionEditTreatmentRoute.route) { backStackEntry ->
-            val parent = remember(backStackEntry) {
-                navController.getBackStackEntry(PrescriptionEditRoute.PrescriptionEditInformationRoute.route)
-            }
-            val viewModel = hiltViewModel<SharedPrescriptionEditViewModel>(parent)
+        composable(route = PrescriptionEditRoute.PrescriptionEditTreatmentRoute.route) {
+            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
             onThemeChange(EUPurpleColorShema)
 
@@ -58,11 +54,8 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             )
         }
 
-        composable(route = PrescriptionEditRoute.PrescriptionEditNotificationRoute.route) { backStackEntry ->
-            val parent = remember(backStackEntry) {
-                navController.getBackStackEntry(PrescriptionEditRoute.PrescriptionEditTreatmentRoute.route)
-            }
-            val viewModel = hiltViewModel<SharedPrescriptionEditViewModel>(parent)
+        composable(route = PrescriptionEditRoute.PrescriptionEditNotificationRoute.route) {
+            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
             onThemeChange(EUPurpleColorShema)
 
@@ -80,13 +73,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
     }
 }
 
-/**
- * Récupère une instance partagée du ViewModel spécifié.
- * Cette fonction est utile pour partager des données entre plusieurs composables dans le même graphe de navigation.
- *
- * @param navController Le contrôleur de navigation.
- * @return Une instance partagée du ViewModel.
- */
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavHostController,

@@ -1,10 +1,7 @@
 package fr.medicapp.medicapp.entity.medication
 
-import fr.medicapp.medicapp.database.LocalDateConverter
-import io.objectbox.annotation.Convert
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
-import io.objectbox.relation.ToMany
+import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import java.time.LocalDate
 
 data class Medication(
@@ -49,4 +46,47 @@ data class Medication(
     var prescriptionDispensingConditions: MutableList<PrescriptionDispensingConditions> = mutableListOf(),
 
     var pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialty> = mutableListOf(),
-)
+) : ModelToEntityMapper<MedicationEntity> {
+    override fun convert(): MedicationEntity {
+        val medicationEntity = MedicationEntity(
+            id,
+            cisCode,
+            name,
+            pharmaceuticalForm,
+            administrationRoutes,
+            marketingAuthorizationStatus,
+            marketingAuthorizationProcedureType,
+            commercializationStatus,
+            marketingAuthorizationDate,
+            bdmStatus,
+            europeanAuthorizationNumber,
+            holders,
+            enhancedMonitoring
+        )
+        medicationEntity.medicationCompositions.addAll(
+            medicationCompositions.map { it.convert() }
+        )
+        medicationEntity.medicationPresentations.addAll(
+            medicationPresentations.map { it.convert() }
+        )
+        medicationEntity.genericGroups.addAll(
+            genericGroups.map { it.convert() }
+        )
+        medicationEntity.hasSmrOpinions.addAll(
+            hasSmrOpinions.map { it.convert() }
+        )
+        medicationEntity.hasAsmrOpinions.addAll(
+            hasAsmrOpinions.map { it.convert() }
+        )
+        medicationEntity.importantInformations.addAll(
+            importantInformations.map { it.convert() }
+        )
+        medicationEntity.prescriptionDispensingConditions.addAll(
+            prescriptionDispensingConditions.map { it.convert() }
+        )
+        medicationEntity.pharmaceuticalSpecialties.addAll(
+            pharmaceuticalSpecialties.map { it.convert() }
+        )
+        return medicationEntity
+    }
+}

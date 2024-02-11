@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.database
+package fr.medicapp.medicapp.database.converter
 
 import io.objectbox.converter.PropertyConverter
 import java.time.DayOfWeek

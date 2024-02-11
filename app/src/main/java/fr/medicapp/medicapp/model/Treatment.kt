@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.model
 
+import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
+import fr.medicapp.medicapp.database.entity.TreatmentEntity
 import fr.medicapp.medicapp.entity.medication.Medication
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import io.objectbox.annotation.Entity
@@ -16,4 +18,15 @@ data class Treatment(
     var medication: Medication? = null,
 
     var duration: Duration? = null
-)
+) : ModelToEntityMapper<TreatmentEntity> {
+    override fun convert(): TreatmentEntity {
+        val treatment = TreatmentEntity(
+            id,
+            posology,
+            frequency
+        )
+        treatment.medication.target = medication?.convert()
+        treatment.duration.target = duration?.convert()
+        return treatment
+    }
+}

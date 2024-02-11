@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.database.entity
 
-import fr.medicapp.medicapp.database.EntityToModelMapper
-import fr.medicapp.medicapp.database.MutableListDayOfWeekConverter
+import fr.medicapp.medicapp.database.converter.EntityToModelMapper
+import fr.medicapp.medicapp.database.converter.MutableListDayOfWeekConverter
 import fr.medicapp.medicapp.model.Notification
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
