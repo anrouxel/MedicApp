@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import androidx.compose.runtime.mutableStateListOf
 import java.time.LocalDate
 
 data class Prescription(
@@ -11,5 +12,5 @@ data class Prescription(
 
     var treatment: Treatment = Treatment(),
 
-    var notifications: MutableList<Notification> = mutableListOf()
+    var notifications: MutableList<Notification> = mutableStateListOf()
 )

@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.ui.home.NavigationDrawerRoute
+import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
@@ -25,7 +25,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
      * Définit la navigation pour le graphe de prescription.
      */
     navigation(
-        route = NavigationDrawerRoute.NavigationDrawerPrescriptionRoute.route,
+        route = RootRoute.RootRoutePrescriptionRoute.route,
         startDestination = PrescriptionRoute.PrescriptionHomeRoute.route
     ) {
         composable(route = PrescriptionRoute.PrescriptionHomeRoute.route) {

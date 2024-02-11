@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ui.home
+package fr.medicapp.medicapp.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

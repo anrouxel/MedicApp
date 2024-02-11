@@ -27,7 +27,8 @@ fun ReusableElevatedCard(
         onClick = onClick,
         content = content,
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 6.dp,
+            pressedElevation = 6.dp
         ),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.elevatedCardColors(

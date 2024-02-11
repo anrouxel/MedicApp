@@ -6,10 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.ui.home.HomeScreen
-import fr.medicapp.medicapp.ui.home.NavigationDrawerRoute
+import fr.medicapp.medicapp.ui.screen.home.HomeScreen
+import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUGreenColorShema
-import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
@@ -28,13 +27,13 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = NavigationDrawerRoute.NavigationDrawerHomeRoute.route
+        startDestination = RootRoute.RootRouteHomeRoute.route
     ) {
 
         /**
          * Composable pour l'écran d'accueil.
          */
-        composable(route = NavigationDrawerRoute.NavigationDrawerHomeRoute.route) {
+        composable(route = RootRoute.RootRouteHomeRoute.route) {
             onThemeChange(EUGreenColorShema)
             HomeScreen(
                 onAddPrescriptionClick = {

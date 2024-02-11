@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ui.components
+package fr.medicapp.medicapp.ui.components.modal
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -9,10 +9,14 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 /**
  * Cette fonction affiche un modal de sélection de date.
@@ -28,10 +32,8 @@ fun DatePickerModal(
     state: DatePickerState,
     onDismissRequest: () -> Unit = {},
     onConfirm: () -> Unit = {},
-    colors: DatePickerColors = DatePickerDefaults.colors(),
 ) {
     DatePickerDialog(
-        colors = colors,
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(
@@ -59,7 +61,33 @@ fun DatePickerModal(
 @Preview(showBackground = true)
 @Composable
 private fun DatePickerModalPreview() {
-    DatePickerModal(
-        DatePickerState(1704898282476, 1704898282476, IntRange(2000,2010), DisplayMode.Picker)
-    )
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        DatePickerModal(
+            state = rememberDatePickerState(),
+            onDismissRequest = {},
+            onConfirm = {}
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showBackground = true)
+@Composable
+private fun DatePickerModalDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        DatePickerModal(
+            state = rememberDatePickerState(),
+            onDismissRequest = {},
+            onConfirm = {}
+        )
+    }
 }

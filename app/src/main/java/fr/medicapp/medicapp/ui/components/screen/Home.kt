@@ -3,6 +3,8 @@ package fr.medicapp.medicapp.ui.components.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -71,6 +73,9 @@ fun Home(
                 .padding(innerPadding)
                 .fillMaxSize()
                 .padding(10.dp)
+                .verticalScroll(
+                    state = rememberScrollState()
+                )
         ) {
             content()
         }

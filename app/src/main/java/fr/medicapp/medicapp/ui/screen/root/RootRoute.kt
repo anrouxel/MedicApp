@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ui.home
+package fr.medicapp.medicapp.ui.screen.root
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * @property title Le titre de la route.
  * @property icon L'icône de la route.
  */
-sealed class NavigationDrawerRoute(
+sealed class RootRoute(
     val route: String,
     val title: String,
     val icon: ImageVector,
@@ -27,7 +27,7 @@ sealed class NavigationDrawerRoute(
     /**
      * Route de l'écran d'accueil.
      */
-    object NavigationDrawerHomeRoute : NavigationDrawerRoute(
+    object RootRouteHomeRoute : RootRoute(
         route = "home",
         title = "Accueil",
         icon = Icons.Filled.Home,
@@ -36,9 +36,9 @@ sealed class NavigationDrawerRoute(
     /**
      * Route de l'écran des prescriptions.
      */
-    object NavigationDrawerPrescriptionRoute : NavigationDrawerRoute(
+    object RootRoutePrescriptionRoute : RootRoute(
         route = "prescription",
-        title = "Mes traitements",
+        title = "Traitements",
         icon = Icons.Filled.Medication,
     )
 }

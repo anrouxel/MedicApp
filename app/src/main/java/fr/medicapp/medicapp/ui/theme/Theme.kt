@@ -20,7 +20,7 @@ import fr.medicapp.medicapp.R
 val EUYellowColorShema = ThemeColorScheme(
     lightColorScheme = lightColorScheme(
         primary = EUYellow100,
-        onPrimary = EUBlack100
+        onPrimary = EUBlack100,
     ),
     darkColorScheme = darkColorScheme(
         primary = EUYellow100,

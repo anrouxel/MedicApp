@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.ui.components.button
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
@@ -32,7 +30,7 @@ fun ReusableOutlinedTextFieldButton(
                 onClick = onClick,
                 onLongClick = onLongClick
             ),
-        readOnly = true,
+        enabled = false,
         value = value,
         onValueChange = {},
         label = {
@@ -53,7 +51,7 @@ fun ReusableOutlinedTextFieldButton(
             focusedTextColor = MaterialTheme.colorScheme.onPrimary,
             unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
             disabledTextColor = MaterialTheme.colorScheme.onPrimary,
-            errorTextColor = MaterialTheme.colorScheme.error
+            errorTextColor = MaterialTheme.colorScheme.error,
         ),
         textStyle = MaterialTheme.typography.bodyMedium
     )
@@ -93,7 +91,7 @@ private fun ReusableOutlinedTextFieldButtonDarkPreview() {
 
 @Preview(name = "Light Theme", showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-private fun ReusableOutlinedTextFieldLabelButtonPreview() {
+private fun ReusableOutlinedTextFieldButtonLabelPreview() {
     MedicAppTheme(
         darkTheme = true,
         theme = EUYellowColorShema,
@@ -109,7 +107,7 @@ private fun ReusableOutlinedTextFieldLabelButtonPreview() {
 
 @Preview(name = "Dark Theme", showBackground = true, backgroundColor = 0xFF000000)
 @Composable
-private fun ReusableOutlinedTextFieldLabelButtonDarkPreview() {
+private fun ReusableOutlinedTextFieldButtonLabelDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         theme = EUYellowColorShema,

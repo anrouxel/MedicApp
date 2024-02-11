@@ -1,18 +1,19 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
@@ -20,63 +21,60 @@ import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PrescriptionEditTreatment(
     viewModel: SharedPrescriptionEditViewModel,
     onClick: () -> Unit
 ) {
+    val state = viewModel.sharedState.collectAsState()
+
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
         onClick = onClick
     ) {
-        /*ReusableElevatedCard {
+        ReusableElevatedCard {
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
-                ReusableOutlinedTextField(
+                ReusableOutlinedTextFieldButton(
                     value = "",
-                    onValueChange = { },
-                    label = {
-                        Text("Médicament")
-                    }
+                    label = "Médicament",
+                    onClick = {}
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedTextField(
-                    value = prescription.treatment.posology,
+                    value = state.value.treatment.posology,
                     onValueChange = {
-                        prescription.treatment.posology = it
+                        viewModel.updatePosology(it)
                     },
-                    label = {
-                        Text("Posologie")
-                    }
+                    label = "Posologie"
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedTextField(
-                    value = prescription.treatment.frequency,
+                    value = state.value.treatment.frequency,
                     onValueChange = {
-                        prescription.treatment.frequency = it
+                        viewModel.updateFrequency(it)
                     },
-                    label = {
-                        Text("Fréquence")
-                    }
+                    label = "Fréquence"
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
-                ReusableOutlinedTextField(
-                    value = "",
-                    onValueChange = { },
-                    label = {
-                        Text("Durée")
+                ReusableOutlinedDateRangePickerButton(
+                    value = state.value.treatment.duration,
+                    label = "Durée",
+                    onSelected = {
+                        viewModel.updateDuration(it)
                     }
                 )
             }
-        }*/
+        }
     }
 }
 

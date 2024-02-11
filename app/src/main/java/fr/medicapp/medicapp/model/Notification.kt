@@ -1,13 +1,14 @@
 package fr.medicapp.medicapp.model
 
+import androidx.compose.runtime.mutableStateListOf
 import java.time.DayOfWeek
 
 data class Notification(
     val id: Long = 0L,
 
-    var enabled: Boolean = false,
+    var active: Boolean = false,
 
-    var frequency: MutableList<DayOfWeek> = mutableListOf(),
+    var days: MutableList<DayOfWeek> = mutableStateListOf(),
 
-    var alarms: MutableList<Alarm> = mutableListOf()
+    var alarms: MutableList<Alarm> = mutableStateListOf()
 )

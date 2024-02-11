@@ -2,7 +2,6 @@ package fr.medicapp.medicapp.entity
 
 import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.MutableListDayOfWeekConverter
-import fr.medicapp.medicapp.entity.medication.AlarmEntity
 import fr.medicapp.medicapp.model.Notification
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
@@ -15,10 +14,10 @@ data class NotificationEntity(
     @Id
     var id: Long = 0L,
 
-    var enabled: Boolean = false,
+    var active: Boolean = false,
 
     @Convert(converter = MutableListDayOfWeekConverter::class, dbType = String::class)
-    var frequency: MutableList<DayOfWeek> = mutableListOf(),
+    var days: MutableList<DayOfWeek> = mutableListOf(),
 
 ) : EntityToModelMapper<Notification> {
     lateinit var alarms: ToMany<AlarmEntity>
@@ -26,8 +25,8 @@ data class NotificationEntity(
     override fun convert(): Notification {
         return Notification(
             id,
-            enabled,
-            frequency,
+            active,
+            days,
             alarms.map { it.convert() }.toMutableList()
         )
     }

@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.entity.medication
+package fr.medicapp.medicapp.entity
 
 import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.MutableListIntConverter
@@ -12,17 +12,17 @@ data class AlarmEntity(
     @Id
     var id: Long = 0L,
 
-    var hours: Int = 0,
+    var hour: Int = 0,
 
-    var minutes: Int = 0,
+    var minute: Int = 0,
 
     var alarms: Int = 0
 ) : EntityToModelMapper<Alarm> {
     override fun convert(): Alarm {
         return Alarm(
             id,
-            hours,
-            minutes,
+            hour,
+            minute,
             alarms
         )
     }

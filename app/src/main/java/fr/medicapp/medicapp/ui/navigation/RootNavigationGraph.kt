@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.ui.home.NavigationDrawerScreen
+import fr.medicapp.medicapp.ui.screen.root.RootScreen
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
@@ -40,7 +40,7 @@ fun RootNavGraph(
          * Composable pour l'écran d'accueil.
          */
         composable(route = Graph.HOME) {
-            NavigationDrawerScreen(
+            RootScreen(
                 theme = theme,
                 onThemeChange = onThemeChange
             )
