@@ -3,6 +3,7 @@ package fr.medicapp.medicapp.ui.screen.root
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Medication
+import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -40,5 +41,14 @@ sealed class RootRoute(
         route = "prescription",
         title = "Traitements",
         icon = Icons.Filled.Medication,
+    )
+
+    /**
+     * Route de l'écran des effets secondaires.
+     */
+    object RootRouteSideEffectRoute : RootRoute(
+        route = "sideEffect",
+        title = "Effets",
+        icon = Icons.Filled.Newspaper,
     )
 }

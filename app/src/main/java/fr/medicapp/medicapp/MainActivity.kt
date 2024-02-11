@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.entity.medication.MedicationEntity_
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema

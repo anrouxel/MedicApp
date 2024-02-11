@@ -3,8 +3,8 @@ package fr.medicapp.medicapp.viewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.medicapp.medicapp.entity.NotificationEntity
-import fr.medicapp.medicapp.entity.PrescriptionEntity
+import fr.medicapp.medicapp.database.entity.NotificationEntity
+import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.model.Alarm
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification

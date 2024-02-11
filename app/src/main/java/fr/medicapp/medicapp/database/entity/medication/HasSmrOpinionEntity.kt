@@ -1,7 +1,9 @@
-package fr.medicapp.medicapp.entity.medication
+package fr.medicapp.medicapp.database.entity.medication
 
 import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
+import fr.medicapp.medicapp.entity.medication.HasSmrOpinion
+import fr.medicapp.medicapp.entity.medication.HasSmrOpinionEntity_
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -9,7 +11,7 @@ import io.objectbox.relation.ToMany
 import java.time.LocalDate
 
 @Entity
-data class HasAsmrOpinionEntity(
+data class HasSmrOpinionEntity(
     @Id
     var id: Long = 0L,
 
@@ -22,23 +24,23 @@ data class HasAsmrOpinionEntity(
     @Convert(converter = LocalDateConverter::class, dbType = String::class)
     var transparencyCommissionOpinionDate: LocalDate? = null,
 
-    var asmrValue: String = "",
+    var smrValue: String = "",
 
-    var asmrLabel: String = "",
-) : EntityToModelMapper<HasAsmrOpinion>{
+    var smrLabel: String = "",
+) : EntityToModelMapper<HasSmrOpinion>{
     var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinksEntity> = ToMany(this,
-        HasAsmrOpinionEntity_.transparencyCommissionOpinionLinks
+        HasSmrOpinionEntity_.transparencyCommissionOpinionLinks
     )
 
-    override fun convert(): HasAsmrOpinion {
-        return HasAsmrOpinion(
+    override fun convert(): HasSmrOpinion {
+        return HasSmrOpinion(
             id,
             cisCode,
             hasDossierCode,
             evaluationReason,
             transparencyCommissionOpinionDate,
-            asmrValue,
-            asmrLabel,
+            smrValue,
+            smrLabel,
             transparencyCommissionOpinionLinks.map { it.convert() }.toMutableList()
         )
     }

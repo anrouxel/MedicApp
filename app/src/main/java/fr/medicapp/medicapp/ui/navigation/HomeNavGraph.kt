@@ -49,5 +49,13 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
             navController = navController,
             onThemeChange = onThemeChange
         )
+
+        /**
+         * Appelle la fonction sideEffectNavGraph pour construire le graphe de navigation des effets secondaires.
+         */
+        sideEffectNavGraph(
+            navController = navController,
+            onThemeChange = onThemeChange
+        )
     }
 }

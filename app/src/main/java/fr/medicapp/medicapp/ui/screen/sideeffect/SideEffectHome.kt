@@ -31,7 +31,7 @@ fun SideEffectHome(
     onAddSideEffectClick: () -> Unit = {}
 ) {
     Home(
-        title = "Prescription",
+        title = "Effets secondaires",
         floatingActionButtonOnClick = onAddSideEffectClick,
         floatActionButtonIcon = Icons.Default.DocumentScanner
     ) {

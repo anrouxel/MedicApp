@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.model
 
 import fr.medicapp.medicapp.entity.medication.Medication
-import fr.medicapp.medicapp.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.relation.ToOne

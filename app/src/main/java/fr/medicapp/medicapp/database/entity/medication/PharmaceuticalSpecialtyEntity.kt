@@ -1,7 +1,8 @@
-package fr.medicapp.medicapp.entity.medication
+package fr.medicapp.medicapp.database.entity.medication
 
 import fr.medicapp.medicapp.database.EntityToModelMapper
 import fr.medicapp.medicapp.database.LocalDateConverter
+import fr.medicapp.medicapp.entity.medication.PharmaceuticalSpecialty
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
