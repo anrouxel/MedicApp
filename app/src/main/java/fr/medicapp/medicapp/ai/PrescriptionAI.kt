@@ -10,8 +10,8 @@ import androidx.annotation.WorkerThread
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import fr.medicapp.medicapp.tokenization.Feature
-import fr.medicapp.medicapp.tokenization.FeatureConverter
+import fr.medicapp.medicapp.ai.tokenization.Feature
+import fr.medicapp.medicapp.ai.tokenization.FeatureConverter
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.Tensor
@@ -277,7 +277,6 @@ class PrescriptionAI(
             val feature: Feature = featureConverter.convert(visionText)
             val inputIds = feature.inputIds
             val inputMask = feature.inputMask
-            val segmentIds = feature.segmentIds
             val startLogits = FloatArray(MAX_SEQ_LEN)
             val endLogits = FloatArray(MAX_SEQ_LEN)
 
@@ -305,7 +304,7 @@ class PrescriptionAI(
             )
 
             // Aligne les IDs de mots avec les labels.
-            val labelIds = FeatureConverter.align_word_ids(feature)
+            val labelIds = FeatureConverter.alignWordIDS(feature)
 
             // Exécute le modèle PyTorch avec les prédictions d'entrée et de masque.
             val outputTensor = mModule!!.forward(
@@ -338,7 +337,7 @@ class PrescriptionAI(
 
             // Convertit la liste de prédictions en liste de labels.
             var predictionsLabelList: List<String> = startPredictionsList.map { index ->
-                labels[index]!!
+                labels.getValue(index)
             }
 
             // Parcourt la liste des labels prédits.

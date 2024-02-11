@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.tokenization
+package fr.medicapp.medicapp.ai.tokenization
 
 /**
  * Objet CamemBERT qui contient les tokens spéciaux utilisés dans le modèle de tokenization CamemBERT.

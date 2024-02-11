@@ -1,73 +1,35 @@
 package fr.medicapp.medicapp.model
 
-import androidx.compose.runtime.mutableStateListOf
-import fr.medicapp.medicapp.entity.SideEffectEntity
+import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
+import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import java.time.LocalDate
-import java.util.UUID
 
-/**
- * Modèle représentant un effet secondaire.
- *
- * @property id L'identifiant unique de l'effet secondaire.
- * @property medicament Le traitement associé à l'effet secondaire.
- * @property date La date de l'effet secondaire.
- * @property hour L'heure de l'effet secondaire.
- * @property minute La minute de l'effet secondaire.
- * @property effetsConstates Les effets constatés de l'effet secondaire.
- * @property description La description de l'effet secondaire.
- */
 data class SideEffect(
+    val id: Long = 0L,
 
-    /**
-     * L'identifiant unique de l'effet secondaire.
-     */
-    var id: String = "",
-
-    /**
-     * Le traitement associé à l'effet secondaire.
-     */
-    var medicament: Treatment? = null,
-
-    /**
-     * La date de l'effet secondaire.
-     */
     var date: LocalDate? = null,
 
-    /**
-     * L'heure de l'effet secondaire.
-     */
-    var hour: Int? = null,
+    var hour: Int = 0,
 
-    /**
-     * La minute de l'effet secondaire.
-     */
-    var minute: Int? = null,
+    var minute: Int = 0,
 
-    /**
-     * Les effets constatés de l'effet secondaire.
-     */
-    var effetsConstates: MutableList<String> = mutableStateListOf(),
+    var effetsConstates: MutableList<String> = mutableListOf(),
 
-    /**
-     * La description de l'effet secondaire.
-     */
-    var description: String = ""
-) {
+    var description: String = "",
 
-    /**
-     * Convertit cet effet secondaire en une entité SideEffectEntity.
-     *
-     * @return Une entité SideEffectEntity correspondant à cet effet secondaire.
-     */
-    fun toEntity(): SideEffectEntity {
-        return SideEffectEntity(
-            id = if (id.isEmpty()) UUID.randomUUID().toString() else id,
-            medicament = medicament!!.id,
-            date = date!!,
-            hour = hour!!,
-            minute = minute!!,
-            effetsConstates = effetsConstates.toMutableList(),
-            description = description
+    var treatment: Treatment? = null
+) : ModelToEntityMapper<SideEffectEntity> {
+    override fun convert(): SideEffectEntity {
+        val sideEffect = SideEffectEntity(
+            id,
+            date,
+            hour,
+            minute,
+            effetsConstates,
+            description
         )
+
+        sideEffect.treatment.target = treatment?.convert()
+        return sideEffect
     }
 }

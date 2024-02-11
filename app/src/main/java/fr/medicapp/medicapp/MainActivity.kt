@@ -6,14 +6,19 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.GsonBuilder
 import fr.medicapp.medicapp.ai.PrescriptionAI
-import fr.medicapp.medicapp.database.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.entity.medication.MedicationEntity
-import fr.medicapp.medicapp.entity.medication.MedicationEntity_
+import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity_
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
+import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate
 
@@ -46,7 +51,7 @@ class MainActivity : ComponentActivity() {
 
             Log.d("ObjectBox", "Monoprost : $monoprost")
 
-            val medication : MedicationEntity = gson.fromJson(monoprost, MedicationEntity::class.java)
+            val medication: MedicationEntity = gson.fromJson(monoprost, MedicationEntity::class.java)
 
             Log.d("ObjectBox", "MedicationEntity : $medication")
 
@@ -54,7 +59,7 @@ class MainActivity : ComponentActivity() {
             if (store.query().equal(MedicationEntity_.cisCode, medication.cisCode).build().find().isEmpty()) {
                 Log.d("ObjectBox", "Ajout de Monoprost")
                 store.put(medication)
-                val medicationTmp = store.get(medication.id)
+                val medicationTmp = store.query().equal(MedicationEntity_.cisCode, medication.cisCode).build().find()[0]
                 medicationTmp.medicationCompositions.addAll(medication.medicationCompositions)
                 medicationTmp.medicationPresentations.addAll(medication.medicationPresentations)
                 medicationTmp.genericGroups.addAll(medication.genericGroups)
@@ -74,16 +79,18 @@ class MainActivity : ComponentActivity() {
 
         // Définition du contenu de l'activité
         setContent {
+            var theme by remember { mutableStateOf(EUYellowColorShema) }
             // Utilisation du thème de l'application
-            MedicAppTheme {
+            MedicAppTheme(
+                theme = theme
+            ) {
                 // Création du graphe de navigation racine
-                RootNavGraph(navController = rememberNavController())
+                RootNavGraph(
+                    navController = rememberNavController(),
+                    theme = theme,
+                    onThemeChange = { theme = it }
+                )
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        ObjectBox.getInstance(this).close()
     }
 }

@@ -557,7 +557,7 @@
     },
     {
       "id": "12:3168116678713001572",
-      "lastPropertyId": "3:4590350031772168255",
+      "lastPropertyId": "4:139276922482766516",
       "name": "PrescriptionEntity",
       "properties": [
         {
@@ -578,19 +578,27 @@
           "type": 11,
           "flags": 520,
           "relationTarget": "DoctorEntity"
+        },
+        {
+          "id": "4:139276922482766516",
+          "name": "treatmentId",
+          "indexId": "8:5728124482716488420",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "TreatmentEntity"
         }
       ],
       "relations": [
         {
-          "id": "11:4704107518097647459",
-          "name": "treatments",
-          "targetId": "13:8077677203011916094"
+          "id": "13:2155096703169355224",
+          "name": "notifications",
+          "targetId": "15:1321211264478270582"
         }
       ]
     },
     {
       "id": "13:8077677203011916094",
-      "lastPropertyId": "9:2661140238924251399",
+      "lastPropertyId": "10:8713623080659973049",
       "name": "TreatmentEntity",
       "properties": [
         {
@@ -603,21 +611,6 @@
           "id": "3:95177952649684947",
           "name": "posology",
           "type": 9
-        },
-        {
-          "id": "4:1803957266578079050",
-          "name": "quantity",
-          "type": 9
-        },
-        {
-          "id": "5:6396146470069483563",
-          "name": "renew",
-          "type": 9
-        },
-        {
-          "id": "7:914830441715094350",
-          "name": "notification",
-          "type": 1
         },
         {
           "id": "8:3896285804105889843",
@@ -634,13 +627,18 @@
           "type": 11,
           "flags": 520,
           "relationTarget": "MedicationEntity"
+        },
+        {
+          "id": "10:8713623080659973049",
+          "name": "frequency",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
       "id": "14:5138986304881207242",
-      "lastPropertyId": "2:4901771978216240424",
+      "lastPropertyId": "3:4196241250267300684",
       "name": "DoctorEntity",
       "properties": [
         {
@@ -653,23 +651,153 @@
           "id": "2:4901771978216240424",
           "name": "name",
           "type": 9
+        },
+        {
+          "id": "3:4196241250267300684",
+          "name": "rpps",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "15:1321211264478270582",
+      "lastPropertyId": "10:2486808102310438097",
+      "name": "NotificationEntity",
+      "properties": [
+        {
+          "id": "1:5193113032200700076",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "9:9090493704110745608",
+          "name": "active",
+          "type": 1
+        },
+        {
+          "id": "10:2486808102310438097",
+          "name": "days",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "12:1446158091117708035",
+          "name": "alarms",
+          "targetId": "17:3596385483987248716"
+        }
+      ]
+    },
+    {
+      "id": "16:4731642243511610801",
+      "lastPropertyId": "8:9213944247125958634",
+      "name": "SideEffectEntity",
+      "properties": [
+        {
+          "id": "1:2137194677501825010",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3171952987808865783",
+          "name": "date",
+          "type": 9
+        },
+        {
+          "id": "3:1014915800800466571",
+          "name": "hour",
+          "type": 5
+        },
+        {
+          "id": "4:6768295413255419804",
+          "name": "minute",
+          "type": 5
+        },
+        {
+          "id": "5:6445119334258512737",
+          "name": "effetsConstates",
+          "type": 30
+        },
+        {
+          "id": "6:4076245921097741434",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "8:9213944247125958634",
+          "name": "treatmentId",
+          "indexId": "6:3904145447867145655",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "TreatmentEntity"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "17:3596385483987248716",
+      "lastPropertyId": "6:5595825625432567622",
+      "name": "AlarmEntity",
+      "properties": [
+        {
+          "id": "1:7815851239087299638",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "4:380821305957575888",
+          "name": "alarms",
+          "type": 5
+        },
+        {
+          "id": "5:7579364228337318846",
+          "name": "hour",
+          "type": 5
+        },
+        {
+          "id": "6:5595825625432567622",
+          "name": "minute",
+          "type": 5
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "14:5138986304881207242",
-  "lastIndexId": "3:3063619302302475484",
-  "lastRelationId": "11:4704107518097647459",
+  "lastEntityId": "17:3596385483987248716",
+  "lastIndexId": "8:5728124482716488420",
+  "lastRelationId": "13:2155096703169355224",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
+  "retiredIndexUids": [
+    7006702378958803193,
+    7294783665401050088,
+    4350761331130389040
+  ],
   "retiredPropertyUids": [
     5865801292696153424,
-    7382063140541865508
+    7382063140541865508,
+    721601941045691972,
+    4733909839253389367,
+    6396146470069483563,
+    914830441715094350,
+    3239992782662251016,
+    6459404082910094061,
+    2918105307921535024,
+    8373368292367464699,
+    1803957266578079050,
+    8529650096261148397,
+    6270206061563318138,
+    1458403446882221401,
+    8107252111916447090
   ],
-  "retiredRelationUids": [],
+  "retiredRelationUids": [
+    4704107518097647459
+  ],
   "version": 1
 }

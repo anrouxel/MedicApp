@@ -1,7 +1,7 @@
 package fr.medicapp.medicapp.database
 
 import android.content.Context
-import fr.medicapp.medicapp.entity.MyObjectBox
+import fr.medicapp.medicapp.database.entity.MyObjectBox
 import io.objectbox.BoxStore
 
 object ObjectBox {

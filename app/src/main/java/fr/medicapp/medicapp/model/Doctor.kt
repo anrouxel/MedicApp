@@ -1,67 +1,20 @@
 package fr.medicapp.medicapp.model
 
-import com.maxkeppeler.sheets.option.models.Option
+import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
+import fr.medicapp.medicapp.database.entity.DoctorEntity
 
-/**
- * Modèle représentant un docteur.
- *
- * @property id L'identifiant unique du docteur.
- * @property lastName Le nom de famille du docteur.
- * @property firstName Le prénom du docteur.
- */
 data class Doctor(
+    val id: Long = 0L,
 
-    /**
-     * L'identifiant unique du docteur.
-     */
-    val id: String? = null,
+    var rpps: Long = 0L,
 
-    /**
-     * Le nom de famille du docteur.
-     */
-    val lastName: String,
-
-    /**
-     * Le prénom du docteur.
-     */
-    var firstName: String,
-) {
-
-    /**
-     * Renvoie le nom complet du docteur.
-     *
-     * @return Le nom complet du docteur.
-     */
-    fun getFullName(): String {
-        return "$firstName $lastName"
-    }
-
-    /**
-     * Renvoie une représentation sous forme de chaîne de caractères du docteur.
-     *
-     * @return Une chaîne de caractères représentant le docteur.
-     */
-    override fun toString(): String {
-        return getFullName()
-    }
-
-    /**
-     * Vérifie si le docteur est valide.
-     *
-     * @return `true` si le docteur est valide, `false` sinon.
-     */
-    fun isValide(): Boolean {
-        return lastName.isNotEmpty() && firstName.isNotEmpty()
-    }
-
-    /**
-     * Renvoie une option représentant le docteur.
-     *
-     * @return Une option représentant le docteur.
-     */
-    fun getOption(): Option {
-        return Option(
-            titleText = getFullName(),
+    var name: String = "",
+) : ModelToEntityMapper<DoctorEntity> {
+    override fun convert(): DoctorEntity {
+        return DoctorEntity(
+            id,
+            rpps,
+            name
         )
     }
 }

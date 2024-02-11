@@ -14,45 +14,60 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import fr.medicapp.medicapp.R
 
-/**
- * Définition des couleurs pour le thème sombre.
- */
-private val darkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+val EUYellowColorShema = ThemeColorScheme(
+    lightColorScheme = lightColorScheme(
+        primary = EUYellow100,
+        onPrimary = EUBlack100,
+    ),
+    darkColorScheme = darkColorScheme(
+        primary = EUYellow100,
+        onPrimary = EUWhite100
+    ),
+    icon = R.drawable.medicapp_eu_yellow
 )
 
-/**
- * Définition des couleurs pour le thème clair.
- */
-private val lightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-     */
+val EUPurpleColorShema = ThemeColorScheme(
+    lightColorScheme = lightColorScheme(
+        primary = EUPurple100,
+        onPrimary = EUBlack100
+    ),
+    darkColorScheme = darkColorScheme(
+        primary = EUPurple100,
+        onPrimary = EUWhite100
+    ),
+    icon = R.drawable.medicapp_eu_purple
 )
 
-/**
- * Cette fonction définit le thème de l'application en fonction des paramètres.
- *
- * @param darkTheme Un booléen indiquant si le thème sombre doit être utilisé.
- * @param dynamicColor Un booléen indiquant si les couleurs dynamiques doivent être utilisées (disponible à partir d'Android 12).
- * @param content Le contenu à afficher à l'intérieur du thème.
- */
+val EURedColorShema = ThemeColorScheme(
+    lightColorScheme = lightColorScheme(
+        primary = EURed100,
+        onPrimary = EUBlack100
+    ),
+    darkColorScheme = darkColorScheme(
+        primary = EURed100,
+        onPrimary = EUWhite100
+    ),
+    icon = R.drawable.medicapp_eu_red
+)
+
+val EUGreenColorShema = ThemeColorScheme(
+    lightColorScheme = lightColorScheme(
+        primary = EUGreen100,
+        onPrimary = EUBlack100
+    ),
+    darkColorScheme = darkColorScheme(
+        primary = EUGreen100,
+        onPrimary = EUWhite100
+    ),
+    icon = R.drawable.medicapp_eu_green
+)
+
 @Composable
 fun MedicAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    theme: ThemeColorScheme,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -64,8 +79,8 @@ fun MedicAppTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> darkColorScheme
-        else -> lightColorScheme
+        darkTheme -> theme.darkColorScheme
+        else -> theme.lightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

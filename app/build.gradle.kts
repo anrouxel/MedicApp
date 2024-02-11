@@ -4,8 +4,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
-    id("com.google.devtools.ksp")
     id("io.objectbox")
+    id("com.google.devtools.ksp")
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -93,21 +93,6 @@ dependencies {
 
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
-
-    // Sheets Compose Dialogs
-    val sheetsComposeDialogsVersion = "1.2.1"
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:info:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:duration:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:option:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:list:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:input:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:emoji:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:state:$sheetsComposeDialogsVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:color:$sheetsComposeDialogsVersion")
 
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
