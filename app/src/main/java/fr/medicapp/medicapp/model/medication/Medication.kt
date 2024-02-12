@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.model.medication
 
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.model.OptionDialog
 import java.time.LocalDate
 
 data class Medication(
@@ -88,5 +89,17 @@ data class Medication(
             pharmaceuticalSpecialties.map { it.convert() }
         )
         return medicationEntity
+    }
+
+    override fun toString(): String {
+        return name
+    }
+
+    fun toOptionDialog(): OptionDialog {
+        return OptionDialog(
+            id,
+            name,
+            pharmaceuticalForm
+        )
     }
 }

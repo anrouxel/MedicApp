@@ -1,5 +1,7 @@
-package fr.medicapp.medicapp.ui.components
+package fr.medicapp.medicapp.ui.components.modal
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,12 +11,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,8 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.OptionDialog
+import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
+import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 /**
  * Cette fonction affiche une boîte de dialogue de recherche avec des options spécifiques.
@@ -37,29 +44,35 @@ import fr.medicapp.medicapp.model.OptionDialog
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchDialog(
-    options: (String) -> List<OptionDialog>,
-    cardColor: Color,
-    selectedCardColor: Color,
-    onDismiss: () -> Unit,
-    onValidate: (OptionDialog) -> Unit,
+fun SearchModal(
+    title: String,
+    options: List<OptionDialog>,
+    onDismissRequest: () -> Unit = {},
+    onConfirm: (OptionDialog) -> Unit = {},
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedOption by remember { mutableStateOf<OptionDialog?>(null) }
+    val filteredOptions = options.filter {
+        it.title.contains(searchQuery, ignoreCase = true)
+    }
 
     AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Choisissez un médicament") },
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(
+                text = title,
+            )
+        },
         text = {
             Column {
-                OutlinedTextField(
+                ReusableOutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Recherche") }
+                    label = "",
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyColumn {
-                    items(options(searchQuery)) { option ->
+                    items(filteredOptions) { option ->
                         ElevatedCard(
                             onClick = {
                                 selectedOption = option
@@ -67,13 +80,13 @@ fun SearchDialog(
                             modifier = Modifier.fillMaxWidth(),
                             colors = if (option == selectedOption) {
                                 CardDefaults.cardColors(
-                                    containerColor = selectedCardColor,
-                                    contentColor = Color.White
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
                                 )
                             } else {
                                 CardDefaults.cardColors(
-                                    containerColor = cardColor,
-                                    contentColor = Color.Unspecified
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         ) {
@@ -91,27 +104,58 @@ fun SearchDialog(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(7.dp))
+                        Spacer(modifier = Modifier.padding(10.dp))
                     }
                 }
             }
         },
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
+        dismissButton = {
+            TextButton(
+                onClick = onDismissRequest,
+            ) {
+                Text("Annuler")
+            }
+        },
         confirmButton = {
-            Button(
+            TextButton(
                 enabled = selectedOption != null,
-                colors = ButtonDefaults.buttonColors(
-                    disabledContainerColor = cardColor,
-                    disabledContentColor = Color.White,
-                    containerColor = selectedCardColor,
-                    contentColor = Color.White,
-                ),
                 onClick = {
-                    selectedOption?.let(onValidate)
+                    selectedOption?.let { onConfirm(it) }
                 }
             ) {
-                Text("Valider")
+                Text("OK")
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchModalPreview() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        SearchModal(
+            title = "Recherche",
+            options = listOf()
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchModalDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        SearchModal(
+            title = "Recherche",
+            options = listOf()
+        )
+    }
 }

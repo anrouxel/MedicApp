@@ -5,9 +5,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
+import fr.medicapp.medicapp.database.entity.medication.MedicationEntity_
 import fr.medicapp.medicapp.model.Alarm
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -117,10 +120,27 @@ class SharedPrescriptionEditViewModel(
         _sharedState.value = updatedPrescription
     }
 
+    fun updateMedication(newMedication: OptionDialog, context: Context) {
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(MedicationEntity::class.java)
+        val medication =
+            store.query().equal(MedicationEntity_.id, newMedication.id).build().findFirst()?.convert()
+        val updatedTreatment = _sharedState.value.treatment.copy(medication = medication)
+        val updatedPrescription = _sharedState.value.copy(treatment = updatedTreatment)
+        _sharedState.value = updatedPrescription
+    }
+
     fun save(context: Context) {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert()
         store.put(prescription)
+    }
+
+    fun getMedicationList(context: Context) : List<OptionDialog>{
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(MedicationEntity::class.java)
+        val prescriptionList = store.all.map { it.convert().toOptionDialog() }
+        return prescriptionList
     }
 }
