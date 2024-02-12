@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.DurationEntity
 import java.time.LocalDate
@@ -15,7 +16,7 @@ data class Duration(
         return "Du ${startDate?.toString()} au ${endDate?.toString()}"
     }
 
-    override fun convert(): DurationEntity {
+    override fun convert(context: Context): DurationEntity {
         return DurationEntity(
             id,
             startDate,

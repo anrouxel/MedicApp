@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
@@ -28,6 +30,7 @@ fun PrescriptionEditTreatment(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
 
     Edit(
         title = "Ajouter une prescription",
@@ -38,10 +41,13 @@ fun PrescriptionEditTreatment(
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
-                ReusableOutlinedTextFieldButton(
-                    value = "",
+                ReusableOutlinedSearchButton(
+                    options = viewModel.getMedicationList(context),
+                    value = state.value.treatment.medication,
                     label = "Médicament",
-                    onClick = {}
+                    onSelected = {
+                        viewModel.updateMedication(it, context)
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -78,11 +84,10 @@ fun PrescriptionEditTreatment(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Light Theme")
 @Composable
 private fun PrescriptionEditTreatmentPreview() {
-    val prescription = Prescription()
-
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -95,11 +100,10 @@ private fun PrescriptionEditTreatmentPreview() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Dark Theme")
 @Composable
 private fun PrescriptionEditTreatmentDarkPreview() {
-    val prescription = Prescription()
-
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,

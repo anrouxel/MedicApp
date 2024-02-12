@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.MedicationPresentationEntity
 import java.time.LocalDate
@@ -33,7 +34,7 @@ data class MedicationPresentation(
 
     var reimbursementIndications: String = "",
 ) : ModelToEntityMapper<MedicationPresentationEntity> {
-    override fun convert(): MedicationPresentationEntity {
+    override fun convert(context: Context): MedicationPresentationEntity {
         return MedicationPresentationEntity(
             id,
             cisCode,

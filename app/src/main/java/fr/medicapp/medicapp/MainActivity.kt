@@ -17,6 +17,7 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity_
+import fr.medicapp.medicapp.model.medication.Medication
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
 
             Log.d("ObjectBox", "Monoprost : $monoprost")
 
-            val medication: MedicationEntity = gson.fromJson(monoprost, MedicationEntity::class.java)
+            val medication: MedicationEntity = gson.fromJson(monoprost, Medication::class.java).convert(this)
 
             Log.d("ObjectBox", "MedicationEntity : $medication")
 

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.TreatmentEntity
 import fr.medicapp.medicapp.model.medication.Medication
@@ -15,14 +16,14 @@ data class Treatment(
 
     var duration: Duration? = null
 ) : ModelToEntityMapper<TreatmentEntity> {
-    override fun convert(): TreatmentEntity {
+    override fun convert(context: Context): TreatmentEntity {
         val treatment = TreatmentEntity(
             id,
             posology,
             frequency
         )
-        treatment.medication.target = medication?.convert()
-        treatment.duration.target = duration?.convert()
+        treatment.medication.target = medication?.convert(context)
+        treatment.duration.target = duration?.convert(context)
         return treatment
     }
 }

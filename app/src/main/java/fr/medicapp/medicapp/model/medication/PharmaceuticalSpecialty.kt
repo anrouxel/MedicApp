@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.PharmaceuticalSpecialtyEntity
 import java.time.LocalDate
@@ -23,7 +24,7 @@ data class PharmaceuticalSpecialty(
 
     var ansmSiteLink: String = "",
 ) : ModelToEntityMapper<PharmaceuticalSpecialtyEntity> {
-    override fun convert(): PharmaceuticalSpecialtyEntity {
+    override fun convert(context: Context): PharmaceuticalSpecialtyEntity {
         return PharmaceuticalSpecialtyEntity(
             id,
             cisCode,

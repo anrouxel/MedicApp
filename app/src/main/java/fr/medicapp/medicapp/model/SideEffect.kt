@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import java.time.LocalDate
@@ -19,7 +20,7 @@ data class SideEffect(
 
     var treatment: Treatment? = null
 ) : ModelToEntityMapper<SideEffectEntity> {
-    override fun convert(): SideEffectEntity {
+    override fun convert(context: Context): SideEffectEntity {
         val sideEffect = SideEffectEntity(
             id,
             date,
@@ -29,7 +30,7 @@ data class SideEffect(
             description
         )
 
-        sideEffect.treatment.target = treatment?.convert()
+        sideEffect.treatment.target = treatment?.convert(context)
         return sideEffect
     }
 }

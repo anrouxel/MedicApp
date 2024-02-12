@@ -76,7 +76,7 @@ fun PrescriptionItem(
         onClick = onPrescriptionClick
     ) {
         CardContent(
-            title = prescription.doctor?.name ?: "Médecin inconnu",
+            title = prescription.treatment.medication?.name ?: "Médicament inconnu",
             description = prescription.date?.toString() ?: "Date inconnue",
         )
     }

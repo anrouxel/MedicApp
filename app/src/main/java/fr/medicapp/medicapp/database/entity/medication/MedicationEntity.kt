@@ -39,45 +39,21 @@ data class MedicationEntity(
 
     var enhancedMonitoring: Boolean? = null,
 ) : EntityToModelMapper<Medication> {
-    var medicationCompositions: MutableList<MedicationCompositionEntity> = ToMany(
-        this,
-        MedicationEntity_.medicationCompositions
-    )
+    lateinit var medicationCompositions: ToMany<MedicationCompositionEntity>
 
-    var medicationPresentations: MutableList<MedicationPresentationEntity> = ToMany(
-        this,
-        MedicationEntity_.medicationPresentations
-    )
+    lateinit var medicationPresentations: ToMany<MedicationPresentationEntity>
 
-    var genericGroups: MutableList<GenericGroupEntity> = ToMany(
-        this,
-        MedicationEntity_.genericGroups
-    )
+    lateinit var genericGroups: ToMany<GenericGroupEntity>
 
-    var hasSmrOpinions: MutableList<HasSmrOpinionEntity> = ToMany(
-        this,
-        MedicationEntity_.hasSmrOpinions
-    )
+    lateinit var hasSmrOpinions: ToMany<HasSmrOpinionEntity>
 
-    var hasAsmrOpinions: MutableList<HasAsmrOpinionEntity> = ToMany(
-        this,
-        MedicationEntity_.hasAsmrOpinions
-    )
+    lateinit var hasAsmrOpinions: ToMany<HasAsmrOpinionEntity>
 
-    var importantInformations: MutableList<ImportantInformationEntity> = ToMany(
-        this,
-        MedicationEntity_.importantInformations
-    )
+    lateinit var importantInformations: ToMany<ImportantInformationEntity>
 
-    var prescriptionDispensingConditions: MutableList<PrescriptionDispensingConditionsEntity> = ToMany(
-        this,
-        MedicationEntity_.prescriptionDispensingConditions
-    )
+    lateinit var prescriptionDispensingConditions: ToMany<PrescriptionDispensingConditionsEntity>
 
-    var pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialtyEntity> = ToMany(
-        this,
-        MedicationEntity_.pharmaceuticalSpecialties
-    )
+    lateinit var pharmaceuticalSpecialties: ToMany<PharmaceuticalSpecialtyEntity>
 
     override fun convert(): Medication {
         return Medication(

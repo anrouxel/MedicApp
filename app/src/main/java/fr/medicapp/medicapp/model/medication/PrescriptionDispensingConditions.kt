@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.PrescriptionDispensingConditionsEntity
 
@@ -10,7 +11,7 @@ data class PrescriptionDispensingConditions(
 
     var prescriptionDispensingCondition: String = ""
 ) : ModelToEntityMapper<PrescriptionDispensingConditionsEntity> {
-    override fun convert(): PrescriptionDispensingConditionsEntity {
+    override fun convert(context: Context): PrescriptionDispensingConditionsEntity {
         return PrescriptionDispensingConditionsEntity(
             id,
             cisCode,
