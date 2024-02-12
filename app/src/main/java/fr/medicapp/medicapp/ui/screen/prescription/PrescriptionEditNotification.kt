@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -17,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -47,15 +49,42 @@ fun PrescriptionEditNotification(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
-    val context = LocalContext.current
 
-    Log.d("SharedPrescriptionEditViewModel", "state: ${state.value}")
+    PrescriptionEditNotificationView(
+        state = state.value,
+        onClick = onClick,
+        save = { context -> viewModel.save(context) },
+        addNotification = { viewModel.addNotification() },
+        removeNotification = { index -> viewModel.removeNotification(index) },
+        updateNotificationActiveState = { index, active -> viewModel.updateNotificationActiveState(index, active) },
+        updateNotificationDays = { index, dayOfWeek -> viewModel.updateNotificationDays(index, dayOfWeek) },
+        addAlarm = { index -> viewModel.addAlarm(index) },
+        updateAlarmTime = { index, alarmIndex, alarm -> viewModel.updateAlarmTime(index, alarmIndex, alarm) },
+        removeAlarm = { index, alarmIndex -> viewModel.removeAlarm(index, alarmIndex) }
+    )
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+private fun PrescriptionEditNotificationView(
+    state: Prescription,
+    onClick: () -> Unit,
+    save: (Context) -> Unit,
+    addNotification: () -> Unit,
+    removeNotification: (Int) -> Unit,
+    updateNotificationActiveState: (Int, Boolean) -> Unit,
+    updateNotificationDays: (Int, DayOfWeek) -> Unit,
+    addAlarm: (Int) -> Unit,
+    updateAlarmTime: (Int, Int, Alarm) -> Unit,
+    removeAlarm: (Int, Int) -> Unit
+) {
+    val context = LocalContext.current
 
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
         onClick = {
-            viewModel.save(context)
+            save(context)
             onClick()
         }
     ) {
@@ -63,11 +92,11 @@ fun PrescriptionEditNotification(
             ReusableButton(
                 text = "Ajouter une notification",
                 onClick = {
-                    viewModel.addNotification()
+                    addNotification()
                 }
             )
 
-            state.value.notifications.forEachIndexed { index, notification ->
+            state.notifications.forEachIndexed { index, notification ->
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableElevatedCard {
@@ -88,16 +117,25 @@ fun PrescriptionEditNotification(
                                 fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
                             )
 
-                            IconButton(
-                                onClick = {
-                                    viewModel.removeNotification(index)
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Delete,
-                                    contentDescription = "",
-                                    tint = MaterialTheme.colorScheme.primary
+                            Row {
+                                Switch(
+                                    checked = notification.active,
+                                    onCheckedChange = {
+                                        updateNotificationActiveState(index, it)
+                                    }
                                 )
+
+                                IconButton(
+                                    onClick = {
+                                        removeNotification(index)
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
                             }
                         }
 
@@ -120,7 +158,7 @@ fun PrescriptionEditNotification(
                                     ),
                                     checked = notification.days.contains(dayOfWeek),
                                     onCheckedChange = {
-                                        viewModel.updateNotificationDays(index, dayOfWeek)
+                                        updateNotificationDays(index, dayOfWeek)
                                     },
                                     shape = MaterialTheme.shapes.medium
                                 ) {
@@ -131,7 +169,7 @@ fun PrescriptionEditNotification(
                                         )
                                             .uppercase(Locale.FRENCH)
                                             .take(2),
-                                        color = MaterialTheme.colorScheme.onPrimary,
+                                        color = if (notification.days.contains(dayOfWeek)) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
@@ -145,7 +183,7 @@ fun PrescriptionEditNotification(
                         ReusableButton(
                             text = "Ajouter une alarme",
                             onClick = {
-                                viewModel.addAlarm(index)
+                                addAlarm(index)
                             }
                         )
 
@@ -166,13 +204,13 @@ fun PrescriptionEditNotification(
                                         value = alarm,
                                         label = "Heure",
                                         onSelected = {
-                                            viewModel.updateAlarmTime(index, alarmIndex, it)
+                                            updateAlarmTime(index, alarmIndex, it)
                                         }
                                     )
 
                                     IconButton(
                                         onClick = {
-                                            viewModel.removeAlarm(index, alarmIndex)
+                                            removeAlarm(index, alarmIndex)
                                         },
                                     ) {
                                         Icon(
@@ -200,9 +238,30 @@ private fun PrescriptionEditNotificationPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditNotification(
-            viewModel = viewModel(),
-            onClick = {}
+        PrescriptionEditNotificationView(
+            state = Prescription(
+                notifications = mutableListOf(
+                    Notification(
+                        active = true,
+                        days = mutableListOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY),
+                        alarms = mutableListOf(
+                            Alarm(
+                                hour = 12,
+                                minute = 30
+                            )
+                        )
+                    )
+                )
+            ),
+            onClick = {},
+            save = {},
+            addNotification = {},
+            removeNotification = {},
+            updateNotificationActiveState = { _, _ -> },
+            updateNotificationDays = { _, _ -> },
+            addAlarm = {},
+            updateAlarmTime = { _, _, _ -> },
+            removeAlarm = { _, _ -> }
         )
     }
 }
@@ -216,9 +275,30 @@ private fun PrescriptionEditNotificationDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditNotification(
-            viewModel = viewModel(),
-            onClick = {}
+        PrescriptionEditNotificationView(
+            state = Prescription(
+                notifications = mutableListOf(
+                    Notification(
+                        active = true,
+                        days = mutableListOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY),
+                        alarms = mutableListOf(
+                            Alarm(
+                                hour = 12,
+                                minute = 30
+                            )
+                        )
+                    )
+                )
+            ),
+            onClick = {},
+            save = {},
+            addNotification = {},
+            removeNotification = {},
+            updateNotificationActiveState = { _, _ -> },
+            updateNotificationDays = { _, _ -> },
+            addAlarm = {},
+            updateAlarmTime = { _, _, _ -> },
+            removeAlarm = { _, _ -> }
         )
     }
 }

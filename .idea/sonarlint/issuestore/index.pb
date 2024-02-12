@@ -217,3 +217,7 @@ y
 Iapp/src/main/java/fr/medicapp/medicapp/ui/components/modal/SearchModal.kt,7\c\7c421d8309e386ce98b352d9a420cc2dd1768cb7
 ‹
 [app/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableOutlinedSearchButton.kt,8\8\88b6795a820774965e9b1a49ad7f1705cb0258be
+‰
+Yapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableElevatedCardButton.kt,0\1\01ed7dbca49710c076adf037faeb9d37007c98c6
+u
+Eapp/src/main/java/fr/medicapp/medicapp/ui/components/screen/Detail.kt,7\0\705c5ec42b616c0ecbcdda0aec152229da7ab1ae

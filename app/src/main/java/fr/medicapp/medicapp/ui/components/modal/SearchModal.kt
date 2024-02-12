@@ -86,7 +86,7 @@ fun SearchModal(
                             } else {
                                 CardDefaults.cardColors(
                                     containerColor = MaterialTheme.colorScheme.surface,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                    contentColor = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         ) {
@@ -99,7 +99,11 @@ fun SearchModal(
                                 Text(
                                     text = it,
                                     modifier = Modifier.padding(5.dp),
-                                    color = MaterialTheme.colorScheme.onPrimary
+                                    color = if (option == selectedOption) {
+                                        MaterialTheme.colorScheme.onPrimary
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurface
+                                    }
                                 )
                             }
                         }

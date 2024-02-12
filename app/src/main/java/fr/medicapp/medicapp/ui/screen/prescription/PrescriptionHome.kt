@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
@@ -29,7 +30,7 @@ import java.time.LocalDate
 @Composable
 fun PrescriptionHome(
     prescriptions: List<Prescription>,
-    onPrescriptionClick: () -> Unit = {},
+    onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
     Home(
@@ -51,7 +52,7 @@ fun PrescriptionHome(
 @Composable
 fun PrescriptionList(
     prescriptions: List<Prescription>,
-    onPrescriptionClick: () -> Unit = {}
+    onPrescriptionClick: (Long) -> Unit = {}
 ) {
     Column {
         prescriptions.forEachIndexed { index, prescription ->
@@ -70,10 +71,10 @@ fun PrescriptionList(
 @Composable
 fun PrescriptionItem(
     prescription: Prescription,
-    onPrescriptionClick: () -> Unit
+    onPrescriptionClick: (Long) -> Unit
 ) {
-    ReusableElevatedCard(
-        onClick = onPrescriptionClick
+    ReusableElevatedCardButton(
+        onClick = { onPrescriptionClick(prescription.id) }
     ) {
         CardContent(
             title = prescription.treatment.medication?.name ?: "Médicament inconnu",

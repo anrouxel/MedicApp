@@ -3,6 +3,9 @@ package fr.medicapp.medicapp.ui.components.button
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -20,6 +23,7 @@ fun ReusableOutlinedTextFieldButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     value: String,
     label: String,
+    warnings: Boolean = false,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {}
 ) {
@@ -48,12 +52,21 @@ fun ReusableOutlinedTextFieldButton(
             unfocusedLabelColor = MaterialTheme.colorScheme.primary,
             disabledLabelColor = MaterialTheme.colorScheme.primary,
             errorLabelColor = MaterialTheme.colorScheme.error,
-            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-            unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
-            disabledTextColor = MaterialTheme.colorScheme.onPrimary,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+            disabledTextColor = MaterialTheme.colorScheme.onSurface,
             errorTextColor = MaterialTheme.colorScheme.error,
+            disabledTrailingIconColor = MaterialTheme.colorScheme.error
         ),
-        textStyle = MaterialTheme.typography.bodyMedium
+        textStyle = MaterialTheme.typography.bodyMedium,
+        trailingIcon = {
+            if (warnings) {
+                Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = "Warning",
+                )
+            }
+        }
     )
 }
 
@@ -116,6 +129,40 @@ private fun ReusableOutlinedTextFieldButtonLabelDarkPreview() {
         ReusableOutlinedTextFieldButton(
             value = "Hello",
             label = "World",
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Light Theme", showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun ReusableOutlinedTextFieldButtonWarningPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        theme = EUYellowColorShema,
+        dynamicColor = false
+    ) {
+        ReusableOutlinedTextFieldButton(
+            value = "Hello",
+            label = "World",
+            warnings = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Theme", showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun ReusableOutlinedTextFieldButtonWarningDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        theme = EUYellowColorShema,
+        dynamicColor = false
+    ) {
+        ReusableOutlinedTextFieldButton(
+            value = "Hello",
+            label = "World",
+            warnings = true,
             onClick = {}
         )
     }

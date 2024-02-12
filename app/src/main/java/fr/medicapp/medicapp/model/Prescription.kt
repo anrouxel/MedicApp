@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.model
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
+import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import java.time.LocalDate
@@ -22,6 +23,11 @@ data class Prescription(
             id,
             date
         )
+
+        val box = ObjectBox.getInstance(context)
+        val store = box.boxFor(PrescriptionEntity::class.java)
+        store.attach(prescription)
+
         prescription.doctor.target = doctor?.convert(context)
         prescription.treatment.target = treatment.convert(context)
         prescription.notifications.addAll(notifications.map { it.convert(context) })

@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -9,10 +10,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
+import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 
 /**
  * Cette fonction construit le graphe de navigation pour les prescriptions.
@@ -44,7 +47,28 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 prescriptions = prescriptions,
                 onAddPrescriptionClick = {
                     navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
+                },
+                onPrescriptionClick = { id ->
+                    Log.d("Prescription", "Navigating to prescription with id $id")
+                    navController.navigate(
+                        PrescriptionRoute.PrescriptionDetailRoute.route.replace(
+                            "{id}",
+                            id.toString()
+                        )
+                    )
                 }
+            )
+        }
+
+        composable(route = PrescriptionRoute.PrescriptionDetailRoute.route) {
+            val id = it.arguments?.getString("id")?.toLongOrNull() ?: throw IllegalArgumentException("No id")
+            val context = LocalContext.current
+
+            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+            viewModel.loadPrescription(context, id)
+
+            PrescriptionDetail(
+                viewModel = viewModel
             )
         }
 
@@ -67,7 +91,7 @@ sealed class PrescriptionRoute(val route: String) {
     /**
      * Route pour afficher une prescription spécifique.
      */
-    object PrescriptionDetailRoute : PrescriptionRoute(route = "prescription_detail")
+    object PrescriptionDetailRoute : PrescriptionRoute(route = "prescription_detail/{id}")
 
     /**
      * Route pour ajouter une nouvelle prescription.

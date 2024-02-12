@@ -1,10 +1,21 @@
 package fr.medicapp.medicapp.viewModel
 
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import de.coldtea.smplr.smplralarm.alarmNotification
+import de.coldtea.smplr.smplralarm.channel
+import de.coldtea.smplr.smplralarm.smplrAlarmCancel
+import de.coldtea.smplr.smplralarm.smplrAlarmSet
+import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
+import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity_
 import fr.medicapp.medicapp.model.Alarm
@@ -26,6 +37,15 @@ class SharedPrescriptionEditViewModel(
 ) : ViewModel() {
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
+
+    fun loadPrescription(context: Context, id: Long) {
+        Log.d("Prescription", "Loading prescription with id $id")
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(PrescriptionEntity::class.java)
+        val prescription = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
+        Log.d("Prescription", prescription.toString())
+        _sharedState.value = prescription ?: Prescription()
+    }
 
     fun updateDate(newDate: LocalDate) {
         val updatedPrescription = _sharedState.value.copy(date = newDate)
@@ -135,6 +155,9 @@ class SharedPrescriptionEditViewModel(
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
         store.put(prescription)
+        _sharedState.value =
+            store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
+                ?.convert() ?: Prescription()
     }
 
     fun getMedicationList(context: Context) : List<OptionDialog>{

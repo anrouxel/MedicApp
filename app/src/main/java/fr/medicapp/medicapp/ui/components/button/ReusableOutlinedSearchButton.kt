@@ -27,6 +27,7 @@ fun ReusableOutlinedSearchButton(
     options: List<OptionDialog>,
     value: Any?,
     label: String,
+    warnings: Boolean = false,
     onSelected: (OptionDialog) -> Unit
 ) {
     var open by remember { mutableStateOf(false) }
@@ -49,6 +50,7 @@ fun ReusableOutlinedSearchButton(
         modifier = modifier,
         value = value?.toString() ?: "",
         label = label,
+        warnings = warnings,
         onClick = {
             open = true
         }

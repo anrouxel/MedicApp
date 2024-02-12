@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.model.medication.Medication
+import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
@@ -63,7 +64,7 @@ fun SideEffectItem(
     sideEffect: SideEffect,
     onSideEffectClick: () -> Unit
 ) {
-    ReusableElevatedCard(
+    ReusableElevatedCardButton(
         onClick = onSideEffectClick
     ) {
         CardContent(
