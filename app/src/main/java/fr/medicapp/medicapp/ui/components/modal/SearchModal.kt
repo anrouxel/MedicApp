@@ -86,7 +86,7 @@ fun SearchModal(
                             } else {
                                 CardDefaults.cardColors(
                                     containerColor = MaterialTheme.colorScheme.surface,
-                                    contentColor = MaterialTheme.colorScheme.onSurface
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
                         ) {
@@ -99,7 +99,7 @@ fun SearchModal(
                                 Text(
                                     text = it,
                                     modifier = Modifier.padding(5.dp),
-                                    color = if (option == selectedOption) Color.White else Color.Black
+                                    color = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
                         }
@@ -156,6 +156,48 @@ private fun SearchModalDarkPreview() {
         SearchModal(
             title = "Recherche",
             options = listOf()
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchModalWithOptionPreview() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        SearchModal(
+            title = "Recherche",
+            options = listOf(
+                OptionDialog(
+                    id = 0L,
+                    title = "Option 1",
+                    description = "Description de l'option 1"
+                )
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchModalWithOptionDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        SearchModal(
+            title = "Recherche",
+            options = listOf(
+                OptionDialog(
+                    id = 0L,
+                    title = "Option 1",
+                    description = "Description de l'option 1"
+                )
+            )
         )
     }
 }
