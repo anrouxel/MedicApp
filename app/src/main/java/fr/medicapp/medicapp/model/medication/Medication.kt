@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
+import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
 import fr.medicapp.medicapp.model.OptionDialog
@@ -48,7 +50,7 @@ data class Medication(
 
     var pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialty> = mutableListOf(),
 ) : ModelToEntityMapper<MedicationEntity> {
-    override fun convert(): MedicationEntity {
+    override fun convert(context: Context): MedicationEntity {
         val medicationEntity = MedicationEntity(
             id,
             cisCode,
@@ -64,29 +66,34 @@ data class Medication(
             holders,
             enhancedMonitoring
         )
+
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(MedicationEntity::class.java)
+        store.attach(medicationEntity)
+
         medicationEntity.medicationCompositions.addAll(
-            medicationCompositions.map { it.convert() }
+            medicationCompositions.map { it.convert(context) }
         )
         medicationEntity.medicationPresentations.addAll(
-            medicationPresentations.map { it.convert() }
+            medicationPresentations.map { it.convert(context) }
         )
         medicationEntity.genericGroups.addAll(
-            genericGroups.map { it.convert() }
+            genericGroups.map { it.convert(context) }
         )
         medicationEntity.hasSmrOpinions.addAll(
-            hasSmrOpinions.map { it.convert() }
+            hasSmrOpinions.map { it.convert(context) }
         )
         medicationEntity.hasAsmrOpinions.addAll(
-            hasAsmrOpinions.map { it.convert() }
+            hasAsmrOpinions.map { it.convert(context) }
         )
         medicationEntity.importantInformations.addAll(
-            importantInformations.map { it.convert() }
+            importantInformations.map { it.convert(context) }
         )
         medicationEntity.prescriptionDispensingConditions.addAll(
-            prescriptionDispensingConditions.map { it.convert() }
+            prescriptionDispensingConditions.map { it.convert(context) }
         )
         medicationEntity.pharmaceuticalSpecialties.addAll(
-            pharmaceuticalSpecialties.map { it.convert() }
+            pharmaceuticalSpecialties.map { it.convert(context) }
         )
         return medicationEntity
     }

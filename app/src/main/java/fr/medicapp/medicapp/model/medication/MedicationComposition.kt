@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.MedicationCompositionEntity
 
@@ -22,7 +23,7 @@ data class MedicationComposition(
 
     var linkNumber: Int? = null
 ) : ModelToEntityMapper<MedicationCompositionEntity> {
-    override fun convert(): MedicationCompositionEntity {
+    override fun convert(context: Context): MedicationCompositionEntity {
         return MedicationCompositionEntity(
             id,
             cisCode,

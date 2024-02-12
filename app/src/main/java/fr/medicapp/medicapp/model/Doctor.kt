@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.DoctorEntity
 
@@ -10,7 +11,7 @@ data class Doctor(
 
     var name: String = "",
 ) : ModelToEntityMapper<DoctorEntity> {
-    override fun convert(): DoctorEntity {
+    override fun convert(context: Context): DoctorEntity {
         return DoctorEntity(
             id,
             rpps,

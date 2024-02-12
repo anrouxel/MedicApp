@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
@@ -16,14 +17,14 @@ data class Prescription(
 
     var notifications: MutableList<Notification> = mutableStateListOf()
 ) : ModelToEntityMapper<PrescriptionEntity> {
-    override fun convert(): PrescriptionEntity {
+    override fun convert(context: Context): PrescriptionEntity {
         val prescription = PrescriptionEntity(
             id,
             date
         )
-        prescription.doctor.target = doctor?.convert()
-        prescription.treatment.target = treatment.convert()
-        prescription.notifications.addAll(notifications.map { it.convert() })
+        prescription.doctor.target = doctor?.convert(context)
+        prescription.treatment.target = treatment.convert(context)
+        prescription.notifications.addAll(notifications.map { it.convert(context) })
         return prescription
     }
 }

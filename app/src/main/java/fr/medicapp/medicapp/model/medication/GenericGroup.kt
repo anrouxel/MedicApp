@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.GenericGroupEntity
 
@@ -18,7 +19,7 @@ data class GenericGroup(
 
     var sortNumber: Int? = null
 ) : ModelToEntityMapper<GenericGroupEntity> {
-    override fun convert(): GenericGroupEntity {
+    override fun convert(context: Context): GenericGroupEntity {
         return GenericGroupEntity(
             id,
             genericGroupId,

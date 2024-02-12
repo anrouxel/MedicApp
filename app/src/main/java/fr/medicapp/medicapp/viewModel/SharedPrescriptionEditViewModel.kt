@@ -133,7 +133,7 @@ class SharedPrescriptionEditViewModel(
     fun save(context: Context) {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription = _sharedState.value.convert()
+        val prescription = _sharedState.value.convert(context)
         store.put(prescription)
     }
 

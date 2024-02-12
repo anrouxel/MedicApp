@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.AlarmEntity
 
@@ -16,7 +17,7 @@ data class Alarm(
         return "${hour}h$minute"
     }
 
-    override fun convert(): AlarmEntity {
+    override fun convert(context: Context): AlarmEntity {
         return AlarmEntity(
             id,
             hour,

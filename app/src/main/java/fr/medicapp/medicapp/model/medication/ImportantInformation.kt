@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.ImportantInformationEntity
 import java.time.LocalDate
@@ -15,7 +16,7 @@ data class ImportantInformation(
 
     var safetyInformationLink: String = ""
 ) : ModelToEntityMapper<ImportantInformationEntity> {
-    override fun convert(): ImportantInformationEntity {
+    override fun convert(context: Context): ImportantInformationEntity {
         return ImportantInformationEntity(
             id,
             cisCode,

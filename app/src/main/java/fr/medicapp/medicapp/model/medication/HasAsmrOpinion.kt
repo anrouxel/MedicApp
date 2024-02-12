@@ -1,7 +1,10 @@
 package fr.medicapp.medicapp.model.medication
 
+import android.content.Context
+import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.HasAsmrOpinionEntity
+import fr.medicapp.medicapp.database.entity.medication.HasSmrOpinionEntity
 import java.time.LocalDate
 
 data class HasAsmrOpinion(
@@ -21,7 +24,7 @@ data class HasAsmrOpinion(
 
     var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinks> = mutableListOf()
 ) : ModelToEntityMapper<HasAsmrOpinionEntity> {
-    override fun convert(): HasAsmrOpinionEntity {
+    override fun convert(context: Context): HasAsmrOpinionEntity {
         val hasAsmrOpinionEntity = HasAsmrOpinionEntity(
             id,
             cisCode,
@@ -31,8 +34,13 @@ data class HasAsmrOpinion(
             asmrValue,
             asmrLabel
         )
+
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(HasAsmrOpinionEntity::class.java)
+        store.attach(hasAsmrOpinionEntity)
+
         hasAsmrOpinionEntity.transparencyCommissionOpinionLinks.addAll(
-            transparencyCommissionOpinionLinks.map { it.convert() }
+            transparencyCommissionOpinionLinks.map { it.convert(context) }
         )
         return hasAsmrOpinionEntity
     }
