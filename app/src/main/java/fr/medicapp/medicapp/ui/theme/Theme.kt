@@ -23,7 +23,7 @@ val EUYellowColorShema = ThemeColorScheme(
     ),
     darkColorScheme = darkColorScheme(
         primary = EUYellow100,
-        onPrimary = EUWhite100
+        onPrimary = EUBlack100
     ),
     icon = R.drawable.medicapp_eu_yellow
 )
@@ -31,7 +31,7 @@ val EUYellowColorShema = ThemeColorScheme(
 val EUPurpleColorShema = ThemeColorScheme(
     lightColorScheme = lightColorScheme(
         primary = EUPurple100,
-        onPrimary = EUBlack100
+        onPrimary = EUWhite100
     ),
     darkColorScheme = darkColorScheme(
         primary = EUPurple100,
@@ -43,7 +43,7 @@ val EUPurpleColorShema = ThemeColorScheme(
 val EURedColorShema = ThemeColorScheme(
     lightColorScheme = lightColorScheme(
         primary = EURed100,
-        onPrimary = EUBlack100
+        onPrimary = EUWhite100
     ),
     darkColorScheme = darkColorScheme(
         primary = EURed100,

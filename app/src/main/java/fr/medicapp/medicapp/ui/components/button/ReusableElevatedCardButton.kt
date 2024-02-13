@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ui.components.card
+package fr.medicapp.medicapp.ui.components.button
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,17 +10,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReusableElevatedCard(
+fun ReusableElevatedCardButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
+    onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit = {}
 ) {
     ElevatedCard(
         modifier = modifier,
+        onClick = onClick,
         content = content,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp,
@@ -40,15 +43,16 @@ fun ReusableElevatedCard(
 
 @Preview(name = "Light Theme")
 @Composable
-private fun ReusableElevatedCardPreview() {
+private fun ReusableElevatedCardButtonPreview() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        ReusableElevatedCard(
+        ReusableElevatedCardButton(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            onClick = {}
         ) {
             CardContent(
                 title = "Médicament",
@@ -60,15 +64,16 @@ private fun ReusableElevatedCardPreview() {
 
 @Preview(name = "Dark Theme")
 @Composable
-private fun ReusableElevatedCardDarkPreview() {
+private fun ReusableElevatedCardButtonDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        ReusableElevatedCard(
+        ReusableElevatedCardButton(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            onClick = {}
         ) {
             CardContent(
                 title = "Médicament",

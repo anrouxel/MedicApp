@@ -28,6 +28,7 @@ fun ReusableOutlinedDateRangePickerButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     value: Duration?,
     label: String,
+    warnings: Boolean = false,
     onSelected: (Duration) -> Unit
 ) {
     var open by remember { mutableStateOf(false) }
@@ -59,6 +60,7 @@ fun ReusableOutlinedDateRangePickerButton(
         modifier = modifier,
         value = value?.toString() ?: "",
         label = label,
+        warnings = warnings,
         onClick = {
             open = true
         }

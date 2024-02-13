@@ -5,27 +5,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Edit(
+fun Detail(
     title: String,
-    bottomText: String,
-    onClick: () -> Unit = {},
-    content: @Composable () -> Unit = {},
+    content: @Composable () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -43,16 +45,6 @@ fun Edit(
                 }
             )
         },
-        bottomBar = {
-            Box(
-                modifier = Modifier.padding(10.dp)
-            ) {
-                ReusableButton(
-                    text = bottomText,
-                    onClick = onClick
-                )
-            }
-        }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -70,30 +62,28 @@ fun Edit(
 
 @Preview(name = "Light Theme")
 @Composable
-private fun EditPreview() {
+private fun DetailPreview() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        Edit(
-            title = "Ajouter une ordonnance",
-            bottomText = "Ajouter"
+        Detail(
+            title = "Traitements",
         )
     }
 }
 
 @Preview(name = "Dark Theme")
 @Composable
-private fun EditDarkPreview() {
+private fun DetailDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        Edit(
-            title = "Ajouter une ordonnance",
-            bottomText = "Ajouter"
+        Detail(
+            title = "Traitements",
         )
     }
 }

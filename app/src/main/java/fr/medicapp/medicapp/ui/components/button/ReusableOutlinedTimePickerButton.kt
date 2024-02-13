@@ -25,6 +25,7 @@ fun ReusableOutlinedTimePickerButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     value: Alarm?,
     label: String,
+    warnings: Boolean = false,
     onSelected: (Alarm) -> Unit
 ) {
     var open by remember { mutableStateOf(false) }
@@ -50,6 +51,7 @@ fun ReusableOutlinedTimePickerButton(
         modifier = modifier,
         value = value?.toString() ?: "",
         label = label,
+        warnings = warnings,
         onClick = {
             open = true
         }

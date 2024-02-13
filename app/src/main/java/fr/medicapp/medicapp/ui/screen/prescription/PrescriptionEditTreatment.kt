@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import fr.medicapp.medicapp.model.Duration
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
@@ -30,6 +33,29 @@ fun PrescriptionEditTreatment(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+
+    PrescriptionEditTreatmentView(
+        state = state.value,
+        onClick = onClick,
+        getMedicationList = { context -> viewModel.getMedicationList(context) },
+        updateMedication = { medication, context -> viewModel.updateMedication(medication, context) },
+        updatePosology = { posology -> viewModel.updatePosology(posology) },
+        updateFrequency = { frequency -> viewModel.updateFrequency(frequency) },
+        updateDuration = { duration -> viewModel.updateDuration(duration) }
+    )
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+private fun PrescriptionEditTreatmentView(
+    state: Prescription,
+    onClick: () -> Unit,
+    getMedicationList: (context: Context) -> List<OptionDialog>,
+    updateMedication: (medication: OptionDialog, context: Context) -> Unit,
+    updatePosology: (posology: String) -> Unit,
+    updateFrequency: (frequency: String) -> Unit,
+    updateDuration: (duration: Duration) -> Unit
+) {
     val context = LocalContext.current
 
     Edit(
@@ -42,41 +68,45 @@ fun PrescriptionEditTreatment(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableOutlinedSearchButton(
-                    options = viewModel.getMedicationList(context),
-                    value = state.value.treatment.medication,
+                    options = getMedicationList(context),
+                    value = state.treatment.medication,
                     label = "Médicament",
+                    warnings = state.treatment.medication == null,
                     onSelected = {
-                        viewModel.updateMedication(it, context)
+                        updateMedication(it, context)
                     }
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedTextField(
-                    value = state.value.treatment.posology,
+                    value = state.treatment.posology,
                     onValueChange = {
-                        viewModel.updatePosology(it)
+                        updatePosology(it)
                     },
+                    warnings = state.treatment.posology.isEmpty(),
                     label = "Posologie"
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedTextField(
-                    value = state.value.treatment.frequency,
+                    value = state.treatment.frequency,
                     onValueChange = {
-                        viewModel.updateFrequency(it)
+                        updateFrequency(it)
                     },
+                    warnings = state.treatment.frequency.isEmpty(),
                     label = "Fréquence"
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedDateRangePickerButton(
-                    value = state.value.treatment.duration,
+                    value = state.treatment.duration,
                     label = "Durée",
+                    warnings = state.treatment.duration == null,
                     onSelected = {
-                        viewModel.updateDuration(it)
+                        updateDuration(it)
                     }
                 )
             }
@@ -93,9 +123,14 @@ private fun PrescriptionEditTreatmentPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditTreatment(
-            viewModel = viewModel(),
-            onClick = {}
+        PrescriptionEditTreatmentView(
+            state = Prescription(),
+            onClick = {},
+            getMedicationList = { emptyList() },
+            updateMedication = { _, _ -> },
+            updatePosology = {},
+            updateFrequency = {},
+            updateDuration = {}
         )
     }
 }
@@ -109,9 +144,14 @@ private fun PrescriptionEditTreatmentDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditTreatment(
-            viewModel = viewModel(),
-            onClick = {}
+        PrescriptionEditTreatmentView(
+            state = Prescription(),
+            onClick = {},
+            getMedicationList = { emptyList() },
+            updateMedication = { _, _ -> },
+            updatePosology = {},
+            updateFrequency = {},
+            updateDuration = {}
         )
     }
 }

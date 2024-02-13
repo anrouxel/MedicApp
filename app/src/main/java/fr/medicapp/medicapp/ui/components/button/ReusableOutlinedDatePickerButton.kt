@@ -27,6 +27,7 @@ fun ReusableOutlinedDatePickerButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     value: LocalDate?,
     label: String,
+    warnings: Boolean = false,
     onSelected: (LocalDate) -> Unit
 ) {
     var open by remember { mutableStateOf(false) }
@@ -50,6 +51,7 @@ fun ReusableOutlinedDatePickerButton(
         modifier = modifier,
         value = value?.toString() ?: "",
         label = label,
+        warnings = warnings,
         onClick = {
             open = true
         }
