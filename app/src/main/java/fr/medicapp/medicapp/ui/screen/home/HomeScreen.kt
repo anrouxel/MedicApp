@@ -41,16 +41,17 @@ import java.util.Date
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
 ) {
-    val date = rememberSelectableWeekCalendarState(initialSelectionMode = SelectionMode.Single)
+    val date = rememberSelectableWeekCalendarState(initialSelectionMode = SelectionMode.Single )
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         CalendarButton(
-            modifier = Modifier,
-            date = date,
-            onClick = { })
+            date = date)
+        Text(
+            date.selectionState.selection.toString()
+        )
         Button(
             onClick = onAddPrescriptionClick,
             modifier = Modifier

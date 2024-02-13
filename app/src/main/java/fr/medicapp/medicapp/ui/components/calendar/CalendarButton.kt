@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,13 +44,13 @@ import java.util.Locale
 //https://github.com/boguszpawlowski/ComposeCalendar
 
 @Composable
-fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<DynamicSelectionState>, onClick: () -> Unit) {
+fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<DynamicSelectionState>) {
     SelectableWeekCalendar(
         modifier = modifier,
         calendarState = date,
-//        dayContent = { dayState ->
-//            MyDay(dayState)
-//        },
+        dayContent = { dayState ->
+            MyDay(dayState)
+        },
         daysOfWeekHeader = { weekState ->
             MyWeek(weekState)
         }
@@ -60,20 +62,34 @@ fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<Dynam
 
 @Composable
 private fun MyDay(dayState: DayState<DynamicSelectionState>, modifier: Modifier = Modifier){
+    val date = dayState.date
+    val selectionState = dayState.selectionState
+    val isSelected = selectionState.isDateSelected(date)
     Card(
         modifier = modifier
             .aspectRatio(1f)
             .padding(2.dp),
-        border = if (dayState.isCurrentDay) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null,
+        elevation = CardDefaults.cardElevation(if (dayState.isFromCurrentMonth) 4.dp else 0.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+        colors = CardDefaults.cardColors(
+            containerColor =
+//                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                if (isSelected) MaterialTheme.colorScheme.primary
+                else if (dayState.isCurrentDay) MaterialTheme.colorScheme.surface
+                else Color.Transparent,
+            contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+        ),
 
     ) {
         Box(
-            contentAlignment = Alignment.Center,
             modifier = Modifier
-
+                .clickable {
+                    selectionState.onDateSelected(date)
+                },
+            contentAlignment = Alignment.Center,
 
         ) {
-
+            Text(text = date.dayOfMonth.toString())
         }
     }
 
