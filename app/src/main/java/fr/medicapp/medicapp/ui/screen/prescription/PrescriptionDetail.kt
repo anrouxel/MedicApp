@@ -1,14 +1,26 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.Alarm
@@ -26,20 +38,35 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PrescriptionDetail(
     viewModel: SharedPrescriptionEditViewModel,
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
 
     PrescriptionDetailContent(
-        state = state.value
+        state = state.value,
+        updateNotificationActiveState = { index, active ->
+            Log.d("Notification", "updateNotificationActiveState: $index, $active")
+            viewModel.updateNotificationActiveState(index, active)
+            viewModel.save(context)
+            viewModel.updateNotificationManager(context, index)
+        },
+        removeNotification = { index ->
+            viewModel.removeNotification(index)
+            viewModel.save(context)
+            viewModel.updateNotificationManager(context, index)
+        }
     )
 }
 
 @Composable
 private fun PrescriptionDetailContent(
-    state: Prescription
+    state: Prescription,
+    updateNotificationActiveState: (Int, Boolean) -> Unit,
+    removeNotification: (Int) -> Unit,
 ) {
     Detail(
         title = "Détail de l'ordonnance",
@@ -106,10 +133,41 @@ private fun PrescriptionDetailContent(
                     Column(
                         modifier = Modifier.padding(10.dp)
                     ) {
-                        ReusableTextMediumCard(
-                            value = "Notification ${index + 1}",
-                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Notification ${index + 1}",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                fontStyle = MaterialTheme.typography.bodyLarge.fontStyle,
+                                fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                            )
 
+                            Row {
+                                Switch(
+                                    checked = notification.active,
+                                    onCheckedChange = {
+                                        updateNotificationActiveState(index, it)
+                                    }
+                                )
+
+                                IconButton(
+                                    onClick = {
+                                        removeNotification(index)
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+                        }
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(
@@ -178,7 +236,9 @@ fun PrescriptionDetailPreview() {
                         )
                     )
                 )
-            )
+            ),
+            updateNotificationActiveState = { _, _ -> },
+            removeNotification = { _ -> }
         )
     }
 }
@@ -227,7 +287,9 @@ fun PrescriptionDetailDarkPreview() {
                         )
                     )
                 )
-            )
+            ),
+            updateNotificationActiveState = { _, _ -> },
+            removeNotification = { _ -> }
         )
     }
 }
