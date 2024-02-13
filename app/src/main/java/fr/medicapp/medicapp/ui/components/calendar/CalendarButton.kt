@@ -1,9 +1,12 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
+import io.github.boguszpawlowski.composecalendar.WeekCalendarState
+import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
+import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
+
 
 
 import java.util.Date
@@ -24,7 +27,9 @@ import java.util.Date
 //https://github.com/boguszpawlowski/ComposeCalendar
 
 @Composable
-fun CalendarButton(modifier: Modifier = Modifier, date : MutableState<Date>, onClick: () -> Unit) {
-    SelectableWeekCalendar()
+fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<DynamicSelectionState>, onClick: () -> Unit) {
+    SelectableWeekCalendar(
+        calendarState = date
+    )
 
 }

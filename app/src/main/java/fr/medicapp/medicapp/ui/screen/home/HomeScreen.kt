@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.components.calendar.CalendarButton
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen120
+import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
+import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import java.util.Date
 
 /**
@@ -39,13 +41,15 @@ import java.util.Date
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
 ) {
-    val date = remember { mutableStateOf(Date()) }
+    val date = rememberSelectableWeekCalendarState(initialSelectionMode = SelectionMode.Single)
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        CalendarButton(date = date, onClick = { })
+        CalendarButton(
+            date = date,
+            onClick = { })
         Button(
             onClick = onAddPrescriptionClick,
             modifier = Modifier
