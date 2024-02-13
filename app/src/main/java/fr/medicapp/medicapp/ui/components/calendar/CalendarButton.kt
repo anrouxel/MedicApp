@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -65,12 +67,8 @@ private fun MyDay(dayState: DayState<DynamicSelectionState>, modifier: Modifier 
     val date = dayState.date
     val selectionState = dayState.selectionState
     val isSelected = selectionState.isDateSelected(date)
-    Card(
-        modifier = modifier
-            .aspectRatio(1f)
-            .padding(2.dp),
-        elevation = CardDefaults.cardElevation(if (dayState.isFromCurrentMonth) 4.dp else 0.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+    /*Card(
+
         colors = CardDefaults.cardColors(
             containerColor =
 //                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
@@ -78,19 +76,31 @@ private fun MyDay(dayState: DayState<DynamicSelectionState>, modifier: Modifier 
                 else if (dayState.isCurrentDay) MaterialTheme.colorScheme.surface
                 else Color.Transparent,
             contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+        */
+
+    OutlinedIconToggleButton(
+        colors = IconButtonDefaults.outlinedIconToggleButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            checkedContainerColor = MaterialTheme.colorScheme.primary
         ),
-
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.primary
+        ),
+        checked = isSelected,
+        onCheckedChange = {
+            if (!isSelected) {
+                selectionState.onDateSelected(date)
+            }
+        },
+        shape = MaterialTheme.shapes.medium
     ) {
-        Box(
-            modifier = Modifier
-                .clickable {
-                    selectionState.onDateSelected(date)
-                },
-            contentAlignment = Alignment.Center,
-
-        ) {
-            Text(text = date.dayOfMonth.toString())
-        }
+        Text(
+            text = date.dayOfMonth.toString(),
+            fontSize = MaterialTheme.typography.bodySmall.fontSize,
+            fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
+            fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
+        )
     }
 
 }
