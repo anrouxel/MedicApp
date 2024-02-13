@@ -31,7 +31,7 @@ fun PrescriptionEditInformation(
 ) {
     val state = viewModel.sharedState.collectAsState()
 
-    PrescriptionEditInformationView(
+    PrescriptionEditInformationContent(
         state = state.value,
         onClick = onClick,
         updateDate = { date -> viewModel.updateDate(date) }
@@ -40,7 +40,7 @@ fun PrescriptionEditInformation(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun PrescriptionEditInformationView(
+private fun PrescriptionEditInformationContent(
     state: Prescription,
     onClick: () -> Unit,
     updateDate: (date: LocalDate) -> Unit,
@@ -86,7 +86,7 @@ private fun PrescriptionEditInformationPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditInformationView(
+        PrescriptionEditInformationContent(
             state = Prescription(),
             onClick = {},
             updateDate = {}
@@ -103,7 +103,7 @@ private fun PrescriptionEditInformationDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditInformationView(
+        PrescriptionEditInformationContent(
             state = Prescription(),
             onClick = {},
             updateDate = {}

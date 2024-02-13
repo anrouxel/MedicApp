@@ -39,11 +39,9 @@ class SharedPrescriptionEditViewModel(
     val sharedState: StateFlow<Prescription> = _sharedState
 
     fun loadPrescription(context: Context, id: Long) {
-        Log.d("Prescription", "Loading prescription with id $id")
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
-        Log.d("Prescription", prescription.toString())
         _sharedState.value = prescription ?: Prescription()
     }
 
