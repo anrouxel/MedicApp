@@ -47,6 +47,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
+
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -65,6 +67,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -99,6 +102,10 @@ dependencies {
 
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
+
+    // Calendar
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.2.0")
+    implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.2.0")
 
     // Volley
     implementation("com.android.volley:volley:1.2.1")
