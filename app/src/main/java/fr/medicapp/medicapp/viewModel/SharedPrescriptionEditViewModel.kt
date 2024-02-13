@@ -44,6 +44,7 @@ class SharedPrescriptionEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
+        _sharedState.value = prescription ?: Prescription()
     }
 
     fun updateDate(newDate: LocalDate) {
