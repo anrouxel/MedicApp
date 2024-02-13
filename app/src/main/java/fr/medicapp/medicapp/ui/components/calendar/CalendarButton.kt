@@ -1,90 +1,86 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
-import io.github.boguszpawlowski.composecalendar.WeekCalendarState
-import io.github.boguszpawlowski.composecalendar.day.DayState
-import io.github.boguszpawlowski.composecalendar.header.DefaultWeekHeader
-import io.github.boguszpawlowski.composecalendar.header.WeekState
-import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
+import androidx.compose.ui.unit.sp
+import com.kizitonwose.calendar.compose.WeekCalendar
+import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
+import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.Week
+import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.atStartOfMonth
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.core.yearMonth
+import kotlinx.coroutines.flow.filter
 import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.Month
+import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
-//Copyright 2022 Bogusz Pawłowski
-//
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//
-//http://www.apache.org/licenses/LICENSE-2.0
-//
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//https://github.com/boguszpawlowski/ComposeCalendar
-
 @Composable
-fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<DynamicSelectionState>) {
-    SelectableWeekCalendar(
-        modifier = modifier,
-        calendarState = date,
-        dayContent = { dayState ->
-            MyDay(dayState)
-        },
-        daysOfWeekHeader = { weekState ->
-            MyWeek(weekState)
-        },
-        weekHeader = {weekState ->  
-            MyMonth(weekHeaderState = weekState)
+fun Calendar(modifier: Modifier = Modifier) {
+    val currentDate = remember { LocalDate.now() }
+    val currentMonth = remember { YearMonth.now() }
+    val startDate = remember { currentMonth.minusMonths(100).atStartOfMonth() } // Adjust as needed
+    val endDate = remember { currentMonth.plusMonths(100).atEndOfMonth() } // Adjust as needed
+    val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
+    var selection by remember { mutableStateOf(currentDate) }
 
-        }
-        
-
+    val state = rememberWeekCalendarState(
+        startDate = startDate,
+        endDate = endDate,
+        firstVisibleWeekDate = currentDate,
+        firstDayOfWeek = firstDayOfWeek
     )
 
+    val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
 
+    Text(
+        text = getWeekPageTitle(visibleWeek),
+    )
+
+    WeekCalendar(
+        modifier = modifier,
+        state = state,
+        dayContent = { day ->
+            Day(day, isSelected = selection == day.date) {
+                if (it.date != selection) {
+                    selection = it.date
+                }
+            }
+        },
+    )
 }
 
 @Composable
-private fun MyDay(dayState: DayState<DynamicSelectionState>){
-    val date = dayState.date
-    val selectionState = dayState.selectionState
-    val isSelected = selectionState.isDateSelected(date)
-    /*Card(
-
-        colors = CardDefaults.cardColors(
-            containerColor =
-//                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-                if (isSelected) MaterialTheme.colorScheme.primary
-                else if (dayState.isCurrentDay) MaterialTheme.colorScheme.surface
-                else Color.Transparent,
-            contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
-        */
-
+private fun Day(
+    day: WeekDay,
+    isSelected: Boolean,
+    onClick: (WeekDay) -> Unit
+) {
     OutlinedIconToggleButton(
         colors = IconButtonDefaults.outlinedIconToggleButtonColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -96,95 +92,57 @@ private fun MyDay(dayState: DayState<DynamicSelectionState>){
         ),
         checked = isSelected,
         onCheckedChange = {
-            if (!isSelected) {
-                selectionState.onDateSelected(date)
-            }
+            onClick(day)
         },
         shape = MaterialTheme.shapes.medium
     ) {
         Text(
-            text = date.dayOfMonth.toString(),
+            text = day.date.dayOfMonth.toString(),
             fontSize = MaterialTheme.typography.bodySmall.fontSize,
             fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
             fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
         )
     }
-
 }
 
 @Composable
-private fun MyWeek(weekState: List<DayOfWeek>, modifier: Modifier=Modifier){
-    Row{
-        weekState.forEach {
-            //take the day of the week (in the language of the device) and display it
-            val day = it.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-            Text(
-                textAlign = TextAlign.Center,
-                text = day,
-                modifier = Modifier
-                    .weight(1f)
-                    .wrapContentHeight()
-            )
+fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
+    val visibleWeek = remember(state) { mutableStateOf(state.firstVisibleWeek) }
+    LaunchedEffect(state) {
+        snapshotFlow { state.isScrollInProgress }
+            .filter { scrolling -> !scrolling }
+            .collect { visibleWeek.value = state.firstVisibleWeek }
+    }
+    return visibleWeek.value
+}
+
+fun getWeekPageTitle(week: Week): String {
+    val firstDate = week.days.first().date
+    val lastDate = week.days.last().date
+    return when {
+        firstDate.yearMonth == lastDate.yearMonth -> {
+            firstDate.yearMonth.displayText()
+        }
+        firstDate.year == lastDate.year -> {
+            "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
+        }
+        else -> {
+            "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
         }
     }
 }
 
-
-@Composable
-private fun MyMonth(weekHeaderState: WeekState, modifier: Modifier=Modifier){
-    Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        DecrementButton(weekState = weekHeaderState)
-        Text(
-            text = "${weekHeaderState.currentWeek.yearMonth.month
-                .getDisplayName(TextStyle.FULL, Locale.getDefault())
-                .lowercase()
-                .replaceFirstChar { it.titlecase() }} ${
-                weekHeaderState.currentWeek.yearMonth.year}",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.headlineMedium
-        )
-        IncrementButton(weekState = weekHeaderState)
-        
-
-    }
-
-
+fun YearMonth.displayText(short: Boolean = false): String {
+    return "${this.month.displayText(short = short)} ${this.year}"
 }
 
-@Composable
-private fun DecrementButton(
-    weekState: WeekState,
-) {
-    IconButton(
-        enabled = weekState.currentWeek > weekState.minWeek,
-        onClick = { weekState.currentWeek = weekState.currentWeek.dec() }
-    ) {
-        Image(
-            imageVector = Icons.Default.KeyboardArrowLeft,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            contentDescription = "Previous",
-        )
-    }
+fun Month.displayText(short: Boolean = true): String {
+    val style = if (short) TextStyle.SHORT else TextStyle.FULL
+    return getDisplayName(style, Locale.ENGLISH)
 }
 
-@Composable
-private fun IncrementButton(
-    weekState: WeekState,
-) {
-    IconButton(
-        enabled = weekState.currentWeek < weekState.maxWeek,
-        onClick = { weekState.currentWeek = weekState.currentWeek.inc() }
-    ) {
-        Image(
-            imageVector = Icons.Default.KeyboardArrowRight,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            contentDescription = "Next",
-        )
+fun DayOfWeek.displayText(uppercase: Boolean = false): String {
+    return getDisplayName(TextStyle.SHORT, Locale.ENGLISH).let { value ->
+        if (uppercase) value.uppercase(Locale.ENGLISH) else value
     }
 }
-
