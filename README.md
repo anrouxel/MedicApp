@@ -41,6 +41,11 @@
 * Arthur Osselin ([tuturita](https://github.com/tuturita))
 * Lana Heyrendt ([Renarde-dev](https://github.com/Renarde-dev))
 
+## Contributors
+* Guewen Guyomard ([gueguefun](https://github.com/gueguefun))
+* Lucas Payet ([Lexonchik](https://github.com/Lexonchik))
+* Mathys Menier ([Thysma23](https://github.com/Thysma23))
+
 ## Related Git repository
 * Android application: [MedicApp](https://github.com/anrouxel/MedicApp#----)
 * C# data cleaner: [MedicAppToolsDatasets](https://github.com/anrouxel/MedicAppToolsDatasets#----)
