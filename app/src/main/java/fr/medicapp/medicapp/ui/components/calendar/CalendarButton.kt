@@ -1,16 +1,17 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
@@ -18,13 +19,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
 import io.github.boguszpawlowski.composecalendar.day.DayState
-import io.github.boguszpawlowski.composecalendar.day.DefaultDay
+import io.github.boguszpawlowski.composecalendar.header.DefaultWeekHeader
+import io.github.boguszpawlowski.composecalendar.header.WeekState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import java.time.DayOfWeek
 import java.time.format.TextStyle
@@ -55,7 +57,12 @@ fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<Dynam
         },
         daysOfWeekHeader = { weekState ->
             MyWeek(weekState)
+        },
+        weekHeader = {weekState ->  
+            MyMonth(weekHeaderState = weekState)
+
         }
+        
 
     )
 
@@ -63,7 +70,7 @@ fun CalendarButton(modifier: Modifier = Modifier, date : WeekCalendarState<Dynam
 }
 
 @Composable
-private fun MyDay(dayState: DayState<DynamicSelectionState>, modifier: Modifier = Modifier){
+private fun MyDay(dayState: DayState<DynamicSelectionState>){
     val date = dayState.date
     val selectionState = dayState.selectionState
     val isSelected = selectionState.isDateSelected(date)
@@ -106,7 +113,7 @@ private fun MyDay(dayState: DayState<DynamicSelectionState>, modifier: Modifier 
 }
 
 @Composable
-private fun MyWeek(weekState: List<DayOfWeek>){
+private fun MyWeek(weekState: List<DayOfWeek>, modifier: Modifier=Modifier){
     Row{
         weekState.forEach {
             //take the day of the week (in the language of the device) and display it
@@ -119,6 +126,65 @@ private fun MyWeek(weekState: List<DayOfWeek>){
                     .wrapContentHeight()
             )
         }
+    }
+}
+
+
+@Composable
+private fun MyMonth(weekHeaderState: WeekState, modifier: Modifier=Modifier){
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DecrementButton(weekState = weekHeaderState)
+        Text(
+            text = "${weekHeaderState.currentWeek.yearMonth.month
+                .getDisplayName(TextStyle.FULL, Locale.getDefault())
+                .lowercase()
+                .replaceFirstChar { it.titlecase() }} ${
+                weekHeaderState.currentWeek.yearMonth.year}",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.headlineMedium
+        )
+        IncrementButton(weekState = weekHeaderState)
+        
+
+    }
+
+
+}
+
+@Composable
+private fun DecrementButton(
+    weekState: WeekState,
+) {
+    IconButton(
+        enabled = weekState.currentWeek > weekState.minWeek,
+        onClick = { weekState.currentWeek = weekState.currentWeek.dec() }
+    ) {
+        Image(
+            imageVector = Icons.Default.KeyboardArrowLeft,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+            contentDescription = "Previous",
+        )
+    }
+}
+
+@Composable
+private fun IncrementButton(
+    weekState: WeekState,
+) {
+    IconButton(
+        enabled = weekState.currentWeek < weekState.maxWeek,
+        onClick = { weekState.currentWeek = weekState.currentWeek.inc() }
+    ) {
+        Image(
+            imageVector = Icons.Default.KeyboardArrowRight,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+            contentDescription = "Next",
+        )
     }
 }
 

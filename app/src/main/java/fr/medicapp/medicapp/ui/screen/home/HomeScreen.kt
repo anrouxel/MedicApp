@@ -24,8 +24,11 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
+import io.github.boguszpawlowski.composecalendar.rememberWeekCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import io.github.boguszpawlowski.composecalendar.week.Week
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 /**
@@ -44,8 +47,12 @@ import java.util.Date
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
 ) {
-    val date = rememberSelectableWeekCalendarState(initialSelectionMode = SelectionMode.Single, initialSelection = listOf(
-        LocalDate.now()))
+    val date = rememberSelectableWeekCalendarState(
+        initialWeek = Week.now(),
+        initialSelectionMode = SelectionMode.Single,
+        initialSelection = listOf(LocalDate.now())
+    )
+    println(date.selectionState.selection.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()
