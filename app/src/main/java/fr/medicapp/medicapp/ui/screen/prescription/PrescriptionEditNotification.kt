@@ -50,10 +50,13 @@ fun PrescriptionEditNotification(
 ) {
     val state = viewModel.sharedState.collectAsState()
 
-    PrescriptionEditNotificationView(
+    PrescriptionEditNotificationContent(
         state = state.value,
         onClick = onClick,
-        save = { context -> viewModel.save(context) },
+        save = { context ->
+            viewModel.save(context)
+            viewModel.addToNotificationManager(context)
+        },
         addNotification = { viewModel.addNotification() },
         removeNotification = { index -> viewModel.removeNotification(index) },
         updateNotificationActiveState = { index, active -> viewModel.updateNotificationActiveState(index, active) },
@@ -66,7 +69,7 @@ fun PrescriptionEditNotification(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun PrescriptionEditNotificationView(
+private fun PrescriptionEditNotificationContent(
     state: Prescription,
     onClick: () -> Unit,
     save: (Context) -> Unit,
@@ -238,7 +241,7 @@ private fun PrescriptionEditNotificationPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditNotificationView(
+        PrescriptionEditNotificationContent(
             state = Prescription(
                 notifications = mutableListOf(
                     Notification(
@@ -275,7 +278,7 @@ private fun PrescriptionEditNotificationDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditNotificationView(
+        PrescriptionEditNotificationContent(
             state = Prescription(
                 notifications = mutableListOf(
                     Notification(

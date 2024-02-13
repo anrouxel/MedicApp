@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
@@ -47,6 +48,25 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onAddPrescriptionClick = {
                     navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
                 },
+                onPrescriptionClick = {
+                    navController.navigate(PrescriptionRoute.PrescriptionDetailRoute.route.replace("{id}", it.toString()))
+                }
+            )
+        }
+
+        composable(route = PrescriptionRoute.PrescriptionDetailRoute.route) {
+            val id = it.arguments?.getString("id")?.toLongOrNull()
+
+            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+
+            if (id != null) {
+                viewModel.loadPrescription(context = LocalContext.current, id = id)
+            } else {
+                navController.popBackStack()
+            }
+
+            PrescriptionDetail(
+                viewModel = viewModel
             )
         }
 

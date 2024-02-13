@@ -23,6 +23,7 @@ import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.DayOfWeek
@@ -38,13 +39,11 @@ class SharedPrescriptionEditViewModel(
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadPrescription(context: Context, id: Long) {
-        Log.d("Prescription", "Loading prescription with id $id")
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
-        Log.d("Prescription", prescription.toString())
-        _sharedState.value = prescription ?: Prescription()
     }
 
     fun updateDate(newDate: LocalDate) {
@@ -83,6 +82,8 @@ class SharedPrescriptionEditViewModel(
         val updatedNotification = notificationToUpdate.copy(active = newActiveState)
         updatedNotifications[index] = updatedNotification
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
+        Log.d("Notification Before", _sharedState.value.notifications.toString())
+        Log.d("Notification After", updatedPrescription.notifications.toString())
         _sharedState.value = updatedPrescription
     }
 
@@ -165,5 +166,27 @@ class SharedPrescriptionEditViewModel(
         val store = boxStore.boxFor(MedicationEntity::class.java)
         val prescriptionList = store.all.map { it.convert().toOptionDialog() }
         return prescriptionList
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addToNotificationManager(context: Context) {
+        val notification = _sharedState.value.notifications
+        val message = "Vous avez un médicament à prendre"
+        val bigText = "Vous avez un médicament à prendre"
+        notification.forEach {
+            NotificationPrescriptionManager.add(context, it, message, bigText)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateNotificationManager(context: Context, index: Int) {
+        val notification = _sharedState.value.notifications[index]
+        NotificationPrescriptionManager.update(context, notification)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun removeFromNotificationManager(context: Context, index: Int) {
+        val notification = _sharedState.value.notifications[index]
+        NotificationPrescriptionManager.remove(context, notification)
     }
 }
