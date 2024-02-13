@@ -11,7 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.model.Alarm
 import fr.medicapp.medicapp.model.Duration
+import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.model.medication.Medication
@@ -21,6 +23,7 @@ import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -95,6 +98,38 @@ private fun PrescriptionDetailContent(
                     }
                 }
             }
+
+            state.notifications.forEachIndexed { index, notification ->
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        ReusableTextMediumCard(
+                            value = "Notification ${index + 1}",
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Active : ${notification.active}",
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Jours : ${notification.days}",
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Heures : ${notification.alarms.map { it.toString() }}",
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -121,6 +156,25 @@ fun PrescriptionDetailPreview() {
                     duration = Duration(
                         startDate = LocalDate.now(),
                         endDate = LocalDate.now().plusDays(7
+                        )
+                    )
+                ),
+                notifications = mutableListOf(
+                    Notification(
+                        active = true,
+                        days = mutableListOf(
+                            DayOfWeek.MONDAY,
+                            DayOfWeek.TUESDAY,
+                        ),
+                        alarms = mutableListOf(
+                            Alarm(
+                                hour = 8,
+                                minute = 0
+                            ),
+                            Alarm(
+                                hour = 12,
+                                minute = 0
+                            ),
                         )
                     )
                 )
@@ -151,6 +205,25 @@ fun PrescriptionDetailDarkPreview() {
                     duration = Duration(
                         startDate = LocalDate.now(),
                         endDate = LocalDate.now().plusDays(7
+                        )
+                    )
+                ),
+                notifications = mutableListOf(
+                    Notification(
+                        active = true,
+                        days = mutableListOf(
+                            DayOfWeek.MONDAY,
+                            DayOfWeek.TUESDAY,
+                        ),
+                        alarms = mutableListOf(
+                            Alarm(
+                                hour = 8,
+                                minute = 0
+                            ),
+                            Alarm(
+                                hour = 12,
+                                minute = 0
+                            ),
                         )
                     )
                 )
