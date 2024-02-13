@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.model
 
 import android.content.Context
+import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import java.time.LocalDate
@@ -29,6 +30,10 @@ data class SideEffect(
             effetsConstates,
             description
         )
+
+        val box = ObjectBox.getInstance(context)
+        val store = box.boxFor(SideEffectEntity::class.java)
+        store.attach(sideEffect)
 
         sideEffect.treatment.target = treatment?.convert(context)
         return sideEffect

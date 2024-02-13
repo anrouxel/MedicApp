@@ -147,8 +147,6 @@ Rapp/src/main/java/fr/medicapp/medicapp/model/medication/PharmaceuticalSpecialty
 [app/src/main/java/fr/medicapp/medicapp/model/medication/PrescriptionDispensingConditions.kt,2\1\21bf2b57f314a97ffef78c13b49f2e0fa750f541
 ç
 ]app/src/main/java/fr/medicapp/medicapp/model/medication/TransparencyCommissionOpinionLinks.kt,2\7\27fe5bcf72b38646bde982f76dc3a9185d1f90cd
-t
-Dapp/src/main/java/fr/medicapp/medicapp/ui/components/SearchDialog.kt,c\0\c0910f092514fd7ce1170f6729c9dbebe22a775f
 s
 Capp/src/main/java/fr/medicapp/medicapp/ui/components/screen/Edit.kt,e\0\e0ec86f014053efac14e6d5a450b174a38051af4
 }
