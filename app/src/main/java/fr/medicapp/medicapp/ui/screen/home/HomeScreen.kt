@@ -48,6 +48,7 @@ fun HomeScreen(
             .padding(16.dp)
     ) {
         CalendarButton(
+            modifier = Modifier,
             date = date,
             onClick = { })
         Button(
