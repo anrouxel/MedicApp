@@ -12,12 +12,24 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.components.calendar.CalendarButton
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen120
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
+import io.github.boguszpawlowski.composecalendar.rememberWeekCalendarState
+import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import io.github.boguszpawlowski.composecalendar.week.Week
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 /**
  * Écran d'accueil de l'application MedicApp.
@@ -35,34 +47,23 @@ import fr.medicapp.medicapp.ui.theme.EUGreen120
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
 ) {
+    val date = rememberSelectableWeekCalendarState(
+        initialWeek = Week.now(),
+        initialSelectionMode = SelectionMode.Single,
+        initialSelection = listOf(LocalDate.now())
+    )
+    println(date.selectionState.selection.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 200.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = EUGreen120,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
-            ) {
-                Text(
-                    text = "Bonjour, John Doe",
-                )
-            }
-        }
+        CalendarButton(
+            date = date
+        )
+        Text(
+            date.selectionState.selection.toString()
+        )
         Button(
             onClick = onAddPrescriptionClick,
             modifier = Modifier
@@ -98,7 +99,13 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen(
-        onAddPrescriptionClick = { }
-    )
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        HomeScreen(
+            onAddPrescriptionClick = { }
+        )
+    }
 }
