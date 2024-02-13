@@ -219,3 +219,13 @@ Iapp/src/main/java/fr/medicapp/medicapp/ui/components/modal/SearchModal.kt,7\c\
 Yapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableElevatedCardButton.kt,0\1\01ed7dbca49710c076adf037faeb9d37007c98c6
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/components/screen/Detail.kt,7\0\705c5ec42b616c0ecbcdda0aec152229da7ab1ae
+i
+9app/src/test/java/fr/medicapp/medicapp/ExampleUnitTest.kt,5\0\50d8ba38a3e79f6782dec587392c4a1d15b3817d
+y
+Iapp/src/main/java/fr/medicapp/medicapp/ui/components/text/ReusableText.kt,e\c\ecdb192639e6814192418e357971b85227255cdc
+‚
+Rapp/src/main/java/fr/medicapp/medicapp/ui/components/text/ReusableTextSmallCard.kt,0\4\046f12ff9fd90480c8f7c20f1e0c54a4b6dded1a
+ƒ
+Sapp/src/main/java/fr/medicapp/medicapp/ui/components/text/ReusableTextMediumCard.kt,f\0\f0061403c1e767d6256acc232b4b9da813fdfe21
+‚
+Rapp/src/main/java/fr/medicapp/medicapp/ui/components/text/ReusableTextLargeCard.kt,3\9\39c439da83d10624c194132edac7030b6b3c6fec
