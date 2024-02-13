@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.database.entity
 
+import androidx.compose.runtime.toMutableStateList
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.LocalDateConverter
 import fr.medicapp.medicapp.model.Prescription
@@ -30,7 +31,7 @@ data class PrescriptionEntity(
             date,
             doctor.target?.convert(),
             treatment.target.convert(),
-            notifications.map { it.convert() }.toMutableList()
+            notifications.map { it.convert() }.toMutableStateList()
         )
     }
 }

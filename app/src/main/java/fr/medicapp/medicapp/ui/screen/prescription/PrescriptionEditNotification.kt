@@ -53,7 +53,10 @@ fun PrescriptionEditNotification(
     PrescriptionEditNotificationContent(
         state = state.value,
         onClick = onClick,
-        save = { context -> viewModel.save(context) },
+        save = { context ->
+            viewModel.save(context)
+            viewModel.addToNotificationManager(context)
+        },
         addNotification = { viewModel.addNotification() },
         removeNotification = { index -> viewModel.removeNotification(index) },
         updateNotificationActiveState = { index, active -> viewModel.updateNotificationActiveState(index, active) },
