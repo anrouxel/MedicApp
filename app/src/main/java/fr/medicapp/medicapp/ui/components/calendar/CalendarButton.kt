@@ -71,7 +71,8 @@ fun Calendar(modifier: Modifier = Modifier) {
             state.animateScrollToWeek(currentDate)
             selection=currentDate
                          },
-        coroutine = coroutineScope
+        coroutine = coroutineScope,
+
     )
 
 

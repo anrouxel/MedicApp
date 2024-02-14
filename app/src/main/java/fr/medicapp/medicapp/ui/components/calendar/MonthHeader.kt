@@ -41,9 +41,10 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
 private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
     IconButton(
         onClick = {
-//            coroutine.launch {
+            coroutine.launch {
+//                val nextWeek =
 //                weekState.scrollToWeek()
-//            }
+            }
         }
 
     ) {
@@ -62,7 +63,7 @@ fun MonthHeader(state: WeekCalendarState, monthString: String, onClick: suspend 
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        DecrementButton(weekState = state, coroutine = coroutine)
+        //DecrementButton(weekState = state, coroutine = coroutine)
         Text(
             text = monthString,
             //when clicked, go back to the current week and day
@@ -72,7 +73,7 @@ fun MonthHeader(state: WeekCalendarState, monthString: String, onClick: suspend 
                 }
             }
         )
-        IncrementButton(weekState = state, coroutine = coroutine)
+        //IncrementButton(weekState = state, coroutine = coroutine)
     }
 
 }
