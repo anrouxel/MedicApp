@@ -2,18 +2,9 @@ package fr.medicapp.medicapp.ui.components.calendar
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
@@ -28,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.compose.WeekCalendar
@@ -39,12 +29,9 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import com.kizitonwose.calendar.core.yearMonth
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -68,37 +55,38 @@ fun Calendar(modifier: Modifier = Modifier) {
         firstDayOfWeek = firstDayOfWeek,
     )
 
-    Log.d("Coucou", state.firstVisibleWeek.toString())
+    //Log.d("Coucou", state.firstVisibleWeek.toString())
 
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
+
     val coroutineScope = rememberCoroutineScope()
 
     Column {
         MonthHeader(
-            state = firstDayOfWeek,
-            monthString = getWeekPageTitle(visibleWeek),
-            onClick = suspend{
+            state = state,
+            month = getWeekPageTitle(visibleWeek),
+            onClick = suspend {
                 state.animateScrollToWeek(currentDate)
-                selection=currentDate
+                selection = currentDate
             },
             coroutine = coroutineScope,
 
-    )
+            )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
-    WeekCalendar(
-        modifier = modifier,
-        state = state,
-        dayContent = { day ->
-            Day(day, isSelected = selection == day.date) {
-                if (it.date != selection) {
-                    selection = it.date
+        WeekCalendar(
+            modifier = modifier,
+            state = state,
+            dayContent = { day ->
+                Day(day, isSelected = selection == day.date) {
+                    if (it.date != selection) {
+                        selection = it.date
+                    }
                 }
-            }
-        },
-    )
-}
+            },
+        )
+    }
 
 
 }
@@ -189,27 +177,12 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
 
 
 
-fun getWeekPageTitle(week: Week): String {
-    val firstDate = week.days.first().date
-    val lastDate = week.days.last().date
-    return when {
-        firstDate.yearMonth == lastDate.yearMonth -> {
-            firstDate.yearMonth.displayText()
-        }
-        firstDate.year == lastDate.year -> {
-            "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
-        }
-        else -> {
-            "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
-        }
-    }
-}
-
-
 
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)
-        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${this.year}"
+    return "${
+        this.month.displayText(short = short)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+    } ${this.year}"
 }
 
 fun Month.displayText(short: Boolean = true): String {

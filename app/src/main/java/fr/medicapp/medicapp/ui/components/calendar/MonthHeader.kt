@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,18 +16,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-//import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
+import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
+import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
 
 @Composable
-private fun DecrementButton(weekState: DayOfWeek, coroutine : CoroutineScope){
+private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
     IconButton(
         onClick = {
-//            coroutine.launch {
-//                weekState.scrollToWeek()
-//            }
+            coroutine.launch {
+                val previousWeek = weekState.firstVisibleWeek
+                    .days[0].date.plusWeeks(-1)
+
+                weekState.animateScrollToWeek(previousWeek)
+
+            }
+
         }
 
     ) {
@@ -39,12 +45,15 @@ private fun DecrementButton(weekState: DayOfWeek, coroutine : CoroutineScope){
 }
 
 @Composable
-private fun IncrementButton(weekState: DayOfWeek, coroutine : CoroutineScope){
+private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
     IconButton(
         onClick = {
             coroutine.launch {
-//                val nextWeek =
-//                weekState.scrollToWeek()
+                val nextWeek = weekState.firstVisibleWeek
+                    .days[0].date.plusWeeks(1)
+
+                weekState.animateScrollToWeek(nextWeek)
+
             }
         }
 
@@ -58,15 +67,19 @@ private fun IncrementButton(weekState: DayOfWeek, coroutine : CoroutineScope){
 }
 
 @Composable
-fun MonthHeader(state: DayOfWeek, monthString: String, onClick: suspend () -> Unit, coroutine: CoroutineScope, modifier: Modifier = Modifier){
+fun MonthHeader(state: WeekCalendarState,
+                month: String,
+                onClick: suspend () -> Unit,
+                coroutine: CoroutineScope,
+                modifier: Modifier = Modifier){
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        //DecrementButton(weekState = state, coroutine = coroutine)
+        DecrementButton(weekState = state, coroutine = coroutine)
         Text(
-            text = monthString,
+            text = month,
             //when clicked, go back to the current week and day
             modifier.clickable {
                 coroutine.launch {
@@ -74,7 +87,7 @@ fun MonthHeader(state: DayOfWeek, monthString: String, onClick: suspend () -> Un
                 }
             }
         )
-        //IncrementButton(weekState = state, coroutine = coroutine)
+        IncrementButton(weekState = state, coroutine = coroutine)
     }
 
 }

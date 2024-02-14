@@ -765,9 +765,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "18:3565285013812494584",
+      "lastPropertyId": "3:234230736630504946",
+      "name": "TransparencyCommissionOpinionLinks",
+      "properties": [
+        {
+          "id": "1:4820141955270184706",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2729983256804582556",
+          "name": "hasDossierCode",
+          "type": 9
+        },
+        {
+          "id": "3:234230736630504946",
+          "name": "commissionOpinionLink",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "17:3596385483987248716",
+  "lastEntityId": "18:3565285013812494584",
   "lastIndexId": "8:5728124482716488420",
   "lastRelationId": "13:2155096703169355224",
   "lastSequenceId": "0:0",
