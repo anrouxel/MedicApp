@@ -1,10 +1,10 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
@@ -12,26 +12,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
-import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import kotlinx.coroutines.flow.filter
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -53,26 +53,64 @@ fun Calendar(modifier: Modifier = Modifier) {
         startDate = startDate,
         endDate = endDate,
         firstVisibleWeekDate = currentDate,
-        firstDayOfWeek = firstDayOfWeek
+        firstDayOfWeek = firstDayOfWeek,
     )
+
+    Log.d("Coucou", state.firstVisibleWeek.toString())
 
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
+    val coroutineScope = rememberCoroutineScope()
 
-    Text(
-        text = getWeekPageTitle(visibleWeek),
-    )
+    Column {
+        MonthHeader(
+            state = state,
+            monthString = getWeekPageTitle(visibleWeek),
+            onClick = suspend {
+                state.animateScrollToWeek(currentDate)
+                selection = currentDate
+            },
+            coroutine = coroutineScope,
 
-    WeekCalendar(
-        modifier = modifier,
-        state = state,
-        dayContent = { day ->
-            Day(day, isSelected = selection == day.date) {
-                if (it.date != selection) {
-                    selection = it.date
+        )
+
+        Spacer(modifier = Modifier.padding(10.dp))
+
+        WeekCalendar(
+            modifier = modifier,
+            state = state,
+            dayContent = { day ->
+                Day(day, isSelected = selection == day.date) {
+                    if (it.date != selection) {
+                        selection = it.date
+                    }
                 }
-            }
-        },
-    )
+            },
+        )
+    }
+}
+
+@Preview(name = "Light Theme")
+@Composable
+private fun CalendarPreview() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Calendar()
+    }
+}
+
+@Preview(name = "Light Theme")
+@Composable
+private fun CalendarDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Calendar()
+    }
 }
 
 @Composable
@@ -81,26 +119,68 @@ private fun Day(
     isSelected: Boolean,
     onClick: (WeekDay) -> Unit
 ) {
-    OutlinedIconToggleButton(
-        colors = IconButtonDefaults.outlinedIconToggleButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            checkedContainerColor = MaterialTheme.colorScheme.primary
-        ),
-        border = BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.primary
-        ),
-        checked = isSelected,
-        onCheckedChange = {
-            onClick(day)
-        },
-        shape = MaterialTheme.shapes.medium
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = day.date.dayOfMonth.toString(),
+            text = day.date.dayOfWeek.displayText(),
             fontSize = MaterialTheme.typography.bodySmall.fontSize,
             fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
             fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
+        )
+        OutlinedIconToggleButton(
+            colors = IconButtonDefaults.outlinedIconToggleButtonColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                checkedContainerColor = MaterialTheme.colorScheme.primary
+            ),
+            border = BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary
+            ),
+            checked = isSelected,
+            onCheckedChange = {
+                onClick(day)
+            },
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Text(
+                text = day.date.dayOfMonth.toString(),
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
+                fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
+            )
+        }
+    }
+}
+
+@Preview(name = "Light Theme")
+@Composable
+private fun DayPreview() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Day(
+            day = WeekDay(LocalDate.now(), WeekDayPosition.InDate),
+            isSelected = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Theme")
+@Composable
+private fun DayDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Day(
+            day = WeekDay(LocalDate.now(), WeekDayPosition.InDate),
+            isSelected = false,
+            onClick = {}
         )
     }
 }
@@ -133,16 +213,19 @@ fun getWeekPageTitle(week: Week): String {
 }
 
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)} ${this.year}"
+    return "${this.month.displayText(short = short)
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${this.year}"
 }
 
 fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
-    return getDisplayName(style, Locale.ENGLISH)
+    return getDisplayName(style, Locale.getDefault()).replaceFirstChar {
+        it.titlecase()
+    }
 }
 
 fun DayOfWeek.displayText(uppercase: Boolean = false): String {
-    return getDisplayName(TextStyle.SHORT, Locale.ENGLISH).let { value ->
-        if (uppercase) value.uppercase(Locale.ENGLISH) else value
+    return getDisplayName(TextStyle.SHORT, Locale.getDefault()).let { value ->
+        if (uppercase) value.uppercase(Locale.getDefault()) else value
     }
 }

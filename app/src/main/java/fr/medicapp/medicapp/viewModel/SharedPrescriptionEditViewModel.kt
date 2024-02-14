@@ -33,6 +33,7 @@ import java.time.LocalDate
 class SharedPrescriptionEditViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
 
@@ -77,7 +78,10 @@ class SharedPrescriptionEditViewModel(
     fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val notificationToUpdate = updatedNotifications[index]
+
         val updatedNotification = notificationToUpdate.copy(active = newActiveState)
+        Log.d("Updated Notification", updatedNotification.toString())
+
         updatedNotifications[index] = updatedNotification
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         Log.d("Notification Before", _sharedState.value.notifications.toString())
