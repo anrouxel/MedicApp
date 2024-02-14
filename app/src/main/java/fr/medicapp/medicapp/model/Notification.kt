@@ -27,7 +27,7 @@ data class Notification(
         val box = ObjectBox.getInstance(context)
         val store = box.boxFor(NotificationEntity::class.java)
         store.attach(notification)
-
+        notification.alarms.clear()
         notification.alarms.addAll(alarms.map { it.convert(context) })
         return notification
     }
