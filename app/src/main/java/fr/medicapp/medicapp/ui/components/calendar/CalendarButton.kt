@@ -1,12 +1,15 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
@@ -26,15 +29,19 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -61,6 +68,8 @@ fun Calendar(modifier: Modifier = Modifier) {
         firstDayOfWeek = firstDayOfWeek,
     )
 
+    Log.d("Coucou", state.firstVisibleWeek.toString())
+
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
     val coroutineScope = rememberCoroutineScope()
 
@@ -74,21 +83,22 @@ fun Calendar(modifier: Modifier = Modifier) {
             },
             coroutine = coroutineScope,
 
-            )
+    )
 
+        Spacer(modifier = Modifier.padding(10.dp))
 
-        WeekCalendar(
-            modifier = modifier,
-            state = state,
-            dayContent = { day ->
-                Day(day, isSelected = selection == day.date) {
-                    if (it.date != selection) {
-                        selection = it.date
-                    }
+    WeekCalendar(
+        modifier = modifier,
+        state = state,
+        dayContent = { day ->
+            Day(day, isSelected = selection == day.date) {
+                if (it.date != selection) {
+                    selection = it.date
                 }
-            },
-        )
-    }
+            }
+        },
+    )
+}
 
 
 }
@@ -132,6 +142,38 @@ private fun Day(
         }
     }
 
+}
+
+@Preview(name = "Light Theme")
+@Composable
+private fun DayPreview() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Day(
+            day = WeekDay(LocalDate.now(), WeekDayPosition.InDate),
+            isSelected = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(name = "Dark Theme")
+@Composable
+private fun DayDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Day(
+            day = WeekDay(LocalDate.now(), WeekDayPosition.InDate),
+            isSelected = false,
+            onClick = {}
+        )
+    }
 }
 
 @Composable
