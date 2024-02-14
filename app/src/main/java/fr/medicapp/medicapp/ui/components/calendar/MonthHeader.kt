@@ -15,12 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
+//import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 
 @Composable
-private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+private fun DecrementButton(weekState: DayOfWeek, coroutine : CoroutineScope){
     IconButton(
         onClick = {
 //            coroutine.launch {
@@ -38,7 +39,7 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
 }
 
 @Composable
-private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+private fun IncrementButton(weekState: DayOfWeek, coroutine : CoroutineScope){
     IconButton(
         onClick = {
             coroutine.launch {
@@ -57,7 +58,7 @@ private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
 }
 
 @Composable
-fun MonthHeader(state: WeekCalendarState, monthString: String, onClick: suspend () -> Unit, coroutine: CoroutineScope, modifier: Modifier = Modifier){
+fun MonthHeader(state: DayOfWeek, monthString: String, onClick: suspend () -> Unit, coroutine: CoroutineScope, modifier: Modifier = Modifier){
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,

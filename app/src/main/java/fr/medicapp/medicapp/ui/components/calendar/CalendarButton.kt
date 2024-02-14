@@ -64,29 +64,33 @@ fun Calendar(modifier: Modifier = Modifier) {
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
     val coroutineScope = rememberCoroutineScope()
 
-    MonthHeader(
-        state = state,
-        monthString = getWeekPageTitle(visibleWeek),
-        onClick = suspend{
-            state.animateScrollToWeek(currentDate)
-            selection=currentDate
-                         },
-        coroutine = coroutineScope,
+    Column {
+        MonthHeader(
+            state = firstDayOfWeek,
+            monthString = getWeekPageTitle(visibleWeek),
+            onClick = suspend{
+                state.animateScrollToWeek(currentDate)
+                selection=currentDate
+            },
+            coroutine = coroutineScope,
 
-    )
+            )
 
 
-    WeekCalendar(
-        modifier = modifier,
-        state = state,
-        dayContent = { day ->
-            Day(day, isSelected = selection == day.date) {
-                if (it.date != selection) {
-                    selection = it.date
+        WeekCalendar(
+            modifier = modifier,
+            state = state,
+            dayContent = { day ->
+                Day(day, isSelected = selection == day.date) {
+                    if (it.date != selection) {
+                        selection = it.date
+                    }
                 }
-            }
-        },
-    )
+            },
+        )
+    }
+
+
 }
 
 @Composable
