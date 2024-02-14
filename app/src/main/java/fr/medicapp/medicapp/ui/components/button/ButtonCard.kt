@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.components.button
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -24,10 +23,7 @@ fun ButtonCard(
             defaultElevation = 6.dp
         ),
         modifier = modifier
-            .fillMaxWidth()
-            .clickable {
-                onClick()
-            },
+            .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.primary

@@ -2,7 +2,38 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="ButtonCardTest">
+        <State />
+      </entry>
+      <entry key="CharCheckerTest">
+        <State />
+      </entry>
+      <entry key="UiTest">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\Mathys\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-13T09:35:54.378542200Z" />
+        </State>
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="isInvalid0()">
+        <State />
+      </entry>
+      <entry key="testDisplay()">
+        <State />
+      </entry>
+      <entry key="testOnClick()">
         <State />
       </entry>
     </value>

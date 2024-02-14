@@ -1,19 +1,15 @@
 package fr.medicapp.medicapp.viewModel
 
-import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.coldtea.smplr.smplralarm.alarmNotification
-import de.coldtea.smplr.smplralarm.channel
-import de.coldtea.smplr.smplralarm.smplrAlarmCancel
-import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
@@ -23,6 +19,7 @@ import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -160,17 +157,23 @@ class SharedPrescriptionEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
-        store.put(prescription)
-        _sharedState.value =
-            store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
+        val newKey = store.put(prescription)
+        Log.d("presc", prescription.notifications.joinToString("") { "${it.id}, ${it.active}" })
+        prescription.id = newKey
+        _sharedState.value = store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
                 ?.convert() ?: Prescription()
     }
 
-    fun getMedicationList(context: Context) : List<OptionDialog>{
+    fun saveUpdate(context: Context){
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(NotificationEntity::class.java)
+        val notifications = _sharedState.value.notifications.map{it.convert(context)}
+        store.put(notifications)
+    }
+    fun getMedicationList(context: Context): List<OptionDialog> {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
-        val prescriptionList = store.all.map { it.convert().toOptionDialog() }
-        return prescriptionList
+        return store.all.map { it.convert().toOptionDialog() }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

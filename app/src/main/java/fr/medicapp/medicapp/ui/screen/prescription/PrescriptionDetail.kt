@@ -51,13 +51,13 @@ fun PrescriptionDetail(
         updateNotificationActiveState = { index, active ->
             Log.d("Notification", "updateNotificationActiveState: $index, $active")
             viewModel.updateNotificationActiveState(index, active)
-            viewModel.save(context)
-            viewModel.updateNotificationManager(context, index)
+            viewModel.saveUpdate(context)
+            viewModel.updateNotificationManager(context, index);
         },
         removeNotification = { index ->
+            viewModel.removeFromNotificationManager(context, index)
             viewModel.removeNotification(index)
             viewModel.save(context)
-            viewModel.updateNotificationManager(context, index)
         }
     )
 }

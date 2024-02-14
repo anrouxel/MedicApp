@@ -60,7 +60,7 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
         }
     }
 }
@@ -86,7 +86,9 @@ dependencies {
 
     // Accompanist
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+
 
     // Coil
     val coilVersion = "2.4.0"
@@ -115,4 +117,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Test rules and transitive dependencies:
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    // Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
+
