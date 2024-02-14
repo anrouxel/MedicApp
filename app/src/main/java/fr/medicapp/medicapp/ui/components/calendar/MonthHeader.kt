@@ -81,6 +81,7 @@ fun MonthHeader(state: WeekCalendarState,
         Text(
             text = month,
             //when clicked, go back to the current week and day
+
             modifier.clickable {
                 coroutine.launch {
                     onClick()
