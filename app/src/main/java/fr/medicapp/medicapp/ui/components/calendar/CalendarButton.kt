@@ -1,14 +1,16 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconToggleButton
@@ -16,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,22 +25,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
-import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -68,16 +64,16 @@ fun Calendar(modifier: Modifier = Modifier) {
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
     val coroutineScope = rememberCoroutineScope()
 
-    Text(
-        text = getWeekPageTitle(visibleWeek),
-        //when clicked, go back to the current week and day
-        modifier.clickable {
-            coroutineScope.launch {
-                state.animateScrollToWeek(currentDate)
-                selection=currentDate
-            }
-        }
+    MonthHeader(
+        state = state,
+        monthString = getWeekPageTitle(visibleWeek),
+        onClick = suspend{
+            state.animateScrollToWeek(currentDate)
+            selection=currentDate
+                         },
+        coroutine = coroutineScope
     )
+
 
     WeekCalendar(
         modifier = modifier,
@@ -188,6 +184,61 @@ fun DayOfWeek.displayText(uppercase: Boolean = false): String {
 //}
 
 @Composable
-fun DecrementButton(state: WeekCalendarState){
+fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+    IconButton(
+        onClick = {
+//            coroutine.launch {
+//                weekState.scrollToWeek()
+//            }
+        }
+
+    ) {
+        Image(
+            imageVector = Icons.Default.ChevronLeft,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+            contentDescription = "Previous"
+        )
+    }
+}
+
+@Composable
+fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+    IconButton(
+        onClick = {
+//            coroutine.launch {
+//                weekState.scrollToWeek()
+//            }
+        }
+
+    ) {
+        Image(
+            imageVector = Icons.Default.ChevronRight,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+            contentDescription = "Previous"
+        )
+    }
+}
+
+@Composable
+fun MonthHeader(state: WeekCalendarState, monthString: String, onClick: suspend () -> Unit, coroutine: CoroutineScope, modifier: Modifier = Modifier){
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DecrementButton(weekState = state, coroutine = coroutine)
+        Text(
+            text = monthString,
+            //when clicked, go back to the current week and day
+            modifier.clickable {
+                coroutine.launch {
+                    onClick()
+                }
+            }
+        )
+        IncrementButton(weekState = state, coroutine = coroutine)
+    }
 
 }
+
+
