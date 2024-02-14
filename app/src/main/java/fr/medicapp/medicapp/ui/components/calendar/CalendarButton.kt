@@ -1,8 +1,12 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButtonDefaults
@@ -15,12 +19,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kizitonwose.calendar.compose.WeekCalendar
@@ -32,7 +39,9 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -53,13 +62,21 @@ fun Calendar(modifier: Modifier = Modifier) {
         startDate = startDate,
         endDate = endDate,
         firstVisibleWeekDate = currentDate,
-        firstDayOfWeek = firstDayOfWeek
+        firstDayOfWeek = firstDayOfWeek,
     )
 
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
+    val coroutineScope = rememberCoroutineScope()
 
     Text(
         text = getWeekPageTitle(visibleWeek),
+        //when clicked, go back to the current week and day
+        modifier.clickable {
+            coroutineScope.launch {
+                state.animateScrollToWeek(currentDate)
+                selection=currentDate
+            }
+        }
     )
 
     WeekCalendar(
@@ -81,28 +98,39 @@ private fun Day(
     isSelected: Boolean,
     onClick: (WeekDay) -> Unit
 ) {
-    OutlinedIconToggleButton(
-        colors = IconButtonDefaults.outlinedIconToggleButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            checkedContainerColor = MaterialTheme.colorScheme.primary
-        ),
-        border = BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.primary
-        ),
-        checked = isSelected,
-        onCheckedChange = {
-            onClick(day)
-        },
-        shape = MaterialTheme.shapes.medium
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = day.date.dayOfMonth.toString(),
+            text = day.date.dayOfWeek.displayText(),
             fontSize = MaterialTheme.typography.bodySmall.fontSize,
             fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
             fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
         )
+        OutlinedIconToggleButton(
+            colors = IconButtonDefaults.outlinedIconToggleButtonColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                checkedContainerColor = MaterialTheme.colorScheme.primary
+            ),
+            border = BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary
+            ),
+            checked = isSelected,
+            onCheckedChange = {
+                onClick(day)
+            },
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Text(
+                text = day.date.dayOfMonth.toString(),
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
+                fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
+            )
+        }
     }
+
 }
 
 @Composable
@@ -115,6 +143,8 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     }
     return visibleWeek.value
 }
+
+
 
 fun getWeekPageTitle(week: Week): String {
     val firstDate = week.days.first().date
@@ -132,17 +162,32 @@ fun getWeekPageTitle(week: Week): String {
     }
 }
 
+
+
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)} ${this.year}"
+    return "${this.month.displayText(short = short)
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${this.year}"
 }
 
 fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
-    return getDisplayName(style, Locale.ENGLISH)
+    return getDisplayName(style, Locale.getDefault()).replaceFirstChar {
+        it.titlecase()
+    }
 }
 
 fun DayOfWeek.displayText(uppercase: Boolean = false): String {
-    return getDisplayName(TextStyle.SHORT, Locale.ENGLISH).let { value ->
-        if (uppercase) value.uppercase(Locale.ENGLISH) else value
+    return getDisplayName(TextStyle.SHORT, Locale.getDefault()).let { value ->
+        if (uppercase) value.uppercase(Locale.getDefault()) else value
     }
+}
+
+
+//suspend fun returnToCurrent(state: WeekCalendarState, currentDate: LocalDate){
+//    state.scrollToWeek(currentDate)
+//}
+
+@Composable
+fun DecrementButton(state: WeekCalendarState){
+
 }
