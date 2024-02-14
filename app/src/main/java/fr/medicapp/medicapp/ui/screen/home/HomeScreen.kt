@@ -12,12 +12,24 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
+import com.kizitonwose.calendar.core.atStartOfMonth
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import fr.medicapp.medicapp.ui.components.calendar.Calendar
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen120
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import java.time.LocalDate
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 /**
  * Écran d'accueil de l'application MedicApp.
@@ -40,29 +52,7 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 200.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = EUGreen120,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
-            ) {
-                Text(
-                    text = "Bonjour, John Doe",
-                )
-            }
-        }
+        Calendar()
         Button(
             onClick = onAddPrescriptionClick,
             modifier = Modifier
@@ -98,7 +88,13 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen(
-        onAddPrescriptionClick = { }
-    )
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        HomeScreen(
+            onAddPrescriptionClick = { }
+        )
+    }
 }

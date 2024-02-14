@@ -34,7 +34,7 @@ fun PrescriptionEditTreatment(
 ) {
     val state = viewModel.sharedState.collectAsState()
 
-    PrescriptionEditTreatmentView(
+    PrescriptionEditTreatmentContent(
         state = state.value,
         onClick = onClick,
         getMedicationList = { context -> viewModel.getMedicationList(context) },
@@ -47,7 +47,7 @@ fun PrescriptionEditTreatment(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun PrescriptionEditTreatmentView(
+private fun PrescriptionEditTreatmentContent(
     state: Prescription,
     onClick: () -> Unit,
     getMedicationList: (context: Context) -> List<OptionDialog>,
@@ -123,7 +123,7 @@ private fun PrescriptionEditTreatmentPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditTreatmentView(
+        PrescriptionEditTreatmentContent(
             state = Prescription(),
             onClick = {},
             getMedicationList = { emptyList() },
@@ -144,7 +144,7 @@ private fun PrescriptionEditTreatmentDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        PrescriptionEditTreatmentView(
+        PrescriptionEditTreatmentContent(
             state = Prescription(),
             onClick = {},
             getMedicationList = { emptyList() },

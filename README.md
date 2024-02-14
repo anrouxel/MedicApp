@@ -8,6 +8,42 @@
 
 <p align="center">Published for <img src="https://raw.githubusercontent.com/anythingcodes/slack-emoji-for-techies/gh-pages/emoji/android.png" align="top" width="24" /> with :gift_heart: by anrouxel</p>
 
+<p align="center">
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=alert_status" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Reliability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=reliability_rating" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Duplicated Lines (%)" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=duplicated_lines_density" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Vulnerabilities" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=vulnerabilities" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Bugs" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=bugs" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=security_rating" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=sqale_rating" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Code Smells" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=code_smells" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Lines of Code" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=ncloc" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=coverage" />
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=anrouxel_MedicApp">
+        <img alt="Technical Debt" src="https://sonarcloud.io/api/project_badges/measure?project=anrouxel_MedicApp&metric=sqale_index" />
+    </a>
+</p>
+
 ## Development
 
 ### Requirements
@@ -32,6 +68,11 @@
 * Paul Boutet ([Kartinlage](https://github.com/Kartinlage))
 * Arthur Osselin ([tuturita](https://github.com/tuturita))
 * Lana Heyrendt ([Renarde-dev](https://github.com/Renarde-dev))
+
+## Contributors
+* Guewen Guyomard ([gueguefun](https://github.com/gueguefun))
+* Lucas Payet ([Lexonchik](https://github.com/Lexonchik))
+* Mathys Menier ([Thysma23](https://github.com/Thysma23))
 
 ## Related Git repository
 * Android application: [MedicApp](https://github.com/anrouxel/MedicApp#----)
