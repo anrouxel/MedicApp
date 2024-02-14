@@ -180,9 +180,7 @@ fun DayOfWeek.displayText(uppercase: Boolean = false): String {
 }
 
 
-//suspend fun returnToCurrent(state: WeekCalendarState, currentDate: LocalDate){
-//    state.scrollToWeek(currentDate)
-//}
+
 
 
 
