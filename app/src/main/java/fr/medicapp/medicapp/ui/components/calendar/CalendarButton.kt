@@ -87,8 +87,30 @@ fun Calendar(modifier: Modifier = Modifier) {
             },
         )
     }
+}
 
+@Preview(name = "Light Theme")
+@Composable
+private fun CalendarPreview() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Calendar()
+    }
+}
 
+@Preview(name = "Light Theme")
+@Composable
+private fun CalendarDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        Calendar()
+    }
 }
 
 @Composable
