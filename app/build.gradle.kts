@@ -96,9 +96,6 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    // PyTorch
-    implementation("org.pytorch:pytorch_android:2.1.0")
-
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
 
