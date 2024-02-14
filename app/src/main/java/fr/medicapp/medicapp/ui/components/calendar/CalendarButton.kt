@@ -183,62 +183,6 @@ fun DayOfWeek.displayText(uppercase: Boolean = false): String {
 //    state.scrollToWeek(currentDate)
 //}
 
-@Composable
-fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
-    IconButton(
-        onClick = {
-//            coroutine.launch {
-//                weekState.scrollToWeek()
-//            }
-        }
 
-    ) {
-        Image(
-            imageVector = Icons.Default.ChevronLeft,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            contentDescription = "Previous"
-        )
-    }
-}
-
-@Composable
-fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
-    IconButton(
-        onClick = {
-//            coroutine.launch {
-//                weekState.scrollToWeek()
-//            }
-        }
-
-    ) {
-        Image(
-            imageVector = Icons.Default.ChevronRight,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            contentDescription = "Previous"
-        )
-    }
-}
-
-@Composable
-fun MonthHeader(state: WeekCalendarState, monthString: String, onClick: suspend () -> Unit, coroutine: CoroutineScope, modifier: Modifier = Modifier){
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        DecrementButton(weekState = state, coroutine = coroutine)
-        Text(
-            text = monthString,
-            //when clicked, go back to the current week and day
-            modifier.clickable {
-                coroutine.launch {
-                    onClick()
-                }
-            }
-        )
-        IncrementButton(weekState = state, coroutine = coroutine)
-    }
-
-}
 
 
