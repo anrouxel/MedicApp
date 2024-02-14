@@ -85,10 +85,7 @@ dependencies {
     implementation("com.google.mlkit:text-recognition:16.0.0")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
     // Coil
     val coilVersion = "2.4.0"
@@ -117,6 +114,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
     // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
