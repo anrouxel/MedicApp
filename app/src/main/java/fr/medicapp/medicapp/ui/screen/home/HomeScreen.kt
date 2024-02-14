@@ -18,16 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.ui.components.calendar.CalendarButton
+import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
+import com.kizitonwose.calendar.core.atStartOfMonth
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import fr.medicapp.medicapp.ui.components.calendar.Calendar
 import fr.medicapp.medicapp.ui.theme.EUGreen100
 import fr.medicapp.medicapp.ui.theme.EUGreen120
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
-import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
-import io.github.boguszpawlowski.composecalendar.rememberWeekCalendarState
-import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
-import io.github.boguszpawlowski.composecalendar.week.Week
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
@@ -47,23 +47,12 @@ import java.util.Date
 fun HomeScreen(
     onAddPrescriptionClick: () -> Unit,
 ) {
-    val date = rememberSelectableWeekCalendarState(
-        initialWeek = Week.now(),
-        initialSelectionMode = SelectionMode.Single,
-        initialSelection = listOf(LocalDate.now())
-    )
-    println(date.selectionState.selection.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        CalendarButton(
-            date = date
-        )
-        Text(
-            date.selectionState.selection.toString()
-        )
+        Calendar()
         Button(
             onClick = onAddPrescriptionClick,
             modifier = Modifier

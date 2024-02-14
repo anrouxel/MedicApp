@@ -48,7 +48,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
         isCoreLibraryDesugaringEnabled = true
-
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -97,15 +96,11 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    // PyTorch
-    implementation("org.pytorch:pytorch_android:2.1.0")
-
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
 
     // Calendar
-    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.2.0")
-    implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.2.0")
+    implementation("com.kizitonwose.calendar:compose:2.5.0")
 
     // Volley
     implementation("com.android.volley:volley:1.2.1")
