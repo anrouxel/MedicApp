@@ -48,9 +48,7 @@ class SharedPrescriptionDetailViewModel(
     fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val notificationToUpdate = updatedNotifications[index]
-
         val updatedNotification = notificationToUpdate.copy(active = newActiveState)
-
         updatedNotifications[index] = updatedNotification
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
