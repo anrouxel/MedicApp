@@ -6,8 +6,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
@@ -19,7 +17,6 @@ import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -161,15 +158,9 @@ class SharedPrescriptionEditViewModel(
         Log.d("presc", prescription.notifications.joinToString("") { "${it.id}, ${it.active}" })
         prescription.id = newKey
         _sharedState.value = store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
-                ?.convert() ?: Prescription()
+            ?.convert() ?: Prescription()
     }
 
-    fun saveUpdate(context: Context){
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(NotificationEntity::class.java)
-        val notifications = _sharedState.value.notifications.map{it.convert(context)}
-        store.put(notifications)
-    }
     fun getMedicationList(context: Context): List<OptionDialog> {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
@@ -184,17 +175,5 @@ class SharedPrescriptionEditViewModel(
         notification.forEach {
             NotificationPrescriptionManager.add(context, it, message, bigText)
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNotificationManager(context: Context, index: Int) {
-        val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.update(context, notification)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun removeFromNotificationManager(context: Context, index: Int) {
-        val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.remove(context, notification)
     }
 }
