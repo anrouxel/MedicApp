@@ -47,10 +47,13 @@ class SharedPrescriptionDetailViewModel(
     }
 
     fun removeNotification(index: Int) {
+        Log.d("SharedPrescriptionDetailViewModel", "removeNotification: $index")
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         updatedNotifications.removeAt(index)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
+
+        Log.d("SharedPrescriptionDetailViewModel", "removeNotification: ${_sharedState.value.notifications}")
     }
 
     fun save(context: Context) {
@@ -58,7 +61,6 @@ class SharedPrescriptionDetailViewModel(
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
         val newKey = store.put(prescription)
-        Log.d("presc", prescription.notifications.joinToString("") { "${it.id}, ${it.active}" })
         prescription.id = newKey
         _sharedState.value = store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
             ?.convert() ?: Prescription()
