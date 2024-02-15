@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import java.time.LocalDate
 
 @Composable
-fun ListMedication(modifier : Modifier = Modifier, selectedDate : LocalDate) {
+fun ListOfMedication(modifier : Modifier = Modifier, selectedDate : LocalDate) {
 
     LazyVerticalGrid(columns = GridCells.Fixed(1)){
 
