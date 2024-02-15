@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -15,7 +14,7 @@ import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
-import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 /**
  * Cette fonction construit le graphe de navigation pour les prescriptions.
@@ -57,7 +56,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
         composable(route = PrescriptionRoute.PrescriptionDetailRoute.route) {
             val id = it.arguments?.getString("id")?.toLongOrNull()
 
-            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+            val viewModel = it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
 
             if (id != null) {
                 viewModel.loadPrescription(context = LocalContext.current, id = id)

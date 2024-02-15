@@ -247,3 +247,11 @@ Rapp/src/main/java/fr/medicapp/medicapp/ui/components/text/ReusableTextLargeCard
 Vapp/src/main/java/fr/medicapp/medicapp/notification/NotificationPrescriptionManager.kt,0\2\0279b134902cfe872d7b3febc1daf36e0e4bf223
 
 Oapp/src/main/java/fr/medicapp/medicapp/ui/components/calendar/CalendarButton.kt,2\5\252db1c75755433334c22edeb229e02aedc34130
+s
+Capp/src/androidTest/java/fr/medicapp/medicapp/ai/CharCheckerTest.kt,1\5\15b6b5dab62a0a7102e677976dcc8f055b7de9db
+
+Oapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionViewModel.kt,0\2\0237d1cb258f32f226b34b64a045cf24b22befc4
+…
+Uapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionDetailViewModel.kt,c\9\c9af74e2d207e15e54f97440355b671024e7ae23
+d
+4app/src/main/java/fr/medicapp/medicapp/model/Take.kt,7\8\780a2dc46b8ffa3020d16768ddd4d47fa0909bee

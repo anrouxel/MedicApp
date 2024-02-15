@@ -34,14 +34,14 @@ import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
-import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PrescriptionDetail(
-    viewModel: SharedPrescriptionEditViewModel,
+    viewModel: SharedPrescriptionDetailViewModel,
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
@@ -49,10 +49,9 @@ fun PrescriptionDetail(
     PrescriptionDetailContent(
         state = state.value,
         updateNotificationActiveState = { index, active ->
-            Log.d("Notification", "updateNotificationActiveState: $index, $active")
             viewModel.updateNotificationActiveState(index, active)
-            viewModel.saveUpdate(context)
             viewModel.updateNotificationManager(context, index);
+            viewModel.saveNotifications(context)
         },
         removeNotification = { index ->
             viewModel.removeFromNotificationManager(context, index)

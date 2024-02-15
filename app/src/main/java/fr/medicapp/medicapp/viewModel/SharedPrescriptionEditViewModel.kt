@@ -37,14 +37,6 @@ class SharedPrescriptionEditViewModel(
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun loadPrescription(context: Context, id: Long) {
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
-        _sharedState.value = prescription ?: Prescription()
-    }
-
     fun updateDate(newDate: LocalDate) {
         val updatedPrescription = _sharedState.value.copy(date = newDate)
         _sharedState.value = updatedPrescription
@@ -78,14 +70,9 @@ class SharedPrescriptionEditViewModel(
     fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val notificationToUpdate = updatedNotifications[index]
-
         val updatedNotification = notificationToUpdate.copy(active = newActiveState)
-        Log.d("Updated Notification", updatedNotification.toString())
-
         updatedNotifications[index] = updatedNotification
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
-        Log.d("Notification Before", _sharedState.value.notifications.toString())
-        Log.d("Notification After", updatedPrescription.notifications.toString())
         _sharedState.value = updatedPrescription
     }
 
@@ -158,18 +145,11 @@ class SharedPrescriptionEditViewModel(
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
         val newKey = store.put(prescription)
-        Log.d("presc", prescription.notifications.joinToString("") { "${it.id}, ${it.active}" })
         prescription.id = newKey
         _sharedState.value = store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
                 ?.convert() ?: Prescription()
     }
 
-    fun saveUpdate(context: Context){
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(NotificationEntity::class.java)
-        val notifications = _sharedState.value.notifications.map{it.convert(context)}
-        store.put(notifications)
-    }
     fun getMedicationList(context: Context): List<OptionDialog> {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
@@ -184,17 +164,5 @@ class SharedPrescriptionEditViewModel(
         notification.forEach {
             NotificationPrescriptionManager.add(context, it, message, bigText)
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNotificationManager(context: Context, index: Int) {
-        val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.update(context, notification)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun removeFromNotificationManager(context: Context, index: Int) {
-        val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.remove(context, notification)
     }
 }
