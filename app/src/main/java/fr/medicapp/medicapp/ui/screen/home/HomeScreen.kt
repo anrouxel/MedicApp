@@ -53,30 +53,7 @@ fun HomeScreen(
             .padding(16.dp)
     ) {
         Calendar()
-        Button(
-            onClick = onAddPrescriptionClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = EUGreen100
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = "Ajouter une ordonnance")
-        }
-        Button(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = EUGreen100
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = "Signaler un effet indésirable")
-        }
+
     }
 }
 

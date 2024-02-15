@@ -21,6 +21,14 @@ import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+
+/**
+ * This is a Composable Button that allows the user to scroll to the previous week.
+ *
+ * @param weekState The state of the calendar.
+ * @param coroutine A `CoroutineScope` for launching coroutines from the Composable.
+ *
+ */
 @Composable
 private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
     IconButton(
@@ -44,6 +52,13 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
     }
 }
 
+/**
+ * This is a Composable Button that allows the user to scroll to the next week.
+ *
+ * @param weekState The state of the calendar.
+ * @param coroutine A `CoroutineScope` for launching coroutines from the Composable.
+ *
+ */
 @Composable
 private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
     IconButton(
@@ -65,6 +80,22 @@ private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
         )
     }
 }
+
+
+/**
+ * This is a Composable function that creates a month header UI component.
+ *
+ * @param state The state of the calendar.
+ * @param month The current month string.
+ * @param onClick A function to call when the user clicks the month header.
+ * @param coroutine A `CoroutineScope` for launching coroutines from the Composable.
+ * @param modifier Modifier for the Composable. Default value is Modifier.
+ *
+ * The function does the following:
+ * - Creates a `Row` Composable, which is a horizontal layout. Inside this `Row`, it places two `IconButton` Composables and a `Text` Composable.
+ * - The `IconButton` Composables allow the user to scroll to the previous or next week.
+ * - The `Text` Composable displays the current month and allows the user to scroll to the current date when clicked.
+ */
 
 @Composable
 fun MonthHeader(state: WeekCalendarState,

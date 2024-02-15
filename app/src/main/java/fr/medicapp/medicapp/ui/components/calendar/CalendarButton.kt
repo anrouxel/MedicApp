@@ -38,6 +38,20 @@ import java.time.Month
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
+/**
+ * This is a Composable function that creates a calendar UI component.
+ *
+ * @param modifier Modifier for the Composable. Default value is Modifier.
+ *
+ * The function does the following:
+ * - Initializes several variables such as the current date, current month, start and end dates for the calendar, and the first day of the week.
+ * - Creates a mutable state for the selected date on the calendar, initially set to the current date.
+ * - Creates a `WeekCalendarState` object, which represents the state of the calendar.
+ * - Creates a `CoroutineScope` for launching coroutines from the Composable.
+ * - Creates a `Column` Composable, which is a vertical layout. Inside this `Column`, it places a `MonthHeader` Composable and a `WeekCalendar` Composable.
+ * - The `MonthHeader` displays the current month and allows the user to scroll to the current date when clicked.
+ * - The `WeekCalendar` displays the days of the week and allows the user to select a date. When a date is selected, it updates the `selection` state.
+ */
 
 @Composable
 fun Calendar(modifier: Modifier = Modifier) {
@@ -113,6 +127,14 @@ private fun CalendarDarkPreview() {
     }
 }
 
+/**
+ * This is a Composable function that creates the button for the day of the week.
+ *
+ * @param day The day of the week.
+ * @param isSelected A boolean value that indicates whether the day is selected.
+ * @param onClick A function to call when the user clicks the day.
+ */
+
 @Composable
 private fun Day(
     day: WeekDay,
@@ -186,6 +208,13 @@ private fun DayDarkPreview() {
     }
 }
 
+/**
+ * This is a Composable function to remember the first visible week after scrolling.
+ *
+ * @param state The state of the calendar.
+ * @return The first visible week after scrolling.
+ */
+
 @Composable
 fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     val visibleWeek = remember(state) { mutableStateOf(state.firstVisibleWeek) }
@@ -198,14 +227,19 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
 }
 
 
-
-
+/**
+ * A function to display a personalized YearMonth.
+ */
 fun YearMonth.displayText(short: Boolean = false): String {
     return "${
         this.month.displayText(short = short)
             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
     } ${this.year}"
 }
+
+/**
+ * A function to display a personalized and localized Month.
+ */
 
 fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
@@ -214,6 +248,9 @@ fun Month.displayText(short: Boolean = true): String {
     }
 }
 
+/**
+ * A function to display a personalized and localized DayOfWeek.
+ */
 fun DayOfWeek.displayText(uppercase: Boolean = false): String {
     return getDisplayName(TextStyle.SHORT, Locale.getDefault()).let { value ->
         if (uppercase) value.uppercase(Locale.getDefault()) else value
