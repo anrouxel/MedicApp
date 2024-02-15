@@ -53,7 +53,6 @@ fun HomeScreen(
             .padding(16.dp)
     ) {
         Calendar()
-
     }
 }
 
