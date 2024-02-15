@@ -29,7 +29,6 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import com.kizitonwose.calendar.core.yearMonth
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import kotlinx.coroutines.flow.filter
@@ -56,22 +55,23 @@ fun Calendar(modifier: Modifier = Modifier) {
         firstDayOfWeek = firstDayOfWeek,
     )
 
-    Log.d("Coucou", state.firstVisibleWeek.toString())
+    //Log.d("Coucou", state.firstVisibleWeek.toString())
 
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
+
     val coroutineScope = rememberCoroutineScope()
 
     Column {
         MonthHeader(
             state = state,
-            monthString = getWeekPageTitle(visibleWeek),
+            month = getWeekPageTitle(visibleWeek),
             onClick = suspend {
                 state.animateScrollToWeek(currentDate)
                 selection = currentDate
             },
             coroutine = coroutineScope,
 
-        )
+            )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
@@ -151,6 +151,7 @@ private fun Day(
             )
         }
     }
+
 }
 
 @Preview(name = "Light Theme")
@@ -196,25 +197,14 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     return visibleWeek.value
 }
 
-fun getWeekPageTitle(week: Week): String {
-    val firstDate = week.days.first().date
-    val lastDate = week.days.last().date
-    return when {
-        firstDate.yearMonth == lastDate.yearMonth -> {
-            firstDate.yearMonth.displayText()
-        }
-        firstDate.year == lastDate.year -> {
-            "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
-        }
-        else -> {
-            "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
-        }
-    }
-}
+
+
 
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)
-        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${this.year}"
+    return "${
+        this.month.displayText(short = short)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+    } ${this.year}"
 }
 
 fun Month.displayText(short: Boolean = true): String {
@@ -229,3 +219,10 @@ fun DayOfWeek.displayText(uppercase: Boolean = false): String {
         if (uppercase) value.uppercase(Locale.getDefault()) else value
     }
 }
+
+
+
+
+
+
+
