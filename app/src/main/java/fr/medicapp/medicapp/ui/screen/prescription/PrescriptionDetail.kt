@@ -50,7 +50,7 @@ fun PrescriptionDetail(
         state = state.value,
         updateNotificationActiveState = { index, active ->
             viewModel.updateNotificationActiveState(index, active)
-            viewModel.updateNotificationManager(context, index);
+            viewModel.updateNotificationManager(context, index)
             viewModel.saveNotifications(context)
         },
         removeNotification = { index ->
