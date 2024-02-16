@@ -221,3 +221,9 @@ Uapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionDetailViewMo
 Qapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectEditViewModel.kt,5\3\5346e9cf9380fdd5503ca896dc786a25b30c5bee
 ƒ
 Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectDetailViewModel.kt,e\7\e76993bcc905003f2eb35e94490780b0ce0435ba
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ui/components/calendar/MonthHeader.kt,9\b\9bdbb237b1f60ffc8e8283d8643c051109721ae2
+v
+Fapp/src/main/java/fr/medicapp/medicapp/database/entity/OptionDialog.kt,a\c\aca29a4a743f3099f5d1d455b554e8127e318590
+—
+gapp/src/main/java/fr/medicapp/medicapp/database/entity/medication/TransparencyCommissionOpinionLinks.kt,b\1\b134650e6dc2750df44ac12fcfdb34d0bfd2983b

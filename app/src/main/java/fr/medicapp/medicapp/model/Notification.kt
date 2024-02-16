@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.AlarmEntity
 import fr.medicapp.medicapp.database.entity.NotificationEntity
 import java.time.DayOfWeek
 

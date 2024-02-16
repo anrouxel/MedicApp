@@ -11,7 +11,7 @@ data class Alarm(
 
     var minute: Int = 0,
 
-) : ModelToEntityMapper<AlarmEntity> {
+    ) : ModelToEntityMapper<AlarmEntity> {
     override fun toString(): String {
         return "${hour}h${if (minute < 10) "0" else ""}$minute"
     }

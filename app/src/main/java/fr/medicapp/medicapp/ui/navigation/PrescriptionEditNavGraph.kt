@@ -28,7 +28,8 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
         startDestination = PrescriptionEditRoute.PrescriptionEditInformationRoute.route
     ) {
         composable(route = PrescriptionEditRoute.PrescriptionEditInformationRoute.route) {
-            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
             onThemeChange(EUPurpleColorShema)
 
@@ -41,7 +42,8 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
         }
 
         composable(route = PrescriptionEditRoute.PrescriptionEditTreatmentRoute.route) {
-            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
             onThemeChange(EUPurpleColorShema)
 
@@ -54,7 +56,8 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
         }
 
         composable(route = PrescriptionEditRoute.PrescriptionEditNotificationRoute.route) {
-            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
             onThemeChange(EUPurpleColorShema)
 
@@ -87,9 +90,12 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
  * Cette classe scellée définit les différentes routes pour les prescriptions.
  */
 sealed class PrescriptionEditRoute(val route: String) {
-    object PrescriptionEditInformationRoute : PrescriptionEditRoute(route = "prescription_edit_information")
+    object PrescriptionEditInformationRoute :
+        PrescriptionEditRoute(route = "prescription_edit_information")
 
-    object PrescriptionEditTreatmentRoute : PrescriptionEditRoute(route = "prescription_edit_treatment")
+    object PrescriptionEditTreatmentRoute :
+        PrescriptionEditRoute(route = "prescription_edit_treatment")
 
-    object PrescriptionEditNotificationRoute : PrescriptionEditRoute(route = "prescription_edit_notification")
+    object PrescriptionEditNotificationRoute :
+        PrescriptionEditRoute(route = "prescription_edit_notification")
 }

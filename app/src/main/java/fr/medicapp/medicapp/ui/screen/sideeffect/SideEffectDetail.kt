@@ -53,7 +53,7 @@ fun SideEffectDetailContent(
                         )
                     }
 
-                    state.description?.let {
+                    state.description.let {
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(

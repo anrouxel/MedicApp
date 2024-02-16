@@ -2,12 +2,10 @@ package fr.medicapp.medicapp.viewModel
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
@@ -131,7 +129,8 @@ class SharedPrescriptionEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
         val medication =
-            store.query().equal(MedicationEntity_.id, newMedication.id).build().findFirst()?.convert()
+            store.query().equal(MedicationEntity_.id, newMedication.id).build().findFirst()
+                ?.convert()
         val updatedTreatment = _sharedState.value.treatment.copy(medication = medication)
         val updatedPrescription = _sharedState.value.copy(treatment = updatedTreatment)
         _sharedState.value = updatedPrescription
