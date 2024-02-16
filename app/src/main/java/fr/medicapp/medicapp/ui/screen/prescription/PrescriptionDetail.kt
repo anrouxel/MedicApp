@@ -81,10 +81,11 @@ private fun PrescriptionDetailContent(
                             value = "Docteur : $it",
                         )
 
-                        Spacer(modifier = Modifier.padding(10.dp))
                     }
 
                     state.date?.let {
+                        Spacer(modifier = Modifier.padding(10.dp))
+
                         ReusableTextMediumCard(
                             value = "Date de l'ordonnance : $it",
                         )

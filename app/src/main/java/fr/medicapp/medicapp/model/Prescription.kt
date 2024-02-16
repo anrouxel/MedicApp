@@ -18,7 +18,9 @@ data class Prescription(
 
     var treatment: Treatment = Treatment(),
 
-    var notifications: MutableList<Notification> = mutableStateListOf()
+    var notifications: MutableList<Notification> = mutableStateListOf(),
+
+    var sideEffects: MutableList<SideEffect> = mutableStateListOf()
 ) : ModelToEntityMapper<PrescriptionEntity> {
     override fun convert(context: Context): PrescriptionEntity {
         val prescription = PrescriptionEntity(
@@ -32,8 +34,36 @@ data class Prescription(
 
         prescription.doctor.target = doctor?.convert(context)
         prescription.treatment.target = treatment.convert(context)
-        prescription.notifications.clear()
+        prescription.notifications.addAll(notifications.map { it.convert(context) })
+        prescription.sideEffects.addAll(sideEffects.map { it.convertBacklink(context) })
+        return prescription
+    }
+
+    fun convertBacklink(context: Context): PrescriptionEntity {
+        val prescription = PrescriptionEntity(
+            id,
+            date
+        )
+
+        val box = ObjectBox.getInstance(context)
+        val store = box.boxFor(PrescriptionEntity::class.java)
+        store.attach(prescription)
+
+        prescription.doctor.target = doctor?.convert(context)
+        prescription.treatment.target = treatment.convert(context)
         prescription.notifications.addAll(notifications.map { it.convert(context) })
         return prescription
+    }
+
+    override fun toString(): String {
+        return treatment.medication!!.name
+    }
+
+    fun toOptionDialog(): OptionDialog {
+        return OptionDialog(
+            id = id,
+            title = treatment.medication!!.name,
+            description = treatment.duration!!.toString(),
+        )
     }
 }
