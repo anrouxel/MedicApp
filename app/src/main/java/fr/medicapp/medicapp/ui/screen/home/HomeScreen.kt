@@ -1,35 +1,24 @@
 package fr.medicapp.medicapp.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
-import com.kizitonwose.calendar.core.atStartOfMonth
-import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.ui.components.calendar.Calendar
-import fr.medicapp.medicapp.ui.theme.EUGreen100
-import fr.medicapp.medicapp.ui.theme.EUGreen120
+import fr.medicapp.medicapp.ui.components.list.ListOfMedication
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
-import java.util.Date
 
 /**
  * Écran d'accueil de l'application MedicApp.
@@ -40,8 +29,6 @@ import java.util.Date
  * - Ajouter un rappel
  *
  * @param onAddPrescriptionClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter une ordonnance".
- * @param onAddSideEffectClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Signaler un effet indésirable".
- * @param onAddNotification Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter un rappel".
  */
 @Composable
 fun HomeScreen(
@@ -50,9 +37,21 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+
     ) {
-        Calendar()
+
+        val context = LocalContext.current
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(PrescriptionEntity::class.java)
+
+        val prescriptions = store.all.map { it.convert() }
+
+        val selection = remember { mutableStateOf(LocalDate.now()) }
+        Calendar(selection = selection)
+        //Log.d("selected Date", selection.value.toString())
+        Spacer(modifier = Modifier.height(8.dp))
+        ListOfMedication(selectedDate = selection.value, prescription = prescriptions)
     }
 }
 

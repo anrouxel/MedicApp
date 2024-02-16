@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,13 +55,13 @@ import java.util.Locale
  */
 
 @Composable
-fun Calendar(modifier: Modifier = Modifier) {
+fun Calendar(modifier: Modifier = Modifier, selection : MutableState<LocalDate>) {
     val currentDate = remember { LocalDate.now() }
     val currentMonth = remember { YearMonth.now() }
     val startDate = remember { currentMonth.minusMonths(100).atStartOfMonth() } // Adjust as needed
     val endDate = remember { currentMonth.plusMonths(100).atEndOfMonth() } // Adjust as needed
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
-    var selection by remember { mutableStateOf(currentDate) }
+    //var selection by remember { mutableStateOf(currentDate) }
 
     val state = rememberWeekCalendarState(
         startDate = startDate,
@@ -81,7 +82,7 @@ fun Calendar(modifier: Modifier = Modifier) {
             month = getWeekPageTitle(visibleWeek),
             onClick = suspend {
                 state.animateScrollToWeek(currentDate)
-                selection = currentDate
+                selection.value = currentDate
             },
             coroutine = coroutineScope,
 
@@ -93,15 +94,18 @@ fun Calendar(modifier: Modifier = Modifier) {
             modifier = modifier,
             state = state,
             dayContent = { day ->
-                Day(day, isSelected = selection == day.date) {
-                    if (it.date != selection) {
-                        selection = it.date
+                Day(day, isSelected = selection.value == day.date) {
+                    if (it.date != selection.value) {
+                        selection.value = it.date
                     }
                 }
             },
         )
     }
+
 }
+
+
 
 
 @Preview(name = "Light Theme")
@@ -112,7 +116,8 @@ private fun CalendarPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        Calendar()
+        val selectionLight = remember { mutableStateOf(LocalDate.now()) }
+        Calendar(selection=selectionLight)
     }
 }
 
@@ -124,7 +129,8 @@ private fun CalendarDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        Calendar()
+        val selectionDark = remember { mutableStateOf(LocalDate.now()) }
+        Calendar(selection=selectionDark)
     }
 }
 

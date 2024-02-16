@@ -97,6 +97,8 @@ class SharedPrescriptionEditViewModel(
         _sharedState.value = updatedPrescription
     }
 
+
+
     fun addAlarm(index: Int) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val notificationToUpdate = updatedNotifications[index]
