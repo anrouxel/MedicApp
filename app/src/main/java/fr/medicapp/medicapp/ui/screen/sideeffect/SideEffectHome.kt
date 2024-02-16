@@ -19,7 +19,6 @@ import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.model.medication.Medication
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -83,7 +82,9 @@ fun NoSideEffectAvailable() {
         fontStyle = MaterialTheme.typography.bodyLarge.fontStyle,
         fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxSize().wrapContentHeight(align = Alignment.CenterVertically)
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(align = Alignment.CenterVertically)
     )
 }
 

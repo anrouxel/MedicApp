@@ -11,7 +11,6 @@ import de.coldtea.smplr.smplralarm.smplrAlarmSet
 import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
 import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Prescription
 import java.time.DayOfWeek
 
 @RequiresApi(Build.VERSION_CODES.O)

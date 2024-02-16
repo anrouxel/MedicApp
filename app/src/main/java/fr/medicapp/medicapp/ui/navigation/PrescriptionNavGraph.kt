@@ -48,7 +48,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
                 },
                 onPrescriptionClick = {
-                    navController.navigate(PrescriptionRoute.PrescriptionDetailRoute.route.replace("{id}", it.toString()))
+                    navController.navigate(
+                        PrescriptionRoute.PrescriptionDetailRoute.route.replace(
+                            "{id}",
+                            it.toString()
+                        )
+                    )
                 }
             )
         }
@@ -56,7 +61,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
         composable(route = PrescriptionRoute.PrescriptionDetailRoute.route) {
             val id = it.arguments?.getString("id")?.toLongOrNull()
 
-            val viewModel = it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
 
             if (id != null) {
                 viewModel.loadPrescription(context = LocalContext.current, id = id)

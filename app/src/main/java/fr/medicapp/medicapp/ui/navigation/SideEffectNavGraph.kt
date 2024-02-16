@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -51,7 +50,12 @@ fun NavGraphBuilder.sideEffectNavGraph(
                     navController.navigate(SideEffectRoute.SideEffectEditRoute.route)
                 },
                 onSideEffectClick = {
-                    navController.navigate(SideEffectRoute.SideEffectDetailRoute.route.replace("{id}", it.toString()))
+                    navController.navigate(
+                        SideEffectRoute.SideEffectDetailRoute.route.replace(
+                            "{id}",
+                            it.toString()
+                        )
+                    )
                 }
             )
         }
@@ -59,7 +63,8 @@ fun NavGraphBuilder.sideEffectNavGraph(
         composable(route = SideEffectRoute.SideEffectDetailRoute.route) {
             val id = it.arguments?.getString("id")?.toLongOrNull()
 
-            val viewModel = it.sharedViewModel<SharedSideEffectDetailViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedSideEffectDetailViewModel>(navController = navController)
 
             if (id != null) {
                 viewModel.loadSideEffect(context = LocalContext.current, id = id)
@@ -75,7 +80,8 @@ fun NavGraphBuilder.sideEffectNavGraph(
         composable(route = SideEffectRoute.SideEffectEditRoute.route) {
             onThemeChange(EUPurpleColorShema)
 
-            val viewModel = it.sharedViewModel<SharedSideEffectEditViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedSideEffectEditViewModel>(navController = navController)
 
             SideEffectEdit(
                 viewModel = viewModel,

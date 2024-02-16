@@ -71,7 +71,7 @@ fun Calendar(modifier: Modifier = Modifier) {
             },
             coroutine = coroutineScope,
 
-        )
+            )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
@@ -203,9 +203,11 @@ fun getWeekPageTitle(week: Week): String {
         firstDate.yearMonth == lastDate.yearMonth -> {
             firstDate.yearMonth.displayText()
         }
+
         firstDate.year == lastDate.year -> {
             "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
         }
+
         else -> {
             "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
         }
@@ -213,8 +215,10 @@ fun getWeekPageTitle(week: Week): String {
 }
 
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)
-        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${this.year}"
+    return "${
+        this.month.displayText(short = short)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+    } ${this.year}"
 }
 
 fun Month.displayText(short: Boolean = true): String {

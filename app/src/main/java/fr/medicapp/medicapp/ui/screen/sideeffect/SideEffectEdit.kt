@@ -35,8 +35,13 @@ fun SideEffectEdit(
     SideEffectEditContent(
         state = state.value,
         onClick = onClick,
-        getPrescriptionList = {viewModel.getPrescriptionList(context)},
-        updatePrescription = { prescription -> viewModel.updatePrescription(prescription, context) },
+        getPrescriptionList = { viewModel.getPrescriptionList(context) },
+        updatePrescription = { prescription ->
+            viewModel.updatePrescription(
+                prescription,
+                context
+            )
+        },
         updateDate = { date -> viewModel.updateDate(date) },
         updateDescription = { description -> viewModel.updateDescription(description) },
         save = { viewModel.save(context) }

@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
-import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField

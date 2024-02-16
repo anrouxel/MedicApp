@@ -1,13 +1,11 @@
 package fr.medicapp.medicapp.model
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import java.time.LocalDate
-import kotlin.math.log
 
 data class Prescription(
     val id: Long = 0L,
