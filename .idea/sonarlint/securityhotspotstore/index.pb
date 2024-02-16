@@ -251,3 +251,7 @@ s
 Capp/src/androidTest/java/fr/medicapp/medicapp/ai/CharCheckerTest.kt,1\5\15b6b5dab62a0a7102e677976dcc8f055b7de9db
 Ö
 Uapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionDetailViewModel.kt,c\9\c9af74e2d207e15e54f97440355b671024e7ae23
+Å
+Qapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectEditViewModel.kt,5\3\5346e9cf9380fdd5503ca896dc786a25b30c5bee
+É
+Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectDetailViewModel.kt,e\7\e76993bcc905003f2eb35e94490780b0ce0435ba

@@ -33,12 +33,14 @@ fun PrescriptionEditTreatment(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
+
 
     PrescriptionEditTreatmentContent(
         state = state.value,
         onClick = onClick,
-        getMedicationList = { context -> viewModel.getMedicationList(context) },
-        updateMedication = { medication, context -> viewModel.updateMedication(medication, context) },
+        getMedicationList = { viewModel.getMedicationList(context) },
+        updateMedication = { medication -> viewModel.updateMedication(medication, context) },
         updatePosology = { posology -> viewModel.updatePosology(posology) },
         updateFrequency = { frequency -> viewModel.updateFrequency(frequency) },
         updateDuration = { duration -> viewModel.updateDuration(duration) }
@@ -50,14 +52,12 @@ fun PrescriptionEditTreatment(
 private fun PrescriptionEditTreatmentContent(
     state: Prescription,
     onClick: () -> Unit,
-    getMedicationList: (context: Context) -> List<OptionDialog>,
-    updateMedication: (medication: OptionDialog, context: Context) -> Unit,
+    getMedicationList: () -> List<OptionDialog>,
+    updateMedication: (medication: OptionDialog) -> Unit,
     updatePosology: (posology: String) -> Unit,
     updateFrequency: (frequency: String) -> Unit,
     updateDuration: (duration: Duration) -> Unit
 ) {
-    val context = LocalContext.current
-
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
@@ -68,12 +68,12 @@ private fun PrescriptionEditTreatmentContent(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableOutlinedSearchButton(
-                    options = getMedicationList(context),
+                    options = getMedicationList(),
                     value = state.treatment.medication,
                     label = "Médicament",
                     warnings = state.treatment.medication == null,
                     onSelected = {
-                        updateMedication(it, context)
+                        updateMedication(it)
                     }
                 )
 
@@ -127,7 +127,7 @@ private fun PrescriptionEditTreatmentPreview() {
             state = Prescription(),
             onClick = {},
             getMedicationList = { emptyList() },
-            updateMedication = { _, _ -> },
+            updateMedication = { _ -> },
             updatePosology = {},
             updateFrequency = {},
             updateDuration = {}
@@ -148,7 +148,7 @@ private fun PrescriptionEditTreatmentDarkPreview() {
             state = Prescription(),
             onClick = {},
             getMedicationList = { emptyList() },
-            updateMedication = { _, _ -> },
+            updateMedication = { _ -> },
             updatePosology = {},
             updateFrequency = {},
             updateDuration = {}

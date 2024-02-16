@@ -49,11 +49,12 @@ fun PrescriptionEditNotification(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
 
     PrescriptionEditNotificationContent(
         state = state.value,
         onClick = onClick,
-        save = { context ->
+        save = {
             viewModel.save(context)
             viewModel.addToNotificationManager(context)
         },
@@ -72,7 +73,7 @@ fun PrescriptionEditNotification(
 private fun PrescriptionEditNotificationContent(
     state: Prescription,
     onClick: () -> Unit,
-    save: (Context) -> Unit,
+    save: () -> Unit,
     addNotification: () -> Unit,
     removeNotification: (Int) -> Unit,
     updateNotificationActiveState: (Int, Boolean) -> Unit,
@@ -81,13 +82,11 @@ private fun PrescriptionEditNotificationContent(
     updateAlarmTime: (Int, Int, Alarm) -> Unit,
     removeAlarm: (Int, Int) -> Unit
 ) {
-    val context = LocalContext.current
-
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
         onClick = {
-            save(context)
+            save()
             onClick()
         }
     ) {

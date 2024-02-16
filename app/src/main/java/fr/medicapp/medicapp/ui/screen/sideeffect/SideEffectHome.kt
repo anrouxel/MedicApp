@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.model.medication.Medication
@@ -27,7 +28,7 @@ import java.time.LocalDate
 @Composable
 fun SideEffectHome(
     sideEffects: List<SideEffect>,
-    onSideEffectClick: () -> Unit = {},
+    onSideEffectClick: (Long) -> Unit = {},
     onAddSideEffectClick: () -> Unit = {}
 ) {
     Home(
@@ -49,7 +50,7 @@ fun SideEffectHome(
 @Composable
 fun SideEffectList(
     sideEffects: List<SideEffect>,
-    onSideEffectClick: () -> Unit = {}
+    onSideEffectClick: (Long) -> Unit = {}
 ) {
     sideEffects.forEach { sideEffect ->
         SideEffectItem(
@@ -62,13 +63,13 @@ fun SideEffectList(
 @Composable
 fun SideEffectItem(
     sideEffect: SideEffect,
-    onSideEffectClick: () -> Unit
+    onSideEffectClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = onSideEffectClick
+        onClick = { onSideEffectClick(sideEffect.id) }
     ) {
         CardContent(
-            title = sideEffect.treatment?.medication?.name ?: "",
+            title = sideEffect.prescription?.treatment?.medication?.name ?: "",
             description = sideEffect.date?.toString() ?: ""
         )
     }
@@ -91,10 +92,12 @@ fun NoSideEffectAvailable() {
 @Composable
 private fun SideEffectHomePreview() {
     val sideEffect = SideEffect(
-        treatment = Treatment(
-            medication = Medication(
-                name = "Doliprane"
-            )
+        prescription = Prescription(
+            treatment = Treatment(
+                medication = Medication(
+                    name = "Doliprane"
+                )
+            ),
         ),
         date = LocalDate.now()
     )
@@ -115,10 +118,12 @@ private fun SideEffectHomePreview() {
 @Composable
 private fun SideEffectHomeDarkPreview() {
     val sideEffect = SideEffect(
-        treatment = Treatment(
-            medication = Medication(
-                name = "Doliprane"
-            )
+        prescription = Prescription(
+            treatment = Treatment(
+                medication = Medication(
+                    name = "Doliprane"
+                )
+            ),
         ),
         date = LocalDate.now()
     )
