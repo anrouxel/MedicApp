@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,7 @@ fun PrescriptionDetail(
             viewModel.updateNotificationManager(context, index)
         },
         removeNotification = { index ->
+            Log.d("PrescriptionDetail", "removeNotification: $index")
             viewModel.removeFromNotificationManager(context, index)
             viewModel.removeNotification(index)
             viewModel.save(context)

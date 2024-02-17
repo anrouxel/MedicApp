@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
-import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -101,11 +99,13 @@ private fun IncrementButton(weekState: WeekCalendarState, coroutine: CoroutineSc
  */
 
 @Composable
-fun MonthHeader(state: WeekCalendarState,
-                month: String,
-                onClick: suspend () -> Unit,
-                coroutine: CoroutineScope,
-                modifier: Modifier = Modifier){
+fun MonthHeader(
+    state: WeekCalendarState,
+    month: String,
+    onClick: suspend () -> Unit,
+    coroutine: CoroutineScope,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -129,7 +129,7 @@ fun MonthHeader(state: WeekCalendarState,
 
 @Preview
 @Composable
-fun MonthHeaderPreview(){
+fun MonthHeaderPreview() {
     MonthHeader(
         state = rememberWeekCalendarState(),
         month = "January",

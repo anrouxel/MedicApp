@@ -3,24 +3,14 @@ package fr.medicapp.medicapp.ui.screen.home
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.ui.components.calendar.Calendar
-import fr.medicapp.medicapp.ui.theme.EUGreen100
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
-import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +44,6 @@ fun HomeScreen(
 
         val selection = remember { mutableStateOf(LocalDate.now()) }
         Calendar(selection = selection)
-        //Log.d("selected Date", selection.value.toString())
         Spacer(modifier = Modifier.height(8.dp))
         ListOfMedication(selectedDate = selection.value, prescription = prescriptions)
     }
@@ -62,9 +51,9 @@ fun HomeScreen(
 
 @Composable
 fun ListOfMedication(
-    modifier : Modifier = Modifier,
-    selectedDate : LocalDate,
-    prescription : List<Prescription>
+    modifier: Modifier = Modifier,
+    selectedDate: LocalDate,
+    prescription: List<Prescription>
 ) {
 
     val medocsForToday = prescription
@@ -72,13 +61,13 @@ fun ListOfMedication(
         .flatten()
 
 
-    LazyColumn(modifier=modifier){
+    LazyColumn(modifier = modifier) {
         items(medocsForToday) {
             val name = it.prescription.treatment.medication.toString()
             val hourAndMinute = "${it.date.hour}h${it.date.minute.toString().padStart(2, '0')}"
             val enabled = it.date.isAfter(LocalDateTime.now())
             ReusableElevatedCardButton(enabled = enabled, onClick = {}) {
-                CardContent(title =name, description = hourAndMinute)
+                CardContent(title = name, description = hourAndMinute)
             }
         }
     }
@@ -100,7 +89,7 @@ private fun HomeScreenPreview() {
 
 @Preview
 @Composable
-fun PreviewListOfMedication(){
+fun PreviewListOfMedication() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,

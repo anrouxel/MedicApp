@@ -7,7 +7,6 @@ import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import java.time.LocalDate
 import java.time.LocalDateTime
-import kotlin.math.log
 
 data class Prescription(
     val id: Long = 0L,
@@ -65,6 +64,7 @@ data class Prescription(
             title = treatment.medication!!.name,
             description = treatment.duration!!.toString(),
         )
+    }
 
     fun getNotificationsBetweenDates(startDate: LocalDate, endDate: LocalDate): MutableList<Take> {
         val notifications = mutableListOf<Take>()
@@ -78,13 +78,16 @@ data class Prescription(
             if (treatment.duration!!.startDate!!.isAfter(startDate)) {
                 duration.startDate = treatment.duration!!.startDate
             }
-            if (treatment.duration!!.endDate != null && treatment.duration!!.endDate!!.isBefore(endDate)) {
+            if (treatment.duration!!.endDate != null && treatment.duration!!.endDate!!.isBefore(
+                    endDate
+                )
+            ) {
                 duration.endDate = treatment.duration!!.endDate
             }
         }
 
-        this.notifications.forEach {notification ->
-            notification.days.forEach {day ->
+        this.notifications.forEach { notification ->
+            notification.days.forEach { day ->
                 val dayOfWeek = day.value
                 var date = duration.startDate!!
                 while (date.isBefore(duration.endDate)) {
@@ -92,7 +95,13 @@ data class Prescription(
                         notification.alarms.forEach { alarm ->
                             val hour = alarm.hour
                             val minute = alarm.minute
-                            val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
+                            val dateTime = LocalDateTime.of(
+                                date.year,
+                                date.month,
+                                date.dayOfMonth,
+                                hour,
+                                minute
+                            )
                             notifications.add(Take(this, dateTime))
                         }
                     }
@@ -109,14 +118,15 @@ data class Prescription(
     fun getNotificationsDates(date: LocalDate): MutableList<Take> {
         val notifications = mutableListOf<Take>()
 
-        this.notifications.forEach {notification ->
-            notification.days.forEach {day ->
+        this.notifications.forEach { notification ->
+            notification.days.forEach { day ->
                 val dayOfWeek = day.value
                 if (date.dayOfWeek.value == dayOfWeek) {
                     notification.alarms.forEach { alarm ->
                         val hour = alarm.hour
                         val minute = alarm.minute
-                        val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
+                        val dateTime =
+                            LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
                         notifications.add(Take(this, dateTime))
                     }
                 }
