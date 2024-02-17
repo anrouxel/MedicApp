@@ -20,7 +20,7 @@ data class NotificationEntity(
     @Convert(converter = MutableListDayOfWeekConverter::class, dbType = String::class)
     var days: MutableList<DayOfWeek> = mutableListOf(),
 
-) : EntityToModelMapper<Notification> {
+    ) : EntityToModelMapper<Notification> {
     lateinit var alarms: ToMany<AlarmEntity>
 
     override fun convert(): Notification {

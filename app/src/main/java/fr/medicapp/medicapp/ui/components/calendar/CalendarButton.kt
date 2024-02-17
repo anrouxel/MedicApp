@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,11 +10,10 @@ import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +27,6 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import com.kizitonwose.calendar.core.yearMonth
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import kotlinx.coroutines.flow.filter
@@ -40,14 +37,28 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+/**
+ * This is a Composable function that creates a calendar UI component.
+ *
+ * @param modifier Modifier for the Composable. Default value is Modifier.
+ *
+ * The function does the following:
+ * - Initializes several variables such as the current date, current month, start and end dates for the calendar, and the first day of the week.
+ * - Creates a mutable state for the selected date on the calendar, initially set to the current date.
+ * - Creates a `WeekCalendarState` object, which represents the state of the calendar.
+ * - Creates a `CoroutineScope` for launching coroutines from the Composable.
+ * - Creates a `Column` Composable, which is a vertical layout. Inside this `Column`, it places a `MonthHeader` Composable and a `WeekCalendar` Composable.
+ * - The `MonthHeader` displays the current month and allows the user to scroll to the current date when clicked.
+ * - The `WeekCalendar` displays the days of the week and allows the user to select a date. When a date is selected, it updates the `selection` state.
+ */
+
 @Composable
-fun Calendar(modifier: Modifier = Modifier) {
+fun Calendar(modifier: Modifier = Modifier, selection: MutableState<LocalDate>) {
     val currentDate = remember { LocalDate.now() }
     val currentMonth = remember { YearMonth.now() }
     val startDate = remember { currentMonth.minusMonths(100).atStartOfMonth() } // Adjust as needed
     val endDate = remember { currentMonth.plusMonths(100).atEndOfMonth() } // Adjust as needed
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
-    var selection by remember { mutableStateOf(currentDate) }
 
     val state = rememberWeekCalendarState(
         startDate = startDate,
@@ -56,21 +67,19 @@ fun Calendar(modifier: Modifier = Modifier) {
         firstDayOfWeek = firstDayOfWeek,
     )
 
-    Log.d("Coucou", state.firstVisibleWeek.toString())
-
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
+
     val coroutineScope = rememberCoroutineScope()
 
     Column {
         MonthHeader(
             state = state,
-            monthString = getWeekPageTitle(visibleWeek),
+            month = getWeekPageTitle(visibleWeek),
             onClick = suspend {
                 state.animateScrollToWeek(currentDate)
-                selection = currentDate
+                selection.value = currentDate
             },
             coroutine = coroutineScope,
-
         )
 
         Spacer(modifier = Modifier.padding(10.dp))
@@ -79,9 +88,9 @@ fun Calendar(modifier: Modifier = Modifier) {
             modifier = modifier,
             state = state,
             dayContent = { day ->
-                Day(day, isSelected = selection == day.date) {
-                    if (it.date != selection) {
-                        selection = it.date
+                Day(day, isSelected = selection.value == day.date) {
+                    if (it.date != selection.value) {
+                        selection.value = it.date
                     }
                 }
             },
@@ -97,7 +106,8 @@ private fun CalendarPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        Calendar()
+        val selectionLight = remember { mutableStateOf(LocalDate.now()) }
+        Calendar(selection = selectionLight)
     }
 }
 
@@ -109,7 +119,8 @@ private fun CalendarDarkPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        Calendar()
+        val selectionDark = remember { mutableStateOf(LocalDate.now()) }
+        Calendar(selection = selectionDark)
     }
 }
 
@@ -196,25 +207,11 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     return visibleWeek.value
 }
 
-fun getWeekPageTitle(week: Week): String {
-    val firstDate = week.days.first().date
-    val lastDate = week.days.last().date
-    return when {
-        firstDate.yearMonth == lastDate.yearMonth -> {
-            firstDate.yearMonth.displayText()
-        }
-        firstDate.year == lastDate.year -> {
-            "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
-        }
-        else -> {
-            "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
-        }
-    }
-}
-
 fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)
-        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${this.year}"
+    return "${
+        this.month.displayText(short = short)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+    } ${this.year}"
 }
 
 fun Month.displayText(short: Boolean = true): String {

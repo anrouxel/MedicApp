@@ -27,10 +27,11 @@ data class HasSmrOpinionEntity(
 
     var smrLabel: String = "",
 ) : EntityToModelMapper<HasSmrOpinion> {
-    var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinksEntity> = ToMany(
-        this,
-        HasSmrOpinionEntity_.transparencyCommissionOpinionLinks
-    )
+    var transparencyCommissionOpinionLinks: MutableList<TransparencyCommissionOpinionLinksEntity> =
+        ToMany(
+            this,
+            HasSmrOpinionEntity_.transparencyCommissionOpinionLinks
+        )
 
     override fun convert(): HasSmrOpinion {
         return HasSmrOpinion(

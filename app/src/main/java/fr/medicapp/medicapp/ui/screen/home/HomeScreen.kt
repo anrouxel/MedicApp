@@ -1,90 +1,76 @@
 package fr.medicapp.medicapp.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
-import com.kizitonwose.calendar.core.atStartOfMonth
-import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.calendar.Calendar
-import fr.medicapp.medicapp.ui.theme.EUGreen100
-import fr.medicapp.medicapp.ui.theme.EUGreen120
+import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
-import java.util.Date
+import java.time.LocalDateTime
 
-/**
- * Écran d'accueil de l'application MedicApp.
- *
- * Cet écran affiche un message de bienvenue à l'utilisateur et propose plusieurs actions :
- * - Ajouter une ordonnance
- * - Signaler un effet indésirable
- * - Ajouter un rappel
- *
- * @param onAddPrescriptionClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter une ordonnance".
- * @param onAddSideEffectClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Signaler un effet indésirable".
- * @param onAddNotification Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter un rappel".
- */
 @Composable
-fun HomeScreen(
-    onAddPrescriptionClick: () -> Unit,
-) {
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Calendar()
-        Button(
-            onClick = onAddPrescriptionClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = EUGreen100
-            ),
-            shape = RoundedCornerShape(10.dp)
+            .padding(16.dp),
+
         ) {
-            Text(text = "Ajouter une ordonnance")
-        }
-        Button(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = EUGreen100
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = "Signaler un effet indésirable")
+
+        val context = LocalContext.current
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(PrescriptionEntity::class.java)
+
+        val prescriptions = store.all.map { it.convert() }
+
+        val selection = remember { mutableStateOf(LocalDate.now()) }
+        Calendar(selection = selection)
+        Spacer(modifier = Modifier.height(8.dp))
+        ListOfMedication(selectedDate = selection.value, prescription = prescriptions)
+    }
+}
+
+@Composable
+fun ListOfMedication(
+    modifier: Modifier = Modifier,
+    selectedDate: LocalDate,
+    prescription: List<Prescription>
+) {
+
+    val medocsForToday = prescription
+        .map { it.getNotificationsDates(selectedDate) }
+        .flatten()
+
+
+    LazyColumn(modifier = modifier) {
+        items(medocsForToday) {
+            val name = it.prescription.treatment.medication.toString()
+            val hourAndMinute = "${it.date.hour}h${it.date.minute.toString().padStart(2, '0')}"
+            val enabled = it.date.isAfter(LocalDateTime.now())
+            ReusableElevatedCardButton(enabled = enabled, onClick = {}) {
+                CardContent(title = name, description = hourAndMinute)
+            }
         }
     }
 }
 
-/**
- * Prévisualisation de l'écran d'accueil.
- *
- * Cette prévisualisation permet de voir à quoi ressemble l'écran d'accueil sans avoir à lancer l'application.
- */
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
@@ -93,8 +79,18 @@ private fun HomeScreenPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        HomeScreen(
-            onAddPrescriptionClick = { }
-        )
+        HomeScreen()
+    }
+}
+
+@Preview
+@Composable
+fun PreviewListOfMedication() {
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        ListOfMedication(selectedDate = LocalDate.now(), prescription = listOf())
     }
 }
