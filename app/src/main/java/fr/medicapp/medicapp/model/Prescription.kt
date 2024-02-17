@@ -33,7 +33,9 @@ data class Prescription(
 
         prescription.doctor.target = doctor?.convert(context)
         prescription.treatment.target = treatment.convert(context)
+        prescription.notifications.clear()
         prescription.notifications.addAll(notifications.map { it.convert(context) })
+        prescription.sideEffects.clear()
         prescription.sideEffects.addAll(sideEffects.map { it.convertBacklink(context) })
         return prescription
     }
@@ -50,6 +52,7 @@ data class Prescription(
 
         prescription.doctor.target = doctor?.convert(context)
         prescription.treatment.target = treatment.convert(context)
+        prescription.notifications.clear()
         prescription.notifications.addAll(notifications.map { it.convert(context) })
         return prescription
     }
