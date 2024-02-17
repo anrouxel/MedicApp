@@ -26,9 +26,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
-fun HomeScreen(
-    onAddPrescriptionClick: () -> Unit,
-) {
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,9 +79,7 @@ private fun HomeScreenPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        HomeScreen(
-            onAddPrescriptionClick = { }
-        )
+        HomeScreen()
     }
 }
 
