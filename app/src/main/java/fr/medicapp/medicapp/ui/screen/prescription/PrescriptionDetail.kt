@@ -54,7 +54,6 @@ fun PrescriptionDetail(
             viewModel.updateNotificationManager(context, index)
         },
         removeNotification = { index ->
-            Log.d("PrescriptionDetail", "removeNotification: $index")
             viewModel.removeFromNotificationManager(context, index)
             viewModel.removeNotification(index)
             viewModel.save(context)
