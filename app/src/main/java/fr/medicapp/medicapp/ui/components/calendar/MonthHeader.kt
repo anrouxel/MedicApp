@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
  *
  */
 @Composable
-private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+private fun DecrementButton(weekState: WeekCalendarState, coroutine: CoroutineScope) {
     IconButton(
         onClick = {
             coroutine.launch {
@@ -63,7 +63,7 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
  *
  */
 @Composable
-private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+private fun IncrementButton(weekState: WeekCalendarState, coroutine: CoroutineScope) {
     IconButton(
         onClick = {
             coroutine.launch {

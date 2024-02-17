@@ -11,23 +11,14 @@ data class SideEffect(
 
     var date: LocalDate? = null,
 
-    var hour: Int = 0,
-
-    var minute: Int = 0,
-
-    var effetsConstates: MutableList<String> = mutableListOf(),
-
     var description: String = "",
 
-    var treatment: Treatment? = null
+    var prescription: Prescription? = null
 ) : ModelToEntityMapper<SideEffectEntity> {
     override fun convert(context: Context): SideEffectEntity {
         val sideEffect = SideEffectEntity(
             id,
             date,
-            hour,
-            minute,
-            effetsConstates,
             description
         )
 
@@ -35,7 +26,22 @@ data class SideEffect(
         val store = box.boxFor(SideEffectEntity::class.java)
         store.attach(sideEffect)
 
-        sideEffect.treatment.target = treatment?.convert(context)
+        sideEffect.prescription.target = prescription?.convert(context)
+        return sideEffect
+    }
+
+    fun convertBacklink(context: Context): SideEffectEntity {
+        val sideEffect = SideEffectEntity(
+            id,
+            date,
+            description
+        )
+
+        val box = ObjectBox.getInstance(context)
+        val store = box.boxFor(SideEffectEntity::class.java)
+        store.attach(sideEffect)
+
+        sideEffect.prescription.target = prescription?.convertBacklink(context)
         return sideEffect
     }
 }

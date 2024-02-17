@@ -4,7 +4,6 @@ import android.content.Context
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.medication.HasAsmrOpinionEntity
-import fr.medicapp.medicapp.database.entity.medication.HasSmrOpinionEntity
 import java.time.LocalDate
 
 data class HasAsmrOpinion(
