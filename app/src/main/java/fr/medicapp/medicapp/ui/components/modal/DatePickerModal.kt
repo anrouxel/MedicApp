@@ -33,7 +33,7 @@ fun DatePickerModal(
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
-                enabled = state.selectedDateMillis!=null
+                enabled = state.selectedDateMillis != null
             ) {
                 Text("OK")
             }
