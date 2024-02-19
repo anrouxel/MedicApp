@@ -73,7 +73,10 @@ fun NavGraphBuilder.sideEffectNavGraph(
             }
 
             SideEffectDetail(
-                viewModel = viewModel
+                viewModel = viewModel,
+                onRemoveSideEffectClick = {
+                    navController.navigate(SideEffectRoute.SideEffectHomeRoute.route)
+                }
             )
         }
 
