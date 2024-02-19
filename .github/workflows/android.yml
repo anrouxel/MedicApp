@@ -24,9 +24,10 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew assembleRelease
-    - name: Release
+    - name: Nightly
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: nightly
         draft: false
         prerelease: true
         files: |
