@@ -18,8 +18,9 @@ class ButtonContentTest {
         val buttonDisplay = hasText("Test") and hasClickAction()
         rule.onNode(buttonDisplay).assertExists()
     }
+
     @Test
-    fun testOnClick(){
+    fun testOnClick() {
         assert(0xfffd == 65533)
     }
 }
