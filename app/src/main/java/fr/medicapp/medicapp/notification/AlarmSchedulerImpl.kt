@@ -4,9 +4,12 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import java.time.ZoneId
 
+@RequiresApi(Build.VERSION_CODES.O)
 class AlarmSchedulerImpl(
     private val context: Context
 ) : AlarmScheduler {
@@ -23,19 +26,18 @@ class AlarmSchedulerImpl(
             alarmTime,
             PendingIntent.getBroadcast(
                 context,
-                alarmItem.hashCode(),
+                alarmItem.id.toInt(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
-        Log.e("Alarm", "Alarm set at $alarmTime")
     }
 
     override fun cancel(alarmItem: AlarmItem) {
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                alarmItem.hashCode(),
+                alarmItem.id.toInt(),
                 Intent(context, AlarmReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )

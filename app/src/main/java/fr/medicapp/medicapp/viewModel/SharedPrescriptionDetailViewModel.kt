@@ -74,7 +74,7 @@ class SharedPrescriptionDetailViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateNotificationManager(context: Context, index: Int) {
         val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.update(context, notification)
+        NotificationPrescriptionManager.update(context, notification, _sharedState.value.toString(), "")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

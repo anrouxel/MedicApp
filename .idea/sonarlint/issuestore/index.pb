@@ -231,3 +231,5 @@ Eapp/src/main/java/fr/medicapp/medicapp/notification/AlarmScheduler.kt,5\f\5f4a
 Mapp/src/main/java/fr/medicapp/medicapp/ui/components/list/ListOfMedication.kt,9\5\95b5190332b3f2fc64c8c85f0e04c9bbf0a125d2
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/components/calendar/MonthHeader.kt,9\b\9bdbb237b1f60ffc8e8283d8643c051109721ae2
+u
+Eapp/src/main/java/fr/medicapp/medicapp/notification/RebootReceiver.kt,b\e\bea2b841841b45588dacec5aea8170d867ac2e7d
