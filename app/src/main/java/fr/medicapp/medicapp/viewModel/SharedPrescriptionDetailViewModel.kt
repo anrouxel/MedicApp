@@ -9,8 +9,11 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
+import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
+import io.objectbox.kotlin.boxFor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -55,9 +58,15 @@ class SharedPrescriptionDetailViewModel(
 
     fun removePrescription(context: Context) {
         val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
+        val sideEffectStore = boxStore.boxFor(SideEffectEntity::class.java)
+        val prescriptionStore = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
-        store.remove(prescription)
+
+        prescription.sideEffects.forEach { sideEffect ->
+            sideEffectStore.remove(sideEffect)
+        }
+
+        prescriptionStore.remove(prescription)
     }
 
     fun save(context: Context) {
