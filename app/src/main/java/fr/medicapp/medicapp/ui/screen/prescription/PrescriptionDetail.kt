@@ -17,14 +17,11 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
-import fr.medicapp.medicapp.ui.components.modal.DeleteModal
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
@@ -33,7 +30,6 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 @Composable
 fun PrescriptionDetail(
     viewModel: SharedPrescriptionDetailViewModel,
-    onRemovePrescriptionClick: () -> Unit,
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
@@ -136,18 +132,6 @@ fun PrescriptionDetail(
                                         tint = MaterialTheme.colorScheme.primary
                                     )
                                 }
-                                if (showDeleteNotificationModal.value) {
-                                    DeleteModal(
-                                        title = "Supprimer cette notification",
-                                        onDismissRequest = {
-                                            showDeleteNotificationModal.value = false
-                                        },
-                                        onConfirm = {
-                                            removeNotification(index)
-                                            showDeleteNotificationModal.value = false
-                                        }
-                                    )
-                                }
                             }
                         }
                         Spacer(modifier = Modifier.padding(10.dp))
@@ -169,21 +153,6 @@ fun PrescriptionDetail(
                         )
                     }
                 }
-            }
-            Spacer(modifier = Modifier.padding(10.dp))
-
-            ReusableButton(text = "Supprimer", onClick = {
-                showDeletePrescriptionModal.value = true
-            })
-            if (showDeletePrescriptionModal.value) {
-                DeleteModal(
-                    title = "Supprimer ce traitement",
-                    onDismissRequest = { showDeletePrescriptionModal.value = false },
-                    onConfirm = {
-                        removePrescription()
-                        showDeletePrescriptionModal.value = false
-                    }
-                )
             }
         }
     }

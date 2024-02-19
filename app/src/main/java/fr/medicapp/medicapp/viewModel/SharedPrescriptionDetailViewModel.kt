@@ -9,7 +9,6 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
-import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,11 +37,7 @@ class SharedPrescriptionDetailViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateNotificationActiveState(index: Int, newActiveState: Boolean, context: Context) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
-        val notificationToUpdate = updatedNotifications[index]
-
-        val updatedNotification = notificationToUpdate.copy(active = newActiveState)
-
-        updatedNotifications[index] = updatedNotification
+        updatedNotifications[index] = updatedNotifications[index].copy(active = newActiveState)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
 
@@ -65,19 +60,6 @@ class SharedPrescriptionDetailViewModel(
         _sharedState.value = updatedPrescription
 
         save(context)
-    }
-
-    fun removePrescription(context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
-        val sideEffectStore = boxStore.boxFor(SideEffectEntity::class.java)
-        val prescriptionStore = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription = _sharedState.value.convert(context)
-
-        prescription.sideEffects.forEach { sideEffect ->
-            sideEffectStore.remove(sideEffect)
-        }
-
-        prescriptionStore.remove(prescription)
     }
 
     fun save(context: Context) {

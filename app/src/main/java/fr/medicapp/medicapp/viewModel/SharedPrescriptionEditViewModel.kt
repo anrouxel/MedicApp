@@ -64,9 +64,7 @@ class SharedPrescriptionEditViewModel(
 
     fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
-        val notificationToUpdate = updatedNotifications[index]
-        val updatedNotification = notificationToUpdate.copy(active = newActiveState)
-        updatedNotifications[index] = updatedNotification
+        updatedNotifications[index] = updatedNotifications[index].copy(active = newActiveState)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
     }
@@ -79,8 +77,7 @@ class SharedPrescriptionEditViewModel(
         } else {
             notificationToUpdate.days.remove(dayOfWeek)
         }
-        val updatedNotification = notificationToUpdate.copy(days = notificationToUpdate.days)
-        updatedNotifications[index] = updatedNotification
+        updatedNotifications[index] = notificationToUpdate.copy(days = notificationToUpdate.days)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
     }
@@ -97,8 +94,7 @@ class SharedPrescriptionEditViewModel(
         val notificationToUpdate = updatedNotifications[index]
         val updatedAlarms = notificationToUpdate.alarms.toMutableList()
         updatedAlarms.add(Alarm())
-        val updatedNotification = notificationToUpdate.copy(alarms = updatedAlarms)
-        updatedNotifications[index] = updatedNotification
+        updatedNotifications[index] = notificationToUpdate.copy(alarms = updatedAlarms)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
     }
@@ -108,8 +104,7 @@ class SharedPrescriptionEditViewModel(
         val notificationToUpdate = updatedNotifications[notificationIndex]
         val updatedAlarms = notificationToUpdate.alarms.toMutableList()
         updatedAlarms[alarmIndex] = alarm
-        val updatedNotification = notificationToUpdate.copy(alarms = updatedAlarms)
-        updatedNotifications[notificationIndex] = updatedNotification
+        updatedNotifications[notificationIndex] = notificationToUpdate.copy(alarms = updatedAlarms)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
     }
@@ -119,8 +114,7 @@ class SharedPrescriptionEditViewModel(
         val notificationToUpdate = updatedNotifications[notificationIndex]
         val updatedAlarms = notificationToUpdate.alarms.toMutableList()
         updatedAlarms.removeAt(alarmIndex)
-        val updatedNotification = notificationToUpdate.copy(alarms = updatedAlarms)
-        updatedNotifications[notificationIndex] = updatedNotification
+        updatedNotifications[notificationIndex] = notificationToUpdate.copy(alarms = updatedAlarms)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
     }
@@ -136,7 +130,10 @@ class SharedPrescriptionEditViewModel(
         _sharedState.value = updatedPrescription
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context) {
+        addToNotificationManager(context)
+
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
