@@ -31,5 +31,6 @@ jobs:
         draft: false
         prerelease: true
         files: |
-          app/build/outputs/apk/
+          app/build/outputs/apk/release/app-release-unsigned.apk
+          app/build/outputs/apk/release/output-metadata.json
           LICENSE.md
