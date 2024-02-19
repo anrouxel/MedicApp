@@ -17,6 +17,8 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,7 +30,9 @@ import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.model.medication.Medication
+import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
+import fr.medicapp.medicapp.ui.components.modal.DeleteModal
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
@@ -41,6 +45,7 @@ import java.time.LocalDate
 @Composable
 fun PrescriptionDetail(
     viewModel: SharedPrescriptionDetailViewModel,
+    onRemovePrescriptionClick: () -> Unit,
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
@@ -56,7 +61,12 @@ fun PrescriptionDetail(
             viewModel.removeFromNotificationManager(context, index)
             viewModel.removeNotification(index)
             viewModel.save(context)
+        },
+        removePrescription = {
+            viewModel.removePrescription(context)
+            onRemovePrescriptionClick()
         }
+
     )
 }
 
@@ -65,7 +75,10 @@ private fun PrescriptionDetailContent(
     state: Prescription,
     updateNotificationActiveState: (Int, Boolean) -> Unit,
     removeNotification: (Int) -> Unit,
+    removePrescription: () -> Unit,
 ) {
+    val showDeletePrescriptionModal = remember { mutableStateOf(false) }
+    val showDeleteNotificationModal = remember { mutableStateOf(false) }
     Detail(
         title = "Détail de l'ordonnance",
     ) {
@@ -155,13 +168,25 @@ private fun PrescriptionDetailContent(
 
                                 IconButton(
                                     onClick = {
-                                        removeNotification(index)
+                                        showDeleteNotificationModal.value = true
                                     },
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Delete,
                                         contentDescription = "",
                                         tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                if (showDeleteNotificationModal.value) {
+                                    DeleteModal(
+                                        title = "Supprimer cette notification",
+                                        onDismissRequest = {
+                                            showDeleteNotificationModal.value = false
+                                        },
+                                        onConfirm = {
+                                            removeNotification(index)
+                                            showDeleteNotificationModal.value = false
+                                        }
                                     )
                                 }
                             }
@@ -185,6 +210,21 @@ private fun PrescriptionDetailContent(
                         )
                     }
                 }
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            ReusableButton(text = "Supprimer", onClick = {
+                showDeletePrescriptionModal.value = true
+            })
+            if (showDeletePrescriptionModal.value) {
+                DeleteModal(
+                    title = "Supprimer ce traitement",
+                    onDismissRequest = { showDeletePrescriptionModal.value = false },
+                    onConfirm = {
+                        removePrescription()
+                        showDeletePrescriptionModal.value = false
+                    }
+                )
             }
         }
     }
@@ -235,7 +275,8 @@ fun PrescriptionDetailPreview() {
                 )
             ),
             updateNotificationActiveState = { _, _ -> },
-            removeNotification = { _ -> }
+            removeNotification = { _ -> },
+            removePrescription = {},
         )
     }
 }
@@ -285,7 +326,8 @@ fun PrescriptionDetailDarkPreview() {
                 )
             ),
             updateNotificationActiveState = { _, _ -> },
-            removeNotification = { _ -> }
+            removeNotification = { _ -> },
+            removePrescription = {},
         )
     }
 }

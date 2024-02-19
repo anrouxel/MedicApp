@@ -31,4 +31,11 @@ class SharedSideEffectDetailViewModel(
             store.query().equal(SideEffectEntity_.id, id).build().findFirst()?.convert()
         _sharedState.value = sideEffect ?: SideEffect()
     }
+
+    fun removeSideEffect(context: Context) {
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(SideEffectEntity::class.java)
+        val sideEffect = _sharedState.value.convert(context)
+        store.remove(sideEffect)
+    }
 }
