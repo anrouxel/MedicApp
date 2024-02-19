@@ -15,7 +15,6 @@ import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
  * Il contient un état partagé qui est un flux de prescriptions.
@@ -36,7 +35,8 @@ class SharedPrescriptionDetailViewModel(
         _sharedState.value = prescription ?: Prescription()
     }
 
-    fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateNotificationActiveState(index: Int, newActiveState: Boolean, context: Context) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val notificationToUpdate = updatedNotifications[index]
 
@@ -45,13 +45,26 @@ class SharedPrescriptionDetailViewModel(
         updatedNotifications[index] = updatedNotification
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
+
+        if (newActiveState) {
+            updateNotificationManager(context, index)
+        } else {
+            removeFromNotificationManager(context, index)
+        }
+
+        saveUpdate(context)
     }
 
-    fun removeNotification(index: Int) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun removeNotification(index: Int, context: Context) {
+        removeFromNotificationManager(context, index)
+
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         updatedNotifications.removeAt(index)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
+
+        save(context)
     }
 
     fun removePrescription(context: Context) {
