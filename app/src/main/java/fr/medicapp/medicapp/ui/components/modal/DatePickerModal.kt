@@ -20,7 +20,6 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
  * @param state L'état du DatePicker, contenant la date sélectionnée.
  * @param onDismissRequest La fonction à exécuter lorsque l'utilisateur ferme le modal.
  * @param onConfirm La fonction à exécuter lorsque l'utilisateur confirme la date sélectionnée.
- * @param colors Les couleurs du DatePicker.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
