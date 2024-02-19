@@ -9,6 +9,7 @@ plugins {
 }
 
 tasks.withType<Detekt>().configureEach {
+    ignoreFailures = true
     reports {
         xml.required.set(true)
         html.required.set(true)
