@@ -11,9 +11,7 @@ import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
-import io.objectbox.kotlin.boxFor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
