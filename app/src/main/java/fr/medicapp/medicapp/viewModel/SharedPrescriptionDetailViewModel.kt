@@ -53,6 +53,13 @@ class SharedPrescriptionDetailViewModel(
         _sharedState.value = updatedPrescription
     }
 
+    fun removePrescription(context: Context) {
+        val boxStore = ObjectBox.getInstance(context)
+        val store = boxStore.boxFor(PrescriptionEntity::class.java)
+        val prescription = _sharedState.value.convert(context)
+        store.remove(prescription)
+    }
+
     fun save(context: Context) {
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
