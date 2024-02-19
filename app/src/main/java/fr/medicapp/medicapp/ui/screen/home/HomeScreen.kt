@@ -27,8 +27,6 @@ import java.time.LocalDate
  * - Ajouter une ordonnance
  * - Signaler un effet indésirable
  * - Ajouter un rappel
- *
- * @param onAddPrescriptionClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter une ordonnance".
  */
 @Composable
 fun HomeScreen() {
