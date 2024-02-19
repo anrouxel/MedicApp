@@ -40,7 +40,7 @@ fun ListOfMedication(modifier : Modifier = Modifier,
             val name = it.prescription.treatment.medication.toString()
             val hourAndMinute = "${it.date.hour}h${it.date.minute.toString().padStart(2, '0')}"
             val enabled = it.date.isAfter(LocalDateTime.now())
-            ReusableElevatedCardButton(enable = enabled, onClick = {}) {
+            ReusableElevatedCardButton(enabled = enabled, onClick = {}) {
                 CardContent(title =name, description = hourAndMinute)
             }
         }
