@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -124,6 +125,14 @@ private fun CalendarDarkPreview() {
     }
 }
 
+/**
+ * This is a Composable function that creates the button for the day of the week.
+ *
+ * @param day The day of the week.
+ * @param isSelected A boolean value that indicates whether the day is selected.
+ * @param onClick A function to call when the user clicks the day.
+ */
+
 @Composable
 private fun Day(
     day: WeekDay,
@@ -196,6 +205,13 @@ private fun DayDarkPreview() {
     }
 }
 
+/**
+ * This is a Composable function to remember the first visible week after scrolling.
+ *
+ * @param state The state of the calendar.
+ * @return The first visible week after scrolling.
+ */
+
 @Composable
 fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     val visibleWeek = remember(state) { mutableStateOf(state.firstVisibleWeek) }
@@ -207,6 +223,11 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     return visibleWeek.value
 }
 
+
+/**
+ * A function to display a personalized YearMonth.
+ */
+
 fun YearMonth.displayText(short: Boolean = false): String {
     return "${
         this.month.displayText(short = short)
@@ -214,12 +235,20 @@ fun YearMonth.displayText(short: Boolean = false): String {
     } ${this.year}"
 }
 
+/**
+ * A function to display a personalized and localized Month.
+ */
+
 fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
     return getDisplayName(style, Locale.getDefault()).replaceFirstChar {
         it.titlecase()
     }
 }
+
+/**
+ * A function to display a personalized and localized DayOfWeek.
+ */
 
 fun DayOfWeek.displayText(uppercase: Boolean = false): String {
     return getDisplayName(TextStyle.SHORT, Locale.getDefault()).let { value ->

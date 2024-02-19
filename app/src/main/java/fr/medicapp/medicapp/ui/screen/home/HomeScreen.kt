@@ -25,6 +25,16 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+/**
+ * Écran d'accueil de l'application MedicApp.
+ *
+ * Cet écran affiche un message de bienvenue à l'utilisateur et propose plusieurs actions :
+ * - Ajouter une ordonnance
+ * - Signaler un effet indésirable
+ * - Ajouter un rappel
+ *
+ * @param onAddPrescriptionClick Fonction à appeler lorsque l'utilisateur clique sur le bouton "Ajouter une ordonnance".
+ */
 @Composable
 fun HomeScreen() {
     Column(
@@ -71,6 +81,11 @@ fun ListOfMedication(
     }
 }
 
+/**
+ * Prévisualisation de l'écran d'accueil.
+ *
+ * Cette prévisualisation permet de voir à quoi ressemble l'écran d'accueil sans avoir à lancer l'application.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {

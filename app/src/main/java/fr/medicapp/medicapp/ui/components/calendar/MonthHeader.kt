@@ -61,7 +61,7 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine: CoroutineSc
  *
  */
 @Composable
-private fun IncrementButton(weekState: WeekCalendarState, coroutine: CoroutineScope) {
+private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
     IconButton(
         onClick = {
             coroutine.launch {
@@ -115,7 +115,6 @@ fun MonthHeader(
         Text(
             text = month,
             //when clicked, go back to the current week and day
-
             modifier.clickable {
                 coroutine.launch {
                     onClick()

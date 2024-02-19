@@ -14,6 +14,7 @@ import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
  * Il contient un état partagé qui est un flux de prescriptions.

@@ -211,9 +211,7 @@ fun PrescriptionDetailPreview() {
                     frequency = "3 fois par jour",
                     duration = Duration(
                         startDate = LocalDate.now(),
-                        endDate = LocalDate.now().plusDays(
-                            7
-                        )
+                        endDate = LocalDate.now().plusDays(7)
                     )
                 ),
                 notifications = mutableListOf(
@@ -263,9 +261,7 @@ fun PrescriptionDetailDarkPreview() {
                     frequency = "3 fois par jour",
                     duration = Duration(
                         startDate = LocalDate.now(),
-                        endDate = LocalDate.now().plusDays(
-                            7
-                        )
+                        endDate = LocalDate.now().plusDays(7)
                     )
                 ),
                 notifications = mutableListOf(

@@ -34,7 +34,8 @@ fun ReusableElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.surface
-        )
+        ),
+
     )
 }
 
