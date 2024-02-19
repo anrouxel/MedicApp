@@ -77,7 +77,8 @@ private fun PrescriptionDetailContent(
     removeNotification: (Int) -> Unit,
     removePrescription: () -> Unit,
 ) {
-    val showDeleteModal = remember { mutableStateOf(false) }
+    val showDeletePrescriptionModal = remember { mutableStateOf(false) }
+    val showDeleteNotificationModal = remember { mutableStateOf(false) }
     Detail(
         title = "Détail de l'ordonnance",
     ) {
@@ -167,13 +168,25 @@ private fun PrescriptionDetailContent(
 
                                 IconButton(
                                     onClick = {
-                                        removeNotification(index)
+                                        showDeleteNotificationModal.value = true
                                     },
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Delete,
                                         contentDescription = "",
                                         tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                if (showDeleteNotificationModal.value) {
+                                    DeleteModal(
+                                        title = "Supprimer cette notification",
+                                        onDismissRequest = {
+                                            showDeleteNotificationModal.value = false
+                                        },
+                                        onConfirm = {
+                                            removeNotification(index)
+                                            showDeleteNotificationModal.value = false
+                                        }
                                     )
                                 }
                             }
@@ -197,21 +210,21 @@ private fun PrescriptionDetailContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
 
-                ReusableButton(text = "Supprimer", onClick = {
-                    showDeleteModal.value = true
-                })
-                if (showDeleteModal.value) {
-                    DeleteModal(
-                        title = "Supprimer ce traitement",
-                        onDismissRequest = { showDeleteModal.value = false },
-                        onConfirm = {
-                            removePrescription()
-                            showDeleteModal.value = false
-                        }
-                    )
-                }
+            ReusableButton(text = "Supprimer", onClick = {
+                showDeletePrescriptionModal.value = true
+            })
+            if (showDeletePrescriptionModal.value) {
+                DeleteModal(
+                    title = "Supprimer ce traitement",
+                    onDismissRequest = { showDeletePrescriptionModal.value = false },
+                    onConfirm = {
+                        removePrescription()
+                        showDeletePrescriptionModal.value = false
+                    }
+                )
             }
         }
     }
