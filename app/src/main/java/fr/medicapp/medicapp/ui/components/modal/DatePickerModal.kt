@@ -33,7 +33,8 @@ fun DatePickerModal(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(
-                onClick = onConfirm
+                onClick = onConfirm,
+                enabled = state.selectedDateMillis!=null
             ) {
                 Text("OK")
             }
