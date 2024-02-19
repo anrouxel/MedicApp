@@ -129,7 +129,8 @@ data class Prescription(
                 val dayOfWeek = day.value
                 if (date.dayOfWeek.value == dayOfWeek
                     && date.isAfter(startDate.minusDays(1))
-                    && date.isBefore(endDate.plusDays(1))) {
+                    && date.isBefore(endDate.plusDays(1))
+                ) {
                     notification.alarms.forEach { alarm ->
                         val hour = alarm.hour
                         val minute = alarm.minute

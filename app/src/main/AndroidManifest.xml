@@ -22,6 +22,7 @@
         android:theme="@style/Theme.MedicApp"
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="tiramisu">
+        <receiver android:name=".notification.AlarmReceiver" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
