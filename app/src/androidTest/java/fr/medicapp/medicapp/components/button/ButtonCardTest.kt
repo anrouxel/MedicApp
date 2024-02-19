@@ -20,13 +20,14 @@ class ButtonCardTest {
         val buttonDisplay = hasText("Test") and hasClickAction()
         rule.onNode(buttonDisplay).assertExists()
     }
+
     @Test
-    fun testOnClick(){
+    fun testOnClick() {
         var testVar = 0
         val testFunction: () -> Unit = {
-            testVar ++
+            testVar++
         }
-        rule.setContent { ButtonCard(onClick = testFunction){} }
+        rule.setContent { ButtonCard(onClick = testFunction) {} }
         val buttonDisplay = hasClickAction()
         rule.onNode(buttonDisplay).performClick()
         rule.onNode(buttonDisplay).performClick()

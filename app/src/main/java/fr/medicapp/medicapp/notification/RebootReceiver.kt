@@ -8,8 +8,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import java.time.LocalDateTime
-import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 class RebootReceiver : BroadcastReceiver() {
@@ -19,7 +17,7 @@ class RebootReceiver : BroadcastReceiver() {
             Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
                 val box = ObjectBox.getInstance(context)
                 val store = box.boxFor(PrescriptionEntity::class.java)
-                store.all.map { it.convert() }.forEach {prescription ->
+                store.all.map { it.convert() }.forEach { prescription ->
                     prescription.notifications.forEach { notification ->
                         NotificationPrescriptionManager.add(
                             context,
@@ -30,7 +28,9 @@ class RebootReceiver : BroadcastReceiver() {
                     }
                 }
             }
-            else -> Toast.makeText(context, "Unknown action: ${intent.action}", Toast.LENGTH_SHORT).show()
+
+            else -> Toast.makeText(context, "Unknown action: ${intent.action}", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }
