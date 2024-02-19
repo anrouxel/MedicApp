@@ -123,8 +123,6 @@ data class Prescription(
         val startDate = treatment.duration!!.startDate!!
         val endDate = treatment.duration!!.endDate!!
 
-//        if (treatment.duration != null && treatment.duration!!.startDate != null) {
-//        }
 
         this.notifications.forEach { notification ->
             notification.days.forEach { day ->
