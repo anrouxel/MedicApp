@@ -72,7 +72,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
             PrescriptionDetail(
                 viewModel = viewModel,
-                onRemovePrescriptionClick =  {
+                onRemovePrescriptionClick = {
                     navController.navigate(PrescriptionRoute.PrescriptionHomeRoute.route)
                 }
             )
