@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +37,7 @@ import java.time.Month
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
+
 /**
  * This is a Composable function that creates a calendar UI component.
  *
@@ -55,13 +54,12 @@ import java.util.Locale
  */
 
 @Composable
-fun Calendar(modifier: Modifier = Modifier, selection : MutableState<LocalDate>) {
+fun Calendar(modifier: Modifier = Modifier, selection: MutableState<LocalDate>) {
     val currentDate = remember { LocalDate.now() }
     val currentMonth = remember { YearMonth.now() }
     val startDate = remember { currentMonth.minusMonths(100).atStartOfMonth() } // Adjust as needed
     val endDate = remember { currentMonth.plusMonths(100).atEndOfMonth() } // Adjust as needed
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
-    //var selection by remember { mutableStateOf(currentDate) }
 
     val state = rememberWeekCalendarState(
         startDate = startDate,
@@ -69,8 +67,6 @@ fun Calendar(modifier: Modifier = Modifier, selection : MutableState<LocalDate>)
         firstVisibleWeekDate = currentDate,
         firstDayOfWeek = firstDayOfWeek,
     )
-
-    //Log.d("Coucou", state.firstVisibleWeek.toString())
 
     val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
 
@@ -85,8 +81,7 @@ fun Calendar(modifier: Modifier = Modifier, selection : MutableState<LocalDate>)
                 selection.value = currentDate
             },
             coroutine = coroutineScope,
-
-            )
+        )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
@@ -102,11 +97,7 @@ fun Calendar(modifier: Modifier = Modifier, selection : MutableState<LocalDate>)
             },
         )
     }
-
 }
-
-
-
 
 @Preview(name = "Light Theme")
 @Composable
@@ -117,7 +108,7 @@ private fun CalendarPreview() {
         theme = EUPurpleColorShema
     ) {
         val selectionLight = remember { mutableStateOf(LocalDate.now()) }
-        Calendar(selection=selectionLight)
+        Calendar(selection = selectionLight)
     }
 }
 
@@ -130,7 +121,7 @@ private fun CalendarDarkPreview() {
         theme = EUPurpleColorShema
     ) {
         val selectionDark = remember { mutableStateOf(LocalDate.now()) }
-        Calendar(selection=selectionDark)
+        Calendar(selection = selectionDark)
     }
 }
 
@@ -180,7 +171,6 @@ private fun Day(
             )
         }
     }
-
 }
 
 @Preview(name = "Light Theme")
@@ -237,6 +227,7 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
 /**
  * A function to display a personalized YearMonth.
  */
+
 fun YearMonth.displayText(short: Boolean = false): String {
     return "${
         this.month.displayText(short = short)
@@ -258,15 +249,9 @@ fun Month.displayText(short: Boolean = true): String {
 /**
  * A function to display a personalized and localized DayOfWeek.
  */
+
 fun DayOfWeek.displayText(uppercase: Boolean = false): String {
     return getDisplayName(TextStyle.SHORT, Locale.getDefault()).let { value ->
         if (uppercase) value.uppercase(Locale.getDefault()) else value
     }
 }
-
-
-
-
-
-
-

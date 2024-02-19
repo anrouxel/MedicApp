@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,8 +49,8 @@ fun PrescriptionDetail(
         state = state.value,
         updateNotificationActiveState = { index, active ->
             viewModel.updateNotificationActiveState(index, active)
+            viewModel.saveUpdate(context)
             viewModel.updateNotificationManager(context, index)
-            viewModel.saveNotifications(context)
         },
         removeNotification = { index ->
             viewModel.removeFromNotificationManager(context, index)
@@ -79,11 +78,11 @@ private fun PrescriptionDetailContent(
                         ReusableTextMediumCard(
                             value = "Docteur : $it",
                         )
-
-                        Spacer(modifier = Modifier.padding(10.dp))
                     }
 
                     state.date?.let {
+                        Spacer(modifier = Modifier.padding(10.dp))
+
                         ReusableTextMediumCard(
                             value = "Date de l'ordonnance : $it",
                         )
@@ -212,8 +211,7 @@ fun PrescriptionDetailPreview() {
                     frequency = "3 fois par jour",
                     duration = Duration(
                         startDate = LocalDate.now(),
-                        endDate = LocalDate.now().plusDays(7
-                        )
+                        endDate = LocalDate.now().plusDays(7)
                     )
                 ),
                 notifications = mutableListOf(
@@ -263,8 +261,7 @@ fun PrescriptionDetailDarkPreview() {
                     frequency = "3 fois par jour",
                     duration = Duration(
                         startDate = LocalDate.now(),
-                        endDate = LocalDate.now().plusDays(7
-                        )
+                        endDate = LocalDate.now().plusDays(7)
                     )
                 ),
                 notifications = mutableListOf(

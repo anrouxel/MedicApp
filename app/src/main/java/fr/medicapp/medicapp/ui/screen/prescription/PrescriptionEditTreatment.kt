@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
-import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
@@ -33,12 +30,14 @@ fun PrescriptionEditTreatment(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
+
 
     PrescriptionEditTreatmentContent(
         state = state.value,
         onClick = onClick,
-        getMedicationList = { context -> viewModel.getMedicationList(context) },
-        updateMedication = { medication, context -> viewModel.updateMedication(medication, context) },
+        getMedicationList = { viewModel.getMedicationList(context) },
+        updateMedication = { medication -> viewModel.updateMedication(medication, context) },
         updatePosology = { posology -> viewModel.updatePosology(posology) },
         updateFrequency = { frequency -> viewModel.updateFrequency(frequency) },
         updateDuration = { duration -> viewModel.updateDuration(duration) }
@@ -50,14 +49,12 @@ fun PrescriptionEditTreatment(
 private fun PrescriptionEditTreatmentContent(
     state: Prescription,
     onClick: () -> Unit,
-    getMedicationList: (context: Context) -> List<OptionDialog>,
-    updateMedication: (medication: OptionDialog, context: Context) -> Unit,
+    getMedicationList: () -> List<OptionDialog>,
+    updateMedication: (medication: OptionDialog) -> Unit,
     updatePosology: (posology: String) -> Unit,
     updateFrequency: (frequency: String) -> Unit,
     updateDuration: (duration: Duration) -> Unit
 ) {
-    val context = LocalContext.current
-
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
@@ -68,12 +65,12 @@ private fun PrescriptionEditTreatmentContent(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableOutlinedSearchButton(
-                    options = getMedicationList(context),
+                    options = getMedicationList(),
                     value = state.treatment.medication,
                     label = "Médicament",
                     warnings = state.treatment.medication == null,
                     onSelected = {
-                        updateMedication(it, context)
+                        updateMedication(it)
                     }
                 )
 
@@ -127,7 +124,7 @@ private fun PrescriptionEditTreatmentPreview() {
             state = Prescription(),
             onClick = {},
             getMedicationList = { emptyList() },
-            updateMedication = { _, _ -> },
+            updateMedication = { _ -> },
             updatePosology = {},
             updateFrequency = {},
             updateDuration = {}
@@ -148,7 +145,7 @@ private fun PrescriptionEditTreatmentDarkPreview() {
             state = Prescription(),
             onClick = {},
             getMedicationList = { emptyList() },
-            updateMedication = { _, _ -> },
+            updateMedication = { _ -> },
             updatePosology = {},
             updateFrequency = {},
             updateDuration = {}

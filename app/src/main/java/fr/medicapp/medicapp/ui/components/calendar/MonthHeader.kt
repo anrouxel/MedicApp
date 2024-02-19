@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.components.calendar
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +12,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.tooling.preview.Preview
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
-import com.kizitonwose.calendar.core.Week
+import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
  *
  */
 @Composable
-private fun DecrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+private fun DecrementButton(weekState: WeekCalendarState, coroutine: CoroutineScope) {
     IconButton(
         onClick = {
             coroutine.launch {
@@ -98,11 +99,13 @@ private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineS
  */
 
 @Composable
-fun MonthHeader(state: WeekCalendarState,
-                month: String,
-                onClick: suspend () -> Unit,
-                coroutine: CoroutineScope,
-                modifier: Modifier = Modifier){
+fun MonthHeader(
+    state: WeekCalendarState,
+    month: String,
+    onClick: suspend () -> Unit,
+    coroutine: CoroutineScope,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -112,7 +115,6 @@ fun MonthHeader(state: WeekCalendarState,
         Text(
             text = month,
             //when clicked, go back to the current week and day
-
             modifier.clickable {
                 coroutine.launch {
                     onClick()
@@ -122,4 +124,15 @@ fun MonthHeader(state: WeekCalendarState,
         IncrementButton(weekState = state, coroutine = coroutine)
     }
 
+}
+
+@Preview
+@Composable
+fun MonthHeaderPreview() {
+    MonthHeader(
+        state = rememberWeekCalendarState(),
+        month = "January",
+        onClick = {},
+        coroutine = rememberCoroutineScope()
+    )
 }

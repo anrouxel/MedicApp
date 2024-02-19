@@ -1,8 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
-import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.Alarm
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.Prescription
@@ -49,20 +46,37 @@ fun PrescriptionEditNotification(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
 
     PrescriptionEditNotificationContent(
         state = state.value,
         onClick = onClick,
-        save = { context ->
+        save = {
             viewModel.save(context)
             viewModel.addToNotificationManager(context)
         },
         addNotification = { viewModel.addNotification() },
         removeNotification = { index -> viewModel.removeNotification(index) },
-        updateNotificationActiveState = { index, active -> viewModel.updateNotificationActiveState(index, active) },
-        updateNotificationDays = { index, dayOfWeek -> viewModel.updateNotificationDays(index, dayOfWeek) },
+        updateNotificationActiveState = { index, active ->
+            viewModel.updateNotificationActiveState(
+                index,
+                active
+            )
+        },
+        updateNotificationDays = { index, dayOfWeek ->
+            viewModel.updateNotificationDays(
+                index,
+                dayOfWeek
+            )
+        },
         addAlarm = { index -> viewModel.addAlarm(index) },
-        updateAlarmTime = { index, alarmIndex, alarm -> viewModel.updateAlarmTime(index, alarmIndex, alarm) },
+        updateAlarmTime = { index, alarmIndex, alarm ->
+            viewModel.updateAlarmTime(
+                index,
+                alarmIndex,
+                alarm
+            )
+        },
         removeAlarm = { index, alarmIndex -> viewModel.removeAlarm(index, alarmIndex) }
     )
 }
@@ -72,7 +86,7 @@ fun PrescriptionEditNotification(
 private fun PrescriptionEditNotificationContent(
     state: Prescription,
     onClick: () -> Unit,
-    save: (Context) -> Unit,
+    save: () -> Unit,
     addNotification: () -> Unit,
     removeNotification: (Int) -> Unit,
     updateNotificationActiveState: (Int, Boolean) -> Unit,
@@ -81,13 +95,11 @@ private fun PrescriptionEditNotificationContent(
     updateAlarmTime: (Int, Int, Alarm) -> Unit,
     removeAlarm: (Int, Int) -> Unit
 ) {
-    val context = LocalContext.current
-
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
         onClick = {
-            save(context)
+            save()
             onClick()
         }
     ) {

@@ -2,14 +2,10 @@ package fr.medicapp.medicapp.viewModel
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
@@ -19,7 +15,6 @@ import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -97,8 +92,6 @@ class SharedPrescriptionEditViewModel(
         _sharedState.value = updatedPrescription
     }
 
-
-
     fun addAlarm(index: Int) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val notificationToUpdate = updatedNotifications[index]
@@ -136,7 +129,8 @@ class SharedPrescriptionEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
         val medication =
-            store.query().equal(MedicationEntity_.id, newMedication.id).build().findFirst()?.convert()
+            store.query().equal(MedicationEntity_.id, newMedication.id).build().findFirst()
+                ?.convert()
         val updatedTreatment = _sharedState.value.treatment.copy(medication = medication)
         val updatedPrescription = _sharedState.value.copy(treatment = updatedTreatment)
         _sharedState.value = updatedPrescription
@@ -146,10 +140,9 @@ class SharedPrescriptionEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
-        val newKey = store.put(prescription)
-        prescription.id = newKey
-        _sharedState.value = store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
-                ?.convert() ?: Prescription()
+        val id = store.put(prescription)
+        _sharedState.value = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()
+            ?.convert() ?: Prescription()
     }
 
     fun getMedicationList(context: Context): List<OptionDialog> {

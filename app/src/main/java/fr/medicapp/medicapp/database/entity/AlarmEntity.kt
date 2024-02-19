@@ -14,7 +14,7 @@ data class AlarmEntity(
 
     var minute: Int = 0,
 
-) : EntityToModelMapper<Alarm> {
+    ) : EntityToModelMapper<Alarm> {
     override fun convert(): Alarm {
         return Alarm(
             id,
