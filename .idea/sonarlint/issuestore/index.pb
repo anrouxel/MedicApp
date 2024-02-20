@@ -75,3 +75,9 @@ Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionEditViewMode
 Mapp/src/main/java/fr/medicapp/medicapp/ui/screen/sideeffect/SideEffectHome.kt,a\b\ab15fe7509b7b4f3ff4dad1f2ea0f3c0341b24e8
 ç
 ]app/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionEditNotification.kt,3\0\306be08ed0970a09f732df79f2ff9fbce0c5da9c
+C
+settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
+f
+6app/src/main/java/fr/medicapp/medicapp/MainActivity.kt,6\9\69f8dd06c87c9db45c59088da5c18d2a480fc647
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e

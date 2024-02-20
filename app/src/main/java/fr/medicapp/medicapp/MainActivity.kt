@@ -21,6 +21,10 @@ import fr.medicapp.medicapp.model.medication.Medication
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import mozilla.components.concept.fetch.MutableHeaders
+import mozilla.components.concept.fetch.Request
+import mozilla.components.concept.fetch.isSuccess
+import mozilla.components.lib.fetch.okhttp.OkHttpClient
 import java.time.LocalDate
 
 /**
@@ -99,5 +103,19 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+
+        val request = Request(
+            url = "http://178.128.193.240:3000/get_med/all"
+        )
+
+        Thread {
+            val client = OkHttpClient()
+
+            client.fetch(request).use {
+                if (it.isSuccess) {
+                    Log.d("Mozilla", it.body.string())
+                }
+            }
+        }.start()
     }
 }
