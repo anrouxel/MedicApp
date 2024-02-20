@@ -8,7 +8,8 @@ import io.objectbox.annotation.Id
 @Entity
 data class DoctorEntity(
     @Id
-    var nationalId: Long = 0L,
+    var id: Long = 0L,
+    var nationalId: Int = 0,
     var idTypePP: Int = 0,
     var idPP: Int = 0,
     var civilCodeEx: String = "",
@@ -67,6 +68,7 @@ data class DoctorEntity(
 ) : EntityToModelMapper<Doctor> {
     override fun convert(): Doctor {
         return Doctor(
+            id,
             nationalId,
             idTypePP,
             idPP,

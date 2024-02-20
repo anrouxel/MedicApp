@@ -6,8 +6,8 @@ import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.DoctorEntity
 
 data class Doctor(
-
-    @SerializedName("idNational") var nationalId: Long = 0L,
+    var id: Long = 0L,
+    @SerializedName("idNational") var nationalId: Int = 0,
     @SerializedName("idTypePP") var idTypePP: Int = 0,
     @SerializedName("idPP") var idPP: Int = 0,
     @SerializedName("codeCiviliteEx") var civilCodeEx: String = "",
@@ -67,6 +67,7 @@ data class Doctor(
 ) : ModelToEntityMapper<DoctorEntity> {
     override fun convert(context: Context): DoctorEntity {
         return DoctorEntity(
+            id,
             nationalId,
             idTypePP,
             idPP,
