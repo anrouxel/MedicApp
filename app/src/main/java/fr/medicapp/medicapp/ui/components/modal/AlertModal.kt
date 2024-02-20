@@ -10,8 +10,11 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 
 @Composable
-fun DeleteModal(
+fun AlertModal(
     title: String,
+    content: String,
+    dismissText: String,
+    confirmText: String,
     onDismissRequest: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
@@ -24,7 +27,7 @@ fun DeleteModal(
         },
         text = {
             Text(
-                text = "Êtes-vous sûr de vouloir procéder avec la suppression ? Ce processus est irréversible."
+                text = content
             )
         },
 
@@ -32,14 +35,18 @@ fun DeleteModal(
             TextButton(
                 onClick = onConfirm
             ) {
-                Text("Supprimer")
+                Text(
+                    text = confirmText
+                )
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismissRequest,
             ) {
-                Text("Annuler")
+                Text(
+                    text = dismissText
+                )
             }
         },
     )
@@ -47,12 +54,17 @@ fun DeleteModal(
 
 @Preview
 @Composable
-fun PreviewDeleteModal() {
+fun PreviewAlertModal() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        DeleteModal(title = "Supprimer ce traitement")
+        AlertModal(
+            title = "Supprimer ce traitement",
+            content = "Êtes-vous sûr de vouloir procéder avec la suppression ? Ce processus est irréversible.",
+            dismissText = "Annuler",
+            confirmText = "Supprimer"
+        )
     }
 }

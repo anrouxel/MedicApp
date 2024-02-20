@@ -7,7 +7,6 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.SideEffectEntity
-import fr.medicapp.medicapp.database.entity.SideEffectEntity_
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.SideEffect
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,9 +47,8 @@ class SharedSideEffectEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(SideEffectEntity::class.java)
         val sideEffect = _sharedState.value.convert(context)
-        val id = store.put(sideEffect)
-        _sharedState.value = store.query().equal(SideEffectEntity_.id, id).build().findFirst()
-            ?.convert() ?: SideEffect()
+        store.put(sideEffect)
+        _sharedState.value = SideEffect()
     }
 
     fun getPrescriptionList(context: Context): List<OptionDialog> {

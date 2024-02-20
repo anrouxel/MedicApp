@@ -1,6 +1,5 @@
-package fr.medicapp.medicapp.ai
+package fr.medicapp.medicapp.ai.tokenization
 
-import fr.medicapp.medicapp.ai.tokenization.CharChecker
 import org.junit.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -65,5 +64,4 @@ class CharCheckerTest {
     fun isNotPunctuation() {
         assert(!CharChecker.isPunctuation(('a')))
     }
-
 }

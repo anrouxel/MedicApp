@@ -2,7 +2,10 @@ package fr.medicapp.medicapp.ui.screen.sideeffect
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DocumentScanner
@@ -13,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
@@ -51,11 +55,17 @@ fun SideEffectList(
     sideEffects: List<SideEffect>,
     onSideEffectClick: (Long) -> Unit = {}
 ) {
-    sideEffects.forEach { sideEffect ->
-        SideEffectItem(
-            sideEffect = sideEffect,
-            onSideEffectClick = onSideEffectClick
-        )
+    Column {
+        sideEffects.forEachIndexed { index, sideEffect ->
+            SideEffectItem(
+                sideEffect = sideEffect,
+                onSideEffectClick = onSideEffectClick
+            )
+
+            if (index != sideEffects.size - 1) {
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
+        }
     }
 }
 
