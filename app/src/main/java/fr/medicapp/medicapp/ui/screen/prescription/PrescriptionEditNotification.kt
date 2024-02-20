@@ -49,7 +49,7 @@ fun PrescriptionEditNotification(
             viewModel.save(context)
             onClick()
         },
-        enabled= state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() }
+        enabled = state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() }
     ) {
         Column {
             ReusableButton(
