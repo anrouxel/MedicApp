@@ -55,3 +55,9 @@ Uapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionDetailViewMo
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionNavGraph.kt,0\a\0a4fd3a4b7b64a59d2d009514797e7f1ec5f52b1
 Ü
 Vapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableAlertIconButton.kt,d\8\d859a142d6cc32eee901b0335d5874aba149e8fc
+
+Oapp/src/main/java/fr/medicapp/medicapp/ui/screen/sideeffect/SideEffectDetail.kt,4\3\43947285416da3df39330f35aab60bdddefd7488
+É
+Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectDetailViewModel.kt,e\7\e76993bcc905003f2eb35e94490780b0ce0435ba
+Å
+Qapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectEditViewModel.kt,5\3\5346e9cf9380fdd5503ca896dc786a25b30c5bee
