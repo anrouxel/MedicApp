@@ -47,7 +47,7 @@ class SharedSideEffectEditViewModel(
         val boxStore = ObjectBox.getInstance(context)
         val store = boxStore.boxFor(SideEffectEntity::class.java)
         val sideEffect = _sharedState.value.convert(context)
-        val id = store.put(sideEffect)
+        store.put(sideEffect)
         _sharedState.value = SideEffect()
     }
 
