@@ -17,24 +17,25 @@ data class SideEffectEntity(
     @Convert(converter = LocalDateConverter::class, dbType = String::class)
     var date: LocalDate? = null,
 
-    var hour: Int = 0,
-
-    var minute: Int = 0,
-
-    var effetsConstates: MutableList<String> = mutableListOf(),
-
     var description: String = ""
 ) : EntityToModelMapper<SideEffect> {
-    lateinit var treatment: ToOne<TreatmentEntity>
+    lateinit var prescription: ToOne<PrescriptionEntity>
 
     override fun convert(): SideEffect {
         return SideEffect(
             id,
             date,
-            hour,
-            minute,
-            effetsConstates,
-            description
+            description,
+            prescription.target?.convert()
+        )
+    }
+
+    fun convertBacklink(): SideEffect {
+        return SideEffect(
+            id,
+            date,
+            description,
+            prescription.target?.convertBacklink()
         )
     }
 }

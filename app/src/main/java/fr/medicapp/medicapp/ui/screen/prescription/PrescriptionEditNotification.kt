@@ -1,8 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
-import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -25,18 +23,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import fr.medicapp.medicapp.model.Alarm
-import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTimePickerButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
-import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 import java.time.DayOfWeek
 import java.time.format.TextStyle
@@ -49,42 +40,13 @@ fun PrescriptionEditNotification(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
-
-    PrescriptionEditNotificationView(
-        state = state.value,
-        onClick = onClick,
-        save = { context -> viewModel.save(context) },
-        addNotification = { viewModel.addNotification() },
-        removeNotification = { index -> viewModel.removeNotification(index) },
-        updateNotificationActiveState = { index, active -> viewModel.updateNotificationActiveState(index, active) },
-        updateNotificationDays = { index, dayOfWeek -> viewModel.updateNotificationDays(index, dayOfWeek) },
-        addAlarm = { index -> viewModel.addAlarm(index) },
-        updateAlarmTime = { index, alarmIndex, alarm -> viewModel.updateAlarmTime(index, alarmIndex, alarm) },
-        removeAlarm = { index, alarmIndex -> viewModel.removeAlarm(index, alarmIndex) }
-    )
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-private fun PrescriptionEditNotificationView(
-    state: Prescription,
-    onClick: () -> Unit,
-    save: (Context) -> Unit,
-    addNotification: () -> Unit,
-    removeNotification: (Int) -> Unit,
-    updateNotificationActiveState: (Int, Boolean) -> Unit,
-    updateNotificationDays: (Int, DayOfWeek) -> Unit,
-    addAlarm: (Int) -> Unit,
-    updateAlarmTime: (Int, Int, Alarm) -> Unit,
-    removeAlarm: (Int, Int) -> Unit
-) {
     val context = LocalContext.current
 
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
         onClick = {
-            save(context)
+            viewModel.save(context)
             onClick()
         }
     ) {
@@ -92,11 +54,11 @@ private fun PrescriptionEditNotificationView(
             ReusableButton(
                 text = "Ajouter une notification",
                 onClick = {
-                    addNotification()
+                    viewModel.addNotification()
                 }
             )
 
-            state.notifications.forEachIndexed { index, notification ->
+            state.value.notifications.forEachIndexed { index, notification ->
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableElevatedCard {
@@ -121,13 +83,13 @@ private fun PrescriptionEditNotificationView(
                                 Switch(
                                     checked = notification.active,
                                     onCheckedChange = {
-                                        updateNotificationActiveState(index, it)
+                                        viewModel.updateNotificationActiveState(index, it)
                                     }
                                 )
 
                                 IconButton(
                                     onClick = {
-                                        removeNotification(index)
+                                        viewModel.removeNotification(index)
                                     },
                                 ) {
                                     Icon(
@@ -158,7 +120,7 @@ private fun PrescriptionEditNotificationView(
                                     ),
                                     checked = notification.days.contains(dayOfWeek),
                                     onCheckedChange = {
-                                        updateNotificationDays(index, dayOfWeek)
+                                        viewModel.updateNotificationDays(index, dayOfWeek)
                                     },
                                     shape = MaterialTheme.shapes.medium
                                 ) {
@@ -183,7 +145,7 @@ private fun PrescriptionEditNotificationView(
                         ReusableButton(
                             text = "Ajouter une alarme",
                             onClick = {
-                                addAlarm(index)
+                                viewModel.addAlarm(index)
                             }
                         )
 
@@ -204,13 +166,13 @@ private fun PrescriptionEditNotificationView(
                                         value = alarm,
                                         label = "Heure",
                                         onSelected = {
-                                            updateAlarmTime(index, alarmIndex, it)
+                                            viewModel.updateAlarmTime(index, alarmIndex, it)
                                         }
                                     )
 
                                     IconButton(
                                         onClick = {
-                                            removeAlarm(index, alarmIndex)
+                                            viewModel.removeAlarm(index, alarmIndex)
                                         },
                                     ) {
                                         Icon(
@@ -226,79 +188,5 @@ private fun PrescriptionEditNotificationView(
                 }
             }
         }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(name = "Light Theme")
-@Composable
-private fun PrescriptionEditNotificationPreview() {
-    MedicAppTheme(
-        darkTheme = false,
-        dynamicColor = false,
-        theme = EUPurpleColorShema
-    ) {
-        PrescriptionEditNotificationView(
-            state = Prescription(
-                notifications = mutableListOf(
-                    Notification(
-                        active = true,
-                        days = mutableListOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY),
-                        alarms = mutableListOf(
-                            Alarm(
-                                hour = 12,
-                                minute = 30
-                            )
-                        )
-                    )
-                )
-            ),
-            onClick = {},
-            save = {},
-            addNotification = {},
-            removeNotification = {},
-            updateNotificationActiveState = { _, _ -> },
-            updateNotificationDays = { _, _ -> },
-            addAlarm = {},
-            updateAlarmTime = { _, _, _ -> },
-            removeAlarm = { _, _ -> }
-        )
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(name = "Dark Theme")
-@Composable
-private fun PrescriptionEditNotificationDarkPreview() {
-    MedicAppTheme(
-        darkTheme = true,
-        dynamicColor = false,
-        theme = EUPurpleColorShema
-    ) {
-        PrescriptionEditNotificationView(
-            state = Prescription(
-                notifications = mutableListOf(
-                    Notification(
-                        active = true,
-                        days = mutableListOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY),
-                        alarms = mutableListOf(
-                            Alarm(
-                                hour = 12,
-                                minute = 30
-                            )
-                        )
-                    )
-                )
-            ),
-            onClick = {},
-            save = {},
-            addNotification = {},
-            removeNotification = {},
-            updateNotificationActiveState = { _, _ -> },
-            updateNotificationDays = { _, _ -> },
-            addAlarm = {},
-            updateAlarmTime = { _, _, _ -> },
-            removeAlarm = { _, _ -> }
-        )
     }
 }

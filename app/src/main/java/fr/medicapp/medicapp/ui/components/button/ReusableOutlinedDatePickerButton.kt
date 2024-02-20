@@ -31,18 +31,18 @@ fun ReusableOutlinedDatePickerButton(
     onSelected: (LocalDate) -> Unit
 ) {
     var open by remember { mutableStateOf(false) }
-    var state = rememberDatePickerState()
+    val state = rememberDatePickerState()
 
     if (open) {
         DatePickerModal(
             state = state,
             onDismissRequest = { open = false },
             onConfirm = {
-                open = false
                 val localDate = Instant.ofEpochMilli(
                     state.selectedDateMillis!!
                 ).atZone(ZoneId.systemDefault()).toLocalDate()
                 onSelected(localDate)
+                open = false
             }
         )
     }

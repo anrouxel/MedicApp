@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -10,11 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
-import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 /**
  * Cette fonction construit le graphe de navigation pour les prescriptions.
@@ -47,6 +47,31 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 onAddPrescriptionClick = {
                     navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
                 },
+                onPrescriptionClick = {
+                    navController.navigate(
+                        PrescriptionRoute.PrescriptionDetailRoute.route.replace(
+                            "{id}",
+                            it.toString()
+                        )
+                    )
+                }
+            )
+        }
+
+        composable(route = PrescriptionRoute.PrescriptionDetailRoute.route) {
+            val id = it.arguments?.getString("id")?.toLongOrNull()
+
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
+
+            if (id != null) {
+                viewModel.loadPrescription(context = LocalContext.current, id = id)
+            } else {
+                navController.popBackStack()
+            }
+
+            PrescriptionDetail(
+                viewModel = viewModel
             )
         }
 

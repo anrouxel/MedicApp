@@ -54,7 +54,9 @@ fun DateRangePickerModal(
         Spacer(modifier = Modifier.padding(10.dp))
 
         DateRangePicker(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             state = state,
         )
     }

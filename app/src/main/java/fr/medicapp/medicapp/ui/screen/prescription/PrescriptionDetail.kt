@@ -1,1 +1,159 @@
 package fr.medicapp.medicapp.ui.screen.prescription
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
+import fr.medicapp.medicapp.ui.components.screen.Detail
+import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
+import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun PrescriptionDetail(
+    viewModel: SharedPrescriptionDetailViewModel,
+) {
+    val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
+
+    Detail(
+        title = "Détail de l'ordonnance",
+    ) {
+        Column {
+            ReusableElevatedCard {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    state.value.doctor?.let {
+                        ReusableTextMediumCard(
+                            value = "Docteur : $it",
+                        )
+                    }
+
+                    state.value.date?.let {
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Date de l'ordonnance : $it",
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            ReusableElevatedCard {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    state.value.treatment.medication?.let {
+                        ReusableTextMediumCard(
+                            value = "Médicament : $it",
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableTextMediumCard(
+                        value = "Posologie : ${state.value.treatment.posology}",
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableTextMediumCard(
+                        value = "Fréquence : ${state.value.treatment.frequency}",
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    state.value.treatment.duration?.let {
+                        ReusableTextMediumCard(
+                            value = "Durée : $it",
+                        )
+                    }
+                }
+            }
+
+            state.value.notifications.forEachIndexed { index, notification ->
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Notification ${index + 1}",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                fontStyle = MaterialTheme.typography.bodyLarge.fontStyle,
+                                fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                            )
+
+                            Row {
+                                Switch(
+                                    checked = notification.active,
+                                    onCheckedChange = {
+                                        viewModel.updateNotificationActiveState(index, it, context)
+                                    }
+                                )
+
+                                IconButton(
+                                    onClick = {
+                                        viewModel.removeNotification(index, context)
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "",
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Active : ${notification.active}",
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Jours : ${notification.days}",
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableTextMediumCard(
+                            value = "Heures : ${notification.alarms.map { it.toString() }}",
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

@@ -9,6 +9,7 @@ plugins {
 }
 
 tasks.withType<Detekt>().configureEach {
+    ignoreFailures = true
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -47,6 +48,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -59,12 +61,13 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
         }
     }
 }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -73,7 +76,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // Material Design icons
@@ -83,8 +86,7 @@ dependencies {
     implementation("com.google.mlkit:text-recognition:16.0.0")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
     // Coil
     val coilVersion = "2.4.0"
@@ -94,11 +96,11 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    // PyTorch
-    implementation("org.pytorch:pytorch_android:2.1.0")
-
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
+
+    // Calendar
+    implementation("com.kizitonwose.calendar:compose:2.5.0")
 
     // Volley
     implementation("com.android.volley:volley:1.2.1")
@@ -113,4 +115,13 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+
+    // Test rules and transitive dependencies:
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    // Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
+

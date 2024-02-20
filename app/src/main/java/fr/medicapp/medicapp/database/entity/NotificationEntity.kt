@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.database.entity
 
+import androidx.compose.runtime.toMutableStateList
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.MutableListDayOfWeekConverter
 import fr.medicapp.medicapp.model.Notification
@@ -19,7 +20,7 @@ data class NotificationEntity(
     @Convert(converter = MutableListDayOfWeekConverter::class, dbType = String::class)
     var days: MutableList<DayOfWeek> = mutableListOf(),
 
-) : EntityToModelMapper<Notification> {
+    ) : EntityToModelMapper<Notification> {
     lateinit var alarms: ToMany<AlarmEntity>
 
     override fun convert(): Notification {
@@ -27,7 +28,7 @@ data class NotificationEntity(
             id,
             active,
             days,
-            alarms.map { it.convert() }.toMutableList()
+            alarms.map { it.convert() }.toMutableStateList()
         )
     }
 }

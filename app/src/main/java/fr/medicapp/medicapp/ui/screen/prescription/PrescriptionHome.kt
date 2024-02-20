@@ -21,7 +21,6 @@ import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme

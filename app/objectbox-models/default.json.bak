@@ -692,7 +692,7 @@
     },
     {
       "id": "16:4731642243511610801",
-      "lastPropertyId": "8:9213944247125958634",
+      "lastPropertyId": "9:692965381003951737",
       "name": "SideEffectEntity",
       "properties": [
         {
@@ -707,39 +707,24 @@
           "type": 9
         },
         {
-          "id": "3:1014915800800466571",
-          "name": "hour",
-          "type": 5
-        },
-        {
-          "id": "4:6768295413255419804",
-          "name": "minute",
-          "type": 5
-        },
-        {
-          "id": "5:6445119334258512737",
-          "name": "effetsConstates",
-          "type": 30
-        },
-        {
           "id": "6:4076245921097741434",
           "name": "description",
           "type": 9
         },
         {
-          "id": "8:9213944247125958634",
-          "name": "treatmentId",
-          "indexId": "6:3904145447867145655",
+          "id": "9:692965381003951737",
+          "name": "prescriptionId",
+          "indexId": "9:8916394013922603746",
           "type": 11,
           "flags": 520,
-          "relationTarget": "TreatmentEntity"
+          "relationTarget": "PrescriptionEntity"
         }
       ],
       "relations": []
     },
     {
       "id": "17:3596385483987248716",
-      "lastPropertyId": "4:380821305957575888",
+      "lastPropertyId": "6:5595825625432567622",
       "name": "AlarmEntity",
       "properties": [
         {
@@ -749,26 +734,45 @@
           "flags": 1
         },
         {
-          "id": "2:1458403446882221401",
-          "name": "hours",
+          "id": "5:7579364228337318846",
+          "name": "hour",
           "type": 5
         },
         {
-          "id": "3:8107252111916447090",
-          "name": "minutes",
+          "id": "6:5595825625432567622",
+          "name": "minute",
           "type": 5
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "18:3565285013812494584",
+      "lastPropertyId": "3:234230736630504946",
+      "name": "TransparencyCommissionOpinionLinks",
+      "properties": [
+        {
+          "id": "1:4820141955270184706",
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
-          "id": "4:380821305957575888",
-          "name": "alarms",
-          "type": 5
+          "id": "2:2729983256804582556",
+          "name": "hasDossierCode",
+          "type": 9
+        },
+        {
+          "id": "3:234230736630504946",
+          "name": "commissionOpinionLink",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "17:3596385483987248716",
-  "lastIndexId": "8:5728124482716488420",
+  "lastEntityId": "18:3565285013812494584",
+  "lastIndexId": "9:8916394013922603746",
   "lastRelationId": "13:2155096703169355224",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
@@ -777,7 +781,8 @@
   "retiredIndexUids": [
     7006702378958803193,
     7294783665401050088,
-    4350761331130389040
+    4350761331130389040,
+    3904145447867145655
   ],
   "retiredPropertyUids": [
     5865801292696153424,
@@ -792,7 +797,14 @@
     8373368292367464699,
     1803957266578079050,
     8529650096261148397,
-    6270206061563318138
+    6270206061563318138,
+    1458403446882221401,
+    8107252111916447090,
+    380821305957575888,
+    1014915800800466571,
+    6768295413255419804,
+    6445119334258512737,
+    9213944247125958634
   ],
   "retiredRelationUids": [
     4704107518097647459
