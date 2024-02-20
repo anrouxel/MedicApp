@@ -61,3 +61,15 @@ Oapp/src/main/java/fr/medicapp/medicapp/ui/screen/sideeffect/SideEffectDetail.kt
 Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectDetailViewModel.kt,e\7\e76993bcc905003f2eb35e94490780b0ce0435ba
 Å
 Qapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedSideEffectEditViewModel.kt,5\3\5346e9cf9380fdd5503ca896dc786a25b30c5bee
+Å
+Qapp/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionHome.kt,2\5\25169204765265c3a52a912a4a791578df9a3b03
+z
+Japp/src/main/java/fr/medicapp/medicapp/ui/navigation/SideEffectNavGraph.kt,0\4\04ddf44da726de57ea9fb808d1eb3c9a09ade93f
+~
+Napp/src/main/java/fr/medicapp/medicapp/ui/navigation/SideEffectEditNavGraph.kt,b\1\b183be37f09caa2d550e3efca1d15f80a69295ae
+Ä
+Papp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionEditNavGraph.kt,0\d\0dc72ce84c58f0d0bb63271c59c5ff8e5436941b
+É
+Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionEditViewModel.kt,6\9\69604ee415eb624cd8dc41d426c554b0308d2642
+}
+Mapp/src/main/java/fr/medicapp/medicapp/ui/screen/sideeffect/SideEffectHome.kt,a\b\ab15fe7509b7b4f3ff4dad1f2ea0f3c0341b24e8

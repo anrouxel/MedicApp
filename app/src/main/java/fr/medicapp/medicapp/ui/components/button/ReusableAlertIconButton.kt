@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.components.button
 
-import android.graphics.drawable.Icon
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme

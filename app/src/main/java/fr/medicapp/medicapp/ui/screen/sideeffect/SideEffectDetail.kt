@@ -50,19 +50,21 @@ fun SideEffectDetail(
                             value = "Description : ${it}"
                         )
                     }
-
-                    ReusableAlertButton(
-                        text = "Supprimer",
-                        onClick = {
-                            viewModel.removeSideEffect(context)
-                        },
-                        title = "Suppression",
-                        content = "Voulez-vous vraiment supprimer cet effet secondaire ?",
-                        dismissText = "Annuler",
-                        confirmText = "Supprimer"
-                    )
                 }
             }
+
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            ReusableAlertButton(
+                text = "Supprimer",
+                onClick = {
+                    viewModel.removeSideEffect(context)
+                },
+                title = "Suppression",
+                content = "Voulez-vous vraiment supprimer cet effet secondaire ?",
+                dismissText = "Annuler",
+                confirmText = "Supprimer"
+            )
         }
     }
 }

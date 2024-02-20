@@ -7,7 +7,6 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
 import fr.medicapp.medicapp.database.entity.SideEffectEntity
-import fr.medicapp.medicapp.database.entity.SideEffectEntity_
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.SideEffect
 import kotlinx.coroutines.flow.MutableStateFlow
