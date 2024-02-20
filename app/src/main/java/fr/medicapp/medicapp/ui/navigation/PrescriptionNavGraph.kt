@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -22,7 +21,7 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
  *
  * @param navController Le contrôleur de navigation.
  */
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 fun NavGraphBuilder.prescriptionNavGraph(
     navController: NavHostController,
     onThemeChange: (ThemeColorScheme) -> Unit

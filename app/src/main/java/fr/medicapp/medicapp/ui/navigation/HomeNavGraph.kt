@@ -15,7 +15,7 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
  * Ceci est une classe de navigation pour l'écran d'accueil.
  * Elle contient les routes pour les différents écrans de l'application.
  */
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
     /**

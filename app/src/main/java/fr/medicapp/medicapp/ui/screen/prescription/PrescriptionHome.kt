@@ -9,34 +9,52 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material.icons.filled.FileOpen
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.reportGenerator.ReportGenerator
+import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun PrescriptionHome(
     prescriptions: List<Prescription>,
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
+    val reportGenerator = ReportGenerator(LocalContext.current)
     Home(
         title = "Prescription",
-        floatingActionButtonOnClick = onAddPrescriptionClick,
-        floatActionButtonIcon = Icons.Default.DocumentScanner
+        floatingActionButtons = {
+            FloatingActionButtons(buttons = listOf(
+                {reportGenerator.report()} to { Icon(
+                    imageVector = Icons.Default.FileOpen,
+                    contentDescription = "Bouton pour générer un rapport",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                ) },
+                onAddPrescriptionClick to { Icon(
+                    imageVector = Icons.Default.DocumentScanner,
+                    contentDescription = "Bouton pour ajouter une prescription",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                ) },
+            ))
+        }
     ) {
         if (prescriptions.isEmpty()) {
             NoPrescriptionAvailable()

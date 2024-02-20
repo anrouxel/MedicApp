@@ -557,7 +557,7 @@
     },
     {
       "id": "12:3168116678713001572",
-      "lastPropertyId": "4:139276922482766516",
+      "lastPropertyId": "5:2151409651311617149",
       "name": "PrescriptionEntity",
       "properties": [
         {
@@ -586,6 +586,11 @@
           "type": 11,
           "flags": 520,
           "relationTarget": "TreatmentEntity"
+        },
+        {
+          "id": "5:2151409651311617149",
+          "name": "takes",
+          "type": 9
         }
       ],
       "relations": [

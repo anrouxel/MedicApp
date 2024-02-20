@@ -7,12 +7,15 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.math.log
 
 data class Prescription(
     val id: Long = 0L,
 
     var date: LocalDate? = null,
+
+    var takes: MutableList<LocalDateTime> = mutableStateListOf(),
 
     var doctor: Doctor? = null,
 
@@ -23,7 +26,8 @@ data class Prescription(
     override fun convert(context: Context): PrescriptionEntity {
         val prescription = PrescriptionEntity(
             id,
-            date
+            date,
+            takes
         )
 
         val box = ObjectBox.getInstance(context)
