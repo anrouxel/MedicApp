@@ -36,7 +36,7 @@ fun ReusableElevatedCard(
             contentColor = MaterialTheme.colorScheme.surface
         ),
 
-    )
+        )
 }
 
 @Preview(name = "Light Theme")

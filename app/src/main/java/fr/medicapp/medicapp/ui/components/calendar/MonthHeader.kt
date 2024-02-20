@@ -61,7 +61,7 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine: CoroutineSc
  *
  */
 @Composable
-private fun IncrementButton(weekState: WeekCalendarState, coroutine : CoroutineScope){
+private fun IncrementButton(weekState: WeekCalendarState, coroutine: CoroutineScope) {
     IconButton(
         onClick = {
             coroutine.launch {

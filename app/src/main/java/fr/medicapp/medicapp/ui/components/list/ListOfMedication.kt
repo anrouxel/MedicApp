@@ -16,9 +16,9 @@ import java.time.LocalDateTime
 
 @Composable
 fun ListOfMedication(
-    modifier : Modifier = Modifier,
-    selectedDate : LocalDate,
-    prescription : List<Prescription>
+    modifier: Modifier = Modifier,
+    selectedDate: LocalDate,
+    prescription: List<Prescription>
 ) {
 
     val medocsForToday = prescription
@@ -26,13 +26,13 @@ fun ListOfMedication(
         .flatten()
 
 
-    LazyColumn(modifier=modifier){
+    LazyColumn(modifier = modifier) {
         items(medocsForToday) {
             val name = it.prescription.treatment.medication.toString()
             val hourAndMinute = "${it.date.hour}h${it.date.minute.toString().padStart(2, '0')}"
             val enabled = it.date.isAfter(LocalDateTime.now())
             ReusableElevatedCardButton(enabled = enabled, onClick = {}) {
-                CardContent(title =name, description = hourAndMinute)
+                CardContent(title = name, description = hourAndMinute)
             }
         }
     }
@@ -40,7 +40,7 @@ fun ListOfMedication(
 
 @Preview
 @Composable
-fun PreviewListOfMedication(){
+fun PreviewListOfMedication() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
