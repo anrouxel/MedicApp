@@ -4,6 +4,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://jitpack.io")
+        maven("https://maven.mozilla.org/maven2")
     }
     resolutionStrategy {
         eachPlugin {
@@ -19,6 +20,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://maven.mozilla.org/maven2")
     }
 }
 

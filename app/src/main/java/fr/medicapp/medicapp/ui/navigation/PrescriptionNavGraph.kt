@@ -71,7 +71,10 @@ fun NavGraphBuilder.prescriptionNavGraph(
             }
 
             PrescriptionDetail(
-                viewModel = viewModel
+                viewModel = viewModel,
+                onRemovePrescriptionClick = {
+                    navController.popBackStack()
+                }
             )
         }
 

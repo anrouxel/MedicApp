@@ -76,7 +76,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // Material Design icons
@@ -96,14 +96,12 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    // Alarm
-    implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
-
     // Calendar
     implementation("com.kizitonwose.calendar:compose:2.5.0")
 
-    // Volley
-    implementation("com.android.volley:volley:1.2.1")
+    // Mozilla
+    implementation("org.mozilla.components:concept-fetch:122.1.0")
+    implementation("org.mozilla.components:lib-fetch-okhttp:122.1.0")
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
@@ -115,13 +113,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-
-    // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    // Needed for createAndroidComposeRule, but not createComposeRule:
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 

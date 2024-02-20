@@ -9,11 +9,11 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.NotificationEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
+import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -35,22 +35,47 @@ class SharedPrescriptionDetailViewModel(
         _sharedState.value = prescription ?: Prescription()
     }
 
-    fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
-        val updatedNotifications = _sharedState.value.notifications.toMutableList()
-        val notificationToUpdate = updatedNotifications[index]
+    fun removePrescription(context: Context) {
+        val boxStore = ObjectBox.getInstance(context)
+        val sideEffectStore = boxStore.boxFor(SideEffectEntity::class.java)
+        val prescriptionStore = boxStore.boxFor(PrescriptionEntity::class.java)
+        val prescription = _sharedState.value.convert(context)
 
-        val updatedNotification = notificationToUpdate.copy(active = newActiveState)
+        prescription.sideEffects.forEach { sideEffect ->
+            sideEffectStore.remove(sideEffect)
+        }
 
-        updatedNotifications[index] = updatedNotification
-        val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
-        _sharedState.value = updatedPrescription
+        prescriptionStore.remove(prescription)
+
+        _sharedState.value = Prescription()
     }
 
-    fun removeNotification(index: Int) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateNotificationActiveState(index: Int, newActiveState: Boolean, context: Context) {
+        val updatedNotifications = _sharedState.value.notifications.toMutableList()
+        updatedNotifications[index] = updatedNotifications[index].copy(active = newActiveState)
+        val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
+        _sharedState.value = updatedPrescription
+
+        if (newActiveState) {
+            updateNotificationManager(context, index)
+        } else {
+            removeFromNotificationManager(context, index)
+        }
+
+        saveUpdate(context)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun removeNotification(index: Int, context: Context) {
+        removeFromNotificationManager(context, index)
+
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         updatedNotifications.removeAt(index)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
+
+        save(context)
     }
 
     fun save(context: Context) {
@@ -74,7 +99,12 @@ class SharedPrescriptionDetailViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateNotificationManager(context: Context, index: Int) {
         val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.update(context, notification)
+        NotificationPrescriptionManager.update(
+            context,
+            notification,
+            _sharedState.value.toString(),
+            ""
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
