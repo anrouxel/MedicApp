@@ -53,6 +53,7 @@ fun PrescriptionHome(
                     contentDescription = "Bouton pour ajouter une prescription",
                     tint = MaterialTheme.colorScheme.onPrimary
                 ) },
+
             ))
         }
     ) {
@@ -115,7 +116,7 @@ fun NoPrescriptionAvailable() {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomePreview() {
@@ -137,7 +138,7 @@ private fun PrescriptionHomePreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomeDarkPreview() {
@@ -159,6 +160,7 @@ private fun PrescriptionHomeDarkPreview() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Preview(name = "Light Theme - No Prescription", showSystemUi = true)
 @Composable
 private fun NoPrescriptionAvailablePreview() {
@@ -173,6 +175,7 @@ private fun NoPrescriptionAvailablePreview() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Preview(name = "Dark Theme - No Prescription", showSystemUi = true)
 @Composable
 private fun NoPrescriptionAvailableDarkPreview() {

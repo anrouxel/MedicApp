@@ -13,7 +13,6 @@ import io.objectbox.relation.ToMany
 import io.objectbox.relation.ToOne
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.Date
 
 @Entity
 data class PrescriptionEntity(
@@ -52,6 +51,7 @@ data class PrescriptionEntity(
         return Prescription(
             id,
             date,
+            takes,
             doctor.target?.convert(),
             treatment.target.convert(),
             notifications.map { it.convert() }.toMutableStateList(),

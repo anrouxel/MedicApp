@@ -123,5 +123,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     // Needed for createAndroidComposeRule, but not createComposeRule:
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // QRcode
+    implementation("io.github.g0dkar:qrcode-kotlin:4.1.1")
+
 }
 

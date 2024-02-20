@@ -1,8 +1,6 @@
 package fr.medicapp.medicapp.database.converter
 
-import android.util.Log
 import io.objectbox.converter.PropertyConverter
-import java.time.DayOfWeek
 import java.time.LocalDateTime
 
 class MutableListLocalDateTimeConverter : PropertyConverter<MutableList<LocalDateTime>, String> {
