@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedicApp"
         android:enableOnBackInvokedCallback="true"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         tools:targetApi="tiramisu">
 
         <receiver android:name=".notification.AlarmReceiver" />
