@@ -73,3 +73,5 @@ Papp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionEditNavGraph.k
 Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionEditViewModel.kt,6\9\69604ee415eb624cd8dc41d426c554b0308d2642
 }
 Mapp/src/main/java/fr/medicapp/medicapp/ui/screen/sideeffect/SideEffectHome.kt,a\b\ab15fe7509b7b4f3ff4dad1f2ea0f3c0341b24e8
+ç
+]app/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionEditNotification.kt,3\0\306be08ed0970a09f732df79f2ff9fbce0c5da9c
