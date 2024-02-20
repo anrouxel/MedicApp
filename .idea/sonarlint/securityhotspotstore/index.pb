@@ -53,3 +53,5 @@ _app/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableOutlinedTim
 Uapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedPrescriptionDetailViewModel.kt,c\9\c9af74e2d207e15e54f97440355b671024e7ae23
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionNavGraph.kt,0\a\0a4fd3a4b7b64a59d2d009514797e7f1ec5f52b1
+†
+Vapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableAlertIconButton.kt,d\8\d859a142d6cc32eee901b0335d5874aba149e8fc
