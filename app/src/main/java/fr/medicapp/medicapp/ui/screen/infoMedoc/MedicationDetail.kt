@@ -17,7 +17,7 @@ import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun MedicationDetail(
     medication: Medication
