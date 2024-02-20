@@ -1,7 +1,9 @@
 package fr.medicapp.medicapp.ui.screen.doctor
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -12,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
@@ -48,6 +51,9 @@ fun DoctorList(
             DoctorItem(
                 doctor = doctor
             )
+            if (index != doctors.size - 1) {
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
         }
     }
 }
@@ -60,8 +66,8 @@ fun DoctorItem(
         onClick = {}
     ) {
         CardContent(
-            title = "Dr. ${doctor.firstName} ${doctor.lastName}",
-            description = doctor.activitySectorLabel
+            title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",
+            description = doctor.professionLabel
         )
     }
 }
@@ -85,8 +91,16 @@ private fun NoDoctorFound() {
 fun DoctorHomePreview() {
     val doctors = listOf(
         Doctor(
+            civilCodeEx = "DR",
             firstName = "Jean",
-            lastName = "Dupont",
+            lastName = "Mottu",
+            professionLabel = "Médecin/Beta Testeur"
+        ),
+        Doctor(
+            civilCodeEx = "DR",
+            firstName = "Willy",
+            lastName = "Wonka",
+            professionLabel = "Fraude"
         )
     )
     MedicAppTheme(
