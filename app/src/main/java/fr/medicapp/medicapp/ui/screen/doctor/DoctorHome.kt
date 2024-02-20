@@ -25,7 +25,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun DoctorHome(
     doctors: List<Doctor>,
-    onDoctorClick : (Long)-> Unit
+    onDoctorClick: (Long) -> Unit
 ) {
     Home(
         title = "Recherche de médecin",
@@ -34,8 +34,7 @@ fun DoctorHome(
     ) {
         if (doctors.isEmpty()) {
             NoDoctorFound()
-        }
-        else {
+        } else {
             DoctorList(
                 doctors = doctors
             )
@@ -110,7 +109,7 @@ fun DoctorHomePreview() {
         theme = EURedColorShema
     ) {
         DoctorHome(
-            doctors=doctors,
+            doctors = doctors,
             onDoctorClick = {}
         )
     }
@@ -126,7 +125,7 @@ fun DoctorHomeDarkPreview() {
         theme = EURedColorShema
     ) {
         DoctorHome(
-            doctors=doctors,
+            doctors = doctors,
             onDoctorClick = {}
         )
     }
