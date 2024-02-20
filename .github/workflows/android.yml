@@ -1,21 +1,19 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  schedule:
+    - cron: '0 5 * * *'
 
 permissions:
   contents: write
 
 jobs:
-  build:
-
+  Nightly:
+    name: '📦 Nightly'
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -25,15 +23,15 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
     - name: Build with Gradle
       run: ./gradlew assembleRelease
-    - name: Nightly
-      uses: softprops/action-gh-release@v1
+      
+    - name: Release
+    - uses: pyTooling/Actions/releaser@r0
       with:
-        tag_name: nightly
-        draft: false
-        prerelease: true
+        tag: nightly
+        rm: true
         files: |
-          app/build/outputs/apk/release/app-release-unsigned.apk
-          app/build/outputs/apk/release/output-metadata.json
+          app/build/outputs/*.*
           LICENSE.md
