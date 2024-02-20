@@ -23,81 +23,62 @@ fun MedicationDetail(
         title = "Information du médicament"
     ) {
         Column {
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    MedicationDetailCard(
-                        title = "Nom du médicament",
-                        value = medication.name,
-                        padding = 10.dp
-                    )
-
-                    MedicationDetailCard(
-                        title = "Voie d'administration",
-                        value = medication.administrationRoutes,
-                        padding = 10.dp
-                    )
-
-                    MedicationDetailCard(
-                        title = "Code CIS",
-                        value = medication.cisCode,
-                        padding = 0.dp
-                    )
+            val medicationDetails = listOf(
+                Pair("Nom du médicament", medication.name),
+                Pair("Voie d'administration", medication.administrationRoutes.joinToString()),
+                Pair("Code CIS", medication.cisCode.toString()),
+                Pair("Informations Importantes", medication.importantInformations.joinToString()),
+                Pair("Forme pharmaceutique", medication.pharmaceuticalForm),
+                Pair("Composition", medication.medicationCompositions.joinToString()),
+                Pair(
+                    "Conditions de délivrance des ordonnances",
+                    medication.prescriptionDispensingConditions.joinToString()
+                ),
+                Pair("Groupe générique", medication.genericGroups.joinToString()),
+                Pair("Numéro d'authorisation européen", medication.europeanAuthorizationNumber),
+                Pair(
+                    "Status de l'autorisation de mise sur le marché",
+                    medication.marketingAuthorizationStatus
+                ),
+                Pair(
+                    "Type de procédure d'autorisation de mise sur le marché",
+                    medication.marketingAuthorizationProcedureType
+                ),
+                Pair("Status de commercialisation", medication.commercializationStatus),
+                Pair(
+                    "Date d'autorisation de mise sur le marché",
+                    medication.marketingAuthorizationDate.toString()
+                ),
+                Pair("Status BDM", medication.bdmStatus),
+                Pair("Détenteurs", medication.holders.joinToString()),
+                Pair("Surveillance renforcée", medication.enhancedMonitoring.toString()),
+                Pair(
+                    "Présentations du médicament",
+                    medication.medicationPresentations.joinToString()
+                ),
+                Pair("Avis SMR", medication.hasSmrOpinions.joinToString()),
+                Pair("Avis ASMR", medication.hasAsmrOpinions.joinToString()),
+                Pair(
+                    "Spécialités pharmaceutiques",
+                    medication.pharmaceuticalSpecialties.joinToString()
+                )
+            )
+            medicationDetails.chunked(3).forEach { element ->
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        element.forEach {
+                            MedicationDetailCard(
+                                title = it.first,
+                                value = it.second,
+                                padding = 10.dp
+                            )
+                        }
+                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.padding(10.dp))
-
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    MedicationDetailCard(
-                        title = "Informations Importantes",
-                        value = medication.importantInformations,
-                        padding = 10.dp
-                    )
-
-                    MedicationDetailCard(
-                        title = "Forme pharmaceutique",
-                        value = medication.pharmaceuticalForm,
-                        padding = 10.dp
-                    )
-
-                    MedicationDetailCard(
-                        title = "Composition",
-                        value = medication.medicationCompositions,
-                        padding = 0.dp
-                    )
-
-                }
-            }
-
-            Spacer(modifier = Modifier.padding(10.dp))
-
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    MedicationDetailCard(
-                        title = "Conditions de délivrance des ordonnances",
-                        value = medication.prescriptionDispensingConditions,
-                        padding = 10.dp
-                    )
-
-                    MedicationDetailCard(
-                        title = "Groupe générique",
-                        value = medication.genericGroups,
-                        padding = 10.dp
-                    )
-
-                    MedicationDetailCard(
-                        title = "Numéro d'authorisation européen",
-                        value = medication.europeanAuthorizationNumber,
-                        padding = 0.dp
-                    )
-                }
+                Spacer(modifier = Modifier.padding(10.dp))
             }
         }
     }
