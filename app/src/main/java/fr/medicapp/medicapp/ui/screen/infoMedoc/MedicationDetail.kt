@@ -1,5 +1,7 @@
 package fr.medicapp.medicapp.ui.screen.infoMedoc
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -15,6 +17,7 @@ import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MedicationDetail(
     medication: Medication
