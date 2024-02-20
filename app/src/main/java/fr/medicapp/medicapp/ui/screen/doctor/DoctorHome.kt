@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.model.Doctor
+import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
+import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -30,17 +32,37 @@ fun DoctorHome(
             NoDoctorFound()
         }
         else {
-            DoctorList()
+            DoctorList(
+                doctors = doctors
+            )
         }
     }
 }
 
 @Composable
 fun DoctorList(
-
+    doctors: List<Doctor>
 ) {
     Column {
+        doctors.forEachIndexed { index, doctor ->
+            DoctorItem(
+                doctor = doctor
+            )
+        }
+    }
+}
 
+@Composable
+fun DoctorItem(
+    doctor: Doctor
+) {
+    ReusableElevatedCardButton(
+        onClick = {}
+    ) {
+        CardContent(
+            title = "Dr. ${doctor.firstName} ${doctor.lastName}",
+            description = doctor.activitySectorLabel
+        )
     }
 }
 

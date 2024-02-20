@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.database.entity
 
+import com.google.gson.annotations.SerializedName
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.model.Doctor
 import io.objectbox.annotation.Entity
@@ -8,9 +9,12 @@ import io.objectbox.annotation.Id
 @Entity
 data class DoctorEntity(
     @Id
-    var idTypePP: Int = 0,
+    var idTypePP: Long = 0L,
+
     var idPP: Int = 0,
     var nationalId: Int = 0,
+    var civilCodeEx : String = "",
+    var civilLabelEx : String = "",
     var civilCode: String = "",
     var civilLabel: String = "",
     var lastName: String = "",
@@ -68,6 +72,8 @@ data class DoctorEntity(
             idTypePP,
             idPP,
             nationalId,
+            civilCodeEx,
+            civilLabelEx,
             civilCode,
             civilLabel,
             lastName,
