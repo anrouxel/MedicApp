@@ -7,9 +7,9 @@ import fr.medicapp.medicapp.database.entity.DoctorEntity
 
 data class Doctor(
 
-    @SerializedName("idTypePP") var idTypePP: Long = 0L,
+    @SerializedName("idNational") var nationalId: Long = 0L,
+    @SerializedName("idTypePP") var idTypePP: Int = 0,
     @SerializedName("idPP") var idPP: Int = 0,
-    @SerializedName("idNational") var nationalId: Int = 0,
     @SerializedName("codeCiviliteEx") var civilCodeEx : String = "",
     @SerializedName("libelleCiviliteEx") var civilLabelEx : String = "",
     @SerializedName("codeCivilite") var civilCode: String = "",
@@ -67,9 +67,9 @@ data class Doctor(
 ) : ModelToEntityMapper<DoctorEntity> {
     override fun convert(context: Context): DoctorEntity {
         return DoctorEntity(
+            nationalId,
             idTypePP,
             idPP,
-            nationalId,
             civilCodeEx,
             civilLabelEx,
             civilCode,
