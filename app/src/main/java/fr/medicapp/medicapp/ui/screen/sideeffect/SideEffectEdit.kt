@@ -1,39 +1,69 @@
 package fr.medicapp.medicapp.ui.screen.sideeffect
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDatePickerButton
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
+import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
-import fr.medicapp.medicapp.ui.theme.EURedColorShema
-import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
+import fr.medicapp.medicapp.viewModel.SharedSideEffectEditViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SideEffectEdit() {
+fun SideEffectEdit(
+    viewModel: SharedSideEffectEditViewModel,
+    onClick: () -> Unit
+) {
+    val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
+
     Edit(
         title = "Ajouter un effet secondaire",
-        bottomText = "Enregistrer"
-    )
-}
-
-@Preview(name = "Light Theme", showSystemUi = true)
-@Composable
-private fun SideEffectEditPreview() {
-    MedicAppTheme(
-        darkTheme = false,
-        dynamicColor = false,
-        theme = EURedColorShema
+        bottomText = "Enregistrer",
+        onClick = {
+            viewModel.save(context)
+            onClick()
+        }
     ) {
-        SideEffectEdit()
-    }
-}
+        Column {
+            ReusableElevatedCard {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    ReusableOutlinedSearchButton(
+                        options = viewModel.getPrescriptionList(context),
+                        value = state.value.prescription,
+                        label = "Prescription",
+                        onSelected = { viewModel.updatePrescription(it, context) }
+                    )
 
-@Preview(name = "Dark Theme", showSystemUi = true)
-@Composable
-private fun SideEffectDarkPreview() {
-    MedicAppTheme(
-        darkTheme = true,
-        dynamicColor = false,
-        theme = EURedColorShema
-    ) {
-        SideEffectEdit()
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableOutlinedDatePickerButton(
+                        value = state.value.date,
+                        label = "Date de l'effet secondaire",
+                        onSelected = { viewModel.updateDate(it) }
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableOutlinedTextField(
+                        value = state.value.description,
+                        label = "Description",
+                        warnings = false,
+                        onValueChange = { viewModel.updateDescription(it) }
+                    )
+                }
+            }
+        }
     }
 }

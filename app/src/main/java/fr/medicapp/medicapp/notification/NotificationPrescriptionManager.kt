@@ -1,72 +1,67 @@
 package fr.medicapp.medicapp.notification
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import de.coldtea.smplr.smplralarm.alarmNotification
-import de.coldtea.smplr.smplralarm.channel
-import de.coldtea.smplr.smplralarm.smplrAlarmCancel
-import de.coldtea.smplr.smplralarm.smplrAlarmSet
-import de.coldtea.smplr.smplralarm.smplrAlarmUpdate
-import fr.medicapp.medicapp.R
 import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Prescription
-import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 object NotificationPrescriptionManager {
+    private var INSTANCE: AlarmScheduler? = null
+
+    val channelId = "prescription_notification"
+    val channelName = "prescription_notification"
+
+    fun getInstances(context: Context): AlarmScheduler {
+        return INSTANCE ?: synchronized(this) {
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+
+            val instance = AlarmSchedulerImpl(context)
+            INSTANCE = instance
+            instance
+        }
+    }
+
     fun add(context: Context, notification: Notification, message: String, bigText: String) {
+        val alarmScheduler = getInstances(context)
         notification.alarms.forEach { alarm ->
-            smplrAlarmSet(context) {
-                requestCode { notification.id.toInt() }
-                isActive { notification.active }
-                hour { alarm.hour }
-                min { alarm.minute }
-                weekdays {
-                    notification.days.forEach { dayOfWeek ->
-                        when (dayOfWeek) {
-                            DayOfWeek.MONDAY -> monday()
-                            DayOfWeek.TUESDAY -> tuesday()
-                            DayOfWeek.WEDNESDAY -> wednesday()
-                            DayOfWeek.THURSDAY -> thursday()
-                            DayOfWeek.FRIDAY -> friday()
-                            DayOfWeek.SATURDAY -> saturday()
-                            DayOfWeek.SUNDAY -> sunday()
-                        }
-                    }
-                }
-                notification {
-                    alarmNotification {
-                        smallIcon { R.drawable.medicapp_eu_blue }
-                        title { "Rappel de prise de médicament" }
-                        message { message }
-                        bigText { bigText }
-                        autoCancel { false }
-                    }
-                }
-                notificationChannel {
-                    channel {
-                        importance { NotificationManager.IMPORTANCE_HIGH }
-                        showBadge { true }
-                        name { "Canal de rappel de médicaments" }
-                        description { "Ce canal de notification est utilisé pour les rappels" }
-                    }
-                }
-            }
+            val alarmItem = AlarmItem(
+                id = alarm.id,
+                alarmTime = LocalTime.of(alarm.hour, alarm.minute).atDate(LocalDate.now()),
+                message = message
+            )
+            alarmItem.let(alarmScheduler::schedule)
         }
     }
 
     fun remove(context: Context, notification: Notification) {
-        smplrAlarmCancel(context) {
-            requestCode { notification.id.toInt() }
+        val alarmScheduler = getInstances(context)
+        notification.alarms.forEach { alarm ->
+            val alarmItem = AlarmItem(
+                id = alarm.id,
+                alarmTime = LocalTime.of(alarm.hour, alarm.minute).atDate(LocalDate.now()),
+                message = ""
+            )
+            alarmItem.let(alarmScheduler::cancel)
         }
     }
 
-    fun update(context: Context, notification: Notification) {
-        smplrAlarmUpdate(context) {
-            requestCode { notification.id.toInt() }
-            isActive { notification.active }
+    fun update(context: Context, notification: Notification, message: String, bigText: String) {
+        if (notification.active) {
+            add(context, notification, message, bigText)
+        } else {
+            remove(context, notification)
         }
     }
 }

@@ -33,11 +33,7 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          */
         composable(route = RootRoute.RootRouteHomeRoute.route) {
             onThemeChange(EUGreenColorShema)
-            HomeScreen(
-                onAddPrescriptionClick = {
-                    navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
-                },
-            )
+            HomeScreen()
         }
 
         /**

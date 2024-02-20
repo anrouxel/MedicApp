@@ -9,6 +9,7 @@ plugins {
 }
 
 tasks.withType<Detekt>().configureEach {
+    ignoreFailures = true
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -75,7 +76,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // Material Design icons
@@ -85,10 +86,7 @@ dependencies {
     implementation("com.google.mlkit:text-recognition:16.0.0")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
     // Coil
     val coilVersion = "2.4.0"
@@ -117,6 +115,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
     // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

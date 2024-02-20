@@ -19,11 +19,13 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun ReusableElevatedCardButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     onClick: () -> Unit,
+    enabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit = {}
 ) {
     ElevatedCard(
         modifier = modifier,
         onClick = onClick,
+        enabled = enabled,
         content = content,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp,

@@ -14,7 +14,7 @@ import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
-import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 /**
  * Cette fonction construit le graphe de navigation pour les prescriptions.
@@ -48,7 +48,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
                     navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
                 },
                 onPrescriptionClick = {
-                    navController.navigate(PrescriptionRoute.PrescriptionDetailRoute.route.replace("{id}", it.toString()))
+                    navController.navigate(
+                        PrescriptionRoute.PrescriptionDetailRoute.route.replace(
+                            "{id}",
+                            it.toString()
+                        )
+                    )
                 }
             )
         }
@@ -56,7 +61,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
         composable(route = PrescriptionRoute.PrescriptionDetailRoute.route) {
             val id = it.arguments?.getString("id")?.toLongOrNull()
 
-            val viewModel = it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
 
             if (id != null) {
                 viewModel.loadPrescription(context = LocalContext.current, id = id)
@@ -65,7 +71,10 @@ fun NavGraphBuilder.prescriptionNavGraph(
             }
 
             PrescriptionDetail(
-                viewModel = viewModel
+                viewModel = viewModel,
+                onRemovePrescriptionClick = {
+                    navController.popBackStack()
+                }
             )
         }
 

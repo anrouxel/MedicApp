@@ -5,6 +5,7 @@ import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.LocalDateConverter
 import fr.medicapp.medicapp.database.converter.MutableListLocalDateTimeConverter
 import fr.medicapp.medicapp.model.Prescription
+import io.objectbox.annotation.Backlink
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -32,6 +33,9 @@ data class PrescriptionEntity(
 
     lateinit var notifications: ToMany<NotificationEntity>
 
+    @Backlink(to = "prescription")
+    lateinit var sideEffects: ToMany<SideEffectEntity>
+
     override fun convert(): Prescription {
         return Prescription(
             id,
@@ -39,7 +43,18 @@ data class PrescriptionEntity(
             takes,
             doctor.target?.convert(),
             treatment.target.convert(),
-            notifications.map { it.convert() }.toMutableStateList()
+            notifications.map { it.convert() }.toMutableStateList(),
+            sideEffects.map { it.convertBacklink() }.toMutableStateList()
+        )
+    }
+
+    fun convertBacklink(): Prescription {
+        return Prescription(
+            id,
+            date,
+            doctor.target?.convert(),
+            treatment.target.convert(),
+            notifications.map { it.convert() }.toMutableStateList(),
         )
     }
 }

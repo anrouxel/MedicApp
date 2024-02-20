@@ -2,7 +2,10 @@ package fr.medicapp.medicapp.ui.screen.sideeffect
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DocumentScanner
@@ -15,12 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.SideEffect
 import fr.medicapp.medicapp.model.Treatment
 import fr.medicapp.medicapp.model.medication.Medication
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -29,7 +33,7 @@ import java.time.LocalDate
 @Composable
 fun SideEffectHome(
     sideEffects: List<SideEffect>,
-    onSideEffectClick: () -> Unit = {},
+    onSideEffectClick: (Long) -> Unit = {},
     onAddSideEffectClick: () -> Unit = {}
 ) {
     Home(
@@ -62,26 +66,32 @@ fun SideEffectHome(
 @Composable
 fun SideEffectList(
     sideEffects: List<SideEffect>,
-    onSideEffectClick: () -> Unit = {}
+    onSideEffectClick: (Long) -> Unit = {}
 ) {
-    sideEffects.forEach { sideEffect ->
-        SideEffectItem(
-            sideEffect = sideEffect,
-            onSideEffectClick = onSideEffectClick
-        )
+    Column {
+        sideEffects.forEachIndexed { index, sideEffect ->
+            SideEffectItem(
+                sideEffect = sideEffect,
+                onSideEffectClick = onSideEffectClick
+            )
+
+            if (index != sideEffects.size - 1) {
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
+        }
     }
 }
 
 @Composable
 fun SideEffectItem(
     sideEffect: SideEffect,
-    onSideEffectClick: () -> Unit
+    onSideEffectClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = onSideEffectClick
+        onClick = { onSideEffectClick(sideEffect.id) }
     ) {
         CardContent(
-            title = sideEffect.treatment?.medication?.name ?: "",
+            title = sideEffect.prescription?.treatment?.medication?.name ?: "",
             description = sideEffect.date?.toString() ?: ""
         )
     }
@@ -95,7 +105,9 @@ fun NoSideEffectAvailable() {
         fontStyle = MaterialTheme.typography.bodyLarge.fontStyle,
         fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
         textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxSize().wrapContentHeight(align = Alignment.CenterVertically)
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(align = Alignment.CenterVertically)
     )
 }
 
@@ -104,10 +116,12 @@ fun NoSideEffectAvailable() {
 @Composable
 private fun SideEffectHomePreview() {
     val sideEffect = SideEffect(
-        treatment = Treatment(
-            medication = Medication(
-                name = "Doliprane"
-            )
+        prescription = Prescription(
+            treatment = Treatment(
+                medication = Medication(
+                    name = "Doliprane"
+                )
+            ),
         ),
         date = LocalDate.now()
     )
@@ -128,10 +142,12 @@ private fun SideEffectHomePreview() {
 @Composable
 private fun SideEffectHomeDarkPreview() {
     val sideEffect = SideEffect(
-        treatment = Treatment(
-            medication = Medication(
-                name = "Doliprane"
-            )
+        prescription = Prescription(
+            treatment = Treatment(
+                medication = Medication(
+                    name = "Doliprane"
+                )
+            ),
         ),
         date = LocalDate.now()
     )
