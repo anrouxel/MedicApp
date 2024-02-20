@@ -138,8 +138,7 @@ class SharedPrescriptionEditViewModel(
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
         val id = store.put(prescription)
-        _sharedState.value = store.query().equal(PrescriptionEntity_.id, id).build().findFirst()
-            ?.convert() ?: Prescription()
+        _sharedState.value = Prescription()
     }
 
     fun getMedicationList(context: Context): List<OptionDialog> {

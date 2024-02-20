@@ -49,8 +49,7 @@ class SharedSideEffectEditViewModel(
         val store = boxStore.boxFor(SideEffectEntity::class.java)
         val sideEffect = _sharedState.value.convert(context)
         val id = store.put(sideEffect)
-        _sharedState.value = store.query().equal(SideEffectEntity_.id, id).build().findFirst()
-            ?.convert() ?: SideEffect()
+        _sharedState.value = SideEffect()
     }
 
     fun getPrescriptionList(context: Context): List<OptionDialog> {
