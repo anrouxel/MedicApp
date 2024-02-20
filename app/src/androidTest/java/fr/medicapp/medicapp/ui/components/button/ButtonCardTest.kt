@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.components.button
+package fr.medicapp.medicapp.ui.components.button
 
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.Text
@@ -6,7 +6,6 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
-import fr.medicapp.medicapp.ui.components.button.ButtonCard
 import org.junit.Rule
 import org.junit.Test
 

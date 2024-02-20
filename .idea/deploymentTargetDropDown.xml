@@ -2,7 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="BasicTokenizerTest">
+        <State />
+      </entry>
+      <entry key="Tests in 'fr.medicapp.medicapp'">
+        <State />
+      </entry>
+      <entry key="Tests in 'fr.medicapp.medicapp.ai.tokenization'">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="isInvalidNullChar()">
+        <State />
+      </entry>
+      <entry key="testTokenizeWithEmptyText()">
         <State />
       </entry>
     </value>
