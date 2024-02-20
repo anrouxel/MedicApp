@@ -32,7 +32,8 @@ fun SideEffectEdit(
         onClick = {
             viewModel.save(context)
             onClick()
-        }
+        },
+        enabled = state.value.prescription != null && state.value.date != null && state.value.description.isNotEmpty() && state.value.description.isNotBlank()
     ) {
         Column {
             ReusableElevatedCard {

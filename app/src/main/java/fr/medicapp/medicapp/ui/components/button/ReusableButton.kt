@@ -1,7 +1,11 @@
 package fr.medicapp.medicapp.ui.components.button
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -10,14 +14,19 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun ReusableButton(
     modifier: Modifier = Modifier,
     text: String,
+    enabled: Boolean = true,
+    icon: ImageVector? = null,
     onClick: () -> Unit
 ) {
-    ButtonCard(
-        modifier = modifier,
+    Button(
+        modifier = modifier.fillMaxWidth(),
         onClick = onClick,
+        shape = MaterialTheme.shapes.medium,
+        enabled = enabled,
         content = {
             ButtonContent(
-                text = text
+                text = text,
+                icon = icon
             )
         }
     )

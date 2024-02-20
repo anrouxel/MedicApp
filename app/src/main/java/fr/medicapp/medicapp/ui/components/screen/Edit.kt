@@ -25,6 +25,7 @@ fun Edit(
     title: String,
     bottomText: String,
     onClick: () -> Unit = {},
+    enabled: Boolean = true,
     content: @Composable () -> Unit = {},
 ) {
     Scaffold(
@@ -49,7 +50,8 @@ fun Edit(
             ) {
                 ReusableButton(
                     text = bottomText,
-                    onClick = onClick
+                    onClick = onClick,
+                    enabled = enabled
                 )
             }
         }
