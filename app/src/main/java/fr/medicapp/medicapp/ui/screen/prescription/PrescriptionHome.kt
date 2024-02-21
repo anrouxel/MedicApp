@@ -102,7 +102,7 @@ fun NoPrescriptionAvailable() {
 private fun PrescriptionHomePreview() {
     val prescription = Prescription(
         doctor = Doctor(
-            name = "Dr. Mottu"
+            firstName = "Mottu"
         ),
         date = LocalDate.now()
     )
@@ -124,7 +124,7 @@ private fun PrescriptionHomePreview() {
 private fun PrescriptionHomeDarkPreview() {
     val prescription = Prescription(
         doctor = Doctor(
-            name = "Dr. Mottu"
+            firstName = "Mottu"
         ),
         date = LocalDate.now()
     )

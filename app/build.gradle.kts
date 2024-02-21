@@ -96,6 +96,9 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
+    //Maps
+    implementation("org.maplibre.gl:android-sdk:10.0.2")
+
     // Calendar
     implementation("com.kizitonwose.calendar:compose:2.5.0")
 
@@ -106,6 +109,7 @@ dependencies {
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -47,6 +47,7 @@ fun HomeScreen() {
         Calendar(selection = selection)
         Spacer(modifier = Modifier.height(8.dp))
         ListOfMedication(selectedDate = selection.value, prescription = prescriptions)
+
     }
 }
 

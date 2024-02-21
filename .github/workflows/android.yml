@@ -2,8 +2,11 @@ name: Android CI
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 5 * * *'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   Nightly:
@@ -26,13 +29,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleRelease
       
-    - name: Nightly
+    - name: Release
       uses: pyTooling/Actions/releaser@r0
       with:
         tag: nightly
         rm: true
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
-          app/build/outputs/apk/release/app-release-unsigned.apk
-          app/build/outputs/apk/release/output-metadata.json
+          app/build/outputs/*.*
           LICENSE.md
