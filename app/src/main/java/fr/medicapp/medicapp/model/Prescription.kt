@@ -120,23 +120,25 @@ data class Prescription(
     fun getNotificationsDates(date: LocalDate): MutableList<Take> {
         val notifications = mutableListOf<Take>()
 
-        val startDate = treatment.duration!!.startDate!!
-        val endDate = treatment.duration!!.endDate!!
+        val startDate = treatment.duration!!.startDate
+        val endDate = treatment.duration!!.endDate
 
 
         this.notifications.forEach { notification ->
             notification.days.forEach { day ->
                 val dayOfWeek = day.value
-                if (date.dayOfWeek.value == dayOfWeek
-                    && date.isAfter(startDate.minusDays(1))
-                    && date.isBefore(endDate.plusDays(1))
-                ) {
-                    notification.alarms.forEach { alarm ->
-                        val hour = alarm.hour
-                        val minute = alarm.minute
-                        val dateTime =
-                            LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
-                        notifications.add(Take(this, dateTime))
+                if (startDate != null && endDate != null) {
+                    if (date.dayOfWeek.value == dayOfWeek
+                        && date.isAfter(startDate.minusDays(1))
+                        && date.isBefore(endDate.plusDays(1))
+                    ) {
+                        notification.alarms.forEach { alarm ->
+                            val hour = alarm.hour
+                            val minute = alarm.minute
+                            val dateTime =
+                                LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
+                            notifications.add(Take(this, dateTime))
+                        }
                     }
                 }
             }

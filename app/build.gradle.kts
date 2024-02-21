@@ -96,6 +96,9 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
+    //Maps
+    implementation("org.maplibre.gl:android-sdk:10.0.2")
+
     // Alarm
     implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
 
