@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,8 +18,10 @@ import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.ui.components.calendar.Calendar
 import fr.medicapp.medicapp.ui.components.list.ListOfMedication
+import fr.medicapp.medicapp.ui.screen.doctor.fetch
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import kotlinx.coroutines.*
 import java.time.LocalDate
 
 /**
@@ -47,6 +51,7 @@ fun HomeScreen() {
         Calendar(selection = selection)
         Spacer(modifier = Modifier.height(8.dp))
         ListOfMedication(selectedDate = selection.value, prescription = prescriptions)
+
     }
 }
 
