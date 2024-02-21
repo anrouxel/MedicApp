@@ -24,6 +24,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun Edit(
     title: String,
     bottomText: String,
+    enabled: Boolean = true,
     onClick: () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
@@ -49,6 +50,7 @@ fun Edit(
             ) {
                 ReusableButton(
                     text = bottomText,
+                    enabled = enabled,
                     onClick = onClick
                 )
             }

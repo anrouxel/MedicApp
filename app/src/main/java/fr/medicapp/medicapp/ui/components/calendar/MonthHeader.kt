@@ -22,7 +22,6 @@ import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
 /**
  * This is a Composable Button that allows the user to scroll to the previous week.
  *
@@ -39,9 +38,7 @@ private fun DecrementButton(weekState: WeekCalendarState, coroutine: CoroutineSc
                     .days[0].date.plusWeeks(-1)
 
                 weekState.animateScrollToWeek(previousWeek)
-
             }
-
         }
 
     ) {
@@ -69,7 +66,6 @@ private fun IncrementButton(weekState: WeekCalendarState, coroutine: CoroutineSc
                     .days[0].date.plusWeeks(1)
 
                 weekState.animateScrollToWeek(nextWeek)
-
             }
         }
 
@@ -81,7 +77,6 @@ private fun IncrementButton(weekState: WeekCalendarState, coroutine: CoroutineSc
         )
     }
 }
-
 
 /**
  * This is a Composable function that creates a month header UI component.
@@ -114,7 +109,7 @@ fun MonthHeader(
         DecrementButton(weekState = state, coroutine = coroutine)
         Text(
             text = month,
-            //when clicked, go back to the current week and day
+            // when clicked, go back to the current week and day
             modifier.clickable {
                 coroutine.launch {
                     onClick()
@@ -123,7 +118,6 @@ fun MonthHeader(
         )
         IncrementButton(weekState = state, coroutine = coroutine)
     }
-
 }
 
 @Preview

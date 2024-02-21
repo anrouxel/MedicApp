@@ -26,7 +26,8 @@ fun PrescriptionEditInformation(
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
-        onClick = onClick
+        onClick = onClick,
+        enabled = state.value.date != null
     ) {
         ReusableElevatedCard {
             Column(

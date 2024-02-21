@@ -99,14 +99,13 @@ dependencies {
     //Maps
     implementation("org.maplibre.gl:android-sdk:10.0.2")
 
-    // Alarm
-    implementation("com.github.ColdTea-Projects:SmplrAlarm:2.1.0")
-
     // Calendar
     implementation("com.kizitonwose.calendar:compose:2.5.0")
 
-    // Volley
-    implementation("com.android.volley:volley:1.2.1")
+    // Mozilla
+    val mozillaVersion = "123.0"
+    implementation("org.mozilla.components:concept-fetch:$mozillaVersion")
+    implementation("org.mozilla.components:lib-fetch-okhttp:$mozillaVersion")
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
@@ -119,13 +118,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-
-    // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    // Needed for createAndroidComposeRule, but not createComposeRule:
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
-
