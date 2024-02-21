@@ -124,7 +124,7 @@ fun MapLibre(
     )
 }
 
-suspend fun fetch(url: String): GeoJson {
+fun fetch(url: String): GeoJson {
     val link = URL(url)
     val httpURLConnection = link.openConnection() as HttpURLConnection
     httpURLConnection.requestMethod = "GET"
