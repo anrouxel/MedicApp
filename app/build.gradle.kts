@@ -102,14 +102,12 @@ dependencies {
     // Calendar
     implementation("com.kizitonwose.calendar:compose:2.5.0")
 
-    // Mozilla
-    val mozillaVersion = "123.0"
-    implementation("org.mozilla.components:concept-fetch:$mozillaVersion")
-    implementation("org.mozilla.components:lib-fetch-okhttp:$mozillaVersion")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
-
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

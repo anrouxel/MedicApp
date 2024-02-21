@@ -91,14 +91,12 @@ fun DoctorDetail(
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-
-
             Box {
                 MapLibre(
                     style = "https://rex.dri.utc.fr/map-server/styles/osm-bright/style.json",
                     cameraPosition = CameraPosition.Builder()
                         .target(viewModel.fetch())
-                        .zoom(8.0)
+                        .zoom(20.0)
                         .build()
                 )
             }

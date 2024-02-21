@@ -2,10 +2,12 @@ package fr.medicapp.medicapp.viewModel
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mapbox.mapboxsdk.geometry.LatLng
+import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import fr.medicapp.medicapp.database.entity.SideEffectEntity_
@@ -13,9 +15,8 @@ import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.model.SideEffect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import mozilla.components.concept.fetch.Request
-import mozilla.components.concept.fetch.isSuccess
-import mozilla.components.lib.fetch.okhttp.OkHttpClient
+import kotlinx.coroutines.runBlocking
+import okhttp3.internal.wait
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -25,20 +26,24 @@ class SharedDoctorDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _sharedState: MutableStateFlow<Doctor> = MutableStateFlow(Doctor())
+    private val _sharedState: MutableStateFlow<Doctor> = MutableStateFlow(Doctor(
+        structureStreetNumber = "3",
+        structureStreetTypeLabel = "Rue",
+        structureStreetLabel = "Maréchal Joffre",
+        structureCedexOffice = "44000"
+    ))
     val sharedState: StateFlow<Doctor> = _sharedState
 
     fun fetch(): LatLng {
-        val request = Request(
-            url = "https://api-adresse.data.gouv.fr/search/?q=${sharedState.value.structureStreetNumber} ${sharedState.value.structureStreetTypeLabel} ${sharedState.value.structureStreetLabel} ${sharedState.value.structureCedexOffice}",
-        )
-
-        val client = OkHttpClient()
-        val response = client.fetch(request)
-
-        if (response.isSuccess) {
-            return LatLng(0.0, 0.0)
+        return runBlocking {
+            APIAddressClient().apiService.getPosition(
+                q = "${_sharedState.value.structureStreetNumber}+" +
+                        "${_sharedState.value.structureStreetTypeLabel}+" +
+                        "${_sharedState.value.structureStreetLabel}+" +
+                        _sharedState.value.structureCedexOffice
+            ).body()?.features?.first()?.geometry?.coordinates?.let {
+                return@runBlocking LatLng(it[1], it[0])
+            } ?: LatLng(0.0, 0.0)
         }
-        return LatLng(0.0, 0.0)
     }
 }

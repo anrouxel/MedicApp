@@ -237,3 +237,15 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/screen/doctor/DoctorHome.kt,f\0\f0d21942b3e9d1910bd4ff8a90e435a2c7b81c84
 
 Oapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedDoctorDetailViewModel.kt,a\5\a5ab2f86e90a864dec9dbcf36e90cc814958f40d
+v
+Fapp/src/main/java/fr/medicapp/medicapp/api/address/APIAddressClient.kt,9\e\9ef47c42b8cb02c3f7e79a48d4d41b45f2d12481
+w
+Gapp/src/main/java/fr/medicapp/medicapp/api/address/APIAddressService.kt,1\a\1abf3a81e4b799520946557dfe273651d3ecfe81
+r
+Bapp/src/main/java/fr/medicapp/medicapp/model/address/Properties.kt,a\7\a7942c720801ea23d532b6dba5c6a674983d88ce
+p
+@app/src/main/java/fr/medicapp/medicapp/model/address/Geometry.kt,9\4\94ba4ad2a8bcb904d347a74f0d0862f6820a8ebf
+o
+?app/src/main/java/fr/medicapp/medicapp/model/address/Feature.kt,a\4\a4cb5892e96964c193b875c2fd5049c1fd088db1
+o
+?app/src/main/java/fr/medicapp/medicapp/model/address/Address.kt,2\6\260f0067e40aea9dc1c5721fa63b9691a57d7bde
