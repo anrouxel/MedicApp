@@ -5,6 +5,68 @@ import com.google.gson.annotations.SerializedName
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.DoctorEntity
 
+/**
+ * Une classe modèle pour les médecins
+ * @property id l'identifiant en base de données
+ * @property nationalId l'identifiant national du médecin
+ * @property idTypePP l'identifiant du type de PP
+ * @property idPP l'identifiant du PP
+ * @property civilCodeEx le code civil de la profession du médecin
+ * @property civilLabelEx le libellé civil de la profession du médecin
+ * @property civilCode le code civilité du médecin
+ * @property civilLabel le libellé civil du médecin
+ * @property lastName le nom du médecin
+ * @property firstName le prénom du médecin
+ * @property professionCode le code de la profession du médecin
+ * @property professionLabel le libellé de la profession du médecin
+ * @property professionalCategoryCode le code de la catégorie professionnelle du médecin
+ * @property professionalCategoryLabel le libellé de la catégorie professionnelle du médecin
+ * @property skillTypeCode le code du type de savoir-faire du médecin
+ * @property skillTypeLabel le libellé du type de savoir-faire du médecin
+ * @property skillCode le code du savoir-faire du médecin
+ * @property skillLabel le libellé du savoir-faire du médecin
+ * @property practiceModeCode le code du mode d'exercice du médecin
+ * @property practiceModeLabel le libellé du mode d'exercice du médecin
+ * @property siteSiretNumber le numéro de SIRET du site du médecin
+ * @property siteSirenNumber le numéro de SIREN du site du médecin
+ * @property siteFinessNumber le numéro de FINESS du site du médecin
+ * @property legalEstablishmentFinessNumber le numéro de FINESS de l'établissement juridique du médecin
+ * @property techStructureId l'identifiant technique de la structure du médecin
+ * @property siteCompanyName le nom de la société du site du médecin
+ * @property siteCommercialSign le signe commercial du site du médecin
+ * @property structureRecipientComplement le complément destinataire de la structure du médecin
+ * @property structureGeographicPointComplement le complément du point géographique de la structure du médecin
+ * @property structureStreetNumber le numéro de voie de la structure du médecin
+ * @property structureStreetRepeatIndex l'indice de répétition de la voie de la structure du médecin
+ * @property structureStreetTypeCode le code du type de voie de la structure du médecin
+ * @property structureStreetTypeLabel le libellé du type de voie de la structure du médecin
+ * @property structureStreetLabel le libellé de la voie de la structure du médecin
+ * @property structureDistributionMention la mention de distribution de la structure du médecin
+ * @property structureCedexOffice le bureau Cedex de la structure du médecin
+ * @property structurePostalCode le code postal de la structure du médecin
+ * @property structureCommuneCode le code de la commune de la structure du médecin
+ * @property structureCommuneLabel le libellé de la commune de la structure du médecin
+ * @property structureCountryCode le code du pays de la structure du médecin
+ * @property structureCountryLabel le libellé du pays de la structure du médecin
+ * @property structurePhoneNumber le numéro de téléphone de la structure du médecin
+ * @property structurePhoneNumber2 le deuxième numéro de téléphone de la structure du médecin
+ * @property structureFaxNumber le numéro de fax de la structure du médecin
+ * @property structureEmailAddress l'adresse e-mail de la structure du médecin
+ * @property structureDepartmentCode le code du département de la structure du médecin
+ * @property structureDepartmentLabel le libellé du département de la structure du médecin
+ * @property oldStructureId l'ancien identifiant de la structure du médecin
+ * @property registrationAuthority l'autorité d'enregistrement du médecin
+ * @property activitySectorCode le code du secteur d'activité du médecin
+ * @property activitySectorLabel le libellé du secteur d'activité du médecin
+ * @property pharmacistsTableSectionCode le code de la section du tableau des pharmaciens du médecin
+ * @property pharmacistsTableSectionLabel le libellé de la section du tableau des pharmaciens du médecin
+ * @property roleCode le code du rôle du médecin
+ * @property roleLabel le libellé du rôle du médecin
+ * @property activityGenreCode le code du genre d'activité du médecin
+ * @property activityGenreLabel le libellé du genre d'activité du médecin
+ *
+ */
+
 data class Doctor(
     var id: Long = 0L,
     @SerializedName("idNational") var nationalId: Int = 0,
