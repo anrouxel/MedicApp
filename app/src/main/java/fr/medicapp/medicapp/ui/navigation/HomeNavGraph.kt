@@ -51,5 +51,10 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
             navController = navController,
             onThemeChange = onThemeChange
         )
+
+        doctorNavGraph(
+            navController = navController,
+            onThemeChange = onThemeChange
+        )
     }
 }

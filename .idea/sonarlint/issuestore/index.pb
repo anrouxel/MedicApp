@@ -61,8 +61,6 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 U
 %app/objectbox-models/default.json.bak,e\8\e86a0de7df8ae1be9d7976d78cd32c406a65ffd7
-y
-Iapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ButtonCard.kt,d\c\dcc116619e4066bf22420b8059e9613322b51a4a
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ButtonContent.kt,3\5\355a172179b7aa4b59370b699a3de20485c0d318
 ã
@@ -99,8 +97,6 @@ s
 Capp/src/main/java/fr/medicapp/medicapp/ui/components/screen/Edit.kt,e\0\e0ec86f014053efac14e6d5a450b174a38051af4
 }
 Mapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableButton.kt,1\a\1a9f73da51bd28a3392dcbd08352f3d19f5b53e5
-Å
-Qapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableIconButton.kt,9\a\9a4f40723c1c004e52923913e7a2e29170282d45
 Å
 Qapp/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionHome.kt,2\5\25169204765265c3a52a912a4a791578df9a3b03
 }
@@ -233,3 +229,11 @@ Happ/src/main/java/fr/medicapp/medicapp/ui/components/modal/AlertModal.kt,8\3\8
 Vapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableAlertIconButton.kt,d\8\d859a142d6cc32eee901b0335d5874aba149e8fc
 Ç
 Rapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ReusableAlertButton.kt,d\7\d7db5889e57f31d46a70a41aa6655b4ec2079a01
+w
+Gapp/src/main/java/fr/medicapp/medicapp/ui/screen/doctor/DoctorDetail.kt,1\d\1dab366f37aa5ce585c3274ad60744ca62420dc8
+v
+Fapp/src/main/java/fr/medicapp/medicapp/ui/navigation/DoctorNavGraph.kt,0\a\0a04adff3500b17864c8c42c2bdb12f16f5118d5
+u
+Eapp/src/main/java/fr/medicapp/medicapp/ui/screen/doctor/DoctorHome.kt,f\0\f0d21942b3e9d1910bd4ff8a90e435a2c7b81c84
+
+Oapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedDoctorDetailViewModel.kt,a\5\a5ab2f86e90a864dec9dbcf36e90cc814958f40d
