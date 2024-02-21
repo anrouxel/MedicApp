@@ -96,7 +96,7 @@ fun DoctorDetail(
                     style = "https://rex.dri.utc.fr/map-server/styles/osm-bright/style.json",
                     cameraPosition = CameraPosition.Builder()
                         .target(viewModel.fetch())
-                        .zoom(20.0)
+                        .zoom(10.0)
                         .build()
                 )
             }
