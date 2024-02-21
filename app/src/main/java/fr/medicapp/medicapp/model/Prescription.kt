@@ -136,7 +136,13 @@ data class Prescription(
                             val hour = alarm.hour
                             val minute = alarm.minute
                             val dateTime =
-                                LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
+                                LocalDateTime.of(
+                                    date.year,
+                                    date.month,
+                                    date.dayOfMonth,
+                                    hour,
+                                    minute
+                                )
                             notifications.add(Take(this, dateTime))
                         }
                     }

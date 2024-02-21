@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.GeoJson
-import com.mapbox.geojson.gson.GeoJsonAdapterFactory
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.WellKnownTileServer
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -125,7 +124,7 @@ fun MapLibre(
     )
 }
 
-suspend fun fetch(url: String) : GeoJson {
+suspend fun fetch(url: String): GeoJson {
     val link = URL(url)
     val httpURLConnection = link.openConnection() as HttpURLConnection
     httpURLConnection.requestMethod = "GET"
