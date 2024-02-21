@@ -30,7 +30,7 @@ class SharedDoctorDetailViewModel(
 
     fun fetch(): LatLng {
         val request = Request(
-            url = "curl 'https://api-adresse.data.gouv.fr/search/?q=${sharedState.value.structureStreetNumber} ${sharedState.value.structureStreetTypeLabel} ${sharedState.value.structureStreetLabel} ${sharedState.value.structureCedexOffice}'",
+            url = "https://api-adresse.data.gouv.fr/search/?q=${sharedState.value.structureStreetNumber} ${sharedState.value.structureStreetTypeLabel} ${sharedState.value.structureStreetLabel} ${sharedState.value.structureCedexOffice}",
         )
 
         val client = OkHttpClient()
