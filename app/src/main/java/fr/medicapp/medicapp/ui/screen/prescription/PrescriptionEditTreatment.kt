@@ -29,7 +29,8 @@ fun PrescriptionEditTreatment(
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
-        onClick = onClick
+        onClick = onClick,
+        enabled = state.value.treatment.medication != null && state.value.treatment.posology.isNotEmpty() && state.value.treatment.frequency.isNotEmpty() && state.value.treatment.duration != null
     ) {
         ReusableElevatedCard {
             Column(
