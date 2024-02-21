@@ -38,7 +38,8 @@ fun DateRangePickerModal(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(
-                onClick = onConfirm
+                onClick = onConfirm,
+                enabled = state.selectedStartDateMillis != null && state.selectedEndDateMillis != null
             ) {
                 Text("OK")
             }
