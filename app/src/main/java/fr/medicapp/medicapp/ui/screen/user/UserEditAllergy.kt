@@ -36,7 +36,7 @@ fun UserEditAllergy(
                 ) {
                     ReusableRadioGroup(
                         options = listOf("Oui", "Non"),
-                        selectedOption = pregnantState.value,
+                        selectedOption = "Non",
                         label = "Êtes-vous enceinte ?",
                         onClick = {
                             pregnantState.value = it

@@ -28,7 +28,7 @@ class SharedUserEditViewModel(
     }
 
     fun updateGender(newGender: String) {
-        val updatedUser = _sharedState.value
+        val updatedUser = _sharedState.value.copy(gender = newGender)
         _sharedState.value = updatedUser
     }
 

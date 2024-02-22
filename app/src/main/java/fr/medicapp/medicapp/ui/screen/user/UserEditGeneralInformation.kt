@@ -60,9 +60,9 @@ fun UserEditGeneralInformation(
 
                 ReusableRadioGroup(
                     options = listOf("Homme", "Femme"),
-                    selectedOption = "",
+                    selectedOption = "Homme",
                     label = "Genre de naissance",
-                    onClick = { viewModel.updateGender(state.value.gender) }
+                    onClick = { viewModel.updateGender(it) }
                 )
             }
         }
