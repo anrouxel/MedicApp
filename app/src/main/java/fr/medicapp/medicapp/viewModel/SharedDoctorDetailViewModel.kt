@@ -1,22 +1,13 @@
 package fr.medicapp.medicapp.viewModel
 
-import android.content.Context
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mapbox.mapboxsdk.geometry.LatLng
 import fr.medicapp.medicapp.api.address.APIAddressClient
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.SideEffectEntity
-import fr.medicapp.medicapp.database.entity.SideEffectEntity_
 import fr.medicapp.medicapp.model.Doctor
-import fr.medicapp.medicapp.model.SideEffect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -26,12 +17,14 @@ class SharedDoctorDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _sharedState: MutableStateFlow<Doctor> = MutableStateFlow(Doctor(
-        structureStreetNumber = "3",
-        structureStreetTypeLabel = "Rue",
-        structureStreetLabel = "Maréchal Joffre",
-        structureCedexOffice = "44000"
-    ))
+    private val _sharedState: MutableStateFlow<Doctor> = MutableStateFlow(
+        Doctor(
+            structureStreetNumber = "3",
+            structureStreetTypeLabel = "Rue",
+            structureStreetLabel = "Maréchal Joffre",
+            structureCedexOffice = "44000"
+        )
+    )
     val sharedState: StateFlow<Doctor> = _sharedState
 
     fun fetch(): LatLng {

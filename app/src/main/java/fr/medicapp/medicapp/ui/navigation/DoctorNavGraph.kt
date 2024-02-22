@@ -9,17 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.DoctorEntity
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorDetail
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorHome
-import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
-import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
-import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 /**
  * Cette fonction construit le graphe de navigation pour les prescriptions.

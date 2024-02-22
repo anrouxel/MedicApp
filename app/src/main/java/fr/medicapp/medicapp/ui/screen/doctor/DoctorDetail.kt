@@ -13,12 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mapbox.geojson.FeatureCollection
-import com.mapbox.geojson.GeoJson
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.WellKnownTileServer
 import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapView
 import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
@@ -27,10 +24,6 @@ import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 @Composable
 fun DoctorDetail(
