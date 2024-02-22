@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,11 +54,30 @@ fun ReusableRadioGroup(
 
 @Preview
 @Composable
-fun PreviewReusableRadioGroup() {
+fun ReusableRadioGroupPreview() {
     val selectedOption = remember { mutableStateOf("Option 1") }
 
     MedicAppTheme(
         darkTheme = false,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        ReusableRadioGroup(
+            options = listOf("Option 1", "Option 2", "Option 3"),
+            selectedOption = selectedOption,
+            label = "Youpi"
+        )
+    }
+
+}
+
+@Preview
+@Composable
+fun ReusableRadioGroupDarkPreview() {
+    val selectedOption = remember { mutableStateOf("Option 1") }
+
+    MedicAppTheme(
+        darkTheme = true,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {

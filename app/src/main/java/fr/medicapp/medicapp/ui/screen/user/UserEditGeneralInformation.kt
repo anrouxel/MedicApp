@@ -22,7 +22,8 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun UserEditInformation(
+fun UserEditGeneralInformation(
+    //add a viewModel for User
     onClick: () -> Unit
 ) {
     Edit(
@@ -30,7 +31,7 @@ fun UserEditInformation(
         bottomText = "Suivant",
         onClick = onClick,
 
-    ) {
+        ) {
         val genderState = remember { mutableStateOf("") }
         ReusableElevatedCard {
             Column(
@@ -55,7 +56,7 @@ fun UserEditInformation(
                 ReusableOutlinedDatePickerButton(
                     value = LocalDate.now(),
                     label = "Date de naissance",
-                    onSelected ={}
+                    onSelected = {}
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -79,6 +80,19 @@ fun UserEditInformationPreview() {
         dynamicColor = false,
         theme = EUPurpleColorShema
     ) {
-        UserEditInformation {}
+        UserEditGeneralInformation(onClick = {})
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+fun UserEditInformationDarkPreview() {
+    MedicAppTheme(
+        darkTheme = true,
+        dynamicColor = false,
+        theme = EUPurpleColorShema
+    ) {
+        UserEditGeneralInformation(onClick = {})
     }
 }
