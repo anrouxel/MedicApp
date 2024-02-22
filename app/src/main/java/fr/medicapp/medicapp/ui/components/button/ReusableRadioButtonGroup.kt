@@ -38,7 +38,7 @@ fun ReusableRadioGroup(
             ) {
                 RadioButton(
                     selected = (text == selectedOption),
-                    onClick = {onClick(text)}
+                    onClick = { onClick(text) }
                 )
                 Text(
                     text = text,
@@ -73,7 +73,7 @@ fun ReusableRadioGroupPreview() {
 @Preview
 @Composable
 fun ReusableRadioGroupDarkPreview() {
-    val selectedOption ="Option 1"
+    val selectedOption = "Option 1"
 
     MedicAppTheme(
         darkTheme = true,
