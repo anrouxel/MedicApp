@@ -17,7 +17,6 @@ import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.WellKnownTileServer
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.maps.MapView
-import fr.medicapp.medicapp.model.Doctor
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
@@ -126,7 +125,6 @@ fun MapLibre(
 @Preview
 @Composable
 fun DoctorDetailPreview() {
-    val doctor = Doctor()
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -141,7 +139,6 @@ fun DoctorDetailPreview() {
 @Preview
 @Composable
 fun DoctorDetailDarkPreview() {
-    val doctor = Doctor()
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
