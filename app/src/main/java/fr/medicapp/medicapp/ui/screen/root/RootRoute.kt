@@ -51,4 +51,13 @@ sealed class RootRoute(
         title = "Effets",
         icon = Icons.Filled.Newspaper,
     )
+
+    /**
+     * Route de l'écran des médecins.
+     */
+    object RootRouteDoctorRoute : RootRoute(
+        route = "doctor",
+        title = "Médecins",
+        icon = Icons.Filled.Newspaper,
+    )
 }

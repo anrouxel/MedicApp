@@ -3,12 +3,16 @@ package fr.medicapp.medicapp.ui.screen.doctor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.GeoJson
 import com.mapbox.mapboxsdk.Mapbox
@@ -22,6 +26,7 @@ import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -29,16 +34,18 @@ import java.net.URL
 
 @Composable
 fun DoctorDetail(
-    doctor: Doctor
+    viewModel: SharedDoctorDetailViewModel
 ) {
+    val state = viewModel.sharedState.collectAsState()
+
     Detail(
         title = "Informations sur le docteur"
     ) {
         Column {
-            val structureAdresse = "${doctor.structureStreetNumber} " +
-                    "${doctor.structureStreetTypeLabel} " +
-                    "${doctor.structureStreetLabel} " +
-                    doctor.structureCedexOffice
+            val structureAdresse = "${state.value.structureStreetNumber} " +
+                    "${state.value.structureStreetTypeLabel} " +
+                    "${state.value.structureStreetLabel} " +
+                    state.value.structureCedexOffice
 
             ReusableElevatedCard {
 
@@ -46,14 +53,14 @@ fun DoctorDetail(
                     modifier = Modifier.padding(10.dp)
                 ) {
                     ReusableTextMediumCard(
-                        value = "${doctor.civilCode} ${doctor.firstName} ${doctor.lastName} \n" +
-                                doctor.skillLabel
+                        value = "${state.value.civilCode} ${state.value.firstName} ${state.value.lastName} \n" +
+                                state.value.skillLabel
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableTextMediumCard(
-                        value = "Structure : ${doctor.siteCompanyName}"
+                        value = "Structure : ${state.value.siteCompanyName}"
                     )
                 }
             }
@@ -65,13 +72,13 @@ fun DoctorDetail(
                     Modifier.padding(10.dp)
                 ) {
                     ReusableTextMediumCard(
-                        value = "Numéro de téléphone : ${doctor.structurePhoneNumber}"
+                        value = "Numéro de téléphone : ${state.value.structurePhoneNumber}"
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableTextMediumCard(
-                        value = "Adresse e-mail : ${doctor.structureEmailAddress}"
+                        value = "Adresse e-mail : ${state.value.structureEmailAddress}"
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
@@ -84,14 +91,12 @@ fun DoctorDetail(
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-
-
             Box {
                 MapLibre(
                     style = "https://rex.dri.utc.fr/map-server/styles/osm-bright/style.json",
                     cameraPosition = CameraPosition.Builder()
-                        .target(LatLng(52.39, 9.72))
-                        .zoom(8.0)
+                        .target(viewModel.fetch())
+                        .zoom(10.0)
                         .build()
                 )
             }
@@ -101,7 +106,9 @@ fun DoctorDetail(
 
 @Composable
 fun MapLibre(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(300.dp),
     style: String,
     cameraPosition: CameraPosition? = null
 ) {
@@ -118,35 +125,23 @@ fun MapLibre(
 
                 }
             }
-
-
         }
     )
-}
-
-fun fetch(url: String): GeoJson {
-    val link = URL(url)
-    val httpURLConnection = link.openConnection() as HttpURLConnection
-    httpURLConnection.requestMethod = "GET"
-    val inputStream = httpURLConnection.inputStream
-    val reader = BufferedReader(InputStreamReader(inputStream))
-    val response = reader.readText()
-    return FeatureCollection.fromJson(response)
 }
 
 
 @Preview
 @Composable
 fun DoctorDetailPreview() {
-    val doctor = Doctor(
-
-    )
+    val doctor = Doctor()
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
         theme = EURedColorShema
     ) {
-        DoctorDetail(doctor = doctor)
+        DoctorDetail(
+            viewModel = viewModel()
+        )
     }
 }
 
@@ -159,6 +154,8 @@ fun DoctorDetailDarkPreview() {
         dynamicColor = false,
         theme = EURedColorShema
     ) {
-        DoctorDetail(doctor = doctor)
+        DoctorDetail(
+            viewModel = viewModel()
+        )
     }
 }

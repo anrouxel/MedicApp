@@ -45,6 +45,7 @@ fun RootScreen(
         RootRoute.RootRouteHomeRoute,
         RootRoute.RootRoutePrescriptionRoute,
         RootRoute.RootRouteSideEffectRoute,
+        RootRoute.RootRouteDoctorRoute,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
