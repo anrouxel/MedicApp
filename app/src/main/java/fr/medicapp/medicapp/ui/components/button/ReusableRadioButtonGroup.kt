@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
+import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @Composable
 fun ReusableRadioGroup(
@@ -25,7 +27,7 @@ fun ReusableRadioGroup(
         Text(
             text = label,
             modifier = modifier.padding(bottom = 8.dp),
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.primary
         )
         options.forEach { text ->
             Row(
@@ -40,7 +42,7 @@ fun ReusableRadioGroup(
                 Text(
                     text = text,
                     modifier = modifier.padding(start = 8.dp),
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -51,9 +53,17 @@ fun ReusableRadioGroup(
 @Composable
 fun PreviewReusableRadioGroup() {
     val selectedOption = remember { mutableStateOf("Option 1") }
-    ReusableRadioGroup(
-        options = listOf("Option 1", "Option 2", "Option 3"),
-        selectedOption = selectedOption,
-        label = "Youpi"
-    )
+
+    MedicAppTheme(
+        darkTheme = false,
+        dynamicColor = false,
+        theme = EUYellowColorShema
+    ) {
+        ReusableRadioGroup(
+            options = listOf("Option 1", "Option 2", "Option 3"),
+            selectedOption = selectedOption,
+            label = "Youpi"
+        )
+    }
+
 }
