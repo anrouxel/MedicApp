@@ -9,9 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,8 +20,9 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun ReusableRadioGroup(
     modifier: Modifier = Modifier.fillMaxWidth(),
     options: List<String>,
-    selectedOption: MutableState<String>,
+    selectedOption: String,
     label: String,
+    onClick: (String) -> Unit,
 ) {
     Column {
         Text(
@@ -39,8 +37,8 @@ fun ReusableRadioGroup(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = (text == selectedOption.value),
-                    onClick = { selectedOption.value = text }
+                    selected = (text == selectedOption),
+                    onClick = {onClick(text)}
                 )
                 Text(
                     text = text,
@@ -55,7 +53,7 @@ fun ReusableRadioGroup(
 @Preview
 @Composable
 fun ReusableRadioGroupPreview() {
-    val selectedOption = remember { mutableStateOf("Option 1") }
+    val selectedOption = "Option 1"
 
     MedicAppTheme(
         darkTheme = false,
@@ -65,7 +63,8 @@ fun ReusableRadioGroupPreview() {
         ReusableRadioGroup(
             options = listOf("Option 1", "Option 2", "Option 3"),
             selectedOption = selectedOption,
-            label = "Youpi"
+            label = "Youpi",
+            onClick = {}
         )
     }
 
@@ -74,7 +73,7 @@ fun ReusableRadioGroupPreview() {
 @Preview
 @Composable
 fun ReusableRadioGroupDarkPreview() {
-    val selectedOption = remember { mutableStateOf("Option 1") }
+    val selectedOption ="Option 1"
 
     MedicAppTheme(
         darkTheme = true,
@@ -84,7 +83,8 @@ fun ReusableRadioGroupDarkPreview() {
         ReusableRadioGroup(
             options = listOf("Option 1", "Option 2", "Option 3"),
             selectedOption = selectedOption,
-            label = "Youpi"
+            label = "Youpi",
+            onClick = {}
         )
     }
 

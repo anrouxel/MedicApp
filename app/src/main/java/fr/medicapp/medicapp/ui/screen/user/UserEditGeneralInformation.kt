@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,28 +19,29 @@ import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UserEditGeneralInformation(
-    //add a viewModel for User
+    viewModel : SharedUserEditViewModel,
     onClick: () -> Unit
 ) {
+    val state = viewModel.sharedState.collectAsState()
     Edit(
         title = "Information utilisateur",
         bottomText = "Suivant",
         onClick = onClick,
 
         ) {
-        val genderState = remember { mutableStateOf("") }
         ReusableElevatedCard {
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableOutlinedTextField(
                     value = "",
-                    onValueChange = {},
+                    onValueChange = {viewModel.updateLastName(it)},
                     label = "Nom"
                 )
 
@@ -47,7 +49,7 @@ fun UserEditGeneralInformation(
 
                 ReusableOutlinedTextField(
                     value = "",
-                    onValueChange = {},
+                    onValueChange = {viewModel.updateFirstName(it)},
                     label = "Prénom"
                 )
 
@@ -56,43 +58,18 @@ fun UserEditGeneralInformation(
                 ReusableOutlinedDatePickerButton(
                     value = LocalDate.now(),
                     label = "Date de naissance",
-                    onSelected = {}
+                    onSelected = { viewModel.updateBirthday(it)}
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableRadioGroup(
                     options = listOf("Homme", "Femme"),
-                    selectedOption = genderState,
-                    label = "Genre de naissance"
+                    selectedOption = "",
+                    label = "Genre de naissance",
+                    onClick = { viewModel.updateGender(state.value.gender) }
                 )
             }
         }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun UserEditInformationPreview() {
-    MedicAppTheme(
-        darkTheme = false,
-        dynamicColor = false,
-        theme = EUPurpleColorShema
-    ) {
-        UserEditGeneralInformation(onClick = {})
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun UserEditInformationDarkPreview() {
-    MedicAppTheme(
-        darkTheme = true,
-        dynamicColor = false,
-        theme = EUPurpleColorShema
-    ) {
-        UserEditGeneralInformation(onClick = {})
     }
 }

@@ -4,30 +4,31 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.button.ReusableRadioGroup
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
-import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 
 @Composable
 fun UserEditAllergy(
-    //add viewModel
+    viewModel: SharedUserEditViewModel,
     onClick: () -> Unit
 ) {
+    val state = viewModel.sharedState.collectAsState()
+    val pregnantState = remember { mutableStateOf("Non") }
     Edit(
         title = "Information utilisateur",
         bottomText = "Terminé",
         onClick = onClick
     ) {
-        val pregnantState = remember { mutableStateOf("Non") }
+
         Column {
             ReusableElevatedCard {
                 Column(
@@ -35,8 +36,12 @@ fun UserEditAllergy(
                 ) {
                     ReusableRadioGroup(
                         options = listOf("Oui", "Non"),
-                        selectedOption = pregnantState,
-                        label = "Êtes-vous enceinte ?"
+                        selectedOption = pregnantState.value,
+                        label = "Êtes-vous enceinte ?",
+                        onClick = {
+                            pregnantState.value = it
+                            viewModel.updatePregnant(it == "Oui")
+                        }
                     )
                 }
             }
@@ -45,44 +50,27 @@ fun UserEditAllergy(
 
             ReusableButton(
                 text = "Ajouter une allergie",
-                onClick = {}
+                onClick = {
+                    viewModel.addAllergy()
+                }
             )
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    ReusableOutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = "Allergie"
-                    )
+            state.value.allergies?.forEachIndexed { index, _ ->
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        ReusableOutlinedTextField(
+                            value = "",
+                            onValueChange = {
+                                viewModel.updateAllergy(it, index)
+                            },
+                            label = "Allergie"
+                        )
+                    }
                 }
             }
+
         }
     }
 }
 
-
-@Preview
-@Composable
-fun UserEditAllergyPreview() {
-    MedicAppTheme(
-        darkTheme = false,
-        dynamicColor = false,
-        theme = EUPurpleColorShema
-    ) {
-        UserEditAllergy(onClick = {})
-    }
-}
-
-@Preview
-@Composable
-fun UserEditAllergyDarkPreview() {
-    MedicAppTheme(
-        darkTheme = true,
-        dynamicColor = false,
-        theme = EUPurpleColorShema
-    ) {
-        UserEditAllergy(onClick = {})
-    }
-}
