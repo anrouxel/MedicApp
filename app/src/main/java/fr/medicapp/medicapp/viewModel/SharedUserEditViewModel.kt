@@ -37,11 +37,6 @@ class SharedUserEditViewModel(
         _sharedState.value = updatedUser
     }
 
-    fun updateAllergies(newAllergies: MutableList<String>) {
-        val updatedUser = _sharedState.value.copy(allergies = newAllergies)
-        _sharedState.value = updatedUser
-    }
-
     fun addAllergy() {
         val updatedAllergies = _sharedState.value.allergies?.toMutableList()
         updatedAllergies?.add("")
