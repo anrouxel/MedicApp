@@ -28,15 +28,15 @@ fun UserEditGeneralInformation(
         title = "Information utilisateur",
         bottomText = "Suivant",
         onClick = onClick,
-        enabled = state.value.lastName.isNotEmpty() && state.value.firstName.isNotEmpty() && state.value.birthday < LocalDate.now()
-
-        ) {
+        enabled = state.value.lastName.isNotEmpty() && state.value.firstName.isNotEmpty()
+                && state.value.birthday < LocalDate.now() && state.value.gender.isNotEmpty()
+    ) {
         ReusableElevatedCard {
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableOutlinedTextField(
-                    value = "",
+                    value = state.value.lastName,
                     onValueChange = { viewModel.updateLastName(it) },
                     label = "Nom"
                 )
@@ -44,7 +44,7 @@ fun UserEditGeneralInformation(
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedTextField(
-                    value = "",
+                    value = state.value.firstName,
                     onValueChange = { viewModel.updateFirstName(it) },
                     label = "Prénom"
                 )
@@ -52,7 +52,7 @@ fun UserEditGeneralInformation(
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 ReusableOutlinedDatePickerButton(
-                    value = LocalDate.now(),
+                    value = state.value.birthday,
                     label = "Date de naissance",
                     onSelected = { viewModel.updateBirthday(it) }
                 )
@@ -61,7 +61,7 @@ fun UserEditGeneralInformation(
 
                 ReusableRadioGroup(
                     options = listOf("Homme", "Femme"),
-                    selectedOption = "Homme",
+                    selectedOption = state.value.gender,
                     label = "Genre de naissance",
                     onClick = { viewModel.updateGender(it) }
                 )

@@ -12,13 +12,19 @@ import java.time.LocalDate
 data class UserEntity(
     @Id
     var id: Long = 0L,
+
     var lastName: String = "",
+
     var firstName: String = "",
+
     @Convert(converter = LocalDateConverter::class, dbType = String::class)
     var birthday: LocalDate = LocalDate.now(),
+
     var gender: String = "",
+
     var pregnant: Boolean = false,
-    var allergies: MutableList<String>? = null
+
+    var allergies: MutableList<String> = mutableListOf()
 ) : EntityToModelMapper<User> {
     override fun convert(): User {
         return User(
