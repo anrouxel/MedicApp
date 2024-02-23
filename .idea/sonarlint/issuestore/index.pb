@@ -283,3 +283,5 @@ eapp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerWhi
 Sapp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,c\d\cdc1e7998241a5c9217706820e55a258a3c2be35
 €
 Papp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,1\3\13cf6675389c5966997b97d5d418bc4966b8eada
+u
+Eapp/src/main/java/fr/medicapp/medicapp/ui/components/mozilla/Gecko.kt,5\8\581d40c82dcfa93f1bdac5bb02a5ff0f94f0c932

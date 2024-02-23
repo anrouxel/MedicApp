@@ -96,7 +96,12 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    //Maps
+    // Mozilla
+    val mozillaVersion = "123.0"
+    implementation("org.mozilla.components:concept-engine:$mozillaVersion")
+    implementation("org.mozilla.components:browser-engine-gecko:$mozillaVersion")
+
+    // Maps
     implementation("org.maplibre.gl:android-sdk:10.0.2")
 
     // Calendar
