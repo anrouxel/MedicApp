@@ -3,13 +3,17 @@ package fr.medicapp.medicapp
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.GsonBuilder
 import fr.medicapp.medicapp.ai.PrescriptionAI
@@ -20,6 +24,12 @@ import fr.medicapp.medicapp.model.medication.Medication
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import mozilla.components.browser.engine.gecko.GeckoEngine
+import mozilla.components.concept.engine.Engine
+import mozilla.components.concept.engine.EngineView
+import org.mozilla.geckoview.GeckoRuntime
+import org.mozilla.geckoview.GeckoSession
+import org.mozilla.geckoview.GeckoView
 import java.time.LocalDate
 
 /**

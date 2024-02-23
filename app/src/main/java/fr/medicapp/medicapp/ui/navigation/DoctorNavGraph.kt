@@ -31,7 +31,7 @@ fun NavGraphBuilder.doctorNavGraph(
      */
     navigation(
         route = RootRoute.RootRouteDoctorRoute.route,
-        startDestination = DoctorRoute.DoctorDetailRoute.route
+        startDestination = DoctorRoute.DoctorHomeRoute.route
     ) {
         composable(route = DoctorRoute.DoctorHomeRoute.route) {
             onThemeChange(EUPurpleColorShema)

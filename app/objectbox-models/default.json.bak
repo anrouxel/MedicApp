@@ -638,7 +638,7 @@
     },
     {
       "id": "14:5138986304881207242",
-      "lastPropertyId": "3:4196241250267300684",
+      "lastPropertyId": "59:4077857095173459495",
       "name": "DoctorEntity",
       "properties": [
         {
@@ -648,14 +648,284 @@
           "flags": 1
         },
         {
-          "id": "2:4901771978216240424",
-          "name": "name",
+          "id": "4:5246724762305131590",
+          "name": "nationalId",
+          "type": 5
+        },
+        {
+          "id": "5:548981585877236335",
+          "name": "idTypePP",
+          "type": 5
+        },
+        {
+          "id": "6:8279118482734327199",
+          "name": "idPP",
+          "type": 5
+        },
+        {
+          "id": "7:1407272462746388719",
+          "name": "civilCodeEx",
           "type": 9
         },
         {
-          "id": "3:4196241250267300684",
-          "name": "rpps",
-          "type": 6
+          "id": "8:3165640342151324274",
+          "name": "civilLabelEx",
+          "type": 9
+        },
+        {
+          "id": "9:4275527032183982975",
+          "name": "civilCode",
+          "type": 9
+        },
+        {
+          "id": "10:9072384537758578696",
+          "name": "civilLabel",
+          "type": 9
+        },
+        {
+          "id": "11:4981679605312780782",
+          "name": "lastName",
+          "type": 9
+        },
+        {
+          "id": "12:3096612747255529069",
+          "name": "firstName",
+          "type": 9
+        },
+        {
+          "id": "13:1502665106980235846",
+          "name": "professionCode",
+          "type": 9
+        },
+        {
+          "id": "14:5216873333320075016",
+          "name": "professionLabel",
+          "type": 9
+        },
+        {
+          "id": "15:7202032141435182646",
+          "name": "professionalCategoryCode",
+          "type": 9
+        },
+        {
+          "id": "16:7541665067625514655",
+          "name": "professionalCategoryLabel",
+          "type": 9
+        },
+        {
+          "id": "17:4368842196686387009",
+          "name": "skillTypeCode",
+          "type": 9
+        },
+        {
+          "id": "18:5319131363562483694",
+          "name": "skillTypeLabel",
+          "type": 9
+        },
+        {
+          "id": "19:7172766989461876262",
+          "name": "skillCode",
+          "type": 9
+        },
+        {
+          "id": "20:1520332331475783829",
+          "name": "skillLabel",
+          "type": 9
+        },
+        {
+          "id": "21:7626849769063352732",
+          "name": "practiceModeCode",
+          "type": 9
+        },
+        {
+          "id": "22:5914256206845130439",
+          "name": "practiceModeLabel",
+          "type": 9
+        },
+        {
+          "id": "23:7827300040226750720",
+          "name": "siteSiretNumber",
+          "type": 9
+        },
+        {
+          "id": "24:5650031916270348330",
+          "name": "siteSirenNumber",
+          "type": 9
+        },
+        {
+          "id": "25:1015293985777441114",
+          "name": "siteFinessNumber",
+          "type": 9
+        },
+        {
+          "id": "26:1428242523694037404",
+          "name": "legalEstablishmentFinessNumber",
+          "type": 9
+        },
+        {
+          "id": "27:3569337102173859416",
+          "name": "techStructureId",
+          "type": 9
+        },
+        {
+          "id": "28:6206875519862233596",
+          "name": "siteCompanyName",
+          "type": 9
+        },
+        {
+          "id": "29:8363381891624836528",
+          "name": "siteCommercialSign",
+          "type": 9
+        },
+        {
+          "id": "30:271495000989417302",
+          "name": "structureRecipientComplement",
+          "type": 9
+        },
+        {
+          "id": "31:4469685318612496085",
+          "name": "structureGeographicPointComplement",
+          "type": 9
+        },
+        {
+          "id": "32:6336545442316336383",
+          "name": "structureStreetNumber",
+          "type": 9
+        },
+        {
+          "id": "33:6302232642773831544",
+          "name": "structureStreetRepeatIndex",
+          "type": 9
+        },
+        {
+          "id": "34:5586562857600447784",
+          "name": "structureStreetTypeCode",
+          "type": 9
+        },
+        {
+          "id": "35:2426089401018636336",
+          "name": "structureStreetTypeLabel",
+          "type": 9
+        },
+        {
+          "id": "36:6845007380544176506",
+          "name": "structureStreetLabel",
+          "type": 9
+        },
+        {
+          "id": "37:3953515492265858039",
+          "name": "structureDistributionMention",
+          "type": 9
+        },
+        {
+          "id": "38:7986183062082872570",
+          "name": "structureCedexOffice",
+          "type": 9
+        },
+        {
+          "id": "39:8236653393108108415",
+          "name": "structurePostalCode",
+          "type": 9
+        },
+        {
+          "id": "40:6645778377061714768",
+          "name": "structureCommuneCode",
+          "type": 9
+        },
+        {
+          "id": "41:3334473642470605692",
+          "name": "structureCommuneLabel",
+          "type": 9
+        },
+        {
+          "id": "42:8202699150382111950",
+          "name": "structureCountryCode",
+          "type": 9
+        },
+        {
+          "id": "43:6572979064439335445",
+          "name": "structureCountryLabel",
+          "type": 9
+        },
+        {
+          "id": "44:5787217293235136693",
+          "name": "structurePhoneNumber",
+          "type": 9
+        },
+        {
+          "id": "45:2139152898583681565",
+          "name": "structurePhoneNumber2",
+          "type": 9
+        },
+        {
+          "id": "46:7341775361239047255",
+          "name": "structureFaxNumber",
+          "type": 9
+        },
+        {
+          "id": "47:6330536808674075572",
+          "name": "structureEmailAddress",
+          "type": 9
+        },
+        {
+          "id": "48:5713935284369830071",
+          "name": "structureDepartmentCode",
+          "type": 9
+        },
+        {
+          "id": "49:2838623703335747388",
+          "name": "structureDepartmentLabel",
+          "type": 9
+        },
+        {
+          "id": "50:3002413444510522869",
+          "name": "oldStructureId",
+          "type": 9
+        },
+        {
+          "id": "51:266784110643591620",
+          "name": "registrationAuthority",
+          "type": 9
+        },
+        {
+          "id": "52:3685804066643709548",
+          "name": "activitySectorCode",
+          "type": 9
+        },
+        {
+          "id": "53:8634260942336789850",
+          "name": "activitySectorLabel",
+          "type": 9
+        },
+        {
+          "id": "54:6315250443262283827",
+          "name": "pharmacistsTableSectionCode",
+          "type": 9
+        },
+        {
+          "id": "55:882463404654383051",
+          "name": "pharmacistsTableSectionLabel",
+          "type": 9
+        },
+        {
+          "id": "56:7548484235573276216",
+          "name": "roleCode",
+          "type": 9
+        },
+        {
+          "id": "57:6423352993525892236",
+          "name": "roleLabel",
+          "type": 9
+        },
+        {
+          "id": "58:7326405075219867733",
+          "name": "activityGenreCode",
+          "type": 9
+        },
+        {
+          "id": "59:4077857095173459495",
+          "name": "activityGenreLabel",
+          "type": 9
         }
       ],
       "relations": []
@@ -804,7 +1074,9 @@
     1014915800800466571,
     6768295413255419804,
     6445119334258512737,
-    9213944247125958634
+    9213944247125958634,
+    4901771978216240424,
+    4196241250267300684
   ],
   "retiredRelationUids": [
     4704107518097647459
