@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.model
 import android.content.Context
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.TreatmentEntity
 import fr.medicapp.medicapp.database.entity.UserEntity
 import java.time.LocalDate
 
@@ -17,7 +16,7 @@ data class User(
     val allergies: MutableList<String>? = null
 ) : ModelToEntityMapper<UserEntity> {
     override fun convert(context: Context): UserEntity {
-        val user =  UserEntity(
+        val user = UserEntity(
             id,
             lastName,
             firstName,
