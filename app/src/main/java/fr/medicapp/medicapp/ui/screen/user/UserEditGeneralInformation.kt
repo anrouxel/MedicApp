@@ -28,6 +28,7 @@ fun UserEditGeneralInformation(
         title = "Information utilisateur",
         bottomText = "Suivant",
         onClick = onClick,
+        enabled = state.value.lastName.isNotEmpty() && state.value.firstName.isNotEmpty() && state.value.birthday < LocalDate.now()
 
         ) {
         ReusableElevatedCard {

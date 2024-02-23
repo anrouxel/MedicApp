@@ -1,11 +1,11 @@
 package fr.medicapp.medicapp.database.entity
 
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
-import fr.medicapp.medicapp.model.User
 import fr.medicapp.medicapp.database.converter.EntityToModelMapper
 import fr.medicapp.medicapp.database.converter.LocalDateConverter
+import fr.medicapp.medicapp.model.User
 import io.objectbox.annotation.Convert
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 import java.time.LocalDate
 
 @Entity
