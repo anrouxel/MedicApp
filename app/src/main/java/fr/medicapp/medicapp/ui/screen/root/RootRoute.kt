@@ -54,7 +54,7 @@ sealed class RootRoute(
     )
 
     /**
-     * Route de l'écran utilisateur.
+     * Route de l'écran utilisateur //Non utilisé.
      */
     object RootRouteUserRoute : RootRoute(
         route = "user",
