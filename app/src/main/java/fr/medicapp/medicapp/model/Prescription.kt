@@ -1,10 +1,12 @@
 package fr.medicapp.medicapp.model
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.notification.AlarmItem
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -68,68 +70,18 @@ data class Prescription(
         )
     }
 
-    fun getNotificationsBetweenDates(startDate: LocalDate, endDate: LocalDate): MutableList<Take> {
-        val notifications = mutableListOf<Take>()
-
-        val duration = Duration(
-            startDate = startDate,
-            endDate = endDate,
-        )
-
-        if (treatment.duration != null && treatment.duration!!.startDate != null) {
-            if (treatment.duration!!.startDate!!.isAfter(startDate)) {
-                duration.startDate = treatment.duration!!.startDate
-            }
-            if (treatment.duration!!.endDate != null && treatment.duration!!.endDate!!.isBefore(
-                    endDate
-                )
-            ) {
-                duration.endDate = treatment.duration!!.endDate
-            }
-        }
-
-        this.notifications.forEach { notification ->
-            notification.days.forEach { day ->
-                val dayOfWeek = day.value
-                var date = duration.startDate!!
-                while (date.isBefore(duration.endDate)) {
-                    if (date.dayOfWeek.value == dayOfWeek) {
-                        notification.alarms.forEach { alarm ->
-                            val hour = alarm.hour
-                            val minute = alarm.minute
-                            val dateTime = LocalDateTime.of(
-                                date.year,
-                                date.month,
-                                date.dayOfMonth,
-                                hour,
-                                minute
-                            )
-                            notifications.add(Take(this, dateTime))
-                        }
-                    }
-                    date = date.plusDays(1)
-                }
-            }
-        }
-
-        notifications.sortBy { it.date }
-
-        return notifications
-    }
-
     fun getNotificationsDates(date: LocalDate): MutableList<Take> {
         val notifications = mutableListOf<Take>()
 
         val startDate = treatment.duration!!.startDate!!
         val endDate = treatment.duration!!.endDate!!
 
-
         this.notifications.forEach { notification ->
             notification.days.forEach { day ->
                 val dayOfWeek = day.value
-                if (date.dayOfWeek.value == dayOfWeek
-                    && date.isAfter(startDate.minusDays(1))
-                    && date.isBefore(endDate.plusDays(1))
+                if (date.dayOfWeek.value == dayOfWeek &&
+                    date.isAfter(startDate.minusDays(1)) &&
+                    date.isBefore(endDate.plusDays(1))
                 ) {
                     notification.alarms.forEach { alarm ->
                         val hour = alarm.hour
@@ -142,7 +94,7 @@ data class Prescription(
                                 hour,
                                 minute
                             )
-                        notifications.add(Take(this, dateTime))
+                        notifications.add(Take(alarm.id, this, dateTime))
                     }
                 }
             }
@@ -151,5 +103,108 @@ data class Prescription(
         notifications.sortBy { it.date }
 
         return notifications
+    }
+
+    fun getNextAlarms(): MutableList<AlarmItem> {
+        val alarms = mutableListOf<AlarmItem>()
+        val now = LocalDateTime.now()
+
+        Log.d("Alarm", "Now: $now")
+
+        Log.d("Alarm", this.notifications.count().toString())
+
+        this.notifications.forEach { notification ->
+            var date = now.toLocalDate()
+
+            Log.d("Alarm", "Date: $date")
+            Log.d("Alarm", "End: ${treatment.duration!!.endDate}")
+            Log.d("Alarm", "After: ${date.isAfter(treatment.duration!!.endDate)}")
+            Log.d("Alarm", "Before: ${date.isBefore(treatment.duration!!.endDate)}")
+
+            while (date.isBefore(treatment.duration!!.endDate)) {
+                notification.alarms.forEach { alarm ->
+                    if (alarms.none { it.id == alarm.id }) {
+                        val hour = alarm.hour
+                        val minute = alarm.minute
+                        val dateTime = LocalDateTime.of(
+                            date.year,
+                            date.month,
+                            date.dayOfMonth,
+                            hour,
+                            minute
+                        )
+
+                        Log.d("Alarm", "Alarm: $dateTime")
+                        Log.d("Alarm", "Now: $now")
+                        Log.d("Alarm", "Before: ${dateTime.isBefore(now)}")
+                        Log.d("Alarm", "After: ${dateTime.isAfter(now)}")
+
+                        if (dateTime.isAfter(now)) {
+                            Log.d("Alarm", "Alarm: $dateTime")
+                            alarms.add(AlarmItem(alarm.id, dateTime, ""))
+                        }
+                    }
+                }
+                date = date.plusDays(1)
+            }
+        }
+
+        return alarms
+    }
+
+    fun getNextNotificationAlarms(notificationId: Long): MutableList<AlarmItem> {
+        val alarms = mutableListOf<AlarmItem>()
+        val now = LocalDateTime.now()
+
+        this.notifications.find { it.id == notificationId }?.let { notification ->
+            val date = now.toLocalDate()
+            while (date.isAfter(treatment.duration!!.endDate)) {
+                if (notification.days.any { it.value == date.dayOfWeek.value }) {
+                    notification.alarms.forEach { alarm ->
+                        if (alarms.none { it.id == alarm.id }) {
+                            val hour = alarm.hour
+                            val minute = alarm.minute
+                            val dateTime = LocalDateTime.of(
+                                date.year,
+                                date.month,
+                                date.dayOfMonth,
+                                hour,
+                                minute
+                            )
+                            if (dateTime.isBefore(now)) {
+                                alarms.add(AlarmItem(alarm.id, dateTime, ""))
+                            }
+                        }
+                    }
+                }
+                date.plusDays(1)
+            }
+        }
+
+        return alarms
+    }
+
+    fun getNotificationAlarms(notificationId: Long): MutableList<AlarmItem> {
+        val alarms = mutableListOf<AlarmItem>()
+
+        this.notifications.find { it.id == notificationId }?.let { notification ->
+            notification.alarms.forEach { alarm ->
+                alarms.add(AlarmItem(alarm.id, LocalDateTime.now(), ""))
+            }
+        }
+
+        return alarms
+    }
+
+    fun getAllAlarms(): MutableList<AlarmItem> {
+        val alarms = mutableListOf<AlarmItem>()
+
+        this.notifications.forEach { notification ->
+            notification.alarms.forEach { alarm ->
+                alarms.add(AlarmItem(alarm.id, LocalDateTime.now(), ""))
+            }
+        }
+
+        return alarms
     }
 }

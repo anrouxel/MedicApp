@@ -98,18 +98,12 @@ class SharedPrescriptionDetailViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateNotificationManager(context: Context, index: Int) {
-        val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.update(
-            context,
-            notification,
-            _sharedState.value.toString(),
-            ""
-        )
+        val enabled = _sharedState.value.notifications[index].active
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun removeFromNotificationManager(context: Context, index: Int) {
-        val notification = _sharedState.value.notifications[index]
-        NotificationPrescriptionManager.remove(context, notification)
+        val id = _sharedState.value.notifications[index].id
+        NotificationPrescriptionManager.remove(context, _sharedState.value.getNotificationAlarms(id))
     }
 }

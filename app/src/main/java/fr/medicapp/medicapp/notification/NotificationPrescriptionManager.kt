@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import fr.medicapp.medicapp.model.Notification
+import fr.medicapp.medicapp.model.Prescription
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -33,35 +34,18 @@ object NotificationPrescriptionManager {
         }
     }
 
-    fun add(context: Context, notification: Notification, message: String, bigText: String) {
+    fun add(context: Context, alarms: List<AlarmItem>) {
         val alarmScheduler = getInstances(context)
-        notification.alarms.forEach { alarm ->
-            val alarmItem = AlarmItem(
-                id = alarm.id,
-                alarmTime = LocalTime.of(alarm.hour, alarm.minute).atDate(LocalDate.now()),
-                message = message
-            )
-            alarmItem.let(alarmScheduler::schedule)
+
+        alarms.forEach {
+            it.let(alarmScheduler::schedule)
         }
     }
 
-    fun remove(context: Context, notification: Notification) {
+    fun remove(context: Context, alarms: List<AlarmItem>) {
         val alarmScheduler = getInstances(context)
-        notification.alarms.forEach { alarm ->
-            val alarmItem = AlarmItem(
-                id = alarm.id,
-                alarmTime = LocalTime.of(alarm.hour, alarm.minute).atDate(LocalDate.now()),
-                message = ""
-            )
-            alarmItem.let(alarmScheduler::cancel)
-        }
-    }
-
-    fun update(context: Context, notification: Notification, message: String, bigText: String) {
-        if (notification.active) {
-            add(context, notification, message, bigText)
-        } else {
-            remove(context, notification)
+        alarms.forEach {
+            it.let(alarmScheduler::cancel)
         }
     }
 }

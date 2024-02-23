@@ -148,11 +148,6 @@ class SharedPrescriptionEditViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addToNotificationManager(context: Context) {
-        val notification = _sharedState.value.notifications
-        val message = "Vous avez un médicament à prendre"
-        val bigText = "Vous avez un médicament à prendre"
-        notification.forEach {
-            NotificationPrescriptionManager.add(context, it, message, bigText)
-        }
+        NotificationPrescriptionManager.add(context, _sharedState.value.getNextAlarms())
     }
 }

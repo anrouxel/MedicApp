@@ -17,16 +17,9 @@ class RebootReceiver : BroadcastReceiver() {
             Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
                 val box = ObjectBox.getInstance(context)
                 val store = box.boxFor(PrescriptionEntity::class.java)
-                store.all.map { it.convert() }.forEach { prescription ->
-                    prescription.notifications.forEach { notification ->
-                        NotificationPrescriptionManager.add(
-                            context,
-                            notification,
-                            "Time to take your medication",
-                            "It's time to take your medication"
-                        )
-                    }
-                }
+                val alarms = store.all.map { it.convert() }.map { it.getNextAlarms() }.flatten()
+
+                NotificationPrescriptionManager.add(context, alarms)
             }
 
             else -> Toast.makeText(context, "Unknown action: ${intent.action}", Toast.LENGTH_SHORT)

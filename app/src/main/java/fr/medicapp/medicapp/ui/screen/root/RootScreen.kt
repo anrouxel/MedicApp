@@ -3,6 +3,7 @@ package fr.medicapp.medicapp.ui.screen.root
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.ui.navigation.Graph
 import fr.medicapp.medicapp.ui.navigation.HomeNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
@@ -59,7 +61,7 @@ fun RootScreen(
                         painter = painterResource(
                             id = theme.icon
                         ),
-                        contentDescription = "MedicApp",
+                        contentDescription = "MedicApp"
                     )
                 },
                 navigationIcon = {
