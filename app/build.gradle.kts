@@ -6,6 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("io.objectbox")
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "1.5.0"
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -110,6 +111,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
@@ -125,4 +127,7 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 }
