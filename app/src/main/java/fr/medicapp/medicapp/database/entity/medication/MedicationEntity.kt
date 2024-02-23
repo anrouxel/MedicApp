@@ -6,6 +6,8 @@ import fr.medicapp.medicapp.model.medication.Medication
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
+import io.objectbox.annotation.Index
+import io.objectbox.annotation.Unique
 import io.objectbox.relation.ToMany
 import java.time.LocalDate
 
@@ -14,6 +16,8 @@ data class MedicationEntity(
     @Id
     var id: Long = 0L,
 
+    @Index
+    @Unique
     var cisCode: Long = 0L,
 
     var name: String = "",
