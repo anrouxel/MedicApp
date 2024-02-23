@@ -287,3 +287,5 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/components/mozilla/Gecko.kt,5\8\581d40c82dcfa93f1bdac5bb02a5ff0f94f0c932
 ;
 .gitmodules,7\4\7445606fbf8f3683cd42bdc54b05d7a0bc2dfc44
+n
+>app/src/main/java/fr/medicapp/medicapp/mozilla/GeckoManager.kt,e\b\ebe4d0a1aec1ef94acf6ebbf1bcf4e3358cbf238

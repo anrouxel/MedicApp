@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -9,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.database.ObjectBox
 import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.ui.components.mozilla.Gecko
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
