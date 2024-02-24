@@ -17,16 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.model.SideEffect
-import fr.medicapp.medicapp.model.Treatment
-import fr.medicapp.medicapp.model.medication.Medication
+import fr.medicapp.medicapp.model.prescription.SideEffect
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
-import java.time.LocalDate
 
 @Composable
 fun SideEffectHome(
@@ -78,7 +74,7 @@ fun SideEffectItem(
         onClick = { onSideEffectClick(sideEffect.id) }
     ) {
         CardContent(
-            title = sideEffect.prescription?.treatment?.medication?.name ?: "",
+            title = "", //sideEffect.prescription?.treatment?.medication?.name ?: "",
             description = sideEffect.date?.toString() ?: ""
         )
     }
@@ -102,7 +98,7 @@ fun NoSideEffectAvailable() {
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
 private fun SideEffectHomePreview() {
-    val sideEffect = SideEffect(
+    /*val sideEffect = SideEffect(
         prescription = Prescription(
             treatment = Treatment(
                 medication = Medication(
@@ -111,7 +107,7 @@ private fun SideEffectHomePreview() {
             ),
         ),
         date = LocalDate.now()
-    )
+    )*/
 
     MedicAppTheme(
         darkTheme = false,
@@ -119,7 +115,7 @@ private fun SideEffectHomePreview() {
         theme = EURedColorShema
     ) {
         SideEffectHome(
-            sideEffects = listOf(sideEffect)
+            sideEffects = listOf()
         )
     }
 }
@@ -128,7 +124,7 @@ private fun SideEffectHomePreview() {
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
 private fun SideEffectHomeDarkPreview() {
-    val sideEffect = SideEffect(
+    /*val sideEffect = SideEffect(
         prescription = Prescription(
             treatment = Treatment(
                 medication = Medication(
@@ -137,7 +133,7 @@ private fun SideEffectHomeDarkPreview() {
             ),
         ),
         date = LocalDate.now()
-    )
+    )*/
 
     MedicAppTheme(
         darkTheme = true,
@@ -145,7 +141,7 @@ private fun SideEffectHomeDarkPreview() {
         theme = EURedColorShema
     ) {
         SideEffectHome(
-            sideEffects = listOf(sideEffect)
+            sideEffects = listOf()
         )
     }
 }

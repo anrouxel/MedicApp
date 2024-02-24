@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.model.Doctor
+import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.screen.Home
@@ -67,7 +67,7 @@ fun DoctorItem(
     onDoctorClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = { onDoctorClick(doctor.id) }
+        onClick = { } //onDoctorClick(doctor.id) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",

@@ -2,13 +2,10 @@ package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.DoctorEntity
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorDetail
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
@@ -36,14 +33,8 @@ fun NavGraphBuilder.doctorNavGraph(
         composable(route = DoctorRoute.DoctorHomeRoute.route) {
             onThemeChange(EUPurpleColorShema)
 
-            val context = LocalContext.current
-            val boxStore = ObjectBox.getInstance(context)
-            val store = boxStore.boxFor(DoctorEntity::class.java)
-
-            val doctors = store.all.map { it.convert() }
-
             DoctorHome(
-                doctors = doctors,
+                doctors = emptyList(),
                 onDoctorClick = {
                     navController.navigate(
                         PrescriptionRoute.PrescriptionDetailRoute.route.replace(

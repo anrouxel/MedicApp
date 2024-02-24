@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mapbox.mapboxsdk.geometry.LatLng
 import fr.medicapp.medicapp.api.address.APIAddressClient
-import fr.medicapp.medicapp.model.Doctor
+import fr.medicapp.medicapp.model.prescription.Doctor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.runBlocking

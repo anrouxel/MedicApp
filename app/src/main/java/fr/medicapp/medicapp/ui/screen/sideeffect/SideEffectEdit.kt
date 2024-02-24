@@ -3,18 +3,10 @@ package fr.medicapp.medicapp.ui.screen.sideeffect
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDatePickerButton
-import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
-import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
-import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.viewModel.SharedSideEffectEditViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -30,13 +22,13 @@ fun SideEffectEdit(
         title = "Ajouter un effet secondaire",
         bottomText = "Enregistrer",
         onClick = {
-            viewModel.save(context)
+            //viewModel.save(context)
             onClick()
         },
-        enabled = state.value.prescription != null && state.value.date != null && state.value.description.isNotEmpty()
+        enabled = false //state.value.prescription != null && state.value.date != null && state.value.description.isNotEmpty()
     ) {
         Column {
-            ReusableElevatedCard {
+            /*ReusableElevatedCard {
                 Column(
                     modifier = Modifier.padding(10.dp)
                 ) {
@@ -64,7 +56,7 @@ fun SideEffectEdit(
                         onValueChange = { viewModel.updateDescription(it) }
                     )
                 }
-            }
+            }*/
         }
     }
 }

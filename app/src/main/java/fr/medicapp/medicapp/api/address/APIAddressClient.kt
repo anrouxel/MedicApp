@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.api.address
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -40,7 +39,6 @@ class APIAddressClient {
     val apiServiceGuewen: ApiServiceGuewen by lazy {
         retrofitGuewen.create(ApiServiceGuewen::class.java)
     }
-
 
 
 }

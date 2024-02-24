@@ -1,10 +1,13 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.MedicationCompositionEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class MedicationComposition(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "medication_composition_id")
     val id: Long = 0L,
 
     var cisCode: Long = 0L,
@@ -22,18 +25,4 @@ data class MedicationComposition(
     var componentNature: String = "",
 
     var linkNumber: Int? = null
-) : ModelToEntityMapper<MedicationCompositionEntity> {
-    override fun convert(context: Context): MedicationCompositionEntity {
-        return MedicationCompositionEntity(
-            id,
-            cisCode,
-            pharmaceuticalElementDesignation,
-            substanceCode,
-            substanceName,
-            substanceDosage,
-            dosageReference,
-            componentNature,
-            linkNumber
-        )
-    }
-}
+)

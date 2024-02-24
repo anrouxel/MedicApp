@@ -1,17 +1,10 @@
 package fr.medicapp.medicapp.viewModel
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
-import fr.medicapp.medicapp.database.entity.SideEffectEntity
-import fr.medicapp.medicapp.model.OptionDialog
-import fr.medicapp.medicapp.model.SideEffect
+import fr.medicapp.medicapp.model.prescription.SideEffect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDate
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -23,8 +16,8 @@ class SharedSideEffectEditViewModel(
     private val _sharedState: MutableStateFlow<SideEffect> = MutableStateFlow(SideEffect())
     val sharedState: StateFlow<SideEffect> = _sharedState
 
-    fun updatePrescription(newPrescription: OptionDialog, context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
+    /*fun updatePrescription(newPrescription: OptionDialog, context: Context) {
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription =
             store.query().equal(PrescriptionEntity_.id, newPrescription.id).build().findFirst()
@@ -44,7 +37,7 @@ class SharedSideEffectEditViewModel(
     }
 
     fun save(context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(SideEffectEntity::class.java)
         val sideEffect = _sharedState.value.convert(context)
         store.put(sideEffect)
@@ -52,8 +45,8 @@ class SharedSideEffectEditViewModel(
     }
 
     fun getPrescriptionList(context: Context): List<OptionDialog> {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         return store.all.map { it.convert().toOptionDialog() }
-    }
+    }*/
 }

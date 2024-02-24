@@ -1,16 +1,11 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.ui.components.mozilla.Gecko
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
@@ -38,14 +33,8 @@ fun NavGraphBuilder.prescriptionNavGraph(
         composable(route = PrescriptionRoute.PrescriptionHomeRoute.route) {
             onThemeChange(EUPurpleColorShema)
 
-            val context = LocalContext.current
-            val boxStore = ObjectBox.getInstance(context)
-            val store = boxStore.boxFor(PrescriptionEntity::class.java)
-
-            val prescriptions = store.all.map { it.convert() }
-
             PrescriptionHome(
-                prescriptions = prescriptions,
+                prescriptions = emptyList(),
                 onAddPrescriptionClick = {
                     navController.navigate(PrescriptionRoute.PrescriptionEditRoute.route)
                 },
@@ -67,7 +56,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
 
             if (id != null) {
-                viewModel.loadPrescription(context = LocalContext.current, id = id)
+                //viewModel.loadPrescription(context = LocalContext.current, id = id)
             } else {
                 navController.popBackStack()
             }

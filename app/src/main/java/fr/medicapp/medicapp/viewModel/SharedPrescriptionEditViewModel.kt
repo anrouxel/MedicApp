@@ -1,24 +1,10 @@
 package fr.medicapp.medicapp.viewModel
 
-import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
-import fr.medicapp.medicapp.database.entity.medication.MedicationEntity_
-import fr.medicapp.medicapp.model.Alarm
-import fr.medicapp.medicapp.model.Duration
-import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.OptionDialog
-import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.DayOfWeek
-import java.time.LocalDate
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -31,7 +17,7 @@ class SharedPrescriptionEditViewModel(
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
 
-    fun updateDate(newDate: LocalDate) {
+    /*fun updateDate(newDate: LocalDate) {
         val updatedPrescription = _sharedState.value.copy(date = newDate)
         _sharedState.value = updatedPrescription
     }
@@ -119,7 +105,7 @@ class SharedPrescriptionEditViewModel(
     }
 
     fun updateMedication(newMedication: OptionDialog, context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
         val medication =
             store.query().equal(MedicationEntity_.id, newMedication.id).build().findFirst()
@@ -133,7 +119,7 @@ class SharedPrescriptionEditViewModel(
     fun save(context: Context) {
         addToNotificationManager(context)
 
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
         store.put(prescription)
@@ -141,7 +127,7 @@ class SharedPrescriptionEditViewModel(
     }
 
     fun getMedicationList(context: Context): List<OptionDialog> {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(MedicationEntity::class.java)
         return store.all.map { it.convert().toOptionDialog() }
     }
@@ -149,5 +135,5 @@ class SharedPrescriptionEditViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun addToNotificationManager(context: Context) {
         NotificationPrescriptionManager.add(context, _sharedState.value.getNextAlarms())
-    }
+    }*/
 }

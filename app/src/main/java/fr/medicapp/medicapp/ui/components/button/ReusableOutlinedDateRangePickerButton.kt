@@ -13,7 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.medicapp.medicapp.model.Duration
+import fr.medicapp.medicapp.model.prescription.Duration
 import fr.medicapp.medicapp.ui.components.modal.DateRangePickerModal
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme

@@ -10,11 +10,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.medicapp.medicapp.model.Alarm
+import fr.medicapp.medicapp.model.prescription.Alarm
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.ui.components.modal.SearchModal
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -65,8 +66,7 @@ private fun ReusableOutlinedSearchButtonPreview() {
         ReusableOutlinedSearchButton(
             options = listOf(),
             value = Alarm(
-                hour = 12,
-                minute = 30
+                time = LocalTime.now()
             ),
             label = "Recherche",
             onSelected = {}
@@ -86,8 +86,7 @@ private fun ReusableOutlinedSearchButtonDarkPreview() {
         ReusableOutlinedSearchButton(
             options = listOf(),
             value = Alarm(
-                hour = 12,
-                minute = 30
+                time = LocalTime.now()
             ),
             label = "Recherche",
             onSelected = {}

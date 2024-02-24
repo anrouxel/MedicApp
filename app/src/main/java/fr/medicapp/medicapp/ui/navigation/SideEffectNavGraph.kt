@@ -2,13 +2,10 @@ package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.SideEffectEntity
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectDetail
 import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectEdit
@@ -38,14 +35,8 @@ fun NavGraphBuilder.sideEffectNavGraph(
         composable(route = SideEffectRoute.SideEffectHomeRoute.route) {
             onThemeChange(EUPurpleColorShema)
 
-            val context = LocalContext.current
-            val boxStore = ObjectBox.getInstance(context)
-            val store = boxStore.boxFor(SideEffectEntity::class.java)
-
-            val sideEffects = store.all.map { it.convert() }
-
             SideEffectHome(
-                sideEffects = sideEffects,
+                sideEffects = emptyList(),
                 onAddSideEffectClick = {
                     navController.navigate(SideEffectRoute.SideEffectEditRoute.route)
                 },
@@ -67,7 +58,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
                 it.sharedViewModel<SharedSideEffectDetailViewModel>(navController = navController)
 
             if (id != null) {
-                viewModel.loadSideEffect(context = LocalContext.current, id = id)
+                //viewModel.loadSideEffect(context = LocalContext.current, id = id)
             } else {
                 navController.popBackStack()
             }

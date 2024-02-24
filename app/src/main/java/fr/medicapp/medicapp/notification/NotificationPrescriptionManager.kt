@@ -5,10 +5,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Prescription
-import java.time.LocalDate
-import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 object NotificationPrescriptionManager {

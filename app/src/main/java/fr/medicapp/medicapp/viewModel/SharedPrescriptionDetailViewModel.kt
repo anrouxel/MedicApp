@@ -1,17 +1,8 @@
 package fr.medicapp.medicapp.viewModel
 
-import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.NotificationEntity
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
-import fr.medicapp.medicapp.database.entity.SideEffectEntity
-import fr.medicapp.medicapp.model.Prescription
-import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -26,9 +17,9 @@ class SharedPrescriptionDetailViewModel(
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /*@RequiresApi(Build.VERSION_CODES.O)
     fun loadPrescription(context: Context, id: Long) {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription =
             store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
@@ -36,7 +27,7 @@ class SharedPrescriptionDetailViewModel(
     }
 
     fun removePrescription(context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val sideEffectStore = boxStore.boxFor(SideEffectEntity::class.java)
         val prescriptionStore = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
@@ -79,7 +70,7 @@ class SharedPrescriptionDetailViewModel(
     }
 
     fun save(context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(PrescriptionEntity::class.java)
         val prescription = _sharedState.value.convert(context)
         val newKey = store.put(prescription)
@@ -90,7 +81,7 @@ class SharedPrescriptionDetailViewModel(
     }
 
     fun saveUpdate(context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
+        val boxStore = RoomDB.getInstance(context)
         val store = boxStore.boxFor(NotificationEntity::class.java)
         val notifications = _sharedState.value.notifications.map { it.convert(context) }
         store.put(notifications)
@@ -105,5 +96,5 @@ class SharedPrescriptionDetailViewModel(
     fun removeFromNotificationManager(context: Context, index: Int) {
         val id = _sharedState.value.notifications[index].id
         NotificationPrescriptionManager.remove(context, _sharedState.value.getNotificationAlarms(id))
-    }
+    }*/
 }
