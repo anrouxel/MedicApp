@@ -10,11 +10,17 @@ import fr.medicapp.medicapp.database.converter.LocalTimeConverter
 import fr.medicapp.medicapp.database.converter.MutableListDayOfWeekConverter
 import fr.medicapp.medicapp.database.converter.MutableListFloatConverter
 import fr.medicapp.medicapp.database.converter.MutableListStringConverter
+import fr.medicapp.medicapp.database.dao.AlarmDAO
+import fr.medicapp.medicapp.database.dao.DoctorDAO
+import fr.medicapp.medicapp.database.dao.DurationDAO
+import fr.medicapp.medicapp.database.dao.MedicationDAO
+import fr.medicapp.medicapp.database.dao.NotificationAlarmCrossRefDAO
+import fr.medicapp.medicapp.database.dao.NotificationDAO
 import fr.medicapp.medicapp.database.dao.PrescriptionDAO
+import fr.medicapp.medicapp.database.dao.SideEffectDAO
 import fr.medicapp.medicapp.model.prescription.Alarm
 import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.Duration
-import fr.medicapp.medicapp.model.prescription.SideEffect
 import fr.medicapp.medicapp.model.medication.GenericGroup
 import fr.medicapp.medicapp.model.medication.HasAsmrOpinionInformation
 import fr.medicapp.medicapp.model.medication.HasSmrOpinionInformation
@@ -35,6 +41,7 @@ import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationPha
 import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationPrescriptionDispensingConditionsCrossRef
 import fr.medicapp.medicapp.model.prescription.NotificationInformation
 import fr.medicapp.medicapp.model.prescription.PrescriptionInformation
+import fr.medicapp.medicapp.model.prescription.SideEffectInformation
 import fr.medicapp.medicapp.model.prescription.relationship.crossRef.NotificationAlarmCrossRef
 
 /**
@@ -57,7 +64,7 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
         Duration::class,
         NotificationInformation::class,
         PrescriptionInformation::class,
-        SideEffect::class,
+        SideEffectInformation::class,
         HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef::class,
         HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef::class,
         MedicationGenericGroupCrossRef::class,
@@ -80,6 +87,20 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun prescriptionDAO(): PrescriptionDAO
+
+    abstract fun doctorDAO(): DoctorDAO
+
+    abstract fun durationDAO(): DurationDAO
+
+    abstract fun medicationDAO(): MedicationDAO
+
+    abstract fun sideEffectDAO(): SideEffectDAO
+
+    abstract fun notificationDAO(): NotificationDAO
+
+    abstract fun alarmDAO(): AlarmDAO
+
+    abstract fun notificationAlarmCrossRefDAO(): NotificationAlarmCrossRefDAO
 
     companion object {
 

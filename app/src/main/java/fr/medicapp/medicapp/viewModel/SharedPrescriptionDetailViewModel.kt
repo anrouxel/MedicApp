@@ -1,8 +1,13 @@
 package fr.medicapp.medicapp.viewModel
 
+import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import fr.medicapp.medicapp.database.repositories.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -17,84 +22,21 @@ class SharedPrescriptionDetailViewModel(
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState
 
-    /*@RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadPrescription(context: Context, id: Long) {
-        val boxStore = RoomDB.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription =
-            store.query().equal(PrescriptionEntity_.id, id).build().findFirst()?.convert()
-        _sharedState.value = prescription ?: Prescription()
+        val prescription = PrescriptionRepository(context).getById(id)
+        _sharedState.value = prescription
     }
 
     fun removePrescription(context: Context) {
-        val boxStore = RoomDB.getInstance(context)
-        val sideEffectStore = boxStore.boxFor(SideEffectEntity::class.java)
-        val prescriptionStore = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription = _sharedState.value.convert(context)
-
-        prescription.sideEffects.forEach { sideEffect ->
-            sideEffectStore.remove(sideEffect)
-        }
-
-        prescriptionStore.remove(prescription)
-
+        PrescriptionRepository(context).delete(_sharedState.value)
         _sharedState.value = Prescription()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNotificationActiveState(index: Int, newActiveState: Boolean, context: Context) {
-        val updatedNotifications = _sharedState.value.notifications.toMutableList()
-        updatedNotifications[index] = updatedNotifications[index].copy(active = newActiveState)
-        val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
-        _sharedState.value = updatedPrescription
-
-        if (newActiveState) {
-            updateNotificationManager(context, index)
-        } else {
-            removeFromNotificationManager(context, index)
-        }
-
-        saveUpdate(context)
+    fun updatedNotificationState(context: Context, id: Long, active: Boolean) {
+        val prescription = _sharedState.value
+        val notification = prescription.notifications.find { it.notificationInformation!!.id == id }
+        notification!!.notificationInformation!!.active = active
+        _sharedState.value = prescription
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun removeNotification(index: Int, context: Context) {
-        removeFromNotificationManager(context, index)
-
-        val updatedNotifications = _sharedState.value.notifications.toMutableList()
-        updatedNotifications.removeAt(index)
-        val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
-        _sharedState.value = updatedPrescription
-
-        save(context)
-    }
-
-    fun save(context: Context) {
-        val boxStore = RoomDB.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription = _sharedState.value.convert(context)
-        val newKey = store.put(prescription)
-        prescription.id = newKey
-        _sharedState.value =
-            store.query().equal(PrescriptionEntity_.id, prescription.id).build().findFirst()
-                ?.convert() ?: Prescription()
-    }
-
-    fun saveUpdate(context: Context) {
-        val boxStore = RoomDB.getInstance(context)
-        val store = boxStore.boxFor(NotificationEntity::class.java)
-        val notifications = _sharedState.value.notifications.map { it.convert(context) }
-        store.put(notifications)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNotificationManager(context: Context, index: Int) {
-        val enabled = _sharedState.value.notifications[index].active
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun removeFromNotificationManager(context: Context, index: Int) {
-        val id = _sharedState.value.notifications[index].id
-        NotificationPrescriptionManager.remove(context, _sharedState.value.getNotificationAlarms(id))
-    }*/
 }

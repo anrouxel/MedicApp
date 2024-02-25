@@ -1,10 +1,14 @@
 package fr.medicapp.medicapp.viewModel
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.model.prescription.SideEffect
+import fr.medicapp.medicapp.model.OptionDialog
+import fr.medicapp.medicapp.model.prescription.SideEffectInformation
+import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalDate
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -16,37 +20,22 @@ class SharedSideEffectEditViewModel(
     private val _sharedState: MutableStateFlow<SideEffect> = MutableStateFlow(SideEffect())
     val sharedState: StateFlow<SideEffect> = _sharedState
 
-    /*fun updatePrescription(newPrescription: OptionDialog, context: Context) {
-        val boxStore = RoomDB.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription =
-            store.query().equal(PrescriptionEntity_.id, newPrescription.id).build().findFirst()
-                ?.convert()
-        val updatedPrescription = _sharedState.value.copy(prescription = prescription)
-        _sharedState.value = updatedPrescription
-    }
-
     fun updateDate(date: LocalDate) {
-        val updatedPrescription = _sharedState.value.copy(date = date)
-        _sharedState.value = updatedPrescription
+        val updatedSideEffectInformation = _sharedState.value.sideEffectInformation.copy(date = date)
+        val updatedSideEffect = _sharedState.value.copy(sideEffectInformation = updatedSideEffectInformation)
+        _sharedState.value = updatedSideEffect
     }
 
     fun updateDescription(description: String) {
-        val updatedPrescription = _sharedState.value.copy(description = description)
-        _sharedState.value = updatedPrescription
-    }
-
-    fun save(context: Context) {
-        val boxStore = RoomDB.getInstance(context)
-        val store = boxStore.boxFor(SideEffectEntity::class.java)
-        val sideEffect = _sharedState.value.convert(context)
-        store.put(sideEffect)
-        _sharedState.value = SideEffect()
+        val updatedSideEffectInformation = _sharedState.value.sideEffectInformation.copy(description = description)
+        val updatedSideEffect = _sharedState.value.copy(sideEffectInformation = updatedSideEffectInformation)
+        _sharedState.value = updatedSideEffect
     }
 
     fun getPrescriptionList(context: Context): List<OptionDialog> {
-        val boxStore = RoomDB.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        return store.all.map { it.convert().toOptionDialog() }
-    }*/
+        return emptyList()
+    }
+
+    fun updatePrescription(prescription: OptionDialog, context: Context) {
+    }
 }

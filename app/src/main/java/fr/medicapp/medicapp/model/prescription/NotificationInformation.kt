@@ -17,5 +17,5 @@ data class NotificationInformation(
     var days: MutableList<DayOfWeek> = mutableStateListOf(),
 
     @ColumnInfo(name = "prescription_id")
-    val prescriptionId: Long = 0L
+    var prescriptionId: Long = 0L
 )

@@ -3,10 +3,21 @@ package fr.medicapp.medicapp.ui.screen.prescription
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.components.button.ReusableAlertButton
+import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Detail
+import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -22,7 +33,7 @@ fun PrescriptionDetail(
         title = "Détail de l'ordonnance",
     ) {
         Column {
-            /*ReusableElevatedCard {
+            ReusableElevatedCard {
                 Column(
                     modifier = Modifier.padding(10.dp)
                 ) {
@@ -150,7 +161,7 @@ fun PrescriptionDetail(
                 content = "Êtes-vous sûr de vouloir supprimer cette ordonnance ?",
                 dismissText = "Annuler",
                 confirmText = "Supprimer"
-            )*/
+            )
         }
     }
 }

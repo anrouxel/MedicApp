@@ -13,7 +13,9 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.AppDatabase
+import fr.medicapp.medicapp.database.repositories.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.Doctor
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
@@ -33,8 +35,6 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val db = AppDatabase.getInstance(this)
 
         // Initialisation de l'IA de prescription
         PrescriptionAI.getInstance(this)

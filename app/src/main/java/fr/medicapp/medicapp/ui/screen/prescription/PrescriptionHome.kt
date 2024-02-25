@@ -71,11 +71,11 @@ fun PrescriptionItem(
     onPrescriptionClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = {} //onPrescriptionClick(prescription.id) }
+        onClick = {onPrescriptionClick(prescription.prescriptionInformation.id) }
     ) {
         CardContent(
-            title = "", //prescription.treatment.medication?.name ?: "Médicament inconnu",
-            description = "" //prescription.date?.toString() ?: "Date inconnue",
+            title = prescription.medication?.medicationInformation?.name ?: "Médicament inconnu",
+            description = prescription.doctor?.firstName ?: "Docteur inconnu",
         )
     }
 }

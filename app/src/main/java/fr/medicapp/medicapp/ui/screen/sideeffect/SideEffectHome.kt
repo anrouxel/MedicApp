@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.model.prescription.SideEffect
+import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.screen.Home
@@ -71,11 +71,11 @@ fun SideEffectItem(
     onSideEffectClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = { onSideEffectClick(sideEffect.id) }
+        onClick = { onSideEffectClick(sideEffect.sideEffectInformation.id) }
     ) {
         CardContent(
-            title = "", //sideEffect.prescription?.treatment?.medication?.name ?: "",
-            description = sideEffect.date?.toString() ?: ""
+            title = sideEffect.prescription!!.medication!!.medicationInformation.name,
+            description = sideEffect.sideEffectInformation.date.toString()
         )
     }
 }

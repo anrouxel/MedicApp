@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.prescription.relationship
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
@@ -9,12 +10,12 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
 
 data class Notification(
     @Embedded
-    val notificationInformation: NotificationInformation,
+    val notificationInformation: NotificationInformation? = null,
 
     @Relation(
         parentColumn = "notification_id",
         entityColumn = "alarm_id",
         associateBy = Junction(NotificationAlarmCrossRef::class)
     )
-    var alarms: List<Alarm>
+    var alarms: MutableList<Alarm> = mutableStateListOf()
 )

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.prescription.relationship
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
@@ -9,7 +10,7 @@ import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.Duration
 import fr.medicapp.medicapp.model.prescription.NotificationInformation
 import fr.medicapp.medicapp.model.prescription.PrescriptionInformation
-import fr.medicapp.medicapp.model.prescription.SideEffect
+import fr.medicapp.medicapp.model.prescription.SideEffectInformation
 
 data class Prescription(
     @Embedded val prescriptionInformation: PrescriptionInformation = PrescriptionInformation(),
@@ -31,19 +32,19 @@ data class Prescription(
         parentColumn = "duration_id",
         entityColumn = "duration_id",
     )
-    val duration: Duration = Duration(),
+    val duration: Duration? = null,
 
     @Relation(
         entity = NotificationInformation::class,
         parentColumn = "prescription_id",
         entityColumn = "notification_id",
     )
-    val notifications: List<Notification> = emptyList(),
+    val notifications: MutableList<Notification> = mutableStateListOf(),
 
     @Relation(
-        entity = SideEffect::class,
+        entity = SideEffectInformation::class,
         parentColumn = "prescription_id",
         entityColumn = "side_effect_id",
     )
-    val sideEffects: List<SideEffect> = emptyList()
+    val sideEffects: MutableList<SideEffectInformation> = mutableStateListOf()
 )
