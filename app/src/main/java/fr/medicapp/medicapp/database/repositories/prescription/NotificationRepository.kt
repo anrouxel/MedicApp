@@ -17,30 +17,30 @@ class NotificationRepository(context: Context) : Repository(context = context) {
             NotificationAlarmCrossRefRepository(context).insert(
                 alarmIds.map { alarmId ->
                     NotificationAlarmCrossRef(
-                        notificationId = notification.notificationInformation!!.id,
+                        notificationId = notification.notificationInformation.id,
                         alarmId = alarmId
                     )
                 }
             )
         }
-        return db.notificationDAO().insert(notifications.map { it.notificationInformation!! })
+        return db.notificationDAO().insert(notifications.map { it.notificationInformation })
     }
 
     fun update(notification: Notification) {
-        db.notificationDAO().update(notification.notificationInformation!!)
+        db.notificationDAO().update(notification.notificationInformation)
     }
 
     fun delete(notification: Notification) {
         notification.alarms.forEach { alarm ->
             NotificationAlarmCrossRefRepository(context).delete(
                 NotificationAlarmCrossRef(
-                    notificationId = notification.notificationInformation!!.id,
+                    notificationId = notification.notificationInformation.id,
                     alarmId = alarm.id
                 )
             )
             AlarmRepository(context).delete(alarm)
         }
-        db.notificationDAO().delete(notification.notificationInformation!!)
+        db.notificationDAO().delete(notification.notificationInformation)
     }
 
     fun delete(notifications: List<Notification>) {

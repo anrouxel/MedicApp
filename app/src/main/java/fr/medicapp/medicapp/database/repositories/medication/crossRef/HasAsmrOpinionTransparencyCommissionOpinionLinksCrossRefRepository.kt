@@ -4,7 +4,8 @@ import android.content.Context
 import fr.medicapp.medicapp.database.repositories.Repository
 import fr.medicapp.medicapp.model.medication.relationship.crossRef.HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef
 
-class HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefRepository(context: Context) : Repository(context) {
+class HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefRepository(context: Context) :
+    Repository(context) {
     fun getAll(): List<HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef> {
         return db.HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO().getAll()
     }
@@ -15,8 +16,10 @@ class HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefRepository(context
         )
     }
 
-    fun insert(hasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef:
-    List<HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef>): List<Long> {
+    fun insert(
+        hasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef:
+        List<HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef>
+    ): List<Long> {
         return db.HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO().insert(
             hasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef
         )
