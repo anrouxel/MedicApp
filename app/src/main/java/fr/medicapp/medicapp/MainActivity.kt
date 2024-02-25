@@ -2,7 +2,6 @@ package fr.medicapp.medicapp
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -12,10 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ai.PrescriptionAI
-import fr.medicapp.medicapp.database.AppDatabase
-import fr.medicapp.medicapp.database.repositories.PrescriptionRepository
-import fr.medicapp.medicapp.model.prescription.Doctor
-import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema

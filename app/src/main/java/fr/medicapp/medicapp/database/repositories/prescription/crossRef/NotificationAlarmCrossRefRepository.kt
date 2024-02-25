@@ -1,9 +1,7 @@
-package fr.medicapp.medicapp.database.repositories
+package fr.medicapp.medicapp.database.repositories.prescription.crossRef
 
 import android.content.Context
-import fr.medicapp.medicapp.model.prescription.Alarm
-import fr.medicapp.medicapp.model.prescription.Doctor
-import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.database.repositories.Repository
 import fr.medicapp.medicapp.model.prescription.relationship.crossRef.NotificationAlarmCrossRef
 
 class NotificationAlarmCrossRefRepository(context: Context) : Repository(context = context) {
@@ -17,5 +15,9 @@ class NotificationAlarmCrossRefRepository(context: Context) : Repository(context
 
     fun insert(notificationAlarmCrossRefs: List<NotificationAlarmCrossRef>): List<Long> {
         return db.notificationAlarmCrossRefDAO().insert(notificationAlarmCrossRefs)
+    }
+
+    fun delete(notificationAlarmCrossRef: NotificationAlarmCrossRef) {
+        db.notificationAlarmCrossRefDAO().delete(notificationAlarmCrossRef)
     }
 }

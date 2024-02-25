@@ -10,23 +10,37 @@ import fr.medicapp.medicapp.database.converter.LocalTimeConverter
 import fr.medicapp.medicapp.database.converter.MutableListDayOfWeekConverter
 import fr.medicapp.medicapp.database.converter.MutableListFloatConverter
 import fr.medicapp.medicapp.database.converter.MutableListStringConverter
-import fr.medicapp.medicapp.database.dao.AlarmDAO
-import fr.medicapp.medicapp.database.dao.DoctorDAO
-import fr.medicapp.medicapp.database.dao.DurationDAO
-import fr.medicapp.medicapp.database.dao.MedicationDAO
-import fr.medicapp.medicapp.database.dao.NotificationAlarmCrossRefDAO
-import fr.medicapp.medicapp.database.dao.NotificationDAO
-import fr.medicapp.medicapp.database.dao.PrescriptionDAO
-import fr.medicapp.medicapp.database.dao.SideEffectDAO
-import fr.medicapp.medicapp.model.prescription.Alarm
-import fr.medicapp.medicapp.model.prescription.Doctor
-import fr.medicapp.medicapp.model.prescription.Duration
+import fr.medicapp.medicapp.database.dao.prescription.AlarmDAO
+import fr.medicapp.medicapp.database.dao.prescription.DoctorDAO
+import fr.medicapp.medicapp.database.dao.prescription.DurationDAO
+import fr.medicapp.medicapp.database.dao.medication.GenericGroupDAO
+import fr.medicapp.medicapp.database.dao.medication.HasAsmrOpinionDAO
+import fr.medicapp.medicapp.database.dao.medication.HasSmrOpinionDAO
+import fr.medicapp.medicapp.database.dao.medication.ImportantInformationDAO
+import fr.medicapp.medicapp.database.dao.medication.MedicationCompositionDAO
+import fr.medicapp.medicapp.database.dao.medication.MedicationDAO
+import fr.medicapp.medicapp.database.dao.medication.MedicationPresentationDAO
+import fr.medicapp.medicapp.database.dao.prescription.crossRef.NotificationAlarmCrossRefDAO
+import fr.medicapp.medicapp.database.dao.prescription.NotificationDAO
+import fr.medicapp.medicapp.database.dao.medication.PharmaceuticalSpecialtyDAO
+import fr.medicapp.medicapp.database.dao.prescription.PrescriptionDAO
+import fr.medicapp.medicapp.database.dao.medication.PrescriptionDispensingConditionsDAO
+import fr.medicapp.medicapp.database.dao.prescription.SideEffectDAO
+import fr.medicapp.medicapp.database.dao.medication.TransparencyCommissionOpinionLinksDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.MedicationGenericGroupCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.MedicationImportantInformationCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.MedicationMedicationCompositionCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.MedicationMedicationPresentationCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.MedicationPharmaceuticalSpecialtyCrossRefDAO
+import fr.medicapp.medicapp.database.dao.medication.crossRef.MedicationPrescriptionDispensingConditionsCrossRefDAO
 import fr.medicapp.medicapp.model.medication.GenericGroup
 import fr.medicapp.medicapp.model.medication.HasAsmrOpinionInformation
 import fr.medicapp.medicapp.model.medication.HasSmrOpinionInformation
 import fr.medicapp.medicapp.model.medication.ImportantInformation
-import fr.medicapp.medicapp.model.medication.MedicationInformation
 import fr.medicapp.medicapp.model.medication.MedicationComposition
+import fr.medicapp.medicapp.model.medication.MedicationInformation
 import fr.medicapp.medicapp.model.medication.MedicationPresentation
 import fr.medicapp.medicapp.model.medication.PharmaceuticalSpecialty
 import fr.medicapp.medicapp.model.medication.PrescriptionDispensingConditions
@@ -39,6 +53,9 @@ import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationMed
 import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationMedicationPresentationCrossRef
 import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationPharmaceuticalSpecialtyCrossRef
 import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationPrescriptionDispensingConditionsCrossRef
+import fr.medicapp.medicapp.model.prescription.Alarm
+import fr.medicapp.medicapp.model.prescription.Doctor
+import fr.medicapp.medicapp.model.prescription.Duration
 import fr.medicapp.medicapp.model.prescription.NotificationInformation
 import fr.medicapp.medicapp.model.prescription.PrescriptionInformation
 import fr.medicapp.medicapp.model.prescription.SideEffectInformation
@@ -101,6 +118,40 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun alarmDAO(): AlarmDAO
 
     abstract fun notificationAlarmCrossRefDAO(): NotificationAlarmCrossRefDAO
+
+    abstract fun GenericGroupDAO(): GenericGroupDAO
+
+    abstract fun HasAsmrOpinionDAO(): HasAsmrOpinionDAO
+
+    abstract fun HasSmrOpinionDAO(): HasSmrOpinionDAO
+
+    abstract fun ImportantInformationDAO(): ImportantInformationDAO
+
+    abstract fun MedicationCompositionDAO(): MedicationCompositionDAO
+
+    abstract fun MedicationPresentationDAO(): MedicationPresentationDAO
+
+    abstract fun PharmaceuticalSpecialtyDAO(): PharmaceuticalSpecialtyDAO
+
+    abstract fun PrescriptionDispensingConditionsDAO(): PrescriptionDispensingConditionsDAO
+
+    abstract fun TransparencyCommissionOpinionLinksDAO(): TransparencyCommissionOpinionLinksDAO
+
+    abstract fun HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO(): HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
+
+    abstract fun HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO(): HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
+
+    abstract fun MedicationGenericGroupCrossRefDAO(): MedicationGenericGroupCrossRefDAO
+
+    abstract fun MedicationImportantInformationCrossRefDAO(): MedicationImportantInformationCrossRefDAO
+
+    abstract fun MedicationMedicationCompositionCrossRefDAO(): MedicationMedicationCompositionCrossRefDAO
+
+    abstract fun MedicationMedicationPresentationCrossRefDAO(): MedicationMedicationPresentationCrossRefDAO
+
+    abstract fun MedicationPharmaceuticalSpecialtyCrossRefDAO(): MedicationPharmaceuticalSpecialtyCrossRefDAO
+
+    abstract fun MedicationPrescriptionDispensingConditionsCrossRefDAO(): MedicationPrescriptionDispensingConditionsCrossRefDAO
 
     companion object {
 

@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.database.dao
+package fr.medicapp.medicapp.database.dao.prescription.crossRef
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.relationship.crossRef.NotificationAlarmCrossRef
 
 @Dao

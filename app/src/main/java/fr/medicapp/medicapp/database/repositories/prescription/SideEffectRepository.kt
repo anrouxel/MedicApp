@@ -1,6 +1,7 @@
-package fr.medicapp.medicapp.database.repositories
+package fr.medicapp.medicapp.database.repositories.prescription
 
 import android.content.Context
+import fr.medicapp.medicapp.database.repositories.Repository
 import fr.medicapp.medicapp.model.prescription.SideEffectInformation
 import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
 
@@ -14,7 +15,8 @@ class SideEffectRepository(context: Context) : Repository(context = context) {
     }
 
     fun insert(sideEffect: SideEffect): Long {
-        sideEffect.sideEffectInformation.prescriptionId = sideEffect.prescription!!.prescriptionInformation.id
+        sideEffect.sideEffectInformation.prescriptionId =
+            sideEffect.prescription!!.prescriptionInformation.id
         return db.sideEffectDAO().insert(sideEffect.sideEffectInformation)
     }
 

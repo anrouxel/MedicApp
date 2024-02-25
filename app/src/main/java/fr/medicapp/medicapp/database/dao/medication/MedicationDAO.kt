@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.database.dao
+package fr.medicapp.medicapp.database.dao.medication
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -8,8 +8,6 @@ import androidx.room.Transaction
 import androidx.room.Update
 import fr.medicapp.medicapp.model.medication.MedicationInformation
 import fr.medicapp.medicapp.model.medication.relationship.Medication
-import fr.medicapp.medicapp.model.prescription.Doctor
-import fr.medicapp.medicapp.model.prescription.Duration
 
 @Dao
 interface MedicationDAO {
@@ -19,6 +17,9 @@ interface MedicationDAO {
 
     @Insert
     fun insert(medicationInformation: MedicationInformation): Long
+
+    @Insert
+    fun insert(medicationInformation: List<MedicationInformation>): List<Long>
 
     @Update
     fun update(medicationInformation: MedicationInformation)

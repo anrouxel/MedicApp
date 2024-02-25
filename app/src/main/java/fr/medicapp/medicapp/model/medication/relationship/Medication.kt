@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import fr.medicapp.medicapp.model.medication.GenericGroup
+import fr.medicapp.medicapp.model.medication.HasSmrOpinionInformation
 import fr.medicapp.medicapp.model.medication.ImportantInformation
 import fr.medicapp.medicapp.model.medication.MedicationInformation
 import fr.medicapp.medicapp.model.medication.MedicationComposition
@@ -41,8 +42,8 @@ data class Medication(
         associateBy = Junction(MedicationGenericGroupCrossRef::class)
     )
     val genericGroups: List<GenericGroup>,
-/*
-    @Embedded
+
+/*    @Embedded
     val hasSmrOpinionWithTransparencyCommissionOpinionLinks: HasSmrOpinion,
 
     @Embedded

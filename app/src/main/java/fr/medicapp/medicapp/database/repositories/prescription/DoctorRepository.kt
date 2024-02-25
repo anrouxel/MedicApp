@@ -1,8 +1,8 @@
-package fr.medicapp.medicapp.database.repositories
+package fr.medicapp.medicapp.database.repositories.prescription
 
 import android.content.Context
+import fr.medicapp.medicapp.database.repositories.Repository
 import fr.medicapp.medicapp.model.prescription.Doctor
-import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 
 class DoctorRepository(context: Context) : Repository(context = context) {
     fun getAll(): List<Doctor> {

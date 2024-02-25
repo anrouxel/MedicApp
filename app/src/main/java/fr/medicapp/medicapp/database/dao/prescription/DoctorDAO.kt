@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.database.dao
+package fr.medicapp.medicapp.database.dao.prescription
 
 import androidx.room.Dao
 import androidx.room.Delete
