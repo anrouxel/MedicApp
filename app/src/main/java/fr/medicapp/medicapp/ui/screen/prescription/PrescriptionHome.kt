@@ -71,7 +71,7 @@ fun PrescriptionItem(
     onPrescriptionClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = {onPrescriptionClick(prescription.prescriptionInformation.id) }
+        onClick = { onPrescriptionClick(prescription.prescriptionInformation.id) }
     ) {
         CardContent(
             title = prescription.medication?.medicationInformation?.name ?: "Médicament inconnu",

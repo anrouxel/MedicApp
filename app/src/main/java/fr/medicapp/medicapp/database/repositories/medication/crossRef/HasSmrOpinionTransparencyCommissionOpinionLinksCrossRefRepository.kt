@@ -4,7 +4,8 @@ import android.content.Context
 import fr.medicapp.medicapp.database.repositories.Repository
 import fr.medicapp.medicapp.model.medication.relationship.crossRef.HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef
 
-class HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefRepository(context: Context) : Repository(context) {
+class HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefRepository(context: Context) :
+    Repository(context) {
     fun getAll(): List<HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef> {
         return db.HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO().getAll()
     }

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(primaryKeys = ["notification_id", "alarm_id"])
-data class NotificationAlarmCrossRef (
+data class NotificationAlarmCrossRef(
     @ColumnInfo(name = "notification_id")
     val notificationId: Long = 0L,
 
