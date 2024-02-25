@@ -11,6 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ai.PrescriptionAI
+import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.model.medication.relationship.Medication
 import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
@@ -30,6 +32,13 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Thread {
+            val medication = Medication()
+            medication.medicationInformation.name = "Doliprane"
+
+            MedicationRepository(this).insert(medication)
+        }.start()
 
         // Initialisation de l'IA de prescription
         PrescriptionAI.getInstance(this)

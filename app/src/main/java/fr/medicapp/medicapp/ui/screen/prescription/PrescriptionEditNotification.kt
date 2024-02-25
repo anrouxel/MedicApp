@@ -2,12 +2,36 @@ package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconToggleButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ui.components.button.ReusableButton
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTimePickerButton
+import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import java.time.DayOfWeek
+import java.time.format.TextStyle
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -22,13 +46,13 @@ fun PrescriptionEditNotification(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
         onClick = {
-            //viewModel.save(context)
+            viewModel.save(context)
             onClick()
         },
-        enabled = false //state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() && it.days.isNotEmpty() }
+        enabled = state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() && it.notificationInformation.days.isNotEmpty() }
     ) {
         Column {
-            /*ReusableButton(
+            ReusableButton(
                 text = "Ajouter une notification",
                 onClick = {
                     viewModel.addNotification()
@@ -58,7 +82,7 @@ fun PrescriptionEditNotification(
 
                             Row {
                                 Switch(
-                                    checked = notification.active,
+                                    checked = notification.notificationInformation.active,
                                     onCheckedChange = {
                                         viewModel.updateNotificationActiveState(index, it)
                                     }
@@ -95,7 +119,9 @@ fun PrescriptionEditNotification(
                                         width = 1.dp,
                                         color = MaterialTheme.colorScheme.primary
                                     ),
-                                    checked = notification.days.contains(dayOfWeek),
+                                    checked = notification.notificationInformation.days.contains(
+                                        dayOfWeek
+                                    ),
                                     onCheckedChange = {
                                         viewModel.updateNotificationDays(index, dayOfWeek)
                                     },
@@ -108,7 +134,10 @@ fun PrescriptionEditNotification(
                                         )
                                             .uppercase(Locale.FRENCH)
                                             .take(2),
-                                        color = if (notification.days.contains(dayOfWeek)) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                                        color = if (notification.notificationInformation.days.contains(
+                                                dayOfWeek
+                                            )
+                                        ) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
@@ -163,7 +192,7 @@ fun PrescriptionEditNotification(
                         }
                     }
                 }
-            }*/
+            }
         }
     }
 }

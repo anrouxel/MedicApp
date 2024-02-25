@@ -23,11 +23,14 @@ class SharedSideEffectDetailViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadSideEffect(context: Context, id: Long) {
-        _sharedState.value = SideEffectRepository(context).getById(id)
+        Thread {
+            _sharedState.value = SideEffectRepository(context).getById(id)
+        }.start()
     }
 
-
     fun removeSideEffect(context: Context) {
-        SideEffectRepository(context).remove(_sharedState.value)
+        Thread {
+            SideEffectRepository(context).delete(_sharedState.value)
+        }.start()
     }
 }

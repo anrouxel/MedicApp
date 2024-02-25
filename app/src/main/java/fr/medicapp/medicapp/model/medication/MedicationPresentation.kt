@@ -36,4 +36,7 @@ data class MedicationPresentation(
     var priceHonoraryInEuro: Float? = null,
 
     var reimbursementIndications: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

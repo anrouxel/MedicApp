@@ -10,8 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.medicapp.medicapp.model.prescription.Alarm
 import fr.medicapp.medicapp.model.OptionDialog
+import fr.medicapp.medicapp.model.prescription.Alarm
 import fr.medicapp.medicapp.ui.components.modal.SearchModal
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -21,7 +21,7 @@ import java.time.LocalTime
 @Composable
 fun ReusableOutlinedSearchButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    options: List<OptionDialog>,
+    options: suspend (String) -> List<OptionDialog>,
     value: Any?,
     label: String,
     warnings: Boolean = false,
@@ -35,12 +35,11 @@ fun ReusableOutlinedSearchButton(
             options = options,
             onDismissRequest = {
                 open = false
-            },
-            onConfirm = {
-                onSelected(it)
-                open = false
             }
-        )
+        ) {
+            onSelected(it)
+            open = false
+        }
     }
 
     ReusableOutlinedTextFieldButton(
@@ -64,13 +63,12 @@ private fun ReusableOutlinedSearchButtonPreview() {
         dynamicColor = false
     ) {
         ReusableOutlinedSearchButton(
-            options = listOf(),
+            options = { listOf() },
             value = Alarm(
                 time = LocalTime.now()
             ),
-            label = "Recherche",
-            onSelected = {}
-        )
+            label = "Recherche"
+        ) {}
     }
 }
 
@@ -84,12 +82,11 @@ private fun ReusableOutlinedSearchButtonDarkPreview() {
         dynamicColor = false
     ) {
         ReusableOutlinedSearchButton(
-            options = listOf(),
+            options = { listOf() },
             value = Alarm(
                 time = LocalTime.now()
             ),
-            label = "Recherche",
-            onSelected = {}
-        )
+            label = "Recherche"
+        ) {}
     }
 }

@@ -17,5 +17,8 @@ data class ImportantInformation(
 
     var safetyInformationEndDate: LocalDate? = null,
 
-    var safetyInformationLink: String = ""
+    var safetyInformationLink: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

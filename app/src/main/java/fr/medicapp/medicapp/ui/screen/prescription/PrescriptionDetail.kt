@@ -108,15 +108,18 @@ fun PrescriptionDetail(
 
                             Row {
                                 Switch(
-                                    checked = notification.notificationInformation!!.active,
+                                    checked = notification.notificationInformation.active,
                                     onCheckedChange = {
-                                        viewModel.updatedNotificationState(context, notification.notificationInformation.id, it)
+                                        viewModel.updatedNotificationState(context, index, it)
                                     }
                                 )
 
                                 ReusableAlertIconButton(
                                     onClick = {
-                                        viewModel.removeNotification(context, notification.notificationInformation.id)
+                                        viewModel.removeNotification(
+                                            context,
+                                            notification.notificationInformation.id
+                                        )
                                     },
                                     icon = Icons.Default.Delete,
                                     title = "Supprimer cette notification",
@@ -129,7 +132,7 @@ fun PrescriptionDetail(
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(
-                            value = "Active : ${notification.notificationInformation!!.active}",
+                            value = "Active : ${notification.notificationInformation.active}",
                         )
 
                         Spacer(modifier = Modifier.padding(10.dp))

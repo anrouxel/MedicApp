@@ -10,7 +10,7 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
 
 data class Notification(
     @Embedded
-    val notificationInformation: NotificationInformation? = null,
+    val notificationInformation: NotificationInformation = NotificationInformation(),
 
     @Relation(
         parentColumn = "notification_id",

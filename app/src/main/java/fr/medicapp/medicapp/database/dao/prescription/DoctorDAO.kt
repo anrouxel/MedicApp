@@ -17,6 +17,9 @@ interface DoctorDAO {
     @Insert
     fun insert(doctor: Doctor): Long
 
+    @Insert
+    fun insert(doctor: List<Doctor>): List<Long>
+
     @Update
     fun update(doctor: Doctor)
 

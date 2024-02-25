@@ -2,8 +2,8 @@ package fr.medicapp.medicapp.model.prescription.relationship
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Embedded
-import androidx.room.Junction
 import androidx.room.Relation
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.medication.MedicationInformation
 import fr.medicapp.medicapp.model.medication.relationship.Medication
 import fr.medicapp.medicapp.model.prescription.Doctor
@@ -47,4 +47,16 @@ data class Prescription(
         entityColumn = "side_effect_id",
     )
     val sideEffects: MutableList<SideEffectInformation> = mutableStateListOf()
-)
+) {
+    override fun toString(): String {
+        return medication!!.medicationInformation.name
+    }
+
+    fun toOptionDialog(): OptionDialog {
+        return OptionDialog(
+            id = prescriptionInformation.id,
+            title = medication!!.medicationInformation.name,
+            description = duration.toString(),
+        )
+    }
+}

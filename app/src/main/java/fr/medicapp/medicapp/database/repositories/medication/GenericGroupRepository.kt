@@ -21,4 +21,8 @@ class GenericGroupRepository(context: Context) : Repository(context) {
     fun delete(genericGroup: GenericGroup) {
         db.GenericGroupDAO().delete(genericGroup)
     }
+
+    fun delete(genericGroups: List<GenericGroup>) {
+        genericGroups.forEach { delete(it) }
+    }
 }

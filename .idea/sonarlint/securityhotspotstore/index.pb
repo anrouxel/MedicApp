@@ -493,3 +493,9 @@ Oapp/src/main/java/fr/medicapp/medicapp/database/dao/prescription/DurationDAO.kt
 Sapp/src/main/java/fr/medicapp/medicapp/database/dao/prescription/PrescriptionDAO.kt,8\7\8710081772ae9f39481bafc3ed99df635600fbec
 ô
 iapp/src/main/java/fr/medicapp/medicapp/database/dao/prescription/crossRef/NotificationAlarmCrossRefDAO.kt,6\e\6e2a3d204fc09310c28776c8457378f6ebc9b977
+è
+_app/src/main/java/fr/medicapp/medicapp/database/repositories/prescription/DurationRepository.kt,1\8\1891bd4d27507a71dd56b825a59f2684a38522df
+|
+Lapp/src/main/java/fr/medicapp/medicapp/model/medication/fts/MedicationFTS.kt,6\2\62b7347e31f6f708f35db48f87f0378a999e6c2f
+Ä
+Papp/src/main/java/fr/medicapp/medicapp/model/prescription/fts/PrescriptionFTS.kt,b\e\bea06073a64f2837ca5bc18b49046a68cfc3a8d3

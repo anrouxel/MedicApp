@@ -24,7 +24,15 @@ class SideEffectRepository(context: Context) : Repository(context = context) {
         return db.sideEffectDAO().insert(sideEffectInformation)
     }
 
-    fun remove(sideEffect: SideEffect) {
-        db.sideEffectDAO().delete(sideEffect.sideEffectInformation)
+    fun delete(sideEffectInformation: SideEffectInformation) {
+        db.sideEffectDAO().delete(sideEffectInformation)
+    }
+
+    fun delete(sideEffect: SideEffect) {
+        delete(sideEffect.sideEffectInformation)
+    }
+
+    fun delete(sideEffects: List<SideEffectInformation>) {
+        sideEffects.forEach { delete(it) }
     }
 }

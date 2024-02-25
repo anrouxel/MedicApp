@@ -12,4 +12,8 @@ class DoctorRepository(context: Context) : Repository(context = context) {
     fun insert(doctor: Doctor): Long {
         return db.doctorDAO().insert(doctor)
     }
+
+    fun insert(doctors: List<Doctor>): List<Long> {
+        return db.doctorDAO().insert(doctors)
+    }
 }

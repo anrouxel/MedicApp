@@ -15,6 +15,16 @@ interface MedicationDAO {
     @Query("SELECT * FROM MedicationInformation")
     fun getAll(): List<Medication>
 
+    @Transaction
+    @Query("SELECT * FROM MedicationInformation WHERE medication_id = :id")
+    fun getById(id: Long): Medication
+
+    @Transaction
+    @Query(
+        "SELECT * FROM MedicationInformation WHERE name LIKE :search || '%'"
+    )
+    fun search(search: String): List<Medication>
+
     @Insert
     fun insert(medicationInformation: MedicationInformation): Long
 

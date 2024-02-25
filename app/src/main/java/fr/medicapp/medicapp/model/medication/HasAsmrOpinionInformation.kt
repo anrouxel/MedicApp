@@ -22,4 +22,7 @@ data class HasAsmrOpinionInformation(
     var asmrValue: String = "",
 
     var asmrLabel: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

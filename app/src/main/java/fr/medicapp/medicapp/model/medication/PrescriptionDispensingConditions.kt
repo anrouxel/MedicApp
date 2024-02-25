@@ -12,5 +12,8 @@ data class PrescriptionDispensingConditions(
 
     var cisCode: Long = 0L,
 
-    var prescriptionDispensingCondition: String = ""
+    var prescriptionDispensingCondition: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

@@ -24,5 +24,8 @@ data class MedicationComposition(
 
     var componentNature: String = "",
 
-    var linkNumber: Int? = null
+    var linkNumber: Int? = null,
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

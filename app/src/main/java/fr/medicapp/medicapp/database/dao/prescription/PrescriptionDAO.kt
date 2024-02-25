@@ -19,6 +19,10 @@ interface PrescriptionDAO {
     @Query("SELECT * FROM PrescriptionInformation WHERE prescription_id = :id")
     fun getById(id: Long): Prescription
 
+    @Transaction
+    @Query("SELECT p.* FROM PrescriptionInformation p INNER JOIN  MedicationInformation m ON p.medication_id = m.medication_id WHERE m.name LIKE :search || '%'")
+    fun search(search: String): List<Prescription>
+
     @Insert
     fun insert(prescriptionInformation: PrescriptionInformation): Long
 

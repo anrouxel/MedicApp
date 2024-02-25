@@ -20,4 +20,8 @@ class ImportantInformationRepository(context: Context) : Repository(context) {
     fun delete(importantInformation: ImportantInformation) {
         db.ImportantInformationDAO().delete(importantInformation)
     }
+
+    fun delete(importantInformations: List<ImportantInformation>) {
+        importantInformations.forEach { delete(it) }
+    }
 }

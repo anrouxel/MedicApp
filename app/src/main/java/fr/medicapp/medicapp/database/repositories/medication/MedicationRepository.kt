@@ -2,166 +2,84 @@ package fr.medicapp.medicapp.database.repositories.medication
 
 import android.content.Context
 import fr.medicapp.medicapp.database.repositories.Repository
-import fr.medicapp.medicapp.database.repositories.medication.crossRef.MedicationGenericGroupCrossRefRepository
-import fr.medicapp.medicapp.database.repositories.medication.crossRef.MedicationImportantInformationCrossRefRepository
-import fr.medicapp.medicapp.database.repositories.medication.crossRef.MedicationMedicationCompositionCrossRefRepository
-import fr.medicapp.medicapp.database.repositories.medication.crossRef.MedicationMedicationPresentationCrossRefRepository
-import fr.medicapp.medicapp.database.repositories.medication.crossRef.MedicationPharmaceuticalSpecialtyCrossRefRepository
-import fr.medicapp.medicapp.database.repositories.medication.crossRef.MedicationPrescriptionDispensingConditionsCrossRefRepository
+import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.medication.relationship.Medication
-import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationGenericGroupCrossRef
-import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationImportantInformationCrossRef
-import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationMedicationCompositionCrossRef
-import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationMedicationPresentationCrossRef
-import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationPharmaceuticalSpecialtyCrossRef
-import fr.medicapp.medicapp.model.medication.relationship.crossRef.MedicationPrescriptionDispensingConditionsCrossRef
 
 class MedicationRepository(context: Context) : Repository(context) {
     fun getAll(): List<Medication> {
         return db.medicationDAO().getAll()
     }
 
-    fun insert(medication: Medication): Long {
-        val genericGroupIds = GenericGroupRepository(context).insert(medication.genericGroups)
-        val importantInformationIds = ImportantInformationRepository(context).insert(medication.importantInformations)
-        val medicationCompositionIds = MedicationCompositionRepository(
-            context
-        ).insert(medication.medicationCompositions)
-        val medicationPresentationIds = MedicationPresentationRepository(
-            context
-        ).insert(medication.medicationPresentations)
-        val pharmaceuticalSpecialtyIds = PharmaceuticalSpecialtyRepository(
-            context
-        ).insert(medication.pharmaceuticalSpecialties)
-        val prescriptionDispensingConditionsIds = PrescriptionDispensingConditionsRepository(
-            context
-        ).insert(medication.prescriptionDispensingConditions)
+    fun getById(id: Long): Medication {
+        return db.medicationDAO().getById(id)
+    }
 
-        MedicationGenericGroupCrossRefRepository(context).insert(
-            genericGroupIds.map {
-                MedicationGenericGroupCrossRef(
-                    medication.medicationInformation.id,
-                    it
-                )
-            }
-        )
-        MedicationImportantInformationCrossRefRepository(context).insert(
-            importantInformationIds.map {
-                MedicationImportantInformationCrossRef(
-                    medication.medicationInformation.id,
-                    it
-                )
-            }
-        )
-        MedicationMedicationCompositionCrossRefRepository(context).insert(
-            medicationCompositionIds.map {
-                MedicationMedicationCompositionCrossRef(
-                    medication.medicationInformation.id,
-                    it
-                )
-            }
-        )
-        MedicationMedicationPresentationCrossRefRepository(context).insert(
-            medicationPresentationIds.map {
-                MedicationMedicationPresentationCrossRef(
-                    medication.medicationInformation.id,
-                    it
-                )
-            }
-        )
-        MedicationPharmaceuticalSpecialtyCrossRefRepository(context).insert(
-            pharmaceuticalSpecialtyIds.map {
-                MedicationPharmaceuticalSpecialtyCrossRef(
-                    medication.medicationInformation.id,
-                    it
-                )
-            }
-        )
-        MedicationPrescriptionDispensingConditionsCrossRefRepository(context).insert(
-            prescriptionDispensingConditionsIds.map {
-                MedicationPrescriptionDispensingConditionsCrossRef(
-                    medication.medicationInformation.id,
-                    it
-                )
-            }
-        )
+    fun search(search: String): List<OptionDialog> {
+        return db.medicationDAO().search(search).map { it.toOptionDialog() }
+    }
+
+    fun insert(medication: Medication): Long {
+        medication.genericGroups.forEach {
+            it.medicationId = medication.medicationInformation.id
+        }
+        GenericGroupRepository(context).insert(medication.genericGroups)
+
+        medication.hasAsmrOpinions.forEach {
+            it.hasAsmrOpinionInformation.medicationId = medication.medicationInformation.id
+        }
+        HasAsmrOpinionRepository(context).insert(medication.hasAsmrOpinions)
+
+        medication.hasSmrOpinions.forEach {
+            it.hasSmrOpinionInformation.medicationId = medication.medicationInformation.id
+        }
+        HasSmrOpinionRepository(context).insert(medication.hasSmrOpinions)
+
+        medication.importantInformations.forEach {
+            it.medicationId = medication.medicationInformation.id
+        }
+        ImportantInformationRepository(context).insert(medication.importantInformations)
+
+        medication.medicationCompositions.forEach {
+            it.medicationId = medication.medicationInformation.id
+        }
+        MedicationCompositionRepository(context).insert(medication.medicationCompositions)
+
+        medication.medicationPresentations.forEach {
+            it.medicationId = medication.medicationInformation.id
+        }
+        MedicationPresentationRepository(context).insert(medication.medicationPresentations)
+
+        medication.pharmaceuticalSpecialties.forEach {
+            it.medicationId = medication.medicationInformation.id
+        }
+        PharmaceuticalSpecialtyRepository(context).insert(medication.pharmaceuticalSpecialties)
+
+        medication.prescriptionDispensingConditions.forEach {
+            it.medicationId = medication.medicationInformation.id
+        }
+        PrescriptionDispensingConditionsRepository(context).insert(medication.prescriptionDispensingConditions)
 
         return db.medicationDAO().insert(medication.medicationInformation)
     }
 
     fun insert(medications: List<Medication>): List<Long> {
         medications.forEach { medication ->
-            val genericGroupIds = GenericGroupRepository(context).insert(medication.genericGroups)
-            val importantInformationIds = ImportantInformationRepository(
-                context
-            ).insert(medication.importantInformations)
-            val medicationCompositionIds = MedicationCompositionRepository(
-                context
-            ).insert(medication.medicationCompositions)
-            val medicationPresentationIds = MedicationPresentationRepository(
-                context
-            ).insert(medication.medicationPresentations)
-            val pharmaceuticalSpecialtyIds = PharmaceuticalSpecialtyRepository(
-                context
-            ).insert(medication.pharmaceuticalSpecialties)
-            val prescriptionDispensingConditionsIds = PrescriptionDispensingConditionsRepository(
-                context
-            ).insert(medication.prescriptionDispensingConditions)
-
-            MedicationGenericGroupCrossRefRepository(context).insert(
-                genericGroupIds.map {
-                    MedicationGenericGroupCrossRef(
-                        medication.medicationInformation.id,
-                        it
-                    )
-                }
-            )
-            MedicationImportantInformationCrossRefRepository(context).insert(
-                importantInformationIds.map {
-                    MedicationImportantInformationCrossRef(
-                        medication.medicationInformation.id,
-                        it
-                    )
-                }
-            )
-            MedicationMedicationCompositionCrossRefRepository(context).insert(
-                medicationCompositionIds.map {
-                    MedicationMedicationCompositionCrossRef(
-                        medication.medicationInformation.id,
-                        it
-                    )
-                }
-            )
-            MedicationMedicationPresentationCrossRefRepository(context).insert(
-                medicationPresentationIds.map {
-                    MedicationMedicationPresentationCrossRef(
-                        medication.medicationInformation.id,
-                        it
-                    )
-                }
-            )
-            MedicationPharmaceuticalSpecialtyCrossRefRepository(context).insert(
-                pharmaceuticalSpecialtyIds.map {
-                    MedicationPharmaceuticalSpecialtyCrossRef(
-                        medication.medicationInformation.id,
-                        it
-                    )
-                }
-            )
-            MedicationPrescriptionDispensingConditionsCrossRefRepository(context).insert(
-                prescriptionDispensingConditionsIds.map {
-                    MedicationPrescriptionDispensingConditionsCrossRef(
-                        medication.medicationInformation.id,
-                        it
-                    )
-                }
-            )
+            insert(medication = medication)
         }
 
         return db.medicationDAO().insert(medications.map { it.medicationInformation })
     }
 
     fun delete(medication: Medication) {
+        GenericGroupRepository(context).delete(medication.genericGroups)
+        HasAsmrOpinionRepository(context).delete(medication.hasAsmrOpinions)
+        HasSmrOpinionRepository(context).delete(medication.hasSmrOpinions)
+        ImportantInformationRepository(context).delete(medication.importantInformations)
+        MedicationCompositionRepository(context).delete(medication.medicationCompositions)
+        MedicationPresentationRepository(context).delete(medication.medicationPresentations)
+        PharmaceuticalSpecialtyRepository(context).delete(medication.pharmaceuticalSpecialties)
+        PrescriptionDispensingConditionsRepository(context).delete(medication.prescriptionDispensingConditions)
+
         db.medicationDAO().delete(medication.medicationInformation)
     }
 }

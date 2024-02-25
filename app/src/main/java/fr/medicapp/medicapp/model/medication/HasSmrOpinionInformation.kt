@@ -22,4 +22,7 @@ data class HasSmrOpinionInformation(
     var smrValue: String = "",
 
     var smrLabel: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

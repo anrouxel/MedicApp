@@ -21,4 +21,8 @@ class TransparencyCommissionOpinionLinksRepository(context: Context) : Repositor
     fun delete(transparencyCommissionOpinionLinks: TransparencyCommissionOpinionLinks) {
         db.TransparencyCommissionOpinionLinksDAO().delete(transparencyCommissionOpinionLinks)
     }
+
+    fun delete(transparencyCommissionOpinionLinks: List<TransparencyCommissionOpinionLinks>) {
+        transparencyCommissionOpinionLinks.forEach { delete(it) }
+    }
 }

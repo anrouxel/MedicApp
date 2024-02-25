@@ -20,4 +20,8 @@ class PrescriptionDispensingConditionsRepository(context: Context) : Repository(
     fun delete(prescriptionDispensingConditions: PrescriptionDispensingConditions) {
         db.PrescriptionDispensingConditionsDAO().delete(prescriptionDispensingConditions)
     }
+
+    fun delete(prescriptionDispensingConditionss: List<PrescriptionDispensingConditions>) {
+        prescriptionDispensingConditionss.forEach { delete(it) }
+    }
 }

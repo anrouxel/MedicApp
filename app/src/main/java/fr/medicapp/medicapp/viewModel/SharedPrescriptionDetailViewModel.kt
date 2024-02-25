@@ -24,29 +24,41 @@ class SharedPrescriptionDetailViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadPrescription(context: Context, id: Long) {
-        val prescription = PrescriptionRepository(context).getById(id)
-        _sharedState.value = prescription
+        Thread {
+            _sharedState.value = PrescriptionRepository(context).getById(id)
+        }.start()
     }
 
     fun removePrescription(context: Context) {
-        PrescriptionRepository(context).delete(_sharedState.value)
-        _sharedState.value = Prescription()
+        Thread {
+            val prescription = _sharedState.value
+            _sharedState.value = Prescription()
+            PrescriptionRepository(context).delete(_sharedState.value)
+        }.start()
     }
 
-    fun updatedNotificationState(context: Context, id: Long, active: Boolean) {
-        val prescription = _sharedState.value
-        val notification = prescription.notifications.find { it.notificationInformation!!.id == id }
-        notification!!.notificationInformation!!.active = active
-        _sharedState.value = prescription
+    fun updatedNotificationState(context: Context, index: Int, active: Boolean) {
+        val updatedNotifications = _sharedState.value.notifications.toMutableList()
+        val updateNotificationInformation =
+            updatedNotifications[index].notificationInformation.copy(active = active)
+        updatedNotifications[index] =
+            updatedNotifications[index].copy(notificationInformation = updateNotificationInformation)
+        val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
+        _sharedState.value = updatedPrescription
+
+        Thread {
+            NotificationRepository(context).update(updatedNotifications[index])
+        }.start()
     }
 
     fun removeNotification(context: Context, id: Long) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
-        val notification = updatedNotifications.find { it.notificationInformation!!.id == id }
+        val notification = updatedNotifications.find { it.notificationInformation.id == id }
         updatedNotifications.remove(notification)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
-
-        NotificationRepository(context).delete(notification!!)
+        Thread {
+            NotificationRepository(context).delete(notification!!)
+        }.start()
     }
 }

@@ -14,4 +14,8 @@ data class Duration(
     var startDate: LocalDate? = null,
 
     var endDate: LocalDate? = null
-)
+) {
+    override fun toString(): String {
+        return "Du $startDate au $endDate"
+    }
+}

@@ -20,4 +20,8 @@ class PharmaceuticalSpecialtyRepository(context: Context) : Repository(context) 
     fun delete(pharmaceuticalSpecialty: PharmaceuticalSpecialty) {
         db.PharmaceuticalSpecialtyDAO().delete(pharmaceuticalSpecialty)
     }
+
+    fun delete(pharmaceuticalSpecialties: List<PharmaceuticalSpecialty>) {
+        pharmaceuticalSpecialties.forEach { delete(it) }
+    }
 }

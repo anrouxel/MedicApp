@@ -30,10 +30,10 @@ fun SideEffectEdit(
         title = "Ajouter un effet secondaire",
         bottomText = "Enregistrer",
         onClick = {
-            //viewModel.save(context)
+            viewModel.save(context)
             onClick()
         },
-        enabled = false //state.value.prescription != null && state.value.date != null && state.value.description.isNotEmpty()
+        enabled = state.value.prescription != null && state.value.sideEffectInformation.date != null && state.value.sideEffectInformation.description.isNotEmpty()
     ) {
         Column {
             ReusableElevatedCard {
@@ -41,11 +41,12 @@ fun SideEffectEdit(
                     modifier = Modifier.padding(10.dp)
                 ) {
                     ReusableOutlinedSearchButton(
-                        options = viewModel.getPrescriptionList(context),
+                        options = {
+                            viewModel.searchPrescription(it, context)
+                        },
                         value = state.value.prescription,
-                        label = "Prescription",
-                        onSelected = { viewModel.updatePrescription(it, context) }
-                    )
+                        label = "Prescription"
+                    ) { viewModel.updatePrescription(it, context) }
 
                     Spacer(modifier = Modifier.padding(10.dp))
 

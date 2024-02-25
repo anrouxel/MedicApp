@@ -17,7 +17,9 @@ import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PrescriptionEditInformation(
@@ -31,7 +33,7 @@ fun PrescriptionEditInformation(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
         onClick = onClick,
-        enabled = false //state.value.date != null
+        enabled = state.value.medication != null && state.value.prescriptionInformation.posology.isNotEmpty() && state.value.prescriptionInformation.frequency.isNotEmpty() && state.value.duration != null
     ) {
         Column {
             ReusableElevatedCard {
@@ -54,14 +56,15 @@ fun PrescriptionEditInformation(
                     modifier = Modifier.padding(10.dp)
                 ) {
                     ReusableOutlinedSearchButton(
-                        options = viewModel.getMedicationList(context),
-                        value = "",
+                        options = {
+                            viewModel.searchMedication(it, context)
+                        },
+                        value = state.value.medication,
                         label = "Médicament",
-                        warnings = state.value.medication == null,
-                        onSelected = {
-                            viewModel.updateMedication(it, context)
-                        }
-                    )
+                        warnings = state.value.medication == null
+                    ) {
+                        viewModel.updateMedication(it, context)
+                    }
 
                     Spacer(modifier = Modifier.padding(10.dp))
 

@@ -12,5 +12,5 @@ data class TransparencyCommissionOpinionLinks(
 
     var hasDossierCode: String = "",
 
-    var commissionOpinionLink: String? = null
+    var commissionOpinionLink: String? = null,
 )

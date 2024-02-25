@@ -26,4 +26,7 @@ data class PharmaceuticalSpecialty(
     var returnToDate: LocalDate? = null,
 
     var ansmSiteLink: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )

@@ -20,5 +20,8 @@ data class GenericGroup(
 
     var genericName: String = "",
 
-    var sortNumber: Int? = null
+    var sortNumber: Int? = null,
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
 )
