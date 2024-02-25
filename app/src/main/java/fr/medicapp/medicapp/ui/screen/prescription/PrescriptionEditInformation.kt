@@ -8,13 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDatePickerButton
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
+import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
+import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PrescriptionEditInformation(
@@ -22,34 +27,78 @@ fun PrescriptionEditInformation(
     onClick: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState()
+    val context = LocalContext.current
 
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
         onClick = onClick,
-        enabled = state.value.date != null
+        enabled = state.value.medication != null && state.value.prescriptionInformation.posology.isNotEmpty() && state.value.prescriptionInformation.frequency.isNotEmpty() && state.value.duration != null
     ) {
-        ReusableElevatedCard {
-            Column(
-                modifier = Modifier.padding(10.dp)
-            ) {
-                ReusableOutlinedTextFieldButton(
-                    value = "",
-                    label = "Docteur",
-                    warnings = false,
-                    onClick = {}
-                )
+        Column {
+            ReusableElevatedCard {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    ReusableOutlinedTextFieldButton(
+                        value = "",
+                        label = "Docteur",
+                        warnings = false,
+                        onClick = {}
+                    )
+                }
+            }
 
-                Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
 
-                ReusableOutlinedDatePickerButton(
-                    value = state.value.date,
-                    label = "Date",
-                    warnings = state.value.date == null,
-                    onSelected = {
-                        viewModel.updateDate(it)
+            ReusableElevatedCard {
+                Column(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    ReusableOutlinedSearchButton(
+                        options = {
+                            viewModel.searchMedication(it, context)
+                        },
+                        value = state.value.medication,
+                        label = "Médicament",
+                        warnings = state.value.medication == null
+                    ) {
+                        viewModel.updateMedication(it, context)
                     }
-                )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableOutlinedTextField(
+                        value = state.value.prescriptionInformation.posology,
+                        onValueChange = {
+                            viewModel.updatePosology(it)
+                        },
+                        warnings = state.value.prescriptionInformation.posology.isEmpty(),
+                        label = "Posologie"
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableOutlinedTextField(
+                        value = state.value.prescriptionInformation.frequency,
+                        onValueChange = {
+                            viewModel.updateFrequency(it)
+                        },
+                        warnings = state.value.prescriptionInformation.frequency.isEmpty(),
+                        label = "Fréquence"
+                    )
+
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    ReusableOutlinedDateRangePickerButton(
+                        value = state.value.duration,
+                        label = "Durée",
+                        warnings = state.value.duration == null,
+                        onSelected = {
+                            viewModel.updateDuration(it)
+                        }
+                    )
+                }
             }
         }
     }

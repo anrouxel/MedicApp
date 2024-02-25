@@ -33,7 +33,7 @@ fun SideEffectEdit(
             viewModel.save(context)
             onClick()
         },
-        enabled = state.value.prescription != null && state.value.date != null && state.value.description.isNotEmpty()
+        enabled = state.value.prescription != null && state.value.sideEffectInformation.date != null && state.value.sideEffectInformation.description.isNotEmpty()
     ) {
         Column {
             ReusableElevatedCard {
@@ -41,16 +41,17 @@ fun SideEffectEdit(
                     modifier = Modifier.padding(10.dp)
                 ) {
                     ReusableOutlinedSearchButton(
-                        options = viewModel.getPrescriptionList(context),
+                        options = {
+                            viewModel.searchPrescription(it, context)
+                        },
                         value = state.value.prescription,
-                        label = "Prescription",
-                        onSelected = { viewModel.updatePrescription(it, context) }
-                    )
+                        label = "Prescription"
+                    ) { viewModel.updatePrescription(it, context) }
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableOutlinedDatePickerButton(
-                        value = state.value.date,
+                        value = state.value.sideEffectInformation.date,
                         label = "Date de l'effet secondaire",
                         onSelected = { viewModel.updateDate(it) }
                     )
@@ -58,7 +59,7 @@ fun SideEffectEdit(
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableOutlinedTextField(
-                        value = state.value.description,
+                        value = state.value.sideEffectInformation.description,
                         label = "Description",
                         warnings = false,
                         onValueChange = { viewModel.updateDescription(it) }

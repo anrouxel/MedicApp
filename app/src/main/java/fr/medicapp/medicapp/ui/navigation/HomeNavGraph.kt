@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.ui.components.mozilla.Gecko
 import fr.medicapp.medicapp.ui.screen.home.HomeScreen
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUGreenColorShema

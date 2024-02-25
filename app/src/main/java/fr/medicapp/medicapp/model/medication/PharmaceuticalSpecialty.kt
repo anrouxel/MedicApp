@@ -1,11 +1,14 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.PharmaceuticalSpecialtyEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
+@Entity
 data class PharmaceuticalSpecialty(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "pharmaceutical_specialty_id")
     val id: Long = 0L,
 
     var cisCode: Long = 0L,
@@ -23,18 +26,7 @@ data class PharmaceuticalSpecialty(
     var returnToDate: LocalDate? = null,
 
     var ansmSiteLink: String = "",
-) : ModelToEntityMapper<PharmaceuticalSpecialtyEntity> {
-    override fun convert(context: Context): PharmaceuticalSpecialtyEntity {
-        return PharmaceuticalSpecialtyEntity(
-            id,
-            cisCode,
-            cip13Code,
-            statusCode,
-            statusLabel,
-            startDate,
-            updateDate,
-            returnToDate,
-            ansmSiteLink
-        )
-    }
-}
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
+)

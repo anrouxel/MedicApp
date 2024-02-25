@@ -31,7 +31,7 @@ object GeckoManager {
             this.loadUri(url)
         }
     }
-    
+
     fun newGeckoView(context: Context, url: String): GeckoView {
         return GeckoView(context).apply {
             this.setSession(newGeckoSession(context, url))

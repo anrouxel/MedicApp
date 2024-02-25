@@ -13,7 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditInformation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditNotification
-import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditTreatment
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
@@ -34,20 +33,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             onThemeChange(EUPurpleColorShema)
 
             PrescriptionEditInformation(
-                viewModel = viewModel,
-                onClick = {
-                    navController.navigate(PrescriptionEditRoute.PrescriptionEditTreatmentRoute.route)
-                }
-            )
-        }
-
-        composable(route = PrescriptionEditRoute.PrescriptionEditTreatmentRoute.route) {
-            val viewModel =
-                it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
-
-            onThemeChange(EUPurpleColorShema)
-
-            PrescriptionEditTreatment(
                 viewModel = viewModel,
                 onClick = {
                     navController.navigate(PrescriptionEditRoute.PrescriptionEditNotificationRoute.route)
@@ -92,9 +77,6 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
 sealed class PrescriptionEditRoute(val route: String) {
     object PrescriptionEditInformationRoute :
         PrescriptionEditRoute(route = "prescription_edit_information")
-
-    object PrescriptionEditTreatmentRoute :
-        PrescriptionEditRoute(route = "prescription_edit_treatment")
 
     object PrescriptionEditNotificationRoute :
         PrescriptionEditRoute(route = "prescription_edit_notification")

@@ -9,11 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
 import fr.medicapp.medicapp.ui.components.calendar.Calendar
 import fr.medicapp.medicapp.ui.components.list.ListOfMedication
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
@@ -37,16 +34,10 @@ fun HomeScreen() {
 
         ) {
 
-        val context = LocalContext.current
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-
-        val prescriptions = store.all.map { it.convert() }
-
         val selection = remember { mutableStateOf(LocalDate.now()) }
         Calendar(selection = selection)
         Spacer(modifier = Modifier.height(8.dp))
-        ListOfMedication(selectedDate = selection.value, prescription = prescriptions)
+        ListOfMedication(selectedDate = selection.value, prescription = emptyList())
 
     }
 }

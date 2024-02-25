@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +27,7 @@ import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import kotlinx.coroutines.launch
 
 /**
  * Cette fonction affiche une boîte de dialogue de recherche avec des options spécifiques.
@@ -41,15 +43,14 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun SearchModal(
     title: String,
-    options: List<OptionDialog>,
+    options: suspend (String) -> List<OptionDialog>,
     onDismissRequest: () -> Unit = {},
     onConfirm: (OptionDialog) -> Unit = {},
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedOption by remember { mutableStateOf<OptionDialog?>(null) }
-    val filteredOptions = options.filter {
-        it.title.contains(searchQuery, ignoreCase = true)
-    }
+    val searchResults = remember { mutableStateOf<List<OptionDialog>>(emptyList()) }
+    val scope = rememberCoroutineScope()
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -62,12 +63,17 @@ fun SearchModal(
             Column {
                 ReusableOutlinedTextField(
                     value = searchQuery,
-                    onValueChange = { searchQuery = it },
+                    onValueChange = {
+                        searchQuery = it
+                        scope.launch {
+                            searchResults.value = options(it)
+                        }
+                    },
                     label = "",
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyColumn {
-                    items(filteredOptions) { option ->
+                    items(searchResults.value) { option ->
                         ElevatedCard(
                             onClick = {
                                 selectedOption = option
@@ -139,7 +145,7 @@ private fun SearchModalPreview() {
     ) {
         SearchModal(
             title = "Recherche",
-            options = listOf()
+            options = { listOf() }
         )
     }
 }
@@ -154,7 +160,7 @@ private fun SearchModalDarkPreview() {
     ) {
         SearchModal(
             title = "Recherche",
-            options = listOf()
+            options = { listOf() }
         )
     }
 }
@@ -169,13 +175,15 @@ private fun SearchModalWithOptionPreview() {
     ) {
         SearchModal(
             title = "Recherche",
-            options = listOf(
-                OptionDialog(
-                    id = 0L,
-                    title = "Option 1",
-                    description = "Description de l'option 1"
+            options = {
+                listOf(
+                    OptionDialog(
+                        id = 0L,
+                        title = "Option 1",
+                        description = "Description de l'option 1"
+                    )
                 )
-            )
+            }
         )
     }
 }
@@ -190,13 +198,15 @@ private fun SearchModalWithOptionDarkPreview() {
     ) {
         SearchModal(
             title = "Recherche",
-            options = listOf(
-                OptionDialog(
-                    id = 0L,
-                    title = "Option 1",
-                    description = "Description de l'option 1"
+            options = {
+                listOf(
+                    OptionDialog(
+                        id = 0L,
+                        title = "Option 1",
+                        description = "Description de l'option 1"
+                    )
                 )
-            )
+            }
         )
     }
 }

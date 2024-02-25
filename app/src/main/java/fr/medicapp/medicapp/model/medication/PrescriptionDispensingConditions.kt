@@ -1,21 +1,19 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.PrescriptionDispensingConditionsEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class PrescriptionDispensingConditions(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "prescription_dispensing_conditions_id")
     val id: Long = 0L,
 
     var cisCode: Long = 0L,
 
-    var prescriptionDispensingCondition: String = ""
-) : ModelToEntityMapper<PrescriptionDispensingConditionsEntity> {
-    override fun convert(context: Context): PrescriptionDispensingConditionsEntity {
-        return PrescriptionDispensingConditionsEntity(
-            id,
-            cisCode,
-            prescriptionDispensingCondition
-        )
-    }
-}
+    var prescriptionDispensingCondition: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
+)

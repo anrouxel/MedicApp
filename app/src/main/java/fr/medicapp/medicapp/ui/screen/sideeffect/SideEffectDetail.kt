@@ -31,23 +31,23 @@ fun SideEffectDetail(
                 ) {
                     state.value.prescription?.let {
                         ReusableTextMediumCard(
-                            value = "Prescription : ${it.treatment.medication}"
+                            value = "Prescription : ${it.medication!!.medicationInformation.name}"
                         )
                     }
 
-                    state.value.date?.let {
+                    state.value.sideEffectInformation.date.let {
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(
-                            value = "Date : ${it}"
+                            value = "Date : $it"
                         )
                     }
 
-                    state.value.description.let {
+                    state.value.sideEffectInformation.description.let {
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(
-                            value = "Description : ${it}"
+                            value = "Description : $it"
                         )
                     }
                 }

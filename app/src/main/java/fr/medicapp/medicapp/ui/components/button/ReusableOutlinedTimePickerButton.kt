@@ -13,10 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.medicapp.medicapp.model.Alarm
+import fr.medicapp.medicapp.model.prescription.Alarm
 import fr.medicapp.medicapp.ui.components.modal.TimePickerModal
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -39,8 +40,7 @@ fun ReusableOutlinedTimePickerButton(
                 open = false
                 onSelected(
                     Alarm(
-                        hour = state.hour,
-                        minute = state.minute
+                        time = LocalTime.of(state.hour, state.minute)
                     )
                 )
             }
@@ -69,8 +69,7 @@ private fun ReusableOutlinedTimePickerButtonPreview() {
     ) {
         ReusableOutlinedTimePickerButton(
             value = Alarm(
-                hour = 12,
-                minute = 30
+                time = LocalTime.of(12, 30)
             ),
             label = "Heure",
             onSelected = {}
@@ -89,8 +88,7 @@ private fun ReusableOutlinedTimePickerButtonDarkPreview() {
     ) {
         ReusableOutlinedTimePickerButton(
             value = Alarm(
-                hour = 12,
-                minute = 30
+                time = LocalTime.of(12, 30)
             ),
             label = "Heure",
             onSelected = {}

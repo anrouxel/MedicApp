@@ -3,14 +3,14 @@ package fr.medicapp.medicapp.viewModel
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity_
-import fr.medicapp.medicapp.database.entity.SideEffectEntity
+import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
+import fr.medicapp.medicapp.database.repositories.prescription.SideEffectRepository
 import fr.medicapp.medicapp.model.OptionDialog
-import fr.medicapp.medicapp.model.SideEffect
+import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 /**
@@ -23,37 +23,40 @@ class SharedSideEffectEditViewModel(
     private val _sharedState: MutableStateFlow<SideEffect> = MutableStateFlow(SideEffect())
     val sharedState: StateFlow<SideEffect> = _sharedState
 
-    fun updatePrescription(newPrescription: OptionDialog, context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescription =
-            store.query().equal(PrescriptionEntity_.id, newPrescription.id).build().findFirst()
-                ?.convert()
-        val updatedPrescription = _sharedState.value.copy(prescription = prescription)
-        _sharedState.value = updatedPrescription
-    }
-
     fun updateDate(date: LocalDate) {
-        val updatedPrescription = _sharedState.value.copy(date = date)
-        _sharedState.value = updatedPrescription
+        val updatedSideEffectInformation =
+            _sharedState.value.sideEffectInformation.copy(date = date)
+        val updatedSideEffect =
+            _sharedState.value.copy(sideEffectInformation = updatedSideEffectInformation)
+        _sharedState.value = updatedSideEffect
     }
 
     fun updateDescription(description: String) {
-        val updatedPrescription = _sharedState.value.copy(description = description)
-        _sharedState.value = updatedPrescription
+        val updatedSideEffectInformation =
+            _sharedState.value.sideEffectInformation.copy(description = description)
+        val updatedSideEffect =
+            _sharedState.value.copy(sideEffectInformation = updatedSideEffectInformation)
+        _sharedState.value = updatedSideEffect
+    }
+
+    suspend fun searchPrescription(search: String, context: Context): List<OptionDialog> {
+        return withContext(Dispatchers.IO) {
+            PrescriptionRepository(context).search(search)
+        }
+    }
+
+    fun updatePrescription(prescription: OptionDialog, context: Context) {
+        Thread {
+            val prescription = PrescriptionRepository(context).getById(prescription.id)
+            val updatedSideEffect = _sharedState.value.copy(prescription = prescription)
+            _sharedState.value = updatedSideEffect
+        }.start()
     }
 
     fun save(context: Context) {
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(SideEffectEntity::class.java)
-        val sideEffect = _sharedState.value.convert(context)
-        store.put(sideEffect)
-        _sharedState.value = SideEffect()
-    }
-
-    fun getPrescriptionList(context: Context): List<OptionDialog> {
-        val boxStore = ObjectBox.getInstance(context)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        return store.all.map { it.convert().toOptionDialog() }
+        Thread {
+            val id = SideEffectRepository(context).insert(_sharedState.value)
+            _sharedState.value = SideEffectRepository(context).getById(id)
+        }.start()
     }
 }

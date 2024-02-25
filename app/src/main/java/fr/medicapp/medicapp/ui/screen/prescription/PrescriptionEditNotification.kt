@@ -49,7 +49,7 @@ fun PrescriptionEditNotification(
             viewModel.save(context)
             onClick()
         },
-        enabled = state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() && it.days.isNotEmpty() }
+        enabled = state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() && it.notificationInformation.days.isNotEmpty() }
     ) {
         Column {
             ReusableButton(
@@ -82,7 +82,7 @@ fun PrescriptionEditNotification(
 
                             Row {
                                 Switch(
-                                    checked = notification.active,
+                                    checked = notification.notificationInformation.active,
                                     onCheckedChange = {
                                         viewModel.updateNotificationActiveState(index, it)
                                     }
@@ -119,7 +119,9 @@ fun PrescriptionEditNotification(
                                         width = 1.dp,
                                         color = MaterialTheme.colorScheme.primary
                                     ),
-                                    checked = notification.days.contains(dayOfWeek),
+                                    checked = notification.notificationInformation.days.contains(
+                                        dayOfWeek
+                                    ),
                                     onCheckedChange = {
                                         viewModel.updateNotificationDays(index, dayOfWeek)
                                     },
@@ -132,7 +134,10 @@ fun PrescriptionEditNotification(
                                         )
                                             .uppercase(Locale.FRENCH)
                                             .take(2),
-                                        color = if (notification.days.contains(dayOfWeek)) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                                        color = if (notification.notificationInformation.days.contains(
+                                                dayOfWeek
+                                            )
+                                        ) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight,

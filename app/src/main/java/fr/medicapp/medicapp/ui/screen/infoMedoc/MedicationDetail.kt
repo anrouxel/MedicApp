@@ -7,9 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.model.medication.Medication
-import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
+import fr.medicapp.medicapp.model.medication.MedicationInformation
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
@@ -18,13 +16,13 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @Composable
 fun MedicationDetail(
-    medication: Medication
+    medication: MedicationInformation
 ) {
     Detail(
         title = "Information du médicament"
     ) {
         Column {
-            val medicationDetails = listOf(
+            /*val medicationDetails = listOf(
                 Pair("Nom du médicament", medication.name),
                 Pair("Voie d'administration", medication.administrationRoutes.joinToString()),
                 Pair("Code CIS", medication.cisCode.toString()),
@@ -80,7 +78,7 @@ fun MedicationDetail(
                 }
 
                 Spacer(modifier = Modifier.padding(10.dp))
-            }
+            }*/
         }
     }
 }
@@ -99,7 +97,7 @@ private fun MedicationDetailCard(
 @Preview
 @Composable
 fun MedicationDetailPreview() {
-    val medication = Medication(
+    val medication = MedicationInformation(
         name = "Doliprane",
     )
     MedicAppTheme(
@@ -114,7 +112,7 @@ fun MedicationDetailPreview() {
 @Preview
 @Composable
 fun MedicationDetailDarkPreview() {
-    val medication = Medication(
+    val medication = MedicationInformation(
         name = "Janumet",
     )
     MedicAppTheme(

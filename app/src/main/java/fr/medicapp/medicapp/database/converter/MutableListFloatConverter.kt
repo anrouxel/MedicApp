@@ -1,13 +1,15 @@
 package fr.medicapp.medicapp.database.converter
 
-import io.objectbox.converter.PropertyConverter
+import androidx.room.TypeConverter
 
-class MutableListFloatConverter : PropertyConverter<MutableList<Float>, String> {
-    override fun convertToDatabaseValue(entityProperty: MutableList<Float>?): String? {
-        return entityProperty?.joinToString(separator = ",")
+class MutableListFloatConverter {
+    @TypeConverter
+    fun fromMutableListFloat(mutableListFloat: String): MutableList<Float> {
+        return mutableListFloat.split(",").map { it.toFloat() }.toMutableList()
     }
 
-    override fun convertToEntityProperty(databaseValue: String?): MutableList<Float>? {
-        return databaseValue?.split(",")?.mapNotNull { it.trim().toFloatOrNull() }?.toMutableList()
+    @TypeConverter
+    fun toMutableListFloat(mutableListFloat: MutableList<Float>): String {
+        return mutableListFloat.joinToString(",")
     }
 }
