@@ -14,6 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +30,7 @@ import fr.medicapp.medicapp.reportGenerator.ReportGenerator
 import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
+import fr.medicapp.medicapp.ui.components.modal.ConfirmReportModal
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -38,12 +43,13 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
-    val reportGenerator = ReportGenerator(LocalContext.current)
+    var isReportModalOpen by remember { mutableStateOf(false)}
+
     Home(
         title = "Prescription",
         floatingActionButtons = {
             FloatingActionButtons(buttons = listOf(
-                {reportGenerator.report()} to { Icon(
+                {isReportModalOpen = true} to { Icon(
                     imageVector = Icons.Default.FileOpen,
                     contentDescription = "Bouton pour générer un rapport",
                     tint = MaterialTheme.colorScheme.onPrimary
@@ -65,6 +71,10 @@ fun PrescriptionHome(
                 onPrescriptionClick = onPrescriptionClick
             )
         }
+        if (isReportModalOpen)
+            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false}) {
+                isReportModalOpen = false
+            }
     }
 }
 

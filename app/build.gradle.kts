@@ -125,7 +125,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // QRcode
-    implementation("io.github.g0dkar:qrcode-kotlin:4.1.1")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
 }
 
