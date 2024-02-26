@@ -12,6 +12,8 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import fr.medicapp.medicapp.ai.tokenization.Feature
 import fr.medicapp.medicapp.ai.tokenization.FeatureConverter
+import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.Tensor
@@ -21,6 +23,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.concurrent.CountDownLatch
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Classe PrescriptionAI pour l'analyse des prescriptions médicales.
@@ -148,7 +152,6 @@ class PrescriptionAI(
      */
     fun analyse(
         imageUri: Uri,
-        onPrediction: (MutableList<Pair<String, String>>) -> Unit,
         onDismiss: () -> Unit
     ) {
         mHandle.post {
@@ -165,7 +168,7 @@ class PrescriptionAI(
                 val sentenceTokenized = runModel(visionText)
 
                 // Appelle le callback avec les prédictions générées.
-                onPrediction(sentenceTokenized)
+                val prescriptions = onPrediction(sentenceTokenized)
             }
 
             // Appelle le callback lorsque l'analyse est terminée.
@@ -352,6 +355,97 @@ class PrescriptionAI(
 
         // Retourne la liste des paires tokenisées.
         return sentenceTokenized
+    }
+
+    @WorkerThread
+    fun onPrediction(sentenceTokenized: MutableList<Pair<String, String>>): MutableList<Prescription> {
+        var query = ""
+        val prescriptions = mutableListOf<Prescription>()
+        var prescription = Prescription()
+        sentenceTokenized.forEach { (word, label) ->
+            when {
+                label.startsWith("B-") -> {
+                    if (label.removePrefix("B-") == "Drug") {
+                        val medication = MedicationRepository(context).getAll().sortedByDescending { jaroWinklerDistance(it.medicationInformation.name, query.trim()) }.first()
+                        prescription.medication = medication
+                        prescriptions.add(prescription)
+                        prescription = Prescription()
+                    }
+                    when (label.removePrefix("B-")) {
+                        "Drug" -> query += " $word"
+                        "DrugQuantity" -> prescription.prescriptionInformation.posology += " $word"
+                        "DrugForm" -> prescription.prescriptionInformation.posology += " $word"
+                        "DrugFrequency" -> prescription.prescriptionInformation.posology += " $word"
+                        //"DrugDuration" -> prescription.prescriptionInformation.renew += " $word"
+                    }
+                }
+
+                label.startsWith("I-") -> {
+                    when (label.removePrefix("I-")) {
+                        "Drug" -> query += " $word"
+                        "DrugQuantity" -> prescription.prescriptionInformation.posology += " $word"
+                        "DrugForm" -> prescription.prescriptionInformation.posology += " $word"
+                        "DrugFrequency" -> prescription.prescriptionInformation.posology += " $word"
+                        //"DrugDuration" -> treatment.renew += " $word"
+                    }
+                }
+            }
+        }
+        if (query.isNotEmpty()) {
+            val medication = MedicationRepository(context).getAll().sortedByDescending { jaroWinklerDistance(it.medicationInformation.name, query.trim()) }.first()
+            prescription.medication = medication
+            prescriptions.add(prescription)
+        }
+        return prescriptions
+    }
+
+    fun jaroWinklerDistance(st1: String, st2: String): Double {
+        var s1 = st1
+        var s2 = st2
+        if (s1.length < s2.length) {
+            val temp = s2
+            s2 = s1
+            s1 = temp
+        }
+        val len1 = s1.length
+        val len2 = s2.length
+        if (len2 == 0) {
+            return 0.0
+        }
+        val delta = max(0, len2 / 2 - 1)
+        val flag = BooleanArray(len2)
+        val ch1Match = mutableListOf<Char>()
+        for ((idx1, ch1) in s1.withIndex()) {
+            for ((idx2, ch2) in s2.withIndex()) {
+                if (idx2 <= idx1 + delta && idx2 >= idx1 - delta && ch1 == ch2 && !flag[idx2]) {
+                    flag[idx2] = true
+                    ch1Match.add(ch1)
+                    break
+                }
+            }
+        }
+        val matches = ch1Match.size
+        if (matches == 0) {
+            return 1.0
+        }
+        var transpositions = 0
+        var idx1 = 0
+        for ((idx2, ch2) in s2.withIndex()) {
+            if (flag[idx2]) {
+                if (ch2 != ch1Match[idx1]) {
+                    transpositions++
+                }
+                idx1++
+            }
+        }
+        val jaro = (matches.toDouble() / len1 + matches.toDouble() / len2 + (matches - transpositions / 2).toDouble() / matches) / 3.0
+        var commonPrefix = 0
+        for (i in 0 until min(4, len2)) {
+            if (s1[i] == s2[i]) {
+                commonPrefix++
+            }
+        }
+        return 1.0 - (jaro + commonPrefix * 0.1 * (1 - jaro))
     }
 
     /**
