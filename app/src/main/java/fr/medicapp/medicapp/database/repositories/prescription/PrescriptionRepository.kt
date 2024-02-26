@@ -23,11 +23,14 @@ class PrescriptionRepository(context: Context) : Repository(context = context) {
             prescription.medication!!.medicationInformation.id
         prescription.prescriptionInformation.durationId =
             DurationRepository(context).insert(prescription.duration!!)
+
+        val id = db.prescriptionDAO().insert(prescription.prescriptionInformation)
+
         prescription.notifications.forEach {
-            it.notificationInformation.prescriptionId = prescription.prescriptionInformation.id
+            it.notificationInformation.prescriptionId = id
         }
         NotificationRepository(context).insert(prescription.notifications)
-        return db.prescriptionDAO().insert(prescription.prescriptionInformation)
+        return id
     }
 
     fun delete(prescription: Prescription) {

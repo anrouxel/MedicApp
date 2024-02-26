@@ -19,47 +19,49 @@ class MedicationRepository(context: Context) : Repository(context) {
     }
 
     fun insert(medication: Medication): Long {
+        val id = db.medicationDAO().insert(medication.medicationInformation)
+
         medication.genericGroups.forEach {
-            it.medicationId = medication.medicationInformation.id
+            it.medicationId = id
         }
         GenericGroupRepository(context).insert(medication.genericGroups)
 
         medication.hasAsmrOpinions.forEach {
-            it.hasAsmrOpinionInformation.medicationId = medication.medicationInformation.id
+            it.hasAsmrOpinionInformation.medicationId = id
         }
         HasAsmrOpinionRepository(context).insert(medication.hasAsmrOpinions)
 
         medication.hasSmrOpinions.forEach {
-            it.hasSmrOpinionInformation.medicationId = medication.medicationInformation.id
+            it.hasSmrOpinionInformation.medicationId = id
         }
         HasSmrOpinionRepository(context).insert(medication.hasSmrOpinions)
 
         medication.importantInformations.forEach {
-            it.medicationId = medication.medicationInformation.id
+            it.medicationId = id
         }
         ImportantInformationRepository(context).insert(medication.importantInformations)
 
         medication.medicationCompositions.forEach {
-            it.medicationId = medication.medicationInformation.id
+            it.medicationId = id
         }
         MedicationCompositionRepository(context).insert(medication.medicationCompositions)
 
         medication.medicationPresentations.forEach {
-            it.medicationId = medication.medicationInformation.id
+            it.medicationId = id
         }
         MedicationPresentationRepository(context).insert(medication.medicationPresentations)
 
         medication.pharmaceuticalSpecialties.forEach {
-            it.medicationId = medication.medicationInformation.id
+            it.medicationId = id
         }
         PharmaceuticalSpecialtyRepository(context).insert(medication.pharmaceuticalSpecialties)
 
         medication.prescriptionDispensingConditions.forEach {
-            it.medicationId = medication.medicationInformation.id
+            it.medicationId = id
         }
         PrescriptionDispensingConditionsRepository(context).insert(medication.prescriptionDispensingConditions)
 
-        return db.medicationDAO().insert(medication.medicationInformation)
+        return id
     }
 
     fun insert(medications: List<Medication>): List<Long> {
