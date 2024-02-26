@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.repositories.prescription.NotificationRepository
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -37,6 +38,7 @@ class SharedPrescriptionDetailViewModel(
         }.start()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updatedNotificationState(context: Context, index: Int, active: Boolean) {
         val updatedNotifications = _sharedState.value.notifications.toMutableList()
         val updateNotificationInformation =
@@ -45,6 +47,12 @@ class SharedPrescriptionDetailViewModel(
             updatedNotifications[index].copy(notificationInformation = updateNotificationInformation)
         val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
         _sharedState.value = updatedPrescription
+
+        if (active) {
+            NotificationPrescriptionManager.remove(context, _sharedState.value.getNotificationAlarms(updateNotificationInformation.id))
+        } else {
+            NotificationPrescriptionManager.add(context, _sharedState.value.getNotificationAlarms(updateNotificationInformation.id))
+        }
 
         Thread {
             NotificationRepository(context).update(updatedNotifications[index])
