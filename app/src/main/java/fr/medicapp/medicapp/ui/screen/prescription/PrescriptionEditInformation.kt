@@ -26,14 +26,14 @@ fun PrescriptionEditInformation(
     viewModel: SharedPrescriptionEditViewModel,
     onClick: () -> Unit
 ) {
-    val state = viewModel.sharedState.collectAsState()
+    val state = viewModel.sharedState.collectAsState().value[0]
     val context = LocalContext.current
 
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
         onClick = onClick,
-        enabled = state.value.medication != null && state.value.prescriptionInformation.posology.isNotEmpty() && state.value.prescriptionInformation.frequency.isNotEmpty() && state.value.duration != null
+        enabled = state.medication != null && state.prescriptionInformation.posology.isNotEmpty() && state.prescriptionInformation.frequency.isNotEmpty() && state.duration != null
     ) {
         Column {
             ReusableElevatedCard {
@@ -59,9 +59,9 @@ fun PrescriptionEditInformation(
                         options = {
                             viewModel.searchMedication(it, context)
                         },
-                        value = state.value.medication,
+                        value = state.medication,
                         label = "Médicament",
-                        warnings = state.value.medication == null
+                        warnings = state.medication == null
                     ) {
                         viewModel.updateMedication(it, context)
                     }
@@ -69,31 +69,31 @@ fun PrescriptionEditInformation(
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableOutlinedTextField(
-                        value = state.value.prescriptionInformation.posology,
+                        value = state.prescriptionInformation.posology,
                         onValueChange = {
                             viewModel.updatePosology(it)
                         },
-                        warnings = state.value.prescriptionInformation.posology.isEmpty(),
+                        warnings = state.prescriptionInformation.posology.isEmpty(),
                         label = "Posologie"
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableOutlinedTextField(
-                        value = state.value.prescriptionInformation.frequency,
+                        value = state.prescriptionInformation.frequency,
                         onValueChange = {
                             viewModel.updateFrequency(it)
                         },
-                        warnings = state.value.prescriptionInformation.frequency.isEmpty(),
+                        warnings = state.prescriptionInformation.frequency.isEmpty(),
                         label = "Fréquence"
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableOutlinedDateRangePickerButton(
-                        value = state.value.duration,
+                        value = state.duration,
                         label = "Durée",
-                        warnings = state.value.duration == null,
+                        warnings = state.duration == null,
                         onSelected = {
                             viewModel.updateDuration(it)
                         }

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.APIAddressClient
+import fr.medicapp.medicapp.api.address.medication.MedicationDownload
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
      *
      * @param savedInstanceState Si l'activité est recréée après avoir été tuée par le système, c'est le bundle qui contient l'état de l'activité. Sinon, c'est null.
      */
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,47 +47,11 @@ class MainActivity : ComponentActivity() {
             .getBoolean("isUserCreated", false)
 
         Thread {
-            val medicationRepository = MedicationRepository(this)
 
-            Log.d("ObjectBox", "Medication count: ${medicationRepository.getAll().count()}")
-
-            if (medicationRepository.getAll().isEmpty()) {
-
-                val apiService = APIAddressClient().apiServiceGuewen
-                var page: Int = 1
-                var continuer = true
-                while (continuer) {
-
-                    val response = apiService.getAllMeds(page).execute()
-                    Log.d("ObjectBox", "Page $page")
-                    if (response.isSuccessful) {
-                        val allMedsJsonArray = response.body()!!
-
-                        val gson = GsonBuilder()
-                            .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
-                            .create()
-
-                        val listType: Type = object : TypeToken<List<MedicationGSON>>() {}.type
-
-                        val medications: List<MedicationGSON> =
-                            gson.fromJson(allMedsJsonArray, listType)
-
-                        // Mapper et convertir les données en MedicationEntity
-                        val medicationEntities = medications.map { it.toMedication() }
-
-                        // Enregistrer les MedicationEntity dans ObjectBox
-                        medicationRepository.insert(medicationEntities)
-                        page += 1
-
-                    } else {
-                        continuer = false
-                        val errorBody = response.errorBody()?.string()
-                        Log.e("Error de guegue", errorBody ?: "Error body is null")
-                        Log.e("ObjectBox", "Error while fetching medications")
-                    }
-                }
-            }
         }.start()
+
+        //Téléchargement des médicaments
+        MedicationDownload(this)
 
         // Initialisation de l'IA de prescription
         PrescriptionAI.getInstance(this)

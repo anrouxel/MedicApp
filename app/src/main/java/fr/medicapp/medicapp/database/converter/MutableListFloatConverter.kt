@@ -5,8 +5,10 @@ import androidx.room.TypeConverter
 class MutableListFloatConverter {
     @TypeConverter
     fun fromMutableListFloat(mutableListFloat: String): MutableList<Float> {
-        return mutableListFloat.split(",").map { if (it.isEmpty()) 0f else it.toFloat() }
-            .toMutableList()
+        if (mutableListFloat.isEmpty()) {
+            return mutableListOf()
+        }
+        return mutableListFloat.split(",").map { it.toFloat() }.toMutableList()
     }
 
     @TypeConverter

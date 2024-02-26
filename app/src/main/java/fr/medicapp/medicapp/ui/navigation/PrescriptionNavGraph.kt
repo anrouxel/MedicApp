@@ -23,7 +23,7 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
  *
  * @param navController Le contrôleur de navigation.
  */
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 fun NavGraphBuilder.prescriptionNavGraph(
     navController: NavHostController,
     onThemeChange: (ThemeColorScheme) -> Unit
