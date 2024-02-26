@@ -122,23 +122,21 @@ class SharedPrescriptionEditViewModel(
         _sharedState.value = updatedPrescription
     }
 
-    fun updateMedication(newMedication: OptionDialog, context: Context) {
-        Thread {
+    suspend fun updateMedication(newMedication: OptionDialog, context: Context) {
+        withContext(Dispatchers.IO) {
             val medication = MedicationRepository(context).getById(newMedication.id)
             val updatedPrescription = _sharedState.value.copy(medication = medication)
             _sharedState.value = updatedPrescription
-        }.start()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun save(context: Context) {
-        Log.d("Prescription", _sharedState.value.toString())
-        addToNotificationManager(context)
-
-        Thread {
+    suspend fun save(context: Context) {
+        withContext(Dispatchers.IO) {
+            addToNotificationManager(context)
             val id = PrescriptionRepository(context).insert(_sharedState.value)
             _sharedState.value = PrescriptionRepository(context).getById(id)
-        }.start()
+        }
     }
 
     suspend fun searchMedication(search: String, context: Context): List<OptionDialog> {

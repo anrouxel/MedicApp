@@ -45,7 +45,7 @@ fun SearchModal(
     title: String,
     options: suspend (String) -> List<OptionDialog>,
     onDismissRequest: () -> Unit = {},
-    onConfirm: (OptionDialog) -> Unit = {},
+    onConfirm: suspend (OptionDialog) -> Unit = {},
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedOption by remember { mutableStateOf<OptionDialog?>(null) }
@@ -64,8 +64,8 @@ fun SearchModal(
                 ReusableOutlinedTextField(
                     value = searchQuery,
                     onValueChange = {
-                        searchQuery = it
                         scope.launch {
+                            searchQuery = it
                             searchResults.value = options(it)
                         }
                     },
@@ -126,7 +126,9 @@ fun SearchModal(
             TextButton(
                 enabled = selectedOption != null,
                 onClick = {
-                    selectedOption?.let { onConfirm(it) }
+                    scope.launch {
+                        selectedOption?.let { onConfirm(it) }
+                    }
                 }
             ) {
                 Text("OK")

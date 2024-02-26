@@ -5,7 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.repositories.UserRepository
 import fr.medicapp.medicapp.model.User
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class SharedUserEditViewModel(
@@ -60,12 +62,12 @@ class SharedUserEditViewModel(
         _sharedState.value = updatedUser
     }
 
-    fun save(context: Context) {
-        Thread {
+    suspend fun save(context: Context) {
+        withContext(Dispatchers.IO) {
             val user = _sharedState.value
             user.id = UserRepository(context).insert(user)
             context.getSharedPreferences("medicapp", Context.MODE_PRIVATE).edit().putBoolean("isUserCreated", true).apply()
             _sharedState.value = User()
-        }.start()
+        }
     }
 }

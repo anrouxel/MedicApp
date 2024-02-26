@@ -5,8 +5,10 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberBasicTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -16,6 +18,7 @@ import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.viewModel.SharedSideEffectEditViewModel
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -25,13 +28,16 @@ fun SideEffectEdit(
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Edit(
         title = "Ajouter un effet secondaire",
         bottomText = "Enregistrer",
         onClick = {
-            viewModel.save(context)
-            onClick()
+            scope.launch {
+                viewModel.save(context)
+                onClick()
+            }
         },
         enabled = state.value.prescription != null && state.value.sideEffectInformation.date != null && state.value.sideEffectInformation.description.isNotEmpty()
     ) {
