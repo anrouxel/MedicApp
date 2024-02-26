@@ -45,18 +45,18 @@ class SharedSideEffectEditViewModel(
         }
     }
 
-    fun updatePrescription(prescription: OptionDialog, context: Context) {
-        Thread {
+    suspend fun updatePrescription(prescription: OptionDialog, context: Context) {
+        withContext(Dispatchers.IO) {
             val prescription = PrescriptionRepository(context).getById(prescription.id)
             val updatedSideEffect = _sharedState.value.copy(prescription = prescription)
             _sharedState.value = updatedSideEffect
-        }.start()
+        }
     }
 
-    fun save(context: Context) {
-        Thread {
+    suspend fun save(context: Context) {
+        withContext(Dispatchers.IO) {
             val id = SideEffectRepository(context).insert(_sharedState.value)
             _sharedState.value = SideEffectRepository(context).getById(id)
-        }.start()
+        }
     }
 }

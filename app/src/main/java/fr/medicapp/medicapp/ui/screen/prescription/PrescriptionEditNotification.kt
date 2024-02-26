@@ -20,6 +20,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +30,7 @@ import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTimePickerButto
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
@@ -41,15 +43,20 @@ fun PrescriptionEditNotification(
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Terminer",
         onClick = {
-            viewModel.save(context)
-            onClick()
+            scope.launch {
+                viewModel.save(context)
+                onClick()
+            }
         },
-        enabled = state.value.notifications.isNotEmpty() && state.value.notifications.all { it.alarms.isNotEmpty() && it.notificationInformation.days.isNotEmpty() }
+        enabled = state.value.notifications.isNotEmpty() && state.value.notifications.all {
+            it.alarms.isNotEmpty() && it.notificationInformation.days.isNotEmpty()
+        }
     ) {
         Column {
             ReusableButton(
@@ -137,7 +144,11 @@ fun PrescriptionEditNotification(
                                         color = if (notification.notificationInformation.days.contains(
                                                 dayOfWeek
                                             )
-                                        ) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                                        ) {
+                                            MaterialTheme.colorScheme.onPrimary
+                                        } else {
+                                            MaterialTheme.colorScheme.onSurface
+                                        },
                                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontStyle = MaterialTheme.typography.bodySmall.fontStyle,
                                         fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
