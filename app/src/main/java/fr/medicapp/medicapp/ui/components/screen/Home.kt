@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
@@ -27,8 +26,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun Home(
     title: String,
-    floatingActionButtonOnClick: () -> Unit,
-    floatActionButtonIcon: ImageVector,
+    floatingActionButtons : @Composable () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
@@ -48,16 +46,7 @@ fun Home(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = floatingActionButtonOnClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Icon(
-                    imageVector = floatActionButtonIcon,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            floatingActionButtons()
         }
     ) { innerPadding ->
         Box(
@@ -84,8 +73,18 @@ private fun HomePreview() {
     ) {
         Home(
             title = "Traitements",
-            floatingActionButtonOnClick = {},
-            floatActionButtonIcon = Icons.Filled.DocumentScanner
+            floatingActionButtons = {
+                FloatingActionButton(
+                    onClick = {},
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.DocumentScanner,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
         )
     }
 }
@@ -100,8 +99,18 @@ private fun HomeDarkPreview() {
     ) {
         Home(
             title = "Traitements",
-            floatingActionButtonOnClick = {},
-            floatActionButtonIcon = Icons.Filled.DocumentScanner
+            floatingActionButtons = {
+                FloatingActionButton(
+                    onClick = {},
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.DocumentScanner,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
         )
     }
 }

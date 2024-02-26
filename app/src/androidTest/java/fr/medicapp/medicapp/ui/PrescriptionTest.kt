@@ -8,6 +8,7 @@ class PrescriptionTest {
     private val prescription = Prescription(
         0L,
         null,
+        mutableListOf(),
         null,
         Treatment(0L, "posology", "frequency", null, null),
         mutableListOf(

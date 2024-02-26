@@ -6,6 +6,9 @@ import java.time.DayOfWeek
 class MutableListDayOfWeekConverter {
     @TypeConverter
     fun fromMutableListDayOfWeek(mutableListDayOfWeek: String): MutableList<DayOfWeek> {
+        if (mutableListDayOfWeek.isEmpty()) {
+            return mutableListOf()
+        }
         return mutableListDayOfWeek.split(",").map { DayOfWeek.valueOf(it) }.toMutableList()
     }
 

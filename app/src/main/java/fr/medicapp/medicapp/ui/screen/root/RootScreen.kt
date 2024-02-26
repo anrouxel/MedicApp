@@ -31,7 +31,7 @@ import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RootScreen(
@@ -125,7 +125,7 @@ fun RootScreen(
  *
  * Cette prévisualisation permet de voir à quoi ressemble l'écran avec tiroir de navigation sans avoir à lancer l'application.
  */
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @Preview
 @Composable
 private fun RootPreview() {
