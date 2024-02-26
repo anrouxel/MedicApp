@@ -2,13 +2,14 @@ package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
+import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
@@ -37,10 +38,15 @@ fun NavGraphBuilder.prescriptionNavGraph(
             onThemeChange(EUPurpleColorShema)
 
             val context = LocalContext.current
-            val boxStore = ObjectBox.getInstance(context)
-            val store = boxStore.boxFor(PrescriptionEntity::class.java)
+            var result: MutableList<Prescription> = mutableListOf()
+            Thread {
+                result.clear()
+                result.addAll(PrescriptionRepository(context).getAll().toMutableList())
+            }.start()
 
-            val prescriptions = store.all.map { it.convert() }
+            val prescriptions = remember {
+                result
+            }
 
             PrescriptionHome(
                 prescriptions = prescriptions,

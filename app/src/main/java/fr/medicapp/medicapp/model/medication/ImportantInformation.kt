@@ -1,11 +1,14 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.ImportantInformationEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
+@Entity
 data class ImportantInformation(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "important_information_id")
     val id: Long = 0L,
 
     var cisCode: Long = 0L,
@@ -14,15 +17,8 @@ data class ImportantInformation(
 
     var safetyInformationEndDate: LocalDate? = null,
 
-    var safetyInformationLink: String = ""
-) : ModelToEntityMapper<ImportantInformationEntity> {
-    override fun convert(context: Context): ImportantInformationEntity {
-        return ImportantInformationEntity(
-            id,
-            cisCode,
-            safetyInformationStartDate,
-            safetyInformationEndDate,
-            safetyInformationLink
-        )
-    }
-}
+    var safetyInformationLink: String = "",
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
+)

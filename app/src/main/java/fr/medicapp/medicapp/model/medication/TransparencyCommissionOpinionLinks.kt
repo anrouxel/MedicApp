@@ -1,21 +1,16 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.TransparencyCommissionOpinionLinksEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class TransparencyCommissionOpinionLinks(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "transparency_commission_opinion_links_id")
     val id: Long = 0L,
 
     var hasDossierCode: String = "",
 
-    var commissionOpinionLink: String? = null
-) : ModelToEntityMapper<TransparencyCommissionOpinionLinksEntity> {
-    override fun convert(context: Context): TransparencyCommissionOpinionLinksEntity {
-        return TransparencyCommissionOpinionLinksEntity(
-            id,
-            hasDossierCode,
-            commissionOpinionLink
-        )
-    }
-}
+    var commissionOpinionLink: String? = null,
+)

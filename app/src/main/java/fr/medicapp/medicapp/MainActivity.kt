@@ -12,14 +12,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.ai.PrescriptionAI
-import fr.medicapp.medicapp.database.ObjectBox
+import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
-import fr.medicapp.medicapp.database.entity.medication.MedicationEntity
-import fr.medicapp.medicapp.model.medication.Medication
+import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.model.gson.MedicationGSON
+import fr.medicapp.medicapp.model.medication.relationship.Medication
+import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import java.lang.reflect.Type
 import java.time.LocalDate
 
 /**
@@ -37,31 +41,54 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val boxStore = ObjectBox.getInstance(this)
-
         Thread {
-            val store = boxStore.boxFor(MedicationEntity::class.java)
+            val medicationRepository = MedicationRepository(this)
 
-            if (store.all.isEmpty()) {
-                val gson = GsonBuilder()
-                    .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
-                    .create()
+            Log.d("ObjectBox", "Medication count: ${medicationRepository.getAll().count()}")
 
-                val medications = mutableListOf<MedicationEntity>()
+            if (medicationRepository.getAll().isEmpty()) {
 
-                val monoprost =
-                    "{\"cisCode\":67303969,\"name\":\"MONOPROST 50 MICROGRAMMES/ML, COLLYRE EN SOLUTION EN RÉCIPIENT UNIDOSE\",\"pharmaceuticalForm\":\"COLLYRE EN SOLUTION\",\"administrationRoutes\":[\"OPHTALMIQUE\"],\"marketingAuthorizationStatus\":\"AUTORISATION ACTIVE\",\"marketingAuthorizationProcedureType\":\"PROCÉDURE DÉCENTRALISÉE\",\"commercializationStatus\":\"COMMERCIALISÉE\",\"marketingAuthorizationDate\":\"2013-02-14\",\"bdmStatus\":\"\",\"europeanAuthorizationNumber\":\"\",\"holders\":[\"THEA\"],\"enhancedMonitoring\":false,\"medicationCompositions\":[{\"cisCode\":67303969,\"pharmaceuticalElementDesignation\":\"COLLYRE\",\"substanceCode\":33474,\"substanceName\":\"LATANOPROST\",\"substanceDosage\":\"50 MICROGRAMMES\",\"dosageReference\":\"1 ML DE COLLYRE EN SOLUTION\",\"componentNature\":\"SA\",\"linkNumber\":1}],\"medicationPresentations\":[{\"cisCode\":67303969,\"ciP7Code\":2673826,\"presentationLabel\":\"30 RÉCIPIENT(S) UNIDOSE(S) POLYÉTHYLÈNE BASSE DENSITÉ (PEBD) SUREMBALLÉE(S)/SURPOCHÉE(S) DE 0,2 ML\",\"presentationStatus\":\"PRÉSENTATION ACTIVE\",\"presentationCommercializationStatus\":\"DÉCLARATION DE COMMERCIALISATION\",\"commercializationDeclarationDate\":\"2014-01-02\",\"ciP13Code\":3400926738266,\"approvalForCommunities\":true,\"reimbursementRates\":[65],\"priceWithoutHonoraryInEuro\":8.78,\"priceWithHonoraryInEuro\":9.80,\"priceHonoraryInEuro\":1.02,\"reimbursementIndications\":\"\"}],\"genericGroups\":[],\"hasSmrOpinions\":[{\"cisCode\":67303969,\"hasDossierCode\":\"CT-17190\",\"evaluationReason\":\"RENOUVELLEMENT D'INSCRIPTION (CT)\",\"transparencyCommissionOpinionDate\":\"2019-02-06\",\"smrValue\":\"IMPORTANT\",\"smrLabel\":\"LE SERVICE MÉDICAL RENDU PAR MONOPROST 50 ΜG/ML, COLLYRE EN SOLUTION EN RÉCIPIENT UNIDOSE ET EN FLACON MULTIDOSE RESTE IMPORTANT DANS LES INDICATIONS DE L\\u0092AMM.\",\"transparencyCommissionOpinionLinks\":[{\"hasDossierCode\":\"CT-17190\",\"commissionOpinionLink\":\"https://www.has-sante.fr/jcms/c_2905736\"}]}],\"hasAsmrOpinions\":[{\"cisCode\":67303969,\"hasDossierCode\":\"CT-12748\",\"evaluationReason\":\"INSCRIPTION (CT)\",\"transparencyCommissionOpinionDate\":\"2013-05-29\",\"asmrValue\":\"V\",\"asmrLabel\":\"MONOPROST 50 ΜG/ML, COLLYRE EN SOLUTION EN RÉCIPIENT UNIDOSE, N\\u0092APPORTE PAS D\\u0092AMÉLIORATION DU SERVICE MÉDICAL RENDU (ASMR V) PAR RAPPORT À XALATAN 0,005 %, COLLYRE EN SOLUTION.\",\"transparencyCommissionOpinionLinks\":[{\"hasDossierCode\":\"CT-12748\",\"commissionOpinionLink\":\"https://www.has-sante.fr/jcms/c_1615556\"}]}],\"importantInformations\":[],\"prescriptionDispensingConditions\":[{\"cisCode\":67303969,\"prescriptionDispensingCondition\":\"LISTE I\"}],\"pharmaceuticalSpecialties\":[{\"cisCode\":67303969,\"cip13Code\":\"\",\"statusCode\":2,\"statusLabel\":\"TENSION D'APPROVISIONNEMENT\",\"startDate\":\"2023-02-07\",\"updateDate\":\"2024-01-16\",\"returnToDate\":null,\"ansmSiteLink\":\"HTTPS://ANSM.SANTE.FR/DISPONIBILITES-DES-PRODUITS-DE-SANTE/MEDICAMENTS/MONOPROST-50-MICROGRAMMES-ML-COLLYRE-EN-SOLUTION-EN-RECIPIENT-UNIDOSE-LATANOPROST\"}]}"
+                val apiService = APIAddressClient().apiServiceGuewen
+                var page: Int = 1
+                var continuer = true
+                while (continuer) {
 
-                Log.d("ObjectBox", "Monoprost : $monoprost")
+                    val response = apiService.getAllMeds(page).execute()
+                    Log.d("ObjectBox", "Page $page")
+                    if (response.isSuccessful) {
+                        val allMedsJsonArray = response.body()!!
 
-                medications.add(gson.fromJson(monoprost, Medication::class.java).convert(this))
+                        val gson = GsonBuilder()
+                            .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                            .create()
 
-                store.put(medications)
+                        val listType: Type = object : TypeToken<List<MedicationGSON>>() {}.type
+
+                        val medications: List<MedicationGSON> =
+                            gson.fromJson(allMedsJsonArray, listType)
+
+                        // Mapper et convertir les données en MedicationEntity
+                        val medicationEntities = medications.map { it.toMedication() }
+
+                        // Enregistrer les MedicationEntity dans ObjectBox
+                        medicationRepository.insert(medicationEntities)
+                        page += 1
+
+                    } else {
+                        continuer = false
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("Error de guegue", errorBody ?: "Error body is null")
+                        Log.e("ObjectBox", "Error while fetching medications")
+                    }
+                }
             }
         }.start()
 
         // Initialisation de l'IA de prescription
         PrescriptionAI.getInstance(this)
+
+        // Initialisation du moteur de rendu Gecko
+        GeckoManager.getInstances(this)
 
         // Définition du contenu de l'activité
         setContent {

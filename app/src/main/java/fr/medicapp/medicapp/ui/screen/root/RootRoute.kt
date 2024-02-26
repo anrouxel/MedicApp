@@ -60,5 +60,13 @@ sealed class RootRoute(
         route = "user",
         title = "Utilisateur",
         icon = Icons.Filled.Person,
+
+    /**
+     * Route de l'écran des médecins.
+     */
+    object RootRouteDoctorRoute : RootRoute(
+        route = "doctor",
+        title = "Médecins",
+        icon = Icons.Filled.Newspaper,
     )
 }

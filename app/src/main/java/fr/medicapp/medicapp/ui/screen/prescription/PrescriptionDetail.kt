@@ -48,14 +48,6 @@ fun PrescriptionDetail(
                             value = "Docteur : $it",
                         )
                     }
-
-                    state.value.date?.let {
-                        Spacer(modifier = Modifier.padding(10.dp))
-
-                        ReusableTextMediumCard(
-                            value = "Date de l'ordonnance : $it",
-                        )
-                    }
                 }
             }
 
@@ -65,7 +57,7 @@ fun PrescriptionDetail(
                 Column(
                     modifier = Modifier.padding(10.dp)
                 ) {
-                    state.value.treatment.medication?.let {
+                    state.value.medication?.let {
                         ReusableTextMediumCard(
                             value = "Médicament : $it",
                         )
@@ -74,18 +66,18 @@ fun PrescriptionDetail(
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableTextMediumCard(
-                        value = "Posologie : ${state.value.treatment.posology}",
+                        value = "Posologie : ${state.value.prescriptionInformation.posology}",
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableTextMediumCard(
-                        value = "Fréquence : ${state.value.treatment.frequency}",
+                        value = "Fréquence : ${state.value.prescriptionInformation.frequency}",
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
-                    state.value.treatment.duration?.let {
+                    state.value.duration?.let {
                         ReusableTextMediumCard(
                             value = "Durée : $it",
                         )
@@ -116,15 +108,18 @@ fun PrescriptionDetail(
 
                             Row {
                                 Switch(
-                                    checked = notification.active,
+                                    checked = notification.notificationInformation.active,
                                     onCheckedChange = {
-                                        viewModel.updateNotificationActiveState(index, it, context)
+                                        viewModel.updatedNotificationState(context, index, it)
                                     }
                                 )
 
                                 ReusableAlertIconButton(
                                     onClick = {
-                                        viewModel.removeNotification(index, context)
+                                        viewModel.removeNotification(
+                                            context,
+                                            notification.notificationInformation.id
+                                        )
                                     },
                                     icon = Icons.Default.Delete,
                                     title = "Supprimer cette notification",
@@ -137,13 +132,13 @@ fun PrescriptionDetail(
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(
-                            value = "Active : ${notification.active}",
+                            value = "Active : ${notification.notificationInformation.active}",
                         )
 
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableTextMediumCard(
-                            value = "Jours : ${notification.days}",
+                            value = "Jours : ${notification.notificationInformation.days.map { it.toString() }}",
                         )
 
                         Spacer(modifier = Modifier.padding(10.dp))

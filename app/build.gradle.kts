@@ -4,8 +4,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
-    id("io.objectbox")
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "1.5.0"
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -96,20 +96,28 @@ dependencies {
     // PyTorch
     implementation("org.pytorch:pytorch_android:2.1.0")
 
-    //Maps
+    // Mozilla
+    val mozillaVersion = "123.0"
+    implementation("org.mozilla.components:concept-engine:$mozillaVersion")
+    implementation("org.mozilla.components:browser-engine-gecko:$mozillaVersion")
+
+    // Maps
     implementation("org.maplibre.gl:android-sdk:10.0.2")
 
     // Calendar
     implementation("com.kizitonwose.calendar:compose:2.5.0")
 
-    // Mozilla
-    val mozillaVersion = "123.0"
-    implementation("org.mozilla.components:concept-fetch:$mozillaVersion")
-    implementation("org.mozilla.components:lib-fetch-okhttp:$mozillaVersion")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
-
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -122,4 +130,7 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 }

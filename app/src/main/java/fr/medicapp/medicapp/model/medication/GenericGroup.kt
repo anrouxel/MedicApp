@@ -1,10 +1,13 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.GenericGroupEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class GenericGroup(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "generic_group_id")
     val id: Long = 0L,
 
     var genericGroupId: Long = 0L,
@@ -17,17 +20,8 @@ data class GenericGroup(
 
     var genericName: String = "",
 
-    var sortNumber: Int? = null
-) : ModelToEntityMapper<GenericGroupEntity> {
-    override fun convert(context: Context): GenericGroupEntity {
-        return GenericGroupEntity(
-            id,
-            genericGroupId,
-            genericGroupLabel,
-            cisCode,
-            genericType,
-            genericName,
-            sortNumber
-        )
-    }
-}
+    var sortNumber: Int? = null,
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
+)

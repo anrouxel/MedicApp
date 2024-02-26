@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.model.Doctor
+import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.screen.Home
@@ -36,7 +36,8 @@ fun DoctorHome(
             NoDoctorFound()
         } else {
             DoctorList(
-                doctors = doctors
+                doctors = doctors,
+                onDoctorClick = onDoctorClick
             )
         }
     }
@@ -44,12 +45,14 @@ fun DoctorHome(
 
 @Composable
 fun DoctorList(
-    doctors: List<Doctor>
+    doctors: List<Doctor>,
+    onDoctorClick: (Long) -> Unit
 ) {
     Column {
         doctors.forEachIndexed { index, doctor ->
             DoctorItem(
-                doctor = doctor
+                doctor = doctor,
+                onDoctorClick = onDoctorClick
             )
             if (index != doctors.size - 1) {
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -60,10 +63,11 @@ fun DoctorList(
 
 @Composable
 fun DoctorItem(
-    doctor: Doctor
+    doctor: Doctor,
+    onDoctorClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = {}
+        onClick = { } //onDoctorClick(doctor.id) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",

@@ -45,6 +45,7 @@ fun RootScreen(
         RootRoute.RootRouteHomeRoute,
         RootRoute.RootRoutePrescriptionRoute,
         RootRoute.RootRouteSideEffectRoute,
+        RootRoute.RootRouteDoctorRoute,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -58,7 +59,7 @@ fun RootScreen(
                         painter = painterResource(
                             id = theme.icon
                         ),
-                        contentDescription = "MedicApp",
+                        contentDescription = "MedicApp"
                     )
                 },
                 navigationIcon = {

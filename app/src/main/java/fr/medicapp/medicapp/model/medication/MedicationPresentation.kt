@@ -1,11 +1,14 @@
 package fr.medicapp.medicapp.model.medication
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.medication.MedicationPresentationEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
+@Entity
 data class MedicationPresentation(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "medication_presentation_id")
     val id: Long = 0L,
 
     var cisCode: Long = 0L,
@@ -33,23 +36,7 @@ data class MedicationPresentation(
     var priceHonoraryInEuro: Float? = null,
 
     var reimbursementIndications: String = "",
-) : ModelToEntityMapper<MedicationPresentationEntity> {
-    override fun convert(context: Context): MedicationPresentationEntity {
-        return MedicationPresentationEntity(
-            id,
-            cisCode,
-            cip7Code,
-            presentationLabel,
-            presentationStatus,
-            presentationCommercializationStatus,
-            commercializationDeclarationDate,
-            cip13Code,
-            approvalForCommunities,
-            reimbursementRates,
-            priceWithoutHonoraryInEuro,
-            priceWithHonoraryInEuro,
-            priceHonoraryInEuro,
-            reimbursementIndications
-        )
-    }
-}
+
+    @ColumnInfo(name = "medication_id")
+    var medicationId: Long = 0L
+)
