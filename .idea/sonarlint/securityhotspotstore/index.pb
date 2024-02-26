@@ -77,10 +77,6 @@ H
 config/detekt/detekt.yml,5/a/5a8eccd34aefbab894eaadc3b79e57f6c456425d
 l
 <app/src/main/java/fr/medicapp/medicapp/model/OptionDialog.kt,0\1\016da7856795f1ddab2ae5f2a7093cb265e940ac
-Q
-!app/objectbox-models/default.json,e\6\e6733a8dc693320a6372b490b200cc8c2fa2b484
-U
-%app/objectbox-models/default.json.bak,e\8\e86a0de7df8ae1be9d7976d78cd32c406a65ffd7
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ButtonContent.kt,3\5\355a172179b7aa4b59370b699a3de20485c0d318
 ‹
@@ -237,14 +233,6 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/notification/RebootReceiver.kt,b\e\bea2b841841b45588dacec5aea8170d867ac2e7d
 u
 Eapp/src/main/java/fr/medicapp/medicapp/notification/AlarmScheduler.kt,5\f\5f4ac8193be0daf6ac1556f72ad884895cd936b5
-•
-eapp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerWhitespaceTokenizeTest.kt,0\9\09c9d32de7db1b69880f9a53e682c722ba38a254
-Œ
-\app/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerCleanTextTest.kt,e\2\e2b342786e769ff983b3a199426f0978f058e20f
-ƒ
-Sapp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,c\d\cdc1e7998241a5c9217706820e55a258a3c2be35
-€
-Papp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,1\3\13cf6675389c5966997b97d5d418bc4966b8eada
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/components/mozilla/Gecko.kt,5\8\581d40c82dcfa93f1bdac5bb02a5ff0f94f0c932
 n

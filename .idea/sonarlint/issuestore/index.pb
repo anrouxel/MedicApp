@@ -41,12 +41,8 @@ A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 C
 settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
-Q
-!app/objectbox-models/default.json,e\6\e6733a8dc693320a6372b490b200cc8c2fa2b484
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-U
-%app/objectbox-models/default.json.bak,e\8\e86a0de7df8ae1be9d7976d78cd32c406a65ffd7
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ui/components/button/ButtonContent.kt,3\5\355a172179b7aa4b59370b699a3de20485c0d318
 ‹
@@ -205,14 +201,6 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/notification/AlarmScheduler.kt,5\f\5f4ac8193be0daf6ac1556f72ad884895cd936b5
 x
 Happ/src/androidTest/java/fr/medicapp/medicapp/ExampleInstrumentedTest.kt,1\5\1528e894b42d15502fc826248f0c2e4e16f34c12
-•
-eapp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerWhitespaceTokenizeTest.kt,0\9\09c9d32de7db1b69880f9a53e682c722ba38a254
-Œ
-\app/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerCleanTextTest.kt,e\2\e2b342786e769ff983b3a199426f0978f058e20f
-ƒ
-Sapp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/BasicTokenizerTest.kt,c\d\cdc1e7998241a5c9217706820e55a258a3c2be35
-€
-Papp/src/androidTest/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,1\3\13cf6675389c5966997b97d5d418bc4966b8eada
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/components/mozilla/Gecko.kt,5\8\581d40c82dcfa93f1bdac5bb02a5ff0f94f0c932
 ;
