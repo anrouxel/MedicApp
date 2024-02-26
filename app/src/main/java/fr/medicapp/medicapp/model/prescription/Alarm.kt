@@ -15,4 +15,8 @@ data class Alarm(
 
     @ColumnInfo(name = "notification_id")
     val notificationId: Long = 0L
-)
+) {
+    override fun toString(): String {
+        return time.toString()
+    }
+}

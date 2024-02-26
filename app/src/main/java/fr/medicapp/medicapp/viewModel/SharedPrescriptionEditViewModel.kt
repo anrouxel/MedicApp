@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.viewModel
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import fr.medicapp.medicapp.model.prescription.Alarm
 import fr.medicapp.medicapp.model.prescription.Duration
 import fr.medicapp.medicapp.model.prescription.relationship.Notification
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -130,6 +132,7 @@ class SharedPrescriptionEditViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun save(context: Context) {
+        Log.d("Prescription", _sharedState.value.toString())
         addToNotificationManager(context)
 
         Thread {
@@ -146,6 +149,6 @@ class SharedPrescriptionEditViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addToNotificationManager(context: Context) {
-        //NotificationPrescriptionManager.add(context, _sharedState.value.getNextAlarms())
+        NotificationPrescriptionManager.add(context, _sharedState.value.getNextAlarms())
     }
 }
