@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Newspaper
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -51,6 +52,14 @@ sealed class RootRoute(
         title = "Effets",
         icon = Icons.Filled.Newspaper,
     )
+
+    /**
+     * Route de l'écran utilisateur //Non utilisé.
+     */
+    object RootRouteUserRoute : RootRoute(
+        route = "user",
+        title = "Utilisateur",
+        icon = Icons.Filled.Person,
 
     /**
      * Route de l'écran des médecins.
