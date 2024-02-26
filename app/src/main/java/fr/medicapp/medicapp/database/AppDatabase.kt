@@ -10,6 +10,7 @@ import fr.medicapp.medicapp.database.converter.LocalTimeConverter
 import fr.medicapp.medicapp.database.converter.MutableListDayOfWeekConverter
 import fr.medicapp.medicapp.database.converter.MutableListFloatConverter
 import fr.medicapp.medicapp.database.converter.MutableListStringConverter
+import fr.medicapp.medicapp.database.dao.UserDAO
 import fr.medicapp.medicapp.database.dao.medication.GenericGroupDAO
 import fr.medicapp.medicapp.database.dao.medication.HasAsmrOpinionDAO
 import fr.medicapp.medicapp.database.dao.medication.HasSmrOpinionDAO
@@ -29,6 +30,7 @@ import fr.medicapp.medicapp.database.dao.prescription.NotificationDAO
 import fr.medicapp.medicapp.database.dao.prescription.PrescriptionDAO
 import fr.medicapp.medicapp.database.dao.prescription.SideEffectDAO
 import fr.medicapp.medicapp.database.dao.prescription.crossRef.NotificationAlarmCrossRefDAO
+import fr.medicapp.medicapp.model.User
 import fr.medicapp.medicapp.model.medication.GenericGroup
 import fr.medicapp.medicapp.model.medication.HasAsmrOpinionInformation
 import fr.medicapp.medicapp.model.medication.HasSmrOpinionInformation
@@ -72,7 +74,8 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
         SideEffectInformation::class,
         HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef::class,
         HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef::class,
-        NotificationAlarmCrossRef::class
+        NotificationAlarmCrossRef::class,
+        User::class
     ],
     version = 1,
     exportSchema = false
@@ -122,6 +125,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO(): HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
 
     abstract fun HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO(): HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
+
+    abstract fun userDAO(): UserDAO
 
     companion object {
 

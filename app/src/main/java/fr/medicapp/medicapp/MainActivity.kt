@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
+import fr.medicapp.medicapp.database.repositories.UserRepository
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
 import fr.medicapp.medicapp.model.medication.relationship.Medication
@@ -23,6 +25,9 @@ import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.internal.wait
 import java.lang.reflect.Type
 import java.time.LocalDate
 
@@ -40,6 +45,8 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val isUser = this.getSharedPreferences("medicapp", Context.MODE_PRIVATE).getBoolean("isUserCreated", false)
 
         Thread {
             val medicationRepository = MedicationRepository(this)
@@ -101,7 +108,8 @@ class MainActivity : ComponentActivity() {
                 RootNavGraph(
                     navController = rememberNavController(),
                     theme = theme,
-                    onThemeChange = { theme = it }
+                    onThemeChange = { theme = it },
+                    isUser = isUser
                 )
             }
         }

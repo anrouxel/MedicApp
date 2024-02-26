@@ -4,14 +4,18 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.UserEntity
+import fr.medicapp.medicapp.database.repositories.UserRepository
+import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.ui.screen.root.RootScreen
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Cette fonction construit le graphe de navigation racine.
@@ -24,15 +28,17 @@ fun RootNavGraph(
     navController: NavHostController,
     theme: ThemeColorScheme,
     onThemeChange: (ThemeColorScheme) -> Unit,
+    isUser: Boolean
 ) {
 
     /**
      * Définit le hôte de navigation pour le graphe de navigation racine.
      */
+
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = if (!isUserInDatabase(LocalContext.current)) Graph.USER else Graph.HOME,
+        startDestination = if (isUser) Graph.HOME else Graph.USER,
     ) {
         /**
          * Composable pour l'écran d'accueil.
@@ -46,12 +52,6 @@ fun RootNavGraph(
 
         userNavGraph(navController, onThemeChange)
     }
-}
-
-private fun isUserInDatabase(context: Context): Boolean {
-    val boxStore = ObjectBox.getInstance(context)
-    val store = boxStore.boxFor(UserEntity::class.java)
-    return store.all.isNotEmpty()
 }
 
 /**
