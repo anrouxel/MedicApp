@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -40,7 +39,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             onThemeChange(EUPurpleColorShema)
 
             val context = LocalContext.current
-            var result: MutableList<Prescription> = mutableListOf()
+            val result: MutableList<Prescription> = mutableListOf()
             Thread {
                 result.clear()
                 result.addAll(PrescriptionRepository(context).getAll().toMutableList())
@@ -73,7 +72,6 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
 
             val context = LocalContext.current
-            val scope = rememberCoroutineScope()
 
             if (id != null) {
                 LaunchedEffect(key1 = id) {
