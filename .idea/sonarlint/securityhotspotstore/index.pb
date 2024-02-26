@@ -371,3 +371,11 @@ Sapp/src/main/java/fr/medicapp/medicapp/database/dao/prescription/PrescriptionDA
 iapp/src/main/java/fr/medicapp/medicapp/database/dao/prescription/crossRef/NotificationAlarmCrossRefDAO.kt,6\e\6e2a3d204fc09310c28776c8457378f6ebc9b977
 è
 _app/src/main/java/fr/medicapp/medicapp/database/repositories/prescription/DurationRepository.kt,1\8\1891bd4d27507a71dd56b825a59f2684a38522df
+s
+Capp/src/main/java/fr/medicapp/medicapp/model/gson/MedicationGSON.kt,a\8\a82cd12b9e0309a9b4d54443a0d585ace52c755f
+v
+Fapp/src/main/java/fr/medicapp/medicapp/model/gson/HasSmrOpinionGSON.kt,c\3\c37753b09e763a87fee5b1d879a24424d40f98c6
+w
+Gapp/src/main/java/fr/medicapp/medicapp/model/gson/HasAsmrOpinionGSON.kt,1\0\100dfefefe8bb1b30bc97f34ca27e7b5369d8a86
+Å
+Qapp/src/main/java/fr/medicapp/medicapp/database/converter/LocalDateTypeAdapter.kt,2\9\29725a910750a8367e820bda5cc0c91d79eac62f
