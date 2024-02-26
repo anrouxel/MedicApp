@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -40,7 +41,7 @@ fun NavGraphBuilder.sideEffectNavGraph(
             onThemeChange(EUPurpleColorShema)
 
             val context = LocalContext.current
-            var result: MutableList<SideEffect> = mutableListOf()
+            val result: MutableList<SideEffect> = mutableListOf()
             Thread {
                 result.clear()
                 result.addAll(SideEffectRepository(context).getAll().toMutableList())
@@ -69,11 +70,15 @@ fun NavGraphBuilder.sideEffectNavGraph(
         composable(route = SideEffectRoute.SideEffectDetailRoute.route) {
             val id = it.arguments?.getString("id")?.toLongOrNull()
 
+            val context = LocalContext.current
+
             val viewModel =
                 it.sharedViewModel<SharedSideEffectDetailViewModel>(navController = navController)
 
             if (id != null) {
-                viewModel.loadSideEffect(context = LocalContext.current, id = id)
+                LaunchedEffect(key1 = id) {
+                    viewModel.loadSideEffect(context = context, id = id)
+                }
             } else {
                 navController.popBackStack()
             }

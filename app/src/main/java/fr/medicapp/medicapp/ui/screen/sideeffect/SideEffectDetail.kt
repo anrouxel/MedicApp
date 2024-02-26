@@ -8,11 +8,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import fr.medicapp.medicapp.ui.components.button.ReusableAlertButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.viewModel.SharedSideEffectDetailViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun SideEffectDetail(
@@ -58,7 +60,9 @@ fun SideEffectDetail(
             ReusableAlertButton(
                 text = "Supprimer",
                 onClick = {
-                    viewModel.removeSideEffect(context)
+                    viewModel.viewModelScope.launch {
+                        viewModel.removeSideEffect(context)
+                    }
                 },
                 title = "Suppression",
                 content = "Voulez-vous vraiment supprimer cet effet secondaire ?",

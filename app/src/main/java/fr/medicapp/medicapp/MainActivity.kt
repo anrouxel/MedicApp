@@ -17,17 +17,12 @@ import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
-import fr.medicapp.medicapp.database.repositories.UserRepository
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
-import fr.medicapp.medicapp.model.medication.relationship.Medication
 import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.internal.wait
 import java.lang.reflect.Type
 import java.time.LocalDate
 
@@ -46,7 +41,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val isUser = this.getSharedPreferences("medicapp", Context.MODE_PRIVATE).getBoolean("isUserCreated", false)
+        val isUser = this.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+            .getBoolean("isUserCreated", false)
 
         Thread {
             val medicationRepository = MedicationRepository(this)

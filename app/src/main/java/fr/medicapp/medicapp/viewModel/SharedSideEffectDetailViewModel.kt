@@ -7,8 +7,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.repositories.prescription.SideEffectRepository
 import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel partagé pour gérer l'état de l'ajout d'une prescription.
@@ -22,15 +24,15 @@ class SharedSideEffectDetailViewModel(
     val sharedState: StateFlow<SideEffect> = _sharedState
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun loadSideEffect(context: Context, id: Long) {
-        Thread {
+    suspend fun loadSideEffect(context: Context, id: Long) {
+        withContext(Dispatchers.IO) {
             _sharedState.value = SideEffectRepository(context).getById(id)
-        }.start()
+        }
     }
 
-    fun removeSideEffect(context: Context) {
-        Thread {
+    suspend fun removeSideEffect(context: Context) {
+        withContext(Dispatchers.IO) {
             SideEffectRepository(context).delete(_sharedState.value)
-        }.start()
+        }
     }
 }

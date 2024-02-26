@@ -1,21 +1,13 @@
 package fr.medicapp.medicapp.ui.navigation
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.database.repositories.UserRepository
-import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.ui.screen.root.RootScreen
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 /**
  * Cette fonction construit le graphe de navigation racine.

@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -38,7 +39,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             onThemeChange(EUPurpleColorShema)
 
             val context = LocalContext.current
-            var result: MutableList<Prescription> = mutableListOf()
+            val result: MutableList<Prescription> = mutableListOf()
             Thread {
                 result.clear()
                 result.addAll(PrescriptionRepository(context).getAll().toMutableList())
@@ -70,8 +71,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val viewModel =
                 it.sharedViewModel<SharedPrescriptionDetailViewModel>(navController = navController)
 
+            val context = LocalContext.current
+
             if (id != null) {
-                viewModel.loadPrescription(context = LocalContext.current, id = id)
+                LaunchedEffect(key1 = id) {
+                    viewModel.loadPrescription(context = context, id = id)
+                }
             } else {
                 navController.popBackStack()
             }
