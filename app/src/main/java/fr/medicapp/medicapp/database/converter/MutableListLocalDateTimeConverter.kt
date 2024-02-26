@@ -1,17 +1,19 @@
 package fr.medicapp.medicapp.database.converter
 
-import io.objectbox.converter.PropertyConverter
+import androidx.room.TypeConverter
 import java.time.LocalDateTime
 
-class MutableListLocalDateTimeConverter : PropertyConverter<MutableList<LocalDateTime>, String> {
-    override fun convertToDatabaseValue(entityProperty: MutableList<LocalDateTime>): String {
-        return entityProperty.joinToString(separator = ",")
+class MutableListLocalDateTimeConverter {
+    @TypeConverter
+    fun fromMutableListLocalDateTime(mutableListLocalDateTime: String): MutableList<LocalDateTime> {
+        if (mutableListLocalDateTime.isEmpty()) {
+            return mutableListOf()
+        }
+        return mutableListLocalDateTime.split(",").map { LocalDateTime.parse(it) }.toMutableList()
     }
 
-    override fun convertToEntityProperty(databaseValue: String): MutableList<LocalDateTime> {
-        return if (databaseValue.isNotEmpty()) databaseValue.split(",").map {
-            LocalDateTime.parse(it)
-        }.toMutableList()
-        else mutableListOf()
+    @TypeConverter
+    fun toMutableListLocalDateTime(mutableListLocalDateTime: MutableList<LocalDateTime>): String {
+        return mutableListLocalDateTime.joinToString(",")
     }
 }

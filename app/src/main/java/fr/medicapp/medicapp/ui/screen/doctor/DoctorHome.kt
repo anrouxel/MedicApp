@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +32,18 @@ fun DoctorHome(
 ) {
     Home(
         title = "Recherche de médecin",
-        floatingActionButtonOnClick = { },
-        floatActionButtonIcon = Icons.Filled.Search
+        floatingActionButtons = {
+            FloatingActionButton(
+                onClick = { },
+                containerColor = MaterialTheme.colorScheme.primary,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
     ) {
         if (doctors.isEmpty()) {
             NoDoctorFound()

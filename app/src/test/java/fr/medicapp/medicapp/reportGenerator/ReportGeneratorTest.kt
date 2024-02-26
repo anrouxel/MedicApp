@@ -3,7 +3,6 @@ package fr.medicapp.medicapp.reportGenerator
 import fr.medicapp.medicapp.model.Alarm
 import fr.medicapp.medicapp.model.Duration
 import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Prescription
 import fr.medicapp.medicapp.model.Treatment
 import org.junit.Test
 import java.time.DayOfWeek

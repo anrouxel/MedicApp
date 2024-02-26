@@ -9,6 +9,7 @@ import fr.medicapp.medicapp.database.converter.LocalDateConverter
 import fr.medicapp.medicapp.database.converter.LocalTimeConverter
 import fr.medicapp.medicapp.database.converter.MutableListDayOfWeekConverter
 import fr.medicapp.medicapp.database.converter.MutableListFloatConverter
+import fr.medicapp.medicapp.database.converter.MutableListLocalDateTimeConverter
 import fr.medicapp.medicapp.database.converter.MutableListStringConverter
 import fr.medicapp.medicapp.database.dao.UserDAO
 import fr.medicapp.medicapp.database.dao.medication.GenericGroupDAO
@@ -85,7 +86,8 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
     LocalTimeConverter::class,
     MutableListStringConverter::class,
     MutableListFloatConverter::class,
-    MutableListDayOfWeekConverter::class
+    MutableListDayOfWeekConverter::class,
+    MutableListLocalDateTimeConverter::class
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun prescriptionDAO(): PrescriptionDAO

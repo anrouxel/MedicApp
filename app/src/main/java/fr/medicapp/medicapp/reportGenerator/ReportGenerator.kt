@@ -11,6 +11,7 @@ import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfDocument.PageInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
@@ -20,10 +21,10 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import fr.medicapp.medicapp.R
-import fr.medicapp.medicapp.database.ObjectBox
-import fr.medicapp.medicapp.database.entity.PrescriptionEntity
-import fr.medicapp.medicapp.model.Notification
-import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
+import fr.medicapp.medicapp.model.prescription.relationship.Notification
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.ui.components.dialog.NoPrescriptionDialog
 import fr.medicapp.medicapp.ui.theme.EUGreen130
 import java.io.File
 import java.io.FileOutputStream
@@ -84,13 +85,7 @@ class ReportGenerator(private val ctx: Context) {
             val file = generate(signature, notes)
             exportInMail(file, signature)
         } catch (e: NoPrescriptionException) {
-            AlertDialog.Builder(ctx)
-                .setTitle("Erreur")
-                .setMessage("Vous n'avez pas de prescription pour le moment.")
-                .setPositiveButton("Ok") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            NoPrescriptionDialog.show(ctx)
         }
     }
 
@@ -117,61 +112,61 @@ class ReportGenerator(private val ctx: Context) {
     private fun drawLogo() {
         val logo = R.drawable.medicapp_eu_green
 
-        val bitmap =
-            ctx.getDrawable(logo)?.toBitmap(1900, 1900) ?: throw Exception("Logo not found")
+        val bitmap = AppCompatResources.getDrawable(ctx, logo)?.toBitmap(1900, 1900) ?: throw Exception("Logo not found")
 
         actualCanvas.drawBitmap(bitmap, 100F, 535F, Fonts.logoPaint)
     }
 
     private fun drawPrescriptions() {
-        val boxStore = ObjectBox.getInstance(ctx)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescriptions = store.query().build().find().map { it.convert() }
+        Thread{
+            val prescriptions = PrescriptionRepository(ctx).getAll()
+            if (prescriptions.isEmpty())
+                throw NoPrescriptionException()
 
-        if (prescriptions.isEmpty())
-            throw NoPrescriptionException()
+            val textPrescription = mutableListOf<String>()
+            for (prescription in prescriptions.filter { it.medication?.medicationInformation?.name != null }) {
+                val qrCode =
+                    qrCodeGenerator(prescription.medication?.medicationInformation?.cisCode.toString(), 150, 150)
+                if (qrCode != null)
+                    actualCanvas.drawBitmap(qrCode, 120F, 555F + 70F.times(textPrescription.size), Paint())
 
-        val textPrescription = mutableListOf<String>()
-        for (prescription in prescriptions.filter { it.treatment.medication?.name != null }) {
-            val qrCode =
-                qrCodeGenerator(prescription.treatment.medication!!.cisCode.toString(), 150, 150)
-            if (qrCode != null)
-                actualCanvas.drawBitmap(qrCode, 120F, 555F + 70F.times(textPrescription.size), Paint())
+                val maxLineSize = 72
+                val medicineText = "> ${prescription.medication?.medicationInformation?.name}".lowercase(Locale.ROOT)
+                val frequency = genFrequency(prescription.notifications)
 
-            val maxLineSize = 72
-            val medicineText = "> ${prescription.treatment.medication?.name}".lowercase(Locale.ROOT)
-            val frequency = genFrequency(prescription.notifications)
+                val descriptionText = "    {${prescription.prescriptionInformation.posology.trim()}} " +
+                        ((if (frequency.isNotBlank()) "[$frequency] " else "") +
+                                "${prescription.duration}")
+                            .lowercase(Locale.ROOT)
 
-            val descriptionText = "    {${prescription.treatment.posology.trim()}} " +
-                    ((if (frequency.isNotBlank()) "[$frequency] " else "") +
-                            "${prescription.treatment.duration}")
-                        .lowercase(Locale.ROOT)
+                textPrescription.addAll(divideText(medicineText, maxLineSize))
+                textPrescription.addAll(divideText(descriptionText, maxLineSize))
+                textPrescription.add("")
+            }
 
-            textPrescription.addAll(divideText(medicineText, maxLineSize))
-            textPrescription.addAll(divideText(descriptionText, maxLineSize))
-            textPrescription.add("")
+            actualCanvas.drawRoundRect(
+                100F,
+                400F,
+                2000F,
+                650F + (70F.times(textPrescription.size)),
+                30F,
+                30F,
+                Fonts.noFill
+            )
+            actualCanvas.drawText("Listes des prescriptions: ", 120F, 480F, Fonts.subTitleFont)
+            for ((index, line) in textPrescription.withIndex())
+                actualCanvas.drawText(line, 280F, 580F + 70F.times(index), Fonts.classicFont)
+
+            actualCanvas.drawText(
+                "{posology} [frequency]",
+                1930F,
+                600F + 70F.times(textPrescription.size),
+                Fonts.legendFont
+            )
+            minY = 750F + 70F.times(textPrescription.size)
         }
 
-        actualCanvas.drawRoundRect(
-            100F,
-            400F,
-            2000F,
-            650F + (70F.times(textPrescription.size)),
-            30F,
-            30F,
-            Fonts.noFill
-        )
-        actualCanvas.drawText("Listes des prescriptions: ", 120F, 480F, Fonts.subTitleFont)
-        for ((index, line) in textPrescription.withIndex())
-            actualCanvas.drawText(line, 280F, 580F + 70F.times(index), Fonts.classicFont)
 
-        actualCanvas.drawText(
-            "{posology} [frequency]",
-            1930F,
-            600F + 70F.times(textPrescription.size),
-            Fonts.legendFont
-        )
-        minY = 750F + 70F.times(textPrescription.size)
     }
 
     private fun drawHeader(signature: String = ""){
@@ -182,40 +177,41 @@ class ReportGenerator(private val ctx: Context) {
         fun dateFormat(date: Int): String {
             return date.toString().padStart(2, '0')
         }
-        val boxStore = ObjectBox.getInstance(ctx)
-        val store = boxStore.boxFor(PrescriptionEntity::class.java)
-        val prescriptions = store.query().build().find().map { it.convert() }
+        Thread {
+            val prescriptions = PrescriptionRepository(ctx).getAll()
+            if (prescriptions.isEmpty())
+                throw NoPrescriptionException()
 
-        if (prescriptions.isEmpty())
-            throw NoPrescriptionException()
+            val textMissingTakes = mutableListOf<String>()
+            for (prescription in prescriptions.filter { it.medication?.medicationInformation?.name != null }) {
+                val missingTakes = calcMissingTake(prescription).map {
+                    "${it.year}-" +
+                            "${dateFormat(it.monthValue)}-" +
+                            "${dateFormat(it.dayOfMonth)} à " +
+                            "${dateFormat(it.hour)}h" +
+                            dateFormat(it.minute)
+                }
+                if (missingTakes.isEmpty())
+                    continue
+                val maxLineSize = 72
+                val medicineText = "> ${prescription.medication?.medicationInformation?.name}".lowercase(Locale.ROOT)
 
-        val textMissingTakes = mutableListOf<String>()
-        for (prescription in prescriptions.filter { it.treatment.medication?.name != null }) {
-            val missingTakes = calcMissingTake(prescription).map {
-                "${it.year}-" +
-                        "${dateFormat(it.monthValue)}-" +
-                        "${dateFormat(it.dayOfMonth)} à " +
-                        "${dateFormat(it.hour)}h" +
-                        dateFormat(it.minute)
+                textMissingTakes.addAll(divideText(medicineText, maxLineSize))
+                for (take in missingTakes) {
+                    textMissingTakes.add("Manqué le: $take")
+                }
             }
-            if (missingTakes.isEmpty())
-                continue
-            val maxLineSize = 72
-            val medicineText = "> ${prescription.treatment.medication?.name}".lowercase(Locale.ROOT)
+            drawSecure(100F){
+                actualCanvas.drawText("Prises manquées: ", 70F, minY, Fonts.subTitleFont)
+            }
+            for (line in textMissingTakes)
+                drawSecure(75F) {
+                    actualCanvas.drawText(line, 70F, minY, Fonts.classicFont)
+                }
+            minY += 80F
+        }.start()
 
-            textMissingTakes.addAll(divideText(medicineText, maxLineSize))
-            for (take in missingTakes) {
-                textMissingTakes.add("Manqué le: $take")
-            }
-        }
-        drawSecure(100F){
-            actualCanvas.drawText("Prises manquées: ", 70F, minY, Fonts.subTitleFont)
-        }
-        for (line in textMissingTakes)
-            drawSecure(75F) {
-                actualCanvas.drawText(line, 70F, minY, Fonts.classicFont)
-            }
-        minY += 80F
+
     }
 
     private fun divideText(text: String, maxLineSize: Int): List<String> {
@@ -292,20 +288,20 @@ class ReportGenerator(private val ctx: Context) {
         }
 
         fun genFrequency(notifications: List<Notification>): String{
-            val frequency = (notifications.sumOf { it.alarms.size * it.days.size } / 7.0).round(2)
+            val frequency = (notifications.sumOf { it.alarms.size * it.notificationInformation.days.size } / 7.0).round(2)
             return if (frequency == 0.0) ""
             else "$frequency fois par jour"
         }
         fun calcMissingTake(prescription: Prescription): List<LocalDateTime> {
-            val takes = prescription.takes
+            val takes = prescription.prescriptionInformation.takes
             val missingTakes = mutableListOf<LocalDateTime>()
-            for (date in prescription.treatment.duration?.startDate!!.datesUntil(LocalDate.now())) {
+            for (date in prescription.duration?.startDate!!.datesUntil(LocalDate.now())) {
                 prescription.notifications.forEach { notification ->
-                    if (date.dayOfWeek !in notification.days)
+                    if (date.dayOfWeek !in notification.notificationInformation.days)
                         return@forEach
                     notification.alarms.forEach { alarm ->
                         val defaultTake = LocalDate.of(date.year, date.month, date.dayOfMonth)
-                            .atTime(alarm.hour, alarm.minute)
+                            .atTime(alarm.time.hour, alarm.time.minute)
                         if (defaultTake !in takes)
                             missingTakes.add(defaultTake)
                     }

@@ -5,6 +5,9 @@ import androidx.room.TypeConverter
 class MutableListStringConverter {
     @TypeConverter
     fun fromMutableListString(mutableListString: String): MutableList<String> {
+        if (mutableListString.isEmpty()) {
+            return mutableListOf()
+        }
         return mutableListString.split(",").toMutableList()
     }
 

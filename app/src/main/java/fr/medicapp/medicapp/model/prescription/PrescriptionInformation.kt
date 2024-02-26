@@ -3,6 +3,7 @@ package fr.medicapp.medicapp.model.prescription
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDateTime
 
 @Entity
 data class PrescriptionInformation(
@@ -13,6 +14,8 @@ data class PrescriptionInformation(
     var posology: String = "",
 
     var frequency: String = "",
+
+    var takes: MutableList<LocalDateTime> = mutableListOf(),
 
     @ColumnInfo(name = "doctor_id")
     var doctorId: Long = 0L,

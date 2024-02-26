@@ -24,10 +24,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fr.medicapp.medicapp.model.Doctor
-import fr.medicapp.medicapp.model.Prescription
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
+import fr.medicapp.medicapp.ui.components.dialog.NoPrescriptionDialog
 import fr.medicapp.medicapp.ui.components.modal.ConfirmReportModal
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
@@ -41,12 +42,17 @@ fun PrescriptionHome(
     onAddPrescriptionClick: () -> Unit = {}
 ) {
     var isReportModalOpen by remember { mutableStateOf(false)}
-
+    val context = LocalContext.current
     Home(
         title = "Prescription",
         floatingActionButtons = {
             FloatingActionButtons(buttons = listOf(
-                {isReportModalOpen = true} to { Icon(
+                {
+                    if (prescriptions.isEmpty())
+                        NoPrescriptionDialog.show(context)
+                    else
+                        isReportModalOpen = true
+                } to { Icon(
                     imageVector = Icons.Default.FileOpen,
                     contentDescription = "Bouton pour générer un rapport",
                     tint = MaterialTheme.colorScheme.onPrimary
