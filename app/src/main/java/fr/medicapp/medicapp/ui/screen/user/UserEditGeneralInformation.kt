@@ -25,7 +25,7 @@ fun UserEditGeneralInformation(
 ) {
     val state = viewModel.sharedState.collectAsState()
     Edit(
-        title = "Information utilisateur",
+        title = "Informations utilisateur",
         bottomText = "Suivant",
         onClick = onClick,
         enabled = state.value.lastName.isNotEmpty() && state.value.firstName.isNotEmpty()

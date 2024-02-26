@@ -1,16 +1,20 @@
 package fr.medicapp.medicapp.ui.components.button
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
@@ -40,10 +44,13 @@ fun ReusableRadioGroup(
                     selected = (text == selectedOption),
                     onClick = { onClick(text) }
                 )
-                Text(
-                    text = text,
+                ClickableText(
+                    text = AnnotatedString(
+                        text,
+                        SpanStyle(color = MaterialTheme.colorScheme.primary)
+                    ),
                     modifier = modifier.padding(start = 8.dp),
-                    color = MaterialTheme.colorScheme.primary
+                    onClick = { onClick(text) }
                 )
             }
         }
