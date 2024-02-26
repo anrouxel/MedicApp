@@ -1,15 +1,28 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.graphics.drawable.Icon
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Photo
+import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
@@ -17,9 +30,7 @@ import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PrescriptionEditInformation(
@@ -28,7 +39,7 @@ fun PrescriptionEditInformation(
 ) {
     val state = viewModel.sharedState.collectAsState().value[0]
     val context = LocalContext.current
-
+    val imageUri = context.create
     Edit(
         title = "Ajouter une prescription",
         bottomText = "Suivant",
@@ -36,6 +47,45 @@ fun PrescriptionEditInformation(
         enabled = state.medication != null && state.prescriptionInformation.posology.isNotEmpty() && state.prescriptionInformation.frequency.isNotEmpty() && state.duration != null
     ) {
         Column {
+
+            ReusableElevatedCard {
+                Column (
+                    modifier = Modifier.padding(10.dp)
+                ) {
+
+                    Text("Scanner une ordonnance", color = MaterialTheme.colorScheme.primary )
+
+                    Row (
+                        horizontalArrangement = SpaceBetween
+                    ){
+                        Button(onClick = {
+
+                            launcher.launch(null)
+                        }) {
+                            Row() {
+                                Text("Appareil photo")
+
+                                Icon(
+                                    imageVector = Icons.Default.PhotoCamera,
+                                    contentDescription = "Appareil photo"
+                                )
+                            }
+                        }
+                        Button(onClick = {}) {
+                            Row {
+                                Text("Galerie")
+
+                                Icon(
+                                    imageVector = Icons.Default.Photo,
+                                    contentDescription = "Galerie"
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+                Spacer(modifier = Modifier.padding(7.dp))
             ReusableElevatedCard {
                 Column(
                     modifier = Modifier.padding(10.dp)
@@ -49,7 +99,7 @@ fun PrescriptionEditInformation(
                 }
             }
 
-            Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(7.dp))
 
             ReusableElevatedCard {
                 Column(
