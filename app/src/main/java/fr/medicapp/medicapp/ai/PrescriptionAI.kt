@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.ai
 import android.content.Context
 import android.content.res.AssetManager
 import android.net.Uri
-import android.os.Handler
+    import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import androidx.annotation.WorkerThread
