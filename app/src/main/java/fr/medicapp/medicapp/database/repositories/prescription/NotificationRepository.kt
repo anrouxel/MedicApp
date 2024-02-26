@@ -11,19 +11,24 @@ class NotificationRepository(context: Context) : Repository(context = context) {
         return db.notificationDAO().getAll()
     }
 
+    fun insert(notification: Notification): Long {
+        val alarmIds = AlarmRepository(context).insert(notification.alarms)
+        val id = db.notificationDAO().insert(notification.notificationInformation)
+        NotificationAlarmCrossRefRepository(context).insert(
+            alarmIds.map { alarmId ->
+                NotificationAlarmCrossRef(
+                    notificationId = id,
+                    alarmId = alarmId
+                )
+            }
+        )
+        return id
+    }
+
     fun insert(notifications: List<Notification>): List<Long> {
-        notifications.forEach { notification ->
-            val alarmIds = AlarmRepository(context).insert(notification.alarms)
-            NotificationAlarmCrossRefRepository(context).insert(
-                alarmIds.map { alarmId ->
-                    NotificationAlarmCrossRef(
-                        notificationId = notification.notificationInformation.id,
-                        alarmId = alarmId
-                    )
-                }
-            )
+        return notifications.map { notification ->
+            insert(notification)
         }
-        return db.notificationDAO().insert(notifications.map { it.notificationInformation })
     }
 
     fun update(notification: Notification) {
