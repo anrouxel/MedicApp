@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +31,6 @@ fun ConfirmReportModal(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     ) {
-    var signature by remember {mutableStateOf("")}
     var notes by remember {mutableStateOf("")}
     val reportGenerator = ReportGenerator(LocalContext.current)
 
@@ -57,11 +55,6 @@ fun ConfirmReportModal(
                     )
                     ReusableOutlinedTextField(
                         modifier = Modifier.padding(16.dp),
-                        value = signature,
-                        onValueChange = {new -> signature = new} ,
-                        label = "Signature (Nom Prenom)")
-                    ReusableOutlinedTextField(
-                        modifier = Modifier.padding(16.dp),
                         value = notes,
                         onValueChange = {new -> notes = new} ,
                         label = "Notes au médecin")
@@ -79,7 +72,7 @@ fun ConfirmReportModal(
                         TextButton(
                             onClick = {
                                 onConfirmation()
-                                reportGenerator.report(signature, notes)
+                                reportGenerator.report(notes)
                                       },
                             modifier = Modifier.padding(8.dp),
                         ) {
