@@ -37,7 +37,7 @@ fun UserEditAllergy(
     val pregnantState = remember { mutableStateOf("Non") }
     val context = LocalContext.current
     Edit(
-        title = "Information utilisateur",
+        title = "Informations utilisateur",
         bottomText = "Terminé",
         onClick = {
             viewModel.viewModelScope.launch {
