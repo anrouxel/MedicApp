@@ -1,11 +1,14 @@
 package fr.medicapp.medicapp.model
 
-import android.content.Context
-import fr.medicapp.medicapp.database.converter.ModelToEntityMapper
-import fr.medicapp.medicapp.database.entity.UserEntity
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
+@Entity
 data class User(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "user_id")
     var id: Long = 0L,
     val lastName: String = "",
     val firstName: String = "",
@@ -13,19 +16,4 @@ data class User(
     val gender: String = "",
     val pregnant: Boolean = false,
     val allergies: MutableList<String> = mutableListOf()
-) : ModelToEntityMapper<UserEntity> {
-    override fun convert(context: Context): UserEntity {
-        val user = UserEntity(
-            id,
-            lastName,
-            firstName,
-            birthday,
-            gender,
-            pregnant,
-            allergies
-        )
-
-        return user
-
-    }
-}
+)
