@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import fr.medicapp.medicapp.model.User
-import fr.medicapp.medicapp.model.prescription.Doctor
 
 @Dao
 interface UserDAO {

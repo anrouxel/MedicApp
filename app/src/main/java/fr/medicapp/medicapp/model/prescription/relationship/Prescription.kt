@@ -151,30 +151,31 @@ data class Prescription(
         val alarms = mutableListOf<AlarmItem>()
         val now = LocalDateTime.now()
 
-        this.notifications.find { it.notificationInformation.id == notificationId }?.let { notification ->
-            val date = now.toLocalDate()
-            while (date.isAfter(duration!!.endDate)) {
-                if (notification.notificationInformation.days.any { it.value == date.dayOfWeek.value }) {
-                    notification.alarms.forEach { alarm ->
-                        if (alarms.none { it.id == alarm.id }) {
-                            val hour = alarm.time!!.hour
-                            val minute = alarm.time.minute
-                            val dateTime = LocalDateTime.of(
-                                date.year,
-                                date.month,
-                                date.dayOfMonth,
-                                hour,
-                                minute
-                            )
-                            if (dateTime.isBefore(now)) {
-                                alarms.add(AlarmItem(alarm.id, dateTime, ""))
+        this.notifications.find { it.notificationInformation.id == notificationId }
+            ?.let { notification ->
+                val date = now.toLocalDate()
+                while (date.isAfter(duration!!.endDate)) {
+                    if (notification.notificationInformation.days.any { it.value == date.dayOfWeek.value }) {
+                        notification.alarms.forEach { alarm ->
+                            if (alarms.none { it.id == alarm.id }) {
+                                val hour = alarm.time!!.hour
+                                val minute = alarm.time.minute
+                                val dateTime = LocalDateTime.of(
+                                    date.year,
+                                    date.month,
+                                    date.dayOfMonth,
+                                    hour,
+                                    minute
+                                )
+                                if (dateTime.isBefore(now)) {
+                                    alarms.add(AlarmItem(alarm.id, dateTime, ""))
+                                }
                             }
                         }
                     }
+                    date.plusDays(1)
                 }
-                date.plusDays(1)
             }
-        }
 
         return alarms
     }
@@ -182,11 +183,12 @@ data class Prescription(
     fun getNotificationAlarms(notificationId: Long): MutableList<AlarmItem> {
         val alarms = mutableListOf<AlarmItem>()
 
-        this.notifications.find { it.notificationInformation.id == notificationId }?.let { notification ->
-            notification.alarms.forEach { alarm ->
-                alarms.add(AlarmItem(alarm.id, LocalDateTime.now(), ""))
+        this.notifications.find { it.notificationInformation.id == notificationId }
+            ?.let { notification ->
+                notification.alarms.forEach { alarm ->
+                    alarms.add(AlarmItem(alarm.id, LocalDateTime.now(), ""))
+                }
             }
-        }
 
         return alarms
     }

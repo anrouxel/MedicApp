@@ -52,9 +52,15 @@ class SharedPrescriptionDetailViewModel(
             _sharedState.value = updatedPrescription
 
             if (active) {
-                NotificationPrescriptionManager.remove(context, _sharedState.value.getNotificationAlarms(updateNotificationInformation.id))
+                NotificationPrescriptionManager.remove(
+                    context,
+                    _sharedState.value.getNotificationAlarms(updateNotificationInformation.id)
+                )
             } else {
-                NotificationPrescriptionManager.add(context, _sharedState.value.getNotificationAlarms(updateNotificationInformation.id))
+                NotificationPrescriptionManager.add(
+                    context,
+                    _sharedState.value.getNotificationAlarms(updateNotificationInformation.id)
+                )
             }
             NotificationRepository(context).update(updatedNotifications[index])
         }

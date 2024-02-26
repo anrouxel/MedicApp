@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
@@ -17,7 +18,6 @@ import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
-import kotlinx.coroutines.launch
 
 /**
  * Cette fonction construit le graphe de navigation pour les prescriptions.
@@ -76,7 +76,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             val scope = rememberCoroutineScope()
 
             if (id != null) {
-                scope.launch {
+                LaunchedEffect(key1 = id) {
                     viewModel.loadPrescription(context = context, id = id)
                 }
             } else {

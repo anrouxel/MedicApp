@@ -121,12 +121,12 @@ fun PrescriptionDetail(
 
                                 ReusableAlertIconButton(
                                     onClick = {
-                                              scope.launch {
-                                                  viewModel.removeNotification(
-                                                      context,
-                                                      notification.notificationInformation.id
-                                                  )
-                                              }
+                                        scope.launch {
+                                            viewModel.removeNotification(
+                                                context,
+                                                notification.notificationInformation.id
+                                            )
+                                        }
                                     },
                                     icon = Icons.Default.Delete,
                                     title = "Supprimer cette notification",
@@ -162,10 +162,10 @@ fun PrescriptionDetail(
             ReusableAlertButton(
                 text = "Supprimer l'ordonnance",
                 onClick = {
-                          scope.launch {
-                              viewModel.removePrescription(context)
-                              onRemovePrescriptionClick()
-                          }
+                    scope.launch {
+                        viewModel.removePrescription(context)
+                        onRemovePrescriptionClick()
+                    }
                 },
                 title = "Supprimer cette ordonnance",
                 content = "Êtes-vous sûr de vouloir supprimer cette ordonnance ?",

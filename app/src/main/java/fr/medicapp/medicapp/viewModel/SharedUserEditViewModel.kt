@@ -66,7 +66,8 @@ class SharedUserEditViewModel(
         withContext(Dispatchers.IO) {
             val user = _sharedState.value
             user.id = UserRepository(context).insert(user)
-            context.getSharedPreferences("medicapp", Context.MODE_PRIVATE).edit().putBoolean("isUserCreated", true).apply()
+            context.getSharedPreferences("medicapp", Context.MODE_PRIVATE).edit()
+                .putBoolean("isUserCreated", true).apply()
             _sharedState.value = User()
         }
     }

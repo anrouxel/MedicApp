@@ -35,7 +35,7 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(16.dp),
 
-    ) {
+        ) {
         val selection = remember { mutableStateOf(LocalDate.now()) }
         Calendar(selection = selection)
         Spacer(modifier = Modifier.height(8.dp))

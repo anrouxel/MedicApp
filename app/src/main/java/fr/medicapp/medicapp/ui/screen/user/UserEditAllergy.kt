@@ -19,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.button.ReusableRadioGroup
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserEditAllergy(
@@ -38,8 +40,10 @@ fun UserEditAllergy(
         title = "Information utilisateur",
         bottomText = "Terminé",
         onClick = {
-            viewModel.save(context)
-            onClick()
+            viewModel.viewModelScope.launch {
+                viewModel.save(context)
+                onClick()
+            }
         }
     ) {
         Column {
