@@ -366,7 +366,12 @@ class PrescriptionAI(
             when {
                 label.startsWith("B-") -> {
                     if (label.removePrefix("B-") == "Drug") {
-                        val medication = MedicationRepository(context).getAll().sortedByDescending { jaroWinklerDistance(it.medicationInformation.name, query.trim()) }.first()
+                        val medication = MedicationRepository(context).getAll().sortedByDescending {
+                            jaroWinklerDistance(
+                                it.medicationInformation.name,
+                                query.trim()
+                            )
+                        }.first()
                         prescription.medication = medication
                         prescriptions.add(prescription)
                         prescription = Prescription()
@@ -392,7 +397,12 @@ class PrescriptionAI(
             }
         }
         if (query.isNotEmpty()) {
-            val medication = MedicationRepository(context).getAll().sortedByDescending { jaroWinklerDistance(it.medicationInformation.name, query.trim()) }.first()
+            val medication = MedicationRepository(context).getAll().sortedByDescending {
+                jaroWinklerDistance(
+                    it.medicationInformation.name,
+                    query.trim()
+                )
+            }.first()
             prescription.medication = medication
             prescriptions.add(prescription)
         }
@@ -438,7 +448,8 @@ class PrescriptionAI(
                 idx1++
             }
         }
-        val jaro = (matches.toDouble() / len1 + matches.toDouble() / len2 + (matches - transpositions / 2).toDouble() / matches) / 3.0
+        val jaro =
+            (matches.toDouble() / len1 + matches.toDouble() / len2 + (matches - transpositions / 2).toDouble() / matches) / 3.0
         var commonPrefix = 0
         for (i in 0 until min(4, len2)) {
             if (s1[i] == s2[i]) {
