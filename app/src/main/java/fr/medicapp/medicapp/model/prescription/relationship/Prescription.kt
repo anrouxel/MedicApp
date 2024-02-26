@@ -79,7 +79,7 @@ data class Prescription(
                     date.isBefore(endDate.plusDays(1))
                 ) {
                     notification.alarms.forEach { alarm ->
-                        val hour = alarm.time!!.hour
+                        val hour = alarm.time.hour
                         val minute = alarm.time.minute
                         val dateTime =
                             LocalDateTime.of(
@@ -119,7 +119,7 @@ data class Prescription(
             while (date.isBefore(duration.endDate)) {
                 notification.alarms.forEach { alarm ->
                     if (alarms.none { it.id == alarm.id }) {
-                        val hour = alarm.time!!.hour
+                        val hour = alarm.time.hour
                         val minute = alarm.time.minute
                         val dateTime = LocalDateTime.of(
                             date.year,
@@ -158,7 +158,7 @@ data class Prescription(
                     if (notification.notificationInformation.days.any { it.value == date.dayOfWeek.value }) {
                         notification.alarms.forEach { alarm ->
                             if (alarms.none { it.id == alarm.id }) {
-                                val hour = alarm.time!!.hour
+                                val hour = alarm.time.hour
                                 val minute = alarm.time.minute
                                 val dateTime = LocalDateTime.of(
                                     date.year,

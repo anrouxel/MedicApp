@@ -5,14 +5,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DocumentScanner
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -21,38 +18,40 @@ import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.screen.Home
+import fr.medicapp.medicapp.ui.components.screen.Detail
+import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @Composable
 fun DoctorHome(
-    doctors: List<Doctor>,
+    doctors: MutableList<Doctor>,
     onDoctorClick: (Long) -> Unit
 ) {
-    Home(
-        title = "Recherche de médecin",
-        floatingActionButtons = {
-            FloatingActionButton(
-                onClick = { },
-                containerColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onPrimary
+    Detail(
+        title = "Recherche de médecin"
+    ) {
+        val doctor = remember { mutableStateOf("") }
+
+        Column {
+            ReusableOutlinedTextField(
+                value = doctor.value,
+                onValueChange = {
+                    doctor.value = it
+                },
+                label = "Rechercher"
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
+            if (doctors.isEmpty()) {
+                NoDoctorFound()
+            } else {
+                DoctorList(
+                    doctors = doctors,
+                    onDoctorClick = onDoctorClick,
                 )
             }
-        },
-    ) {
-        if (doctors.isEmpty()) {
-            NoDoctorFound()
-        } else {
-            DoctorList(
-                doctors = doctors,
-                onDoctorClick = onDoctorClick
-            )
         }
+
     }
 }
 
@@ -106,7 +105,7 @@ private fun NoDoctorFound() {
 @Preview
 @Composable
 fun DoctorHomePreview() {
-    val doctors = listOf(
+    val doctors = mutableListOf(
         Doctor(
             civilCodeEx = "DR",
             firstName = "Jean",
@@ -135,7 +134,7 @@ fun DoctorHomePreview() {
 @Preview
 @Composable
 fun DoctorHomeDarkPreview() {
-    val doctors = listOf<Doctor>()
+    val doctors = mutableListOf<Doctor>()
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
