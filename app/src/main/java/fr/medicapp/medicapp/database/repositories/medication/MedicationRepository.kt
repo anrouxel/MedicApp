@@ -67,7 +67,7 @@ class MedicationRepository(context: Context) : Repository(context) {
             insert(medication = medication)
         }
 
-        return db.medicationDAO().insert(medications.map { it.medicationInformation })
+        return medications.map { it.medicationInformation.id }
     }
 
     fun delete(medication: Medication) {
