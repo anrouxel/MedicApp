@@ -15,6 +15,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +26,7 @@ import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -34,6 +36,7 @@ fun PrescriptionDetail(
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Detail(
         title = "Détail de l'ordonnance",
@@ -110,16 +113,20 @@ fun PrescriptionDetail(
                                 Switch(
                                     checked = notification.notificationInformation.active,
                                     onCheckedChange = {
-                                        viewModel.updatedNotificationState(context, index, it)
+                                        scope.launch {
+                                            viewModel.updatedNotificationState(context, index, it)
+                                        }
                                     }
                                 )
 
                                 ReusableAlertIconButton(
                                     onClick = {
-                                        viewModel.removeNotification(
-                                            context,
-                                            notification.notificationInformation.id
-                                        )
+                                              scope.launch {
+                                                  viewModel.removeNotification(
+                                                      context,
+                                                      notification.notificationInformation.id
+                                                  )
+                                              }
                                     },
                                     icon = Icons.Default.Delete,
                                     title = "Supprimer cette notification",
@@ -155,8 +162,10 @@ fun PrescriptionDetail(
             ReusableAlertButton(
                 text = "Supprimer l'ordonnance",
                 onClick = {
-                    viewModel.removePrescription(context)
-                    onRemovePrescriptionClick()
+                          scope.launch {
+                              viewModel.removePrescription(context)
+                              onRemovePrescriptionClick()
+                          }
                 },
                 title = "Supprimer cette ordonnance",
                 content = "Êtes-vous sûr de vouloir supprimer cette ordonnance ?",

@@ -349,3 +349,13 @@ w
 Gapp/src/main/java/fr/medicapp/medicapp/model/gson/HasAsmrOpinionGSON.kt,1\0\100dfefefe8bb1b30bc97f34ca27e7b5369d8a86
 
 Qapp/src/main/java/fr/medicapp/medicapp/database/converter/LocalDateTypeAdapter.kt,2\9\29725a910750a8367e820bda5cc0c91d79eac62f
+d
+4app/src/main/java/fr/medicapp/medicapp/model/User.kt,7\6\7682bb190144698136465b25ab8fc1e3f49a1e48
+n
+>app/src/main/java/fr/medicapp/medicapp/database/dao/UserDAO.kt,9\3\9365dfda783db25ba76278962aadc666582c0d2b
+~
+Napp/src/main/java/fr/medicapp/medicapp/database/repositories/UserRepository.kt,9\8\98df3e20a55bf353be424655eeaeffac79874d66
+{
+Kapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedUserEditViewModel.kt,9\3\93199b5e28e280abffca54be63914ebe84224bbe
+t
+Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/UserNavGraph.kt,3\5\3573a61fcdaada8d158efbca3c6e6c688087a7df

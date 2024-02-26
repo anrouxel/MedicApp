@@ -31,9 +31,9 @@ class SharedDoctorDetailViewModel(
         return runBlocking {
             APIAddressClient().apiService.getPosition(
                 q = "${_sharedState.value.structureStreetNumber}+" +
-                        "${_sharedState.value.structureStreetTypeLabel}+" +
-                        "${_sharedState.value.structureStreetLabel}+" +
-                        _sharedState.value.structureCedexOffice
+                    "${_sharedState.value.structureStreetTypeLabel}+" +
+                    "${_sharedState.value.structureStreetLabel}+" +
+                    _sharedState.value.structureCedexOffice
             ).body()?.features?.first()?.geometry?.coordinates?.let {
                 return@runBlocking LatLng(it[1], it[0])
             } ?: LatLng(0.0, 0.0)
