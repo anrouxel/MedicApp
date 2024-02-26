@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
  *
  * @param navController Le contrôleur de navigation.
  */
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun RootNavGraph(
     navController: NavHostController,

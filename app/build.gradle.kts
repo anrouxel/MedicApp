@@ -131,6 +131,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // QRcode
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 }
