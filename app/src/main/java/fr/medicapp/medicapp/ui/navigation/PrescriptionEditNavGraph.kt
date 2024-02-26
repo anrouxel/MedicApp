@@ -49,9 +49,17 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             PrescriptionEditNotification(
                 viewModel = viewModel,
                 onClick = {
-                    navController.navigate(PrescriptionRoute.PrescriptionHomeRoute.route) {
-                        popUpTo(PrescriptionRoute.PrescriptionEditRoute.route) {
-                            inclusive = true
+                    if (viewModel.sharedState.value.isNotEmpty()) {
+                        navController.navigate(PrescriptionEditRoute.PrescriptionEditInformationRoute.route) {
+                            popUpTo(PrescriptionRoute.PrescriptionEditRoute.route) {
+                                inclusive = true
+                            }
+                        }
+                    } else {
+                        navController.navigate(PrescriptionRoute.PrescriptionHomeRoute.route) {
+                            popUpTo(PrescriptionRoute.PrescriptionEditRoute.route) {
+                                inclusive = true
+                            }
                         }
                     }
                 }
