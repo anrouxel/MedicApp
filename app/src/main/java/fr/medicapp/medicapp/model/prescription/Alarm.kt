@@ -11,7 +11,7 @@ data class Alarm(
     @ColumnInfo(name = "alarm_id")
     val id: Long = 0L,
 
-    val time: LocalTime? = null,
+    val time: LocalTime = LocalTime.of(8, 0),
 
     @ColumnInfo(name = "notification_id")
     val notificationId: Long = 0L

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,8 +34,19 @@ fun SideEffectHome(
 ) {
     Home(
         title = "Effets secondaires",
-        floatingActionButtonOnClick = onAddSideEffectClick,
-        floatActionButtonIcon = Icons.Default.DocumentScanner
+
+        floatingActionButtons = {
+            FloatingActionButton(
+                onClick = onAddSideEffectClick,
+                containerColor = MaterialTheme.colorScheme.primary,
+            ) {
+                Icon(
+                    imageVector =  Icons.Default.DocumentScanner,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
     ) {
         if (sideEffects.isEmpty()) {
             NoSideEffectAvailable()

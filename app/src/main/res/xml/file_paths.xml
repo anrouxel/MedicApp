@@ -6,4 +6,5 @@
     <cache-path
         name="cache_picture"
         path="/" />
+    <external-path name="external_files" path="."/>
 </paths>

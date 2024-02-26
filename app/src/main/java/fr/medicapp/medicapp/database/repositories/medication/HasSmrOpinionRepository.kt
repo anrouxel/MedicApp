@@ -13,17 +13,18 @@ class HasSmrOpinionRepository(context: Context) : Repository(context) {
     }
 
     fun insert(hasSmrOpinion: HasSmrOpinion): Long {
+        val id = db.HasSmrOpinionDAO().insert(hasSmrOpinion.hasSmrOpinionInformation)
         TransparencyCommissionOpinionLinksRepository(context).insert(hasSmrOpinion.transparencyCommissionOpinionLinks)
         hasSmrOpinion.transparencyCommissionOpinionLinks.forEach {
             HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefRepository(context).insert(
                 HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef(
-                    hasSmrOpinionId = hasSmrOpinion.hasSmrOpinionInformation.id,
+                    hasSmrOpinionId = id,
                     transparencyCommissionOpinionId = it.id
                 )
             )
         }
 
-        return db.HasSmrOpinionDAO().insert(hasSmrOpinion.hasSmrOpinionInformation)
+        return id
     }
 
     fun insert(hasSmrOpinions: List<HasSmrOpinion>): List<Long> {

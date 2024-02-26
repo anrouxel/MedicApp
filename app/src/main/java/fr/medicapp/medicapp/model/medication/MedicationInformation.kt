@@ -43,8 +43,7 @@ data class MedicationInformation(
     fun toOptionDialog(): OptionDialog {
         return OptionDialog(
             id,
-            name,
-            pharmaceuticalForm
+            name
         )
     }
 }

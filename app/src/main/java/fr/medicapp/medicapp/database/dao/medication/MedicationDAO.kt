@@ -21,7 +21,7 @@ interface MedicationDAO {
 
     @Transaction
     @Query(
-        "SELECT * FROM MedicationInformation WHERE name LIKE :search || '%'"
+        "SELECT * FROM MedicationInformation WHERE name LIKE :search || '%' ORDER BY name ASC LIMIT 30 "
     )
     fun search(search: String): List<Medication>
 

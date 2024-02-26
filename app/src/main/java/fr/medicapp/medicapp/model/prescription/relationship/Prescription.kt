@@ -30,7 +30,7 @@ data class Prescription(
         parentColumn = "medication_id",
         entityColumn = "medication_id",
     )
-    val medication: Medication? = null,
+    var medication: Medication? = null,
 
     @Relation(
         entity = Duration::class,

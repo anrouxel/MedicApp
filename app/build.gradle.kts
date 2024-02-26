@@ -67,6 +67,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.room:room-common:2.6.1")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -130,6 +131,10 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // QRcode
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
