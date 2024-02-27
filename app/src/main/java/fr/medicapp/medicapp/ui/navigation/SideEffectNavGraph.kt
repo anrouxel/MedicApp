@@ -27,7 +27,6 @@ import fr.medicapp.medicapp.viewModel.SharedSideEffectEditViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.sideEffectNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     /**
      * Définit la navigation pour le graphe de prescription.

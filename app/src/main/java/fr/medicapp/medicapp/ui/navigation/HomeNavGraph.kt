@@ -20,7 +20,9 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
  */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
+fun HomeNavGraph(
+    navController: NavHostController,
+) {
     /**
      * Construit le graphe de navigation pour l'écran d'accueil.
      *
@@ -56,7 +58,6 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          */
         prescriptionNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
 
         /**
@@ -64,12 +65,10 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          */
         sideEffectNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
 
         doctorNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
     }
 }

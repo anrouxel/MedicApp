@@ -20,7 +20,6 @@ import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.doctorNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     /**
      * Définit la navigation pour le graphe de prescription.

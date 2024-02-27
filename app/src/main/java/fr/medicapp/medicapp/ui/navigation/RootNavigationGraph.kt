@@ -20,7 +20,6 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 fun RootNavGraph(
     navController: NavHostController,
     theme: ThemeColorScheme,
-    onThemeChange: (ThemeColorScheme) -> Unit,
     isUser: Boolean,
     isDownload: Boolean,
     context: Context
@@ -41,11 +40,15 @@ fun RootNavGraph(
         composable(route = Graph.HOME) {
             RootScreen(
                 theme = theme,
-                onThemeChange = onThemeChange
             )
         }
 
-        userNavGraph(navController, onThemeChange, isUser, isDownload, context)
+        userNavGraph(
+            navController,
+            isUser,
+            isDownload,
+            context
+        )
     }
 }
 

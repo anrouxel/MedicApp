@@ -20,7 +20,6 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.prescriptionEditNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     navigation(
         route = PrescriptionRoute.PrescriptionEditRoute.route,

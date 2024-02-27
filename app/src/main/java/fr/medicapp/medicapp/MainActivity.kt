@@ -65,12 +65,10 @@ class MainActivity : ComponentActivity() {
                 RootNavGraph(
                     navController = rememberNavController(),
                     theme = theme,
-                    onThemeChange = { theme = it },
                     isUser = isUser,
                     isDownload = isDownloaded,
                     context = this
                 )
-
             }
         }
     }

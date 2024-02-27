@@ -25,7 +25,6 @@ import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit,
     isUser: Boolean,
     isDownload: Boolean,
     context: Context
