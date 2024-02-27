@@ -9,21 +9,6 @@ plugins {
     id("jacoco")
 }
 
-jacoco {
-    version = "0.8.8"
-}
-
-tasks.withType<Detekt>().configureEach {
-    ignoreFailures = true
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        txt.required.set(true)
-        sarif.required.set(true)
-        md.required.set(true)
-    }
-}
-
 android {
     namespace = "fr.medicapp.medicapp"
     compileSdk = 34
