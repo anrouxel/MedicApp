@@ -96,6 +96,7 @@ fun PrescriptionEditInformation(
                         horizontalArrangement = SpaceBetween
                     ) {
                         ReusableButton(
+                            modifier = Modifier,
                             text = "Appareil photo",
                             icon = Icons.Default.PhotoCamera,
                         ) {
@@ -107,9 +108,8 @@ fun PrescriptionEditInformation(
                             }
                         }
 
-                        Spacer(modifier = Modifier.padding(7.dp))
-
                         ReusableButton(
+                            modifier = Modifier,
                             text = "Galerie",
                             icon = Icons.Default.Photo,
                         ) {

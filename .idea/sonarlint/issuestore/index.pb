@@ -349,3 +349,7 @@ t
 Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/UserNavGraph.kt,3\5\3573a61fcdaada8d158efbca3c6e6c688087a7df
 g
 7app/src/main/java/fr/medicapp/medicapp/utils/Context.kt,c\3\c3156f3e9c7b8a571c3d10fe232b71979735df8b
+v
+Fapp/src/main/java/fr/medicapp/medicapp/ui/components/screen/Loading.kt,3\e\3e0e027e5c4573d73df92f19b367f6cefd63c53b
+ˆ
+Xapp/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionEditLoading.kt,c\7\c7021e49f67d1b60e663dff310254c53a6f19038
