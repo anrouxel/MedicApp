@@ -20,7 +20,6 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 fun RootNavGraph(
     navController: NavHostController,
     theme: ThemeColorScheme,
-    onThemeChange: (ThemeColorScheme) -> Unit,
     isUser: Boolean,
     isDownload: Boolean,
     context: Context
