@@ -12,6 +12,9 @@ permissions:
   
 jobs:
   without-type-resolution:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
+      security-events: write
     runs-on: ubuntu-latest
     env:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
