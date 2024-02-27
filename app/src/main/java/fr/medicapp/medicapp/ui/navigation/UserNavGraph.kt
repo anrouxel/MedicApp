@@ -10,9 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload
 import fr.medicapp.medicapp.ui.components.screen.Loading
-import fr.medicapp.medicapp.ui.screen.loading.LoadingScreen
 import fr.medicapp.medicapp.ui.screen.user.UserEditAllergy
 import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
@@ -28,9 +26,9 @@ import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
     onThemeChange: (ThemeColorScheme) -> Unit,
-    isUser : Boolean,
+    isUser: Boolean,
     isDownload: Boolean,
-    context : Context
+    context: Context
 ) {
     var isDataDownloaded = false
 
@@ -73,7 +71,8 @@ fun NavGraphBuilder.userNavGraph(
         composable(route = UserRoute.LoadingScreenRoute.route) {
             Loading("Chargement en cours...", "Veuillez patienter quelques instants...")
             LaunchedEffect(Unit) {
-                val sharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+                val sharedPreferences =
+                    context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
                 snapshotFlow {
                     sharedPreferences.getBoolean("isDataDownloaded", false)
                 }.collect { isDataDownloaded ->

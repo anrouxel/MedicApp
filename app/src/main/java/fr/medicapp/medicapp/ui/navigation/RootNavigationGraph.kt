@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload
 import fr.medicapp.medicapp.ui.screen.root.RootScreen
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
@@ -24,7 +23,7 @@ fun RootNavGraph(
     onThemeChange: (ThemeColorScheme) -> Unit,
     isUser: Boolean,
     isDownload: Boolean,
-    context : Context
+    context: Context
 ) {
 
     /**
