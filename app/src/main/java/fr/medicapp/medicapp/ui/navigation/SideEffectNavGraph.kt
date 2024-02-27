@@ -15,7 +15,6 @@ import fr.medicapp.medicapp.ui.screen.root.RootRoute
 import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectDetail
 import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectEdit
 import fr.medicapp.medicapp.ui.screen.sideeffect.SideEffectHome
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedSideEffectDetailViewModel
 import fr.medicapp.medicapp.viewModel.SharedSideEffectEditViewModel
@@ -38,8 +37,6 @@ fun NavGraphBuilder.sideEffectNavGraph(
         startDestination = SideEffectRoute.SideEffectHomeRoute.route
     ) {
         composable(route = SideEffectRoute.SideEffectHomeRoute.route) {
-            onThemeChange(EUPurpleColorShema)
-
             val context = LocalContext.current
             val result: MutableList<SideEffect> = mutableListOf()
             Thread {
@@ -89,8 +86,6 @@ fun NavGraphBuilder.sideEffectNavGraph(
         }
 
         composable(route = SideEffectRoute.SideEffectEditRoute.route) {
-            onThemeChange(EUPurpleColorShema)
-
             val viewModel =
                 it.sharedViewModel<SharedSideEffectEditViewModel>(navController = navController)
 

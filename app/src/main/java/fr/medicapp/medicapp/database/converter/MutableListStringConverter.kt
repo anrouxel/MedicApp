@@ -12,7 +12,7 @@ class MutableListStringConverter {
     }
 
     @TypeConverter
-    fun toMutableListString(mutableListString: MutableList<String>): String {
+    fun toMutableListString(mutableListString: List<String>): String {
         return mutableListString.joinToString(",")
     }
 }

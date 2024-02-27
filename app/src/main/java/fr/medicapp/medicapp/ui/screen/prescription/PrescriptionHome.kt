@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
@@ -47,7 +48,7 @@ fun PrescriptionHome(
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
     Home(
-        title = "Prescription",
+        title = "Prescriptions",
         floatingActionButtons = {
             FloatingActionButtons(buttons = listOf(
                 {
@@ -169,12 +170,11 @@ fun NoPrescriptionAvailable() {
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomePreview() {
-    /*val prescription = Prescription(
+    val prescription = Prescription(
         doctor = Doctor(
             firstName = "Mottu"
         ),
-        date = LocalDate.now()
-    )*/
+    )
 
     MedicAppTheme(
         darkTheme = false,
@@ -182,7 +182,7 @@ private fun PrescriptionHomePreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            prescriptions = listOf()
+            prescriptions = listOf(prescription)
         )
     }
 }
@@ -191,12 +191,11 @@ private fun PrescriptionHomePreview() {
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomeDarkPreview() {
-    /*val prescription = Prescription(
+    val prescription = Prescription(
         doctor = Doctor(
             firstName = "Mottu"
-        ),
-        date = LocalDate.now()
-    )*/
+        )
+    )
 
     MedicAppTheme(
         darkTheme = true,
@@ -204,7 +203,7 @@ private fun PrescriptionHomeDarkPreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            prescriptions = listOf()
+            prescriptions = listOf(prescription)
         )
     }
 }

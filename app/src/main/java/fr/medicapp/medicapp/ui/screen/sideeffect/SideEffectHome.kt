@@ -19,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.model.medication.MedicationInformation
+import fr.medicapp.medicapp.model.medication.relationship.Medication
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
@@ -41,7 +44,7 @@ fun SideEffectHome(
                 containerColor = MaterialTheme.colorScheme.primary,
             ) {
                 Icon(
-                    imageVector =  Icons.Default.DocumentScanner,
+                    imageVector = Icons.Default.DocumentScanner,
                     contentDescription = "",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -111,16 +114,15 @@ fun NoSideEffectAvailable() {
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
 private fun SideEffectHomePreview() {
-    /*val sideEffect = SideEffect(
+    val sideEffect = SideEffect(
         prescription = Prescription(
-            treatment = Treatment(
-                medication = Medication(
+            medication = Medication(
+                medicationInformation = MedicationInformation(
                     name = "Doliprane"
                 )
-            ),
+            )
         ),
-        date = LocalDate.now()
-    )*/
+    )
 
     MedicAppTheme(
         darkTheme = false,
@@ -128,7 +130,7 @@ private fun SideEffectHomePreview() {
         theme = EURedColorShema
     ) {
         SideEffectHome(
-            sideEffects = listOf()
+            sideEffects = listOf(sideEffect)
         )
     }
 }
@@ -137,16 +139,15 @@ private fun SideEffectHomePreview() {
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
 private fun SideEffectHomeDarkPreview() {
-    /*val sideEffect = SideEffect(
+    val sideEffect = SideEffect(
         prescription = Prescription(
-            treatment = Treatment(
-                medication = Medication(
+            medication = Medication(
+                medicationInformation = MedicationInformation(
                     name = "Doliprane"
                 )
-            ),
+            )
         ),
-        date = LocalDate.now()
-    )*/
+    )
 
     MedicAppTheme(
         darkTheme = true,
@@ -154,7 +155,7 @@ private fun SideEffectHomeDarkPreview() {
         theme = EURedColorShema
     ) {
         SideEffectHome(
-            sideEffects = listOf()
+            sideEffects = listOf(sideEffect)
         )
     }
 }

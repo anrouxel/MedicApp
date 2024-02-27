@@ -13,7 +13,7 @@ class MutableListDayOfWeekConverter {
     }
 
     @TypeConverter
-    fun toMutableListDayOfWeek(mutableListDayOfWeek: MutableList<DayOfWeek>): String {
+    fun toMutableListDayOfWeek(mutableListDayOfWeek: List<DayOfWeek>): String {
         return mutableListDayOfWeek.joinToString(",")
     }
 }

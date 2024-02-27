@@ -25,7 +25,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @Composable
 fun DoctorHome(
-    doctors: MutableList<Doctor>,
+    doctors: List<Doctor>,
     onDoctorClick: (Long) -> Unit
 ) {
     Detail(
