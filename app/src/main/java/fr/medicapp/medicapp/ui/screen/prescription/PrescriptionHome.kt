@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -84,7 +84,7 @@ fun PrescriptionHome(
                 LaunchedEffect(prescriptions) {
                     val lastMedocCompo =
                         prescriptions.last().medication?.medicationCompositions?.map { it.substanceCode }
-                    //Log.d("substance", "$lastMedocCompo")
+
                     alertRedondantOpen = prescriptions.dropLast(1).any { prescription ->
                         prescription.medication?.medicationCompositions?.any {
                             it.substanceCode in (lastMedocCompo ?: emptyList())
