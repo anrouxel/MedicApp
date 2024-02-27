@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditInformation
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditLoading
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditNotification
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 
@@ -30,12 +30,27 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             val viewModel =
                 it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
-            onThemeChange(EUPurpleColorShema)
-
             PrescriptionEditInformation(
                 viewModel = viewModel,
                 onClick = {
                     navController.navigate(PrescriptionEditRoute.PrescriptionEditNotificationRoute.route)
+                },
+                onLoading = {
+                    navController.navigate(PrescriptionEditRoute.PrescriptionEditLoadingRoute.route)
+                }
+            )
+        }
+
+        composable(route = PrescriptionEditRoute.PrescriptionEditLoadingRoute.route) {
+            onThemeChange(EUPurpleColorShema)
+
+            val viewModel =
+                it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
+
+            PrescriptionEditLoading(
+                viewModel = viewModel,
+                onClick = {
+                    navController.navigate(PrescriptionEditRoute.PrescriptionEditInformationRoute.route)
                 }
             )
         }
@@ -44,22 +59,17 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             val viewModel =
                 it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
-            onThemeChange(EUPurpleColorShema)
-
             PrescriptionEditNotification(
                 viewModel = viewModel,
                 onClick = {
-                    if (viewModel.sharedState.value.isNotEmpty()) {
-                        navController.navigate(PrescriptionEditRoute.PrescriptionEditInformationRoute.route) {
-                            popUpTo(PrescriptionRoute.PrescriptionEditRoute.route) {
-                                inclusive = true
-                            }
-                        }
+                    val navigation = if (viewModel.sharedState.value.isNotEmpty()) {
+                        PrescriptionEditRoute.PrescriptionEditInformationRoute.route
                     } else {
-                        navController.navigate(PrescriptionRoute.PrescriptionHomeRoute.route) {
-                            popUpTo(PrescriptionRoute.PrescriptionEditRoute.route) {
-                                inclusive = true
-                            }
+                        PrescriptionRoute.PrescriptionHomeRoute.route
+                    }
+                    navController.navigate(navigation) {
+                        popUpTo(PrescriptionRoute.PrescriptionEditRoute.route) {
+                            inclusive = true
                         }
                     }
                 }
@@ -88,4 +98,7 @@ sealed class PrescriptionEditRoute(val route: String) {
 
     object PrescriptionEditNotificationRoute :
         PrescriptionEditRoute(route = "prescription_edit_notification")
+
+    object PrescriptionEditLoadingRoute :
+        PrescriptionEditRoute(route = "prescription_edit_loading")
 }

@@ -1,32 +1,31 @@
 package fr.medicapp.medicapp.api.address.medication
 
 import android.content.Context
-import android.os.HandlerThread
 import android.os.Handler
+import android.os.HandlerThread
 import android.util.Log
 import androidx.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
-import java.time.LocalDate
 import java.lang.reflect.Type
+import java.time.LocalDate
 
 class MedicationDownload(
-    private val context : Context
+    private val context: Context
 ) {
     /**
      * Thread en background pour le téléchargement des données
      */
-    private lateinit var gBackgroundThread : HandlerThread
+    private lateinit var gBackgroundThread: HandlerThread
 
     /**
      * Gestionnaire des tâches en background
      */
-    private lateinit var gHandler : Handler
+    private lateinit var gHandler: Handler
 
     /**
      * Initialisation du thread en background
@@ -47,10 +46,8 @@ class MedicationDownload(
 
         val medicationRepository = MedicationRepository(context)
 
-        Log.d("ObjectBox", "Medication count: ${medicationRepository.getAll().count()}")
-
         val apiService = APIAddressClient().apiServiceGuewen
-        var page: Int = 1
+        var page = 1
         var continuer = true
         while (continuer) {
             val response = apiService.getAllMeds(page).execute()

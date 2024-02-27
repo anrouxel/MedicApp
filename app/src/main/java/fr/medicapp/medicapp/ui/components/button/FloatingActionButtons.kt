@@ -17,12 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FloatingActionButtons(buttons: List<Pair<() -> Unit, @Composable () -> Unit >>) {
+fun FloatingActionButtons(buttons: List<Pair<() -> Unit, @Composable () -> Unit>>) {
     var isModalOpen by remember { mutableStateOf(false) }
 
     if (isModalOpen) {
-        Column(
-        ) {
+        Column {
             buttons.map {
                 FloatingActionButton(
                     onClick = it.first,

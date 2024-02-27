@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.user.UserEditAllergy
 import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 
@@ -31,8 +30,6 @@ fun NavGraphBuilder.userNavGraph(
             val viewModel =
                 it.sharedViewModel<SharedUserEditViewModel>(navController = navController)
 
-            onThemeChange(EUPurpleColorShema)
-
             UserEditGeneralInformation(
                 viewModel = viewModel,
                 onClick = {
@@ -44,8 +41,6 @@ fun NavGraphBuilder.userNavGraph(
         composable(route = UserRoute.UserAllergyRoute.route) {
             val viewModel =
                 it.sharedViewModel<SharedUserEditViewModel>(navController = navController)
-
-            onThemeChange(EUPurpleColorShema)
 
             UserEditAllergy(
                 viewModel = viewModel,

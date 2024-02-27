@@ -2,9 +2,10 @@ package fr.medicapp.medicapp.ui.screen.root
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MedicalInformation
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Newspaper
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -40,7 +41,7 @@ sealed class RootRoute(
      */
     object RootRoutePrescriptionRoute : RootRoute(
         route = "prescription",
-        title = "Traitements",
+        title = "Prescriptions",
         icon = Icons.Filled.Medication,
     )
 
@@ -54,20 +55,20 @@ sealed class RootRoute(
     )
 
     /**
-     * Route de l'écran utilisateur //Non utilisé.
-     */
-    object RootRouteUserRoute : RootRoute(
-        route = "user",
-        title = "Utilisateur",
-        icon = Icons.Filled.Person,
-    )
-
-    /**
      * Route de l'écran des médecins.
      */
     object RootRouteDoctorRoute : RootRoute(
         route = "doctor",
         title = "Médecins",
-        icon = Icons.Filled.Newspaper,
+        icon = Icons.Filled.MedicalInformation,
+    )
+
+    /**
+     * Route de l'écran utilisateur //Non utilisé.
+     */
+    object RootRouteUserRoute : RootRoute(
+        route = "user",
+        title = "Utilisateur",
+        icon = Icons.Filled.Settings,
     )
 }
