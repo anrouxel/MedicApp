@@ -9,4 +9,9 @@ interface ApiServiceGuewen {
     fun getAllMeds(
         @Path("page") page: Int
     ): Call<String>
+
+    @GET("get_doc/nom/{nom}")
+    fun getDocByNom(
+        @Path("nom") nom: String
+    ): Call<String>
 }

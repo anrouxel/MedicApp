@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.api.address.medication
+package fr.medicapp.medicapp.api.address.apiInteractions
 
 import android.content.Context
 import android.os.HandlerThread
@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import fr.medicapp.medicapp.MainActivity
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
@@ -70,7 +69,7 @@ class MedicationDownload(
                 // Mapper et convertir les données en MedicationEntity
                 val medicationEntities = medications.map { it.toMedication() }
 
-                // Enregistrer les MedicationEntity dans ObjectBox
+                // Enregistrer les MedicationEntity
                 medicationRepository.insert(medicationEntities)
                 page += 1
 

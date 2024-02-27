@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.doctor
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import fr.medicapp.medicapp.api.address.APIAddressClient
+import fr.medicapp.medicapp.api.address.apiInteractions.DoctorsSearch
 import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
@@ -22,38 +26,40 @@ import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import fr.medicapp.medicapp.viewModel.DoctorViewModel
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun DoctorHome(
-    doctors: MutableList<Doctor>,
+    viewModel: DoctorViewModel = viewModel(),
     onDoctorClick: (Long) -> Unit
 ) {
-    Detail(
-        title = "Recherche de médecin"
-    ) {
-        val doctor = remember { mutableStateOf("") }
+    val doctor = remember { mutableStateOf("") }
 
-        Column {
-            ReusableOutlinedTextField(
-                value = doctor.value,
-                onValueChange = {
-                    doctor.value = it
-                },
-                label = "Rechercher"
+    Column {
+        ReusableOutlinedTextField(
+            value = doctor.value,
+            onValueChange = {
+                doctor.value = it
+                if (doctor.value.length > 3) {
+                    viewModel.searchDoctor(doctor.value)
+                }
+            },
+            label = "Rechercher"
+        )
+        Spacer(modifier = Modifier.padding(10.dp))
+        val doctors = viewModel.doctors.value ?: emptyList()
+        if (doctors.isEmpty()) {
+            NoDoctorFound()
+        } else {
+            DoctorList(
+                doctors = doctors,
+                onDoctorClick = onDoctorClick,
             )
-            Spacer(modifier = Modifier.padding(10.dp))
-            if (doctors.isEmpty()) {
-                NoDoctorFound()
-            } else {
-                DoctorList(
-                    doctors = doctors,
-                    onDoctorClick = onDoctorClick,
-                )
-            }
         }
-
     }
 }
+
 
 @Composable
 fun DoctorList(
@@ -79,7 +85,7 @@ fun DoctorItem(
     onDoctorClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = { } //onDoctorClick(doctor.id) }
+        onClick = {onDoctorClick(doctor.id) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",
@@ -125,7 +131,6 @@ fun DoctorHomePreview() {
         theme = EURedColorShema
     ) {
         DoctorHome(
-            doctors = doctors,
             onDoctorClick = {}
         )
     }
@@ -141,7 +146,6 @@ fun DoctorHomeDarkPreview() {
         theme = EURedColorShema
     ) {
         DoctorHome(
-            doctors = doctors,
             onDoctorClick = {}
         )
     }

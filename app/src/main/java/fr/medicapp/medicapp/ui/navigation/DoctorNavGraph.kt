@@ -34,7 +34,6 @@ fun NavGraphBuilder.doctorNavGraph(
             onThemeChange(EUPurpleColorShema)
 
             DoctorHome(
-                doctors = mutableListOf(),
                 onDoctorClick = {
                     navController.navigate(
                         PrescriptionRoute.PrescriptionDetailRoute.route.replace(
