@@ -26,6 +26,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import fr.medicapp.medicapp.ui.components.text.ReusableTextSmallCard
 import fr.medicapp.medicapp.ui.navigation.HomeNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
@@ -89,7 +90,10 @@ fun RootScreen(
                             )
                         },
                         label = {
-                            Text(text = screen.title)
+                            ReusableTextSmallCard(
+                                modifier = Modifier,
+                                value = screen.title
+                            )
                         },
                         selected = currentDestination?.hierarchy?.any {
                             it.route == screen.route
