@@ -39,3 +39,13 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/notification/AlarmScheduler.kt,5\f\5f4ac8193be0daf6ac1556f72ad884895cd936b5
 ƒ
 Sapp/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionDetail.kt,8\0\806cb85fc8c72b4335f4e532bf81933093cb46b3
+y
+Iapp/src/main/java/fr/medicapp/medicapp/ui/screen/loading/LoadingScreen.kt,d\8\d8bcf1b2016b04d36dfeec4ad858704bd19ba6dc
+u
+Eapp/src/main/java/fr/medicapp/medicapp/ui/screen/doctor/DoctorHome.kt,f\0\f0d21942b3e9d1910bd4ff8a90e435a2c7b81c84
+s
+Capp/src/main/java/fr/medicapp/medicapp/viewModel/DoctorViewModel.kt,5\1\51d81e4b98e94e4544c51d6bbe30eaef9caf16c3
+ƒ
+Sapp/src/main/java/fr/medicapp/medicapp/api/address/apiInteractions/DoctorsSearch.kt,d\a\daa5f1880f2d23cea813571d2c93933bcdd32790
+ˆ
+Xapp/src/main/java/fr/medicapp/medicapp/api/address/apiInteractions/MedicationDownload.kt,7\d\7dc41b9e6957157bc95f605c1bd7b2fbe3d3ee98
