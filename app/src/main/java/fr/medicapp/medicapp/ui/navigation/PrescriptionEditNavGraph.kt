@@ -42,8 +42,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
         }
 
         composable(route = PrescriptionEditRoute.PrescriptionEditLoadingRoute.route) {
-            onThemeChange(EUPurpleColorShema)
-
             val viewModel =
                 it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 

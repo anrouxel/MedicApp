@@ -14,7 +14,8 @@ class RebootReceiver : BroadcastReceiver() {
         when (intent.action) {
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
-                val alarms = PrescriptionRepository(context).getAll().map { it.getNextAlarms() }.flatten()
+                val alarms =
+                    PrescriptionRepository(context).getAll().map { it.getNextAlarms() }.flatten()
 
                 NotificationPrescriptionManager.add(context, alarms)
             }
