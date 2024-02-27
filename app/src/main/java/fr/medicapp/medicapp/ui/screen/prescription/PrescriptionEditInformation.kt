@@ -5,9 +5,7 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -56,6 +54,10 @@ fun PrescriptionEditInformation(
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
+    val scanPrescription = { uri: Uri ->
+        viewModel.load(uri, context)
+    }
+
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
@@ -63,7 +65,7 @@ fun PrescriptionEditInformation(
             imageUri = uri
 
             if (imageUri != null) {
-                viewModel.load(imageUri!!, context)
+                scanPrescription(imageUri!!)
             }
         }
     )
@@ -74,8 +76,9 @@ fun PrescriptionEditInformation(
             hasImage = success
 
             if (imageUri != null && success) {
+                scanPrescription(imageUri!!)
             }
-        }
+        },
     )
 
     Edit(
@@ -91,11 +94,8 @@ fun PrescriptionEditInformation(
                 ) {
                     Text("Scanner une ordonnance", color = MaterialTheme.colorScheme.primary)
 
-                    Row(
-                        horizontalArrangement = SpaceBetween
-                    ) {
+                    Column {
                         ReusableButton(
-                            modifier = Modifier,
                             text = "Appareil photo",
                             icon = Icons.Default.PhotoCamera,
                         ) {
@@ -106,9 +106,8 @@ fun PrescriptionEditInformation(
                                 cameraPermissionState.launchPermissionRequest()
                             }
                         }
-
+                        Spacer(modifier = Modifier.padding(3.dp))
                         ReusableButton(
-                            modifier = Modifier,
                             text = "Galerie",
                             icon = Icons.Default.Photo,
                         ) {

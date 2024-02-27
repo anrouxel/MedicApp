@@ -1,12 +1,14 @@
 package fr.medicapp.medicapp.viewModel
 
 import android.content.Context
+import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import fr.medicapp.medicapp.MainActivity
+import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.OptionDialog
@@ -34,8 +36,12 @@ class SharedPrescriptionEditViewModel(
     )
     val sharedState: StateFlow<MutableList<Prescription>> = _sharedState
 
-    fun load(prescriptions: MutableList<Prescription>) {
-        _sharedState.value = prescriptions
+    fun load(uri: Uri, context: Context) {
+        Log.d("SharedPrescriptionEditViewModel", "load: $uri")
+        PrescriptionAI(context).analyse(uri) { prescriptions ->
+            if (prescriptions.isNullOrEmpty()) return@analyse
+            _sharedState.value.addAll(prescriptions)
+        }
     }
 
     fun updatePosology(newPosology: String) {
@@ -141,7 +147,7 @@ class SharedPrescriptionEditViewModel(
     suspend fun save(context: Context) {
         withContext(Dispatchers.IO) {
             addToNotificationManager(context)
-            val id = PrescriptionRepository(context).insert(_sharedState.value[0])
+            PrescriptionRepository(context).insert(_sharedState.value[0])
             _sharedState.value.removeAt(0)
         }
     }

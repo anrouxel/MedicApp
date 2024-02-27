@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DocumentScanner
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +44,7 @@ fun PrescriptionHome(
     var isReportModalOpen by remember { mutableStateOf(false)}
     val context = LocalContext.current
     Home(
-        title = "Prescription",
+        title = "Prescriptions",
         floatingActionButtons = {
             FloatingActionButtons(buttons = listOf(
                 {
@@ -58,7 +58,7 @@ fun PrescriptionHome(
                     tint = MaterialTheme.colorScheme.onPrimary
                 ) },
                 onAddPrescriptionClick to { Icon(
-                    imageVector = Icons.Default.DocumentScanner,
+                    imageVector = Icons.Default.Add,
                     contentDescription = "Bouton pour ajouter une prescription",
                     tint = MaterialTheme.colorScheme.onPrimary
                 ) },
