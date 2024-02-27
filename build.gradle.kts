@@ -12,7 +12,7 @@ val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMe
 
 subprojects {
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        basePath = rootDir.absolutePath
+        basePath = rootProject.projectDir.absolutePath
         ignoreFailures = true
         reports {
             sarif.required.set(true)
