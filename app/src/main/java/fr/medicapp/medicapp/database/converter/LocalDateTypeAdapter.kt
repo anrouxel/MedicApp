@@ -36,9 +36,9 @@ class LocalDateTypeAdapter :
     ): LocalDate {
         return if (json.isJsonObject) {
             val jsonObject = json.asJsonObject
-            val year = jsonObject.get("Year").asInt
-            val month = jsonObject.get("Month").asInt
-            val day = jsonObject.get("Day").asInt
+            val year = jsonObject["Year"].asInt
+            val month = jsonObject["Month"].asInt
+            val day = jsonObject["Day"].asInt
             LocalDate.of(year, month, day)
         } else {
             LocalDate.parse(json.asString, formatter)
