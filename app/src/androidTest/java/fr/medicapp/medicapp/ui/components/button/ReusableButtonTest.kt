@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.components.button
 
 import androidx.activity.ComponentActivity
-import androidx.compose.material3.Text
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -9,13 +8,13 @@ import androidx.compose.ui.test.performClick
 import org.junit.Rule
 import org.junit.Test
 
-class ButtonCardTest {
-    /*@get:Rule
+class ReusableButtonTest {
+    @get:Rule
     val rule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
     fun testDisplay() {
-        rule.setContent { ButtonCard(onClick = {}, content = { Text("Test") }) }
+        rule.setContent { ReusableButton(onClick = {}, text =  "Test") }
         val buttonDisplay = hasText("Test") and hasClickAction()
         rule.onNode(buttonDisplay).assertExists()
     }
@@ -26,10 +25,10 @@ class ButtonCardTest {
         val testFunction: () -> Unit = {
             testVar++
         }
-        rule.setContent { ButtonCard(onClick = testFunction) {} }
+        rule.setContent { ReusableButton(onClick = testFunction, text = "Test") }
         val buttonDisplay = hasClickAction()
         rule.onNode(buttonDisplay).performClick()
         rule.onNode(buttonDisplay).performClick()
         assert(testVar == 2)
-    }*/
+    }
 }

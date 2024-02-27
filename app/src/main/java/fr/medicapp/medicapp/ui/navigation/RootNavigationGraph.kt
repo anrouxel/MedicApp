@@ -43,7 +43,12 @@ fun RootNavGraph(
             )
         }
 
-        userNavGraph(navController, isUser, isDownload, context)
+        userNavGraph(
+            navController,
+            isUser,
+            isDownload,
+            context
+        )
     }
 }
 

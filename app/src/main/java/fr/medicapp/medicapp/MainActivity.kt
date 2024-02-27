@@ -64,7 +64,6 @@ class MainActivity : ComponentActivity() {
                     isDownload = isDownloaded,
                     context = this
                 )
-
             }
         }
     }

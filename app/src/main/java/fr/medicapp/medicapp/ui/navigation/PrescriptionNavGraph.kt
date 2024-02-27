@@ -85,7 +85,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
         }
 
         prescriptionEditNavGraph(
-            navController = navController
+            navController = navController,
         )
     }
 }

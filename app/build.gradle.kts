@@ -6,17 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "1.5.0"
-}
-
-tasks.withType<Detekt>().configureEach {
-    ignoreFailures = true
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        txt.required.set(true)
-        sarif.required.set(true)
-        md.required.set(true)
-    }
+    id("jacoco")
 }
 
 android {
@@ -43,6 +33,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            enableUnitTestCoverage = true
+        }
+        debug {
+            enableUnitTestCoverage = true
         }
     }
     compileOptions {
@@ -120,6 +114,12 @@ dependencies {
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
 
+    // QRcode
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    //Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -131,12 +131,4 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-    // QRcode
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-
-
-    //Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-
 }

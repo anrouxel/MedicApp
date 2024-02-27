@@ -144,8 +144,9 @@ class SharedPrescriptionEditViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun save(context: Context) {
         withContext(Dispatchers.IO) {
-            val id = PrescriptionRepository(context).insert(_sharedState.value[0])
-            _sharedState.value[0] = PrescriptionRepository(context).getById(id)
+            _sharedState.value[0] = PrescriptionRepository(context).getById(
+                PrescriptionRepository(context).insert(_sharedState.value[0])
+            )
             addToNotificationManager(context)
             _sharedState.value.removeAt(0)
             context.getSharedPreferences("medicapp", Context.MODE_PRIVATE).edit()

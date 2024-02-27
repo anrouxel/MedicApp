@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditInformation
-import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditLoading
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditNotification
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 
@@ -32,21 +31,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
                 viewModel = viewModel,
                 onClick = {
                     navController.navigate(PrescriptionEditRoute.PrescriptionEditNotificationRoute.route)
-                },
-                onLoading = {
-                    navController.navigate(PrescriptionEditRoute.PrescriptionEditLoadingRoute.route)
-                }
-            )
-        }
-
-        composable(route = PrescriptionEditRoute.PrescriptionEditLoadingRoute.route) {
-            val viewModel =
-                it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
-
-            PrescriptionEditLoading(
-                viewModel = viewModel,
-                onClick = {
-                    navController.navigate(PrescriptionEditRoute.PrescriptionEditInformationRoute.route)
                 }
             )
         }
@@ -94,7 +78,4 @@ sealed class PrescriptionEditRoute(val route: String) {
 
     object PrescriptionEditNotificationRoute :
         PrescriptionEditRoute(route = "prescription_edit_notification")
-
-    object PrescriptionEditLoadingRoute :
-        PrescriptionEditRoute(route = "prescription_edit_loading")
 }

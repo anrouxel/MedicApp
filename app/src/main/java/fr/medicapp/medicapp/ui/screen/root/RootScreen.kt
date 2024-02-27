@@ -130,5 +130,7 @@ fun RootScreen(
 @Preview
 @Composable
 private fun RootPreview() {
-    RootScreen(theme = EUYellowColorShema)
+    RootScreen(
+        theme = EUYellowColorShema,
+    )
 }
