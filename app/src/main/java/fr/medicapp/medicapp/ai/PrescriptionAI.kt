@@ -545,22 +545,6 @@ class PrescriptionAI(
         }
     }
 
-    fun Context.createImageFile(): Uri {
-        val provider: String = "${applicationContext.packageName}.fileprovider"
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_" + timeStamp + "_"
-
-        val image = File.createTempFile(
-            imageFileName,
-            ".jpg",
-            cacheDir
-        ).apply {
-            createNewFile()
-        }
-
-        return FileProvider.getUriForFile(applicationContext, provider, image)
-    }
-
     /**
      * Objet compagnon pour la classe PrescriptionAI.
      * Fournit une instance singleton de PrescriptionAI.
