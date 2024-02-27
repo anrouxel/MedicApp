@@ -14,13 +14,11 @@ import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditInformation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditLoading
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditNotification
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.prescriptionEditNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     navigation(
         route = PrescriptionRoute.PrescriptionEditRoute.route,

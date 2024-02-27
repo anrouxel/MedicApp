@@ -13,7 +13,6 @@ import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.components.screen.Loading
 import fr.medicapp.medicapp.ui.screen.user.UserEditAllergy
 import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 
 /**
@@ -25,12 +24,10 @@ import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit,
     isUser: Boolean,
     isDownload: Boolean,
     context: Context
 ) {
-    var isDataDownloaded = false
 
     navigation(
         route = Graph.USER,

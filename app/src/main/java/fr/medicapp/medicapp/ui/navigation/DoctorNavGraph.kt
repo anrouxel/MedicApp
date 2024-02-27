@@ -9,7 +9,6 @@ import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorDetail
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
 
 /**
@@ -20,7 +19,6 @@ import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.doctorNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     /**
      * Définit la navigation pour le graphe de prescription.

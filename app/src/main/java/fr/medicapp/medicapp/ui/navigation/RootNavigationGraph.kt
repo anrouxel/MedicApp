@@ -45,7 +45,7 @@ fun RootNavGraph(
             )
         }
 
-        userNavGraph(navController, onThemeChange, isUser, isDownload, context)
+        userNavGraph(navController, isUser, isDownload, context)
     }
 }
 
