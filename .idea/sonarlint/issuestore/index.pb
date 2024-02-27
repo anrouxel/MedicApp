@@ -371,3 +371,5 @@ D
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 ˆ
 Xapp/src/androidTest/java/fr/medicapp/medicapp/ui/components/button/ReusableButtonTest.kt,9\d\9d96ce73c0ddd36bfa1e4988d51719b1ef913f37
+M
+.github/workflows/android.yml,3\f\3f3614b660c98ad2ec2ec3066dba56ad2e3556ca
