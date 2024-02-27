@@ -19,3 +19,5 @@ z
 Japp/src/main/java/fr/medicapp/medicapp/ui/navigation/SideEffectNavGraph.kt,0\4\04ddf44da726de57ea9fb808d1eb3c9a09ade93f
 v
 Fapp/src/main/java/fr/medicapp/medicapp/ui/navigation/DoctorNavGraph.kt,0\a\0a04adff3500b17864c8c42c2bdb12f16f5118d5
+u
+Eapp/src/main/java/fr/medicapp/medicapp/notification/RebootReceiver.kt,b\e\bea2b841841b45588dacec5aea8170d867ac2e7d
