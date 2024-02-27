@@ -32,9 +32,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
                 viewModel = viewModel,
                 onClick = {
                     navController.navigate(PrescriptionEditRoute.PrescriptionEditNotificationRoute.route)
-                },
-                onLoading = {
-                    navController.navigate(PrescriptionEditRoute.PrescriptionEditLoadingRoute.route)
                 }
             )
         }

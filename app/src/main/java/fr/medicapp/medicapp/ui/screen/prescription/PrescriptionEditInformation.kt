@@ -41,7 +41,6 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 fun PrescriptionEditInformation(
     viewModel: SharedPrescriptionEditViewModel,
     onClick: () -> Unit,
-    onLoading: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState().value[0]
     val context = LocalContext.current
