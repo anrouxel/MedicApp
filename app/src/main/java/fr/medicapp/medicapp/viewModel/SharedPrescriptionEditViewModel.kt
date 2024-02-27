@@ -140,7 +140,7 @@ class SharedPrescriptionEditViewModel(
     suspend fun save(context: Context) {
         withContext(Dispatchers.IO) {
             addToNotificationManager(context)
-            val id = PrescriptionRepository(context).insert(_sharedState.value[0])
+            PrescriptionRepository(context).insert(_sharedState.value[0])
             _sharedState.value.removeAt(0)
         }
     }

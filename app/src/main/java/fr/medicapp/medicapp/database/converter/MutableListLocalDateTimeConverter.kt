@@ -13,7 +13,7 @@ class MutableListLocalDateTimeConverter {
     }
 
     @TypeConverter
-    fun toMutableListLocalDateTime(mutableListLocalDateTime: MutableList<LocalDateTime>): String {
+    fun toMutableListLocalDateTime(mutableListLocalDateTime: List<LocalDateTime>): String {
         return mutableListLocalDateTime.joinToString(",")
     }
 }
