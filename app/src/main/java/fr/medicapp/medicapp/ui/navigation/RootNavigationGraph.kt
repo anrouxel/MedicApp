@@ -41,7 +41,6 @@ fun RootNavGraph(
         composable(route = Graph.HOME) {
             RootScreen(
                 theme = theme,
-                onThemeChange = onThemeChange
             )
         }
 
