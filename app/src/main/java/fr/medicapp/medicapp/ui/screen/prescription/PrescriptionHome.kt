@@ -1,7 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -82,7 +81,8 @@ fun PrescriptionHome(
 
             prescriptions.size > 1 -> {
                 LaunchedEffect(prescriptions) {
-                    val lastMedocCompo = prescriptions.last().medication?.medicationCompositions?.map { it.substanceCode }
+                    val lastMedocCompo =
+                        prescriptions.last().medication?.medicationCompositions?.map { it.substanceCode }
                     //Log.d("substance", "$lastMedocCompo")
                     alertRedondantOpen = prescriptions.dropLast(1).any { prescription ->
                         prescription.medication?.medicationCompositions?.any {
