@@ -51,7 +51,7 @@ class SharedPrescriptionDetailViewModel(
             val updatedPrescription = _sharedState.value.copy(notifications = updatedNotifications)
             _sharedState.value = updatedPrescription
 
-            if (active) {
+            if (!active) {
                 NotificationPrescriptionManager.remove(
                     context,
                     _sharedState.value.getNotificationAlarms(updateNotificationInformation.id)

@@ -14,6 +14,10 @@ class PrescriptionRepository(context: Context) : Repository(context = context) {
         return db.prescriptionDAO().getById(id)
     }
 
+    fun getByAlarmId(alarmId: Long): Prescription {
+        return db.prescriptionDAO().getByAlarmId(alarmId)
+    }
+
     fun search(search: String): List<OptionDialog> {
         return db.prescriptionDAO().search(search).map { it.toOptionDialog() }
     }
