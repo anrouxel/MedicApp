@@ -31,7 +31,6 @@ fun NavGraphBuilder.doctorNavGraph(
     ) {
         composable(route = DoctorRoute.DoctorHomeRoute.route) {
             DoctorHome(
-                doctors = mutableListOf(),
                 onDoctorClick = {
                     navController.navigate(
                         PrescriptionRoute.PrescriptionDetailRoute.route.replace(

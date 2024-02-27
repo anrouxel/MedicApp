@@ -4,9 +4,17 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-fun interface ApiServiceGuewen {
+interface ApiServiceGuewen {
     @GET("get_med/all/{page}")
     fun getAllMeds(
         @Path("page") page: Int
     ): Call<String>
+
+    @GET("get_doc/nom/{nom}")
+    fun getDocByNom(
+        @Path("nom") nom: String
+    ): Call<String>
+
+    @GET("get_all_med")
+    fun getTotalMedications(): Call<String>
 }
