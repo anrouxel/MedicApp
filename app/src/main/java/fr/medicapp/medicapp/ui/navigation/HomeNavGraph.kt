@@ -12,7 +12,6 @@ import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepos
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.screen.home.HomeScreen
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.EUGreenColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
@@ -36,8 +35,6 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          * Composable pour l'écran d'accueil.
          */
         composable(route = RootRoute.RootRouteHomeRoute.route) {
-            onThemeChange(EUGreenColorShema)
-
             val context = LocalContext.current
             var result: MutableList<Prescription> = mutableListOf()
             Thread {

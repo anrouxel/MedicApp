@@ -14,7 +14,6 @@ import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
@@ -36,8 +35,6 @@ fun NavGraphBuilder.prescriptionNavGraph(
         startDestination = PrescriptionRoute.PrescriptionHomeRoute.route
     ) {
         composable(route = PrescriptionRoute.PrescriptionHomeRoute.route) {
-            onThemeChange(EUPurpleColorShema)
-
             val context = LocalContext.current
             val result: MutableList<Prescription> = mutableListOf()
             Thread {

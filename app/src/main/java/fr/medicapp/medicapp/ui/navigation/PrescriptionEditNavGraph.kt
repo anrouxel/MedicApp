@@ -13,7 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditInformation
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionEditNotification
-import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 
@@ -30,8 +29,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
             val viewModel =
                 it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
 
-            onThemeChange(EUPurpleColorShema)
-
             PrescriptionEditInformation(
                 viewModel = viewModel,
                 onClick = {
@@ -43,8 +40,6 @@ fun NavGraphBuilder.prescriptionEditNavGraph(
         composable(route = PrescriptionEditRoute.PrescriptionEditNotificationRoute.route) {
             val viewModel =
                 it.sharedViewModel<SharedPrescriptionEditViewModel>(navController = navController)
-
-            onThemeChange(EUPurpleColorShema)
 
             PrescriptionEditNotification(
                 viewModel = viewModel,
