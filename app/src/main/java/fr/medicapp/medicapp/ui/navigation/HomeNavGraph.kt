@@ -19,6 +19,7 @@ import fr.medicapp.medicapp.ui.screen.root.RootRoute
  */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
+
 fun HomeNavGraph(
     navController: NavHostController,
 ) {

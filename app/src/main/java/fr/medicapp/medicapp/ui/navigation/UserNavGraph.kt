@@ -19,7 +19,6 @@ import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
  * Cette fonction construit le graphe de navigation pour l'écran utilisateur.
  *
  * @param navController Le contrôleur de navigation.
- * @param onThemeChange La fonction de changement de thème.
  */
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.userNavGraph(

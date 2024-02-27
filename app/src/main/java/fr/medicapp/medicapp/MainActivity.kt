@@ -25,11 +25,6 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 class MainActivity : ComponentActivity() {
 
     /**
-     * Indique si les données ont été téléchargées.
-     */
-
-
-    /**
      * Crée l'activité. Cette méthode est appelée lorsque l'activité est créée.
      *
      * @param savedInstanceState Si l'activité est recréée après avoir été tuée par le système, c'est le bundle qui contient l'état de l'activité. Sinon, c'est null.

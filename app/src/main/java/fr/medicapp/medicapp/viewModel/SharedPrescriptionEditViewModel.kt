@@ -149,6 +149,8 @@ class SharedPrescriptionEditViewModel(
             )
             addToNotificationManager(context)
             _sharedState.value.removeAt(0)
+            context.getSharedPreferences("medicapp", Context.MODE_PRIVATE).edit()
+                .putBoolean("isNewMedicationAdded", true).apply()
         }
     }
 
