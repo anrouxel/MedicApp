@@ -369,3 +369,5 @@ Dapp/src/androidTest/java/fr/medicapp/medicapp/ui/PrescriptionTest.kt,4\5\45043
 Wapp/src/androidTest/java/fr/medicapp/medicapp/ui/components/button/ButtonContentTest.kt,a\9\a989e68c41073432debfd052fcf62f3cdc4a981e
 „
 Tapp/src/androidTest/java/fr/medicapp/medicapp/ui/components/button/ButtonCardTest.kt,f\5\f59a41cd62e3fb8d762a990fe70fb5988e2d49db
+
+Oapp/src/main/java/fr/medicapp/medicapp/ui/screen/medication/MedicationDetail.kt,5\6\567c7e5ded257a7e953d3768de56bc25f4688f5a
