@@ -65,8 +65,6 @@ w
 Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a\0\a0f4f2d1a4ab8fe57559abc4c15cff11491f6861
 u
 Eapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/CharChecker.kt,4\3\4360b27ad914be271890809c2fa9825a9fa585ea
-ˆ
-Xapp/src/main/java/fr/medicapp/medicapp/ui/screen/prescription/PrescriptionEditLoading.kt,c\7\c7021e49f67d1b60e663dff310254c53a6f19038
 g
 7app/src/main/java/fr/medicapp/medicapp/ui/theme/Type.kt,a\8\a837218a66465cb834b48c2c4a50dd9f5ac2a61b
 v
@@ -207,8 +205,6 @@ gapp/src/main/java/fr/medicapp/medicapp/database/dao/medication/TransparencyComm
 Oapp/src/main/java/fr/medicapp/medicapp/ui/screen/sideeffect/SideEffectDetail.kt,4\3\43947285416da3df39330f35aab60bdddefd7488
 •
 eapp/src/main/java/fr/medicapp/medicapp/database/dao/medication/PrescriptionDispensingConditionsDAO.kt,2\7\27865b8f94bbe7a0ecd02458f1548110da42ecfd
-~
-Napp/src/main/java/fr/medicapp/medicapp/ui/screen/infoMedoc/MedicationDetail.kt,4\c\4c32ba68fdd0b92c6ed655899b6f614a120cc7de
 |
 Lapp/src/main/java/fr/medicapp/medicapp/database/dao/prescription/AlarmDAO.kt,5\c\5c84e2ba08ec0e911c340c84c8b84c4e533b4e4b
 ‹
@@ -367,8 +363,6 @@ t
 Dapp/src/androidTest/java/fr/medicapp/medicapp/ui/PrescriptionTest.kt,4\5\4504363a691ffa4cf8450568f64cdff22974efd1
 ‡
 Wapp/src/androidTest/java/fr/medicapp/medicapp/ui/components/button/ButtonContentTest.kt,a\9\a989e68c41073432debfd052fcf62f3cdc4a981e
-„
-Tapp/src/androidTest/java/fr/medicapp/medicapp/ui/components/button/ButtonCardTest.kt,f\5\f59a41cd62e3fb8d762a990fe70fb5988e2d49db
 
 Oapp/src/main/java/fr/medicapp/medicapp/ui/screen/medication/MedicationDetail.kt,5\6\567c7e5ded257a7e953d3768de56bc25f4688f5a
 D

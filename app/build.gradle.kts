@@ -9,6 +9,10 @@ plugins {
     id("jacoco")
 }
 
+jacoco {
+    version = "0.8.8"
+}
+
 tasks.withType<Detekt>().configureEach {
     ignoreFailures = true
     reports {
@@ -142,5 +146,4 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("org.jacoco:org.jacoco.core:0.8.9")
 }
