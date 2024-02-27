@@ -11,17 +11,19 @@ import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepos
 @RequiresApi(Build.VERSION_CODES.O)
 class RebootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        when (intent.action) {
-            Intent.ACTION_BOOT_COMPLETED,
-            Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
-                val alarms =
-                    PrescriptionRepository(context).getAll().map { it.getNextAlarms() }.flatten()
+        Thread {
+            when (intent.action) {
+                Intent.ACTION_BOOT_COMPLETED,
+                Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
+                    val alarms =
+                        PrescriptionRepository(context).getAll().map { it.getNextAlarms() }.flatten()
 
-                NotificationPrescriptionManager.add(context, alarms)
+                    NotificationPrescriptionManager.add(context, alarms)
+                }
+
+                else -> Toast.makeText(context, "Unknown action: ${intent.action}", Toast.LENGTH_SHORT)
+                    .show()
             }
-
-            else -> Toast.makeText(context, "Unknown action: ${intent.action}", Toast.LENGTH_SHORT)
-                .show()
-        }
+        }.start()
     }
 }
