@@ -74,28 +74,6 @@ fun PrescriptionHome(
             )
         }
     ) {
-//        if (prescriptions.isEmpty()) {
-////            NoPrescriptionAvailable()
-////        } else {
-////            if (prescriptions.size!=1) {
-////                LaunchedEffect(prescriptions) {
-////                    val lastMedocCompo =
-////                        prescriptions.last().medication?.medicationCompositions?.map { it.substanceCode }
-////
-////                    //true if there is at least one similar composition in the prescriptions list to the added medication
-////                    alertRedondantOpen = prescriptions.dropLast(1).any { prescription ->
-////                        prescription.medication?.medicationCompositions?.any {
-////                            it.substanceCode in (lastMedocCompo ?: emptyList())
-////                        } == true
-////                    }
-////                }
-////            }
-////
-////            PrescriptionList(
-////                prescriptions = prescriptions,
-////                onPrescriptionClick = onPrescriptionClick
-////            )
-////        }
         when {
             prescriptions.isEmpty() -> {
                 NoPrescriptionAvailable()
