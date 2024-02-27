@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
-import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +42,8 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
 @Composable
 fun PrescriptionEditInformation(
     viewModel: SharedPrescriptionEditViewModel,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLoading: () -> Unit
 ) {
     val state = viewModel.sharedState.collectAsState().value[0]
     val context = LocalContext.current
@@ -65,6 +63,7 @@ fun PrescriptionEditInformation(
             imageUri = uri
 
             if (imageUri != null) {
+                viewModel.load(imageUri!!, context)
             }
         }
     )

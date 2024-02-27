@@ -155,7 +155,7 @@ class PrescriptionAI(
      */
     fun analyse(
         imageUri: Uri,
-        onDismiss: () -> Unit
+        onDismiss: (MutableList<Prescription>?) -> Unit
     ) {
         mHandle.post {
             // Attend que le module PyTorch soit chargé.
@@ -172,10 +172,13 @@ class PrescriptionAI(
 
                 // Appelle le callback avec les prédictions générées.
                 val prescriptions = onPrediction(sentenceTokenized)
+
+                // Appelle le callback lorsque l'analyse est terminée.
+                onDismiss(prescriptions)
             }
 
             // Appelle le callback lorsque l'analyse est terminée.
-            onDismiss()
+            onDismiss(null)
         }
     }
 
