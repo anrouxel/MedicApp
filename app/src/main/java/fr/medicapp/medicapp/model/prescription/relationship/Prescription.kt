@@ -100,6 +100,37 @@ data class Prescription(
         return notifications
     }
 
+    fun getNextAlarms(alarmId: Long) : AlarmItem? {
+        val now = LocalDateTime.now()
+
+        this.notifications.forEach { notification ->
+            notification.alarms.forEach { alarm ->
+                if (alarm.id == alarmId) {
+                    val date = now.toLocalDate()
+                    while (date.isBefore(duration!!.endDate)) {
+                        if (notification.notificationInformation.days.any { it.value == date.dayOfWeek.value }) {
+                            val hour = alarm.time.hour
+                            val minute = alarm.time.minute
+                            val dateTime = LocalDateTime.of(
+                                date.year,
+                                date.month,
+                                date.dayOfMonth,
+                                hour,
+                                minute
+                            )
+                            if (dateTime.isAfter(now)) {
+                                return AlarmItem(alarm.id, dateTime, "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}")
+                            }
+                        }
+                        date.plusDays(1)
+                    }
+                }
+            }
+        }
+
+        return null
+    }
+
     fun getNextAlarms(): MutableList<AlarmItem> {
         val alarms = mutableListOf<AlarmItem>()
         val now = LocalDateTime.now()
@@ -136,7 +167,7 @@ data class Prescription(
 
                         if (dateTime.isAfter(now)) {
                             Log.d("Alarm", "Alarm: $dateTime")
-                            alarms.add(AlarmItem(alarm.id, dateTime, ""))
+                            alarms.add(AlarmItem(alarm.id, dateTime, "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"))
                         }
                     }
                 }
@@ -168,7 +199,7 @@ data class Prescription(
                                     minute
                                 )
                                 if (dateTime.isBefore(now)) {
-                                    alarms.add(AlarmItem(alarm.id, dateTime, ""))
+                                    alarms.add(AlarmItem(alarm.id, dateTime, "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"))
                                 }
                             }
                         }
@@ -186,7 +217,7 @@ data class Prescription(
         this.notifications.find { it.notificationInformation.id == notificationId }
             ?.let { notification ->
                 notification.alarms.forEach { alarm ->
-                    alarms.add(AlarmItem(alarm.id, LocalDateTime.now(), ""))
+                    getNextAlarms(alarm.id)?.let { alarms.add(it) }
                 }
             }
 
@@ -198,7 +229,7 @@ data class Prescription(
 
         this.notifications.forEach { notification ->
             notification.alarms.forEach { alarm ->
-                alarms.add(AlarmItem(alarm.id, LocalDateTime.now(), ""))
+                getNextAlarms(alarm.id)?.let { alarms.add(it) }
             }
         }
 

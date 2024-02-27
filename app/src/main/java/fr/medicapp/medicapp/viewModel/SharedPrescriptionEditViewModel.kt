@@ -144,8 +144,9 @@ class SharedPrescriptionEditViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun save(context: Context) {
         withContext(Dispatchers.IO) {
+            val id = PrescriptionRepository(context).insert(_sharedState.value[0])
+            _sharedState.value[0] = PrescriptionRepository(context).getById(id)
             addToNotificationManager(context)
-            PrescriptionRepository(context).insert(_sharedState.value[0])
             _sharedState.value.removeAt(0)
         }
     }
