@@ -12,7 +12,6 @@ import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepos
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.screen.home.HomeScreen
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
  * Ceci est une classe de navigation pour l'écran d'accueil.

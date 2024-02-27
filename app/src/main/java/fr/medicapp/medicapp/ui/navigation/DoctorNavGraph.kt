@@ -9,7 +9,6 @@ import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorDetail
 import fr.medicapp.medicapp.ui.screen.doctor.DoctorHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedDoctorDetailViewModel
 
 /**

@@ -1,6 +1,5 @@
 package fr.medicapp.medicapp.model.prescription.relationship
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Embedded
 import androidx.room.Relation
@@ -78,13 +77,19 @@ data class Prescription(
         this.notifications
             .filter { notification ->
                 notification.notificationInformation.days
-                    .any { day -> date.dayOfWeek.value == day.value && date.isInRange(startDate, endDate) }
+                    .any { day ->
+                        date.dayOfWeek.value == day.value && date.isInRange(
+                            startDate,
+                            endDate
+                        )
+                    }
             }
             .flatMap { notification ->
                 notification.alarms.map { alarm ->
                     val hour = alarm.time.hour
                     val minute = alarm.time.minute
-                    val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
+                    val dateTime =
+                        LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
                     Take(alarm.id, this, dateTime)
                 }
             }
@@ -111,7 +116,8 @@ data class Prescription(
                 notification.alarms.forEach { alarm ->
                     val hour = alarm.time.hour
                     val minute = alarm.time.minute
-                    val dateTime = LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
+                    val dateTime =
+                        LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
 
                     if (dateTime.isAfter(LocalDateTime.now())) {
                         alarms.add(

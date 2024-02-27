@@ -433,7 +433,11 @@ class PrescriptionAI(
         return if (s1.length < s2.length) Pair(s2, s1) else Pair(s1, s2)
     }
 
-    private fun calculateMatchesAndTranspositions(s1: String, s2: String, delta: Int): Pair<Int, Int> {
+    private fun calculateMatchesAndTranspositions(
+        s1: String,
+        s2: String,
+        delta: Int
+    ): Pair<Int, Int> {
         val flag = BooleanArray(s2.length)
         val ch1Match = mutableListOf<Char>()
         var transpositions = 0
@@ -458,7 +462,12 @@ class PrescriptionAI(
         return Pair(ch1Match.size, transpositions)
     }
 
-    private fun calculateJaroDistance(matches: Int, len1: Int, len2: Int, transpositions: Int): Double {
+    private fun calculateJaroDistance(
+        matches: Int,
+        len1: Int,
+        len2: Int,
+        transpositions: Int
+    ): Double {
         return (matches.toDouble() / len1 + matches.toDouble() / len2 + (matches - transpositions / 2).toDouble() / matches) / 3.0
     }
 
