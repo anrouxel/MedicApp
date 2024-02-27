@@ -106,20 +106,6 @@ private fun NoDoctorFound() {
 @Preview
 @Composable
 fun DoctorHomePreview() {
-    val doctors = mutableListOf(
-        Doctor(
-            civilCodeEx = "DR",
-            firstName = "Jean",
-            lastName = "Mottu",
-            professionLabel = "Médecin/Beta Testeur"
-        ),
-        Doctor(
-            civilCodeEx = "DR",
-            firstName = "Willy",
-            lastName = "Wonka",
-            professionLabel = "Fraude"
-        )
-    )
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -134,7 +120,6 @@ fun DoctorHomePreview() {
 @Preview
 @Composable
 fun DoctorHomeDarkPreview() {
-    val doctors = mutableListOf<Doctor>()
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
