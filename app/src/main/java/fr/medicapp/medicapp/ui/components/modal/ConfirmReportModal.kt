@@ -57,7 +57,8 @@ fun ConfirmReportModal(
                     modifier = Modifier.padding(16.dp),
                     value = notes,
                     onValueChange = { new -> notes = new },
-                    label = "Notes au médecin")
+                    label = "Notes au médecin"
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),

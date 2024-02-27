@@ -361,7 +361,7 @@ class PrescriptionAI(
     }
 
     @WorkerThread
-    fun onPrediction(sentenceTokenized: MutableList<Pair<String, String>>): MutableList<Prescription> {
+    fun onPrediction(sentenceTokenized: List<Pair<String, String>>): MutableList<Prescription> {
         var query = ""
         val prescriptions = mutableListOf<Prescription>()
         var prescription = Prescription()

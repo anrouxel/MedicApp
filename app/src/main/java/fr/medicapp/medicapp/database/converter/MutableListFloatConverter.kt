@@ -12,7 +12,7 @@ class MutableListFloatConverter {
     }
 
     @TypeConverter
-    fun toMutableListFloat(mutableListFloat: MutableList<Float>): String {
+    fun toMutableListFloat(mutableListFloat: List<Float>): String {
         return mutableListFloat.joinToString(",")
     }
 }

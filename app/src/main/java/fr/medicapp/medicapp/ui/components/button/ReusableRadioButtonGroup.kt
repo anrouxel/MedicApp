@@ -59,8 +59,6 @@ fun ReusableRadioGroup(
 @Preview
 @Composable
 fun ReusableRadioGroupPreview() {
-    val selectedOption = "Option 1"
-
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -68,7 +66,7 @@ fun ReusableRadioGroupPreview() {
     ) {
         ReusableRadioGroup(
             options = listOf("Option 1", "Option 2", "Option 3"),
-            selectedOption = selectedOption,
+            selectedOption = "Option 1",
             label = "Youpi",
             onClick = {}
         )

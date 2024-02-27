@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
@@ -138,12 +139,11 @@ fun NoPrescriptionAvailable() {
 @Preview(name = "Light Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomePreview() {
-    /*val prescription = Prescription(
+    val prescription = Prescription(
         doctor = Doctor(
             firstName = "Mottu"
         ),
-        date = LocalDate.now()
-    )*/
+    )
 
     MedicAppTheme(
         darkTheme = false,
@@ -151,7 +151,7 @@ private fun PrescriptionHomePreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            prescriptions = listOf()
+            prescriptions = listOf(prescription)
         )
     }
 }
@@ -160,12 +160,11 @@ private fun PrescriptionHomePreview() {
 @Preview(name = "Dark Theme", showSystemUi = true)
 @Composable
 private fun PrescriptionHomeDarkPreview() {
-    /*val prescription = Prescription(
+    val prescription = Prescription(
         doctor = Doctor(
             firstName = "Mottu"
-        ),
-        date = LocalDate.now()
-    )*/
+        )
+    )
 
     MedicAppTheme(
         darkTheme = true,
@@ -173,7 +172,7 @@ private fun PrescriptionHomeDarkPreview() {
         theme = EUPurpleColorShema
     ) {
         PrescriptionHome(
-            prescriptions = listOf()
+            prescriptions = listOf(prescription)
         )
     }
 }
