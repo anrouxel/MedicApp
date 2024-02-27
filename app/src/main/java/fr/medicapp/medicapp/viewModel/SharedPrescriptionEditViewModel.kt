@@ -39,17 +39,21 @@ class SharedPrescriptionEditViewModel(
     }
 
     fun updatePosology(newPosology: String) {
-        val updatedPrescriptionInformation =
-            _sharedState.value[0].prescriptionInformation.copy(posology = newPosology)
         _sharedState.value[0] =
-            _sharedState.value[0].copy(prescriptionInformation = updatedPrescriptionInformation)
+            _sharedState.value[0].copy(
+                prescriptionInformation = _sharedState.value[0].prescriptionInformation.copy(
+                    posology = newPosology
+                )
+            )
     }
 
     fun updateFrequency(newFrequency: String) {
-        val updatedPrescriptionInformation =
-            _sharedState.value[0].prescriptionInformation.copy(frequency = newFrequency)
         _sharedState.value[0] =
-            _sharedState.value[0].copy(prescriptionInformation = updatedPrescriptionInformation)
+            _sharedState.value[0].copy(
+                prescriptionInformation = _sharedState.value[0].prescriptionInformation.copy(
+                    frequency = newFrequency
+                )
+            )
     }
 
     fun updateDuration(newDuration: Duration) {
@@ -64,10 +68,12 @@ class SharedPrescriptionEditViewModel(
 
     fun updateNotificationActiveState(index: Int, newActiveState: Boolean) {
         val updatedNotifications = _sharedState.value[0].notifications.toMutableList()
-        val updatedNotificationInformation =
-            updatedNotifications[index].notificationInformation.copy(active = newActiveState)
         updatedNotifications[index] =
-            updatedNotifications[index].copy(notificationInformation = updatedNotificationInformation)
+            updatedNotifications[index].copy(
+                notificationInformation = updatedNotifications[index].notificationInformation.copy(
+                    active = newActiveState
+                )
+            )
         _sharedState.value[0] = _sharedState.value[0].copy(notifications = updatedNotifications)
     }
 
@@ -79,10 +85,12 @@ class SharedPrescriptionEditViewModel(
         } else {
             notificationInformationToUpdate.days.remove(dayOfWeek)
         }
-        val updatedNotificationInformation =
-            notificationInformationToUpdate.copy(days = notificationInformationToUpdate.days)
         updatedNotifications[index] =
-            updatedNotifications[index].copy(notificationInformation = updatedNotificationInformation)
+            updatedNotifications[index].copy(
+                notificationInformation = notificationInformationToUpdate.copy(
+                    days = notificationInformationToUpdate.days
+                )
+            )
         _sharedState.value[0] = _sharedState.value[0].copy(notifications = updatedNotifications)
     }
 
