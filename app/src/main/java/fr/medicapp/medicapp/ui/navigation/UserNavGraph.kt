@@ -30,8 +30,6 @@ fun NavGraphBuilder.userNavGraph(
     isDownload: Boolean,
     context: Context
 ) {
-    var isDataDownloaded = false
-
     navigation(
         route = Graph.USER,
         startDestination = if (!isUser) UserRoute.UserGeneralInformationRoute.route else UserRoute.LoadingScreenRoute.route
