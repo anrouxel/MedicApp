@@ -34,6 +34,14 @@ class LocalDateTypeAdapter :
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): LocalDate {
-        return LocalDate.parse(json.asString, formatter)
+        return if (json.isJsonObject) {
+            val jsonObject = json.asJsonObject
+            val year = jsonObject.get("Year").asInt
+            val month = jsonObject.get("Month").asInt
+            val day = jsonObject.get("Day").asInt
+            LocalDate.of(year, month, day)
+        } else {
+            LocalDate.parse(json.asString, formatter)
+        }
     }
 }

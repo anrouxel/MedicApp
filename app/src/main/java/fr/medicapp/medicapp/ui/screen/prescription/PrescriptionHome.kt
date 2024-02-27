@@ -85,11 +85,13 @@ fun PrescriptionHome(
                 LaunchedEffect(prescriptions) {
                     val lastMedocCompo =
                         prescriptions.last().medication?.medicationCompositions?.map { it.substanceCode }
+
                     alertRedondantOpen = prescriptions.dropLast(1).any { prescription ->
                         prescription.medication?.medicationCompositions?.any {
                             it.substanceCode in (lastMedocCompo ?: emptyList())
                         } == true
                     }
+
                 }
                 PrescriptionList(
                     prescriptions = prescriptions,
