@@ -129,8 +129,9 @@ class SharedPrescriptionEditViewModel(
 
     suspend fun updateMedication(newMedication: OptionDialog, context: Context) {
         withContext(Dispatchers.IO) {
-            val medication = MedicationRepository(context).getById(newMedication.id)
-            _sharedState.value[0] = _sharedState.value[0].copy(medication = medication)
+            _sharedState.value[0] = _sharedState.value[0].copy(
+                medication = MedicationRepository(context).getById(newMedication.id)
+            )
         }
     }
 
