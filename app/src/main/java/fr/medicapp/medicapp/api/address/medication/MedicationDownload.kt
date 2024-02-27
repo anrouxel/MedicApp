@@ -46,10 +46,8 @@ class MedicationDownload(
 
         val medicationRepository = MedicationRepository(context)
 
-        Log.d("ObjectBox", "Medication count: ${medicationRepository.getAll().count()}")
-
         val apiService = APIAddressClient().apiServiceGuewen
-        var page: Int = 1
+        var page = 1
         var continuer = true
         while (continuer) {
             val response = apiService.getAllMeds(page).execute()
