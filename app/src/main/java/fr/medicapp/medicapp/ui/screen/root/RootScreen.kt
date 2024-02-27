@@ -117,7 +117,6 @@ fun RootScreen(
         ) {
             HomeNavGraph(
                 navController = navController,
-                onThemeChange = onThemeChange
             )
         }
     }

@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,10 @@ fun PrescriptionHome(
     var alertRedondantOpen by remember { mutableStateOf(false) }
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val sharedPrefs = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    val isNewMedicationAdded = sharedPrefs
+        .getBoolean("isNewMedicationAdded", false)
+
     Home(
         title = "Prescriptions",
         floatingActionButtons = {
@@ -90,13 +95,14 @@ fun PrescriptionHome(
                         prescription.medication?.medicationCompositions?.any {
                             it.substanceCode in (lastMedocCompo ?: emptyList())
                         } == true
-                    }
+                    } && isNewMedicationAdded
 
                 }
                 PrescriptionList(
                     prescriptions = prescriptions,
                     onPrescriptionClick = onPrescriptionClick
                 )
+
             }
 
             else -> {
@@ -117,7 +123,13 @@ fun PrescriptionHome(
                 content = "Attention, le médicament que vous venez de rajouter contient le même principe actif qu'un déjà présent dans vos traitements",
                 dismissText = "",
                 confirmText = "Compris",
-                onConfirm = { alertRedondantOpen = false }
+                onConfirm = {
+                    alertRedondantOpen = false
+                    with(sharedPrefs.edit()) {
+                        putBoolean("isNewMedicationAdded", false)
+                        apply()
+                    }
+                }
             )
         }
     }
