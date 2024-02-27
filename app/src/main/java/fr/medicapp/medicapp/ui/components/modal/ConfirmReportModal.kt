@@ -30,56 +30,56 @@ import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 fun ConfirmReportModal(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
-    ) {
-    var notes by remember {mutableStateOf("")}
+) {
+    var notes by remember { mutableStateOf("") }
     val reportGenerator = ReportGenerator(LocalContext.current)
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
-            // Draw a rectangle shape with rounded corners inside the dialog
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+        // Draw a rectangle shape with rounded corners inside the dialog
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
 
             ) {
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "RAPPORT",
+                    modifier = Modifier.padding(16.dp),
+                    fontSize = 24.sp,
+                )
+                ReusableOutlinedTextField(
+                    modifier = Modifier.padding(16.dp),
+                    value = notes,
+                    onValueChange = { new -> notes = new },
+                    label = "Notes au médecin")
+                Row(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(
-                        text = "RAPPORT",
-                        modifier = Modifier.padding(16.dp),
-                        fontSize = 24.sp,
-                    )
-                    ReusableOutlinedTextField(
-                        modifier = Modifier.padding(16.dp),
-                        value = notes,
-                        onValueChange = {new -> notes = new} ,
-                        label = "Notes au médecin")
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
+                    TextButton(
+                        onClick = { onDismissRequest() },
+                        modifier = Modifier.padding(8.dp),
                     ) {
-                        TextButton(
-                            onClick = { onDismissRequest() },
-                            modifier = Modifier.padding(8.dp),
-                        ) {
-                            Text("Annuler")
-                        }
-                        TextButton(
-                            onClick = {
-                                onConfirmation()
-                                reportGenerator.report(notes)
-                                      },
-                            modifier = Modifier.padding(8.dp),
-                        ) {
-                            Text("Partager")
-                        }
+                        Text("Annuler")
+                    }
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                            reportGenerator.report(notes)
+                        },
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Text("Partager")
                     }
                 }
             }
         }
+    }
 }

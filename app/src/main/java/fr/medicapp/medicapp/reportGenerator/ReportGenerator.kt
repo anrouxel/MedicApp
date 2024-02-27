@@ -83,8 +83,10 @@ class ReportGenerator(private val ctx: Context) {
     @RequiresApi(Build.VERSION_CODES.Q)
     fun report(notes: String = "") {
         Thread {
-            val prescriptions = PrescriptionRepository(ctx).getAll().filter { it.duration?.endDate?.isAfter(LocalDate.now()) == true}
-            val signature = UserRepository(ctx).getAll().first().let { "${it.firstName} ${it.lastName}" }
+            val prescriptions = PrescriptionRepository(ctx).getAll()
+                .filter { it.duration?.endDate?.isAfter(LocalDate.now()) == true }
+            val signature =
+                UserRepository(ctx).getAll().first().let { "${it.firstName} ${it.lastName}" }
             try {
                 val file = generate(signature, notes, prescriptions)
                 exportInMail(file, signature)
@@ -213,7 +215,10 @@ class ReportGenerator(private val ctx: Context) {
 
         val textMissingTakes = mutableListOf<String>()
         Log.d("ReportGenerator", "drawMissingTakes: ${prescriptions.size}")
-        Log.d("ReportGenerator", "drawMissingTakes: ${prescriptions.filter { it.medication?.medicationInformation?.name != null }.size}")
+        Log.d(
+            "ReportGenerator",
+            "drawMissingTakes: ${prescriptions.filter { it.medication?.medicationInformation?.name != null }.size}"
+        )
         for (prescription in prescriptions.filter { it.medication?.medicationInformation?.name != null }) {
             val missingTakes = calcMissingTake(prescription).map {
                 "${it.year}-" +
@@ -335,7 +340,9 @@ class ReportGenerator(private val ctx: Context) {
             val takes = prescription.prescriptionInformation.takes
             val missingTakes = mutableListOf<LocalDateTime>()
             Log.d("calcMissingTake", "calcMissingTake: ${prescription.notifications.size}")
-            for (date in prescription.duration?.startDate!!.datesUntil(LocalDate.now().plusDays(1))) {
+            for (date in prescription.duration?.startDate!!.datesUntil(
+                LocalDate.now().plusDays(1)
+            )) {
                 prescription.notifications.forEach { notification ->
                     if (date.dayOfWeek !in notification.notificationInformation.days)
                         return@forEach

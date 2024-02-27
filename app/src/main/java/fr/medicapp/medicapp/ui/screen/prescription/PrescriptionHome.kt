@@ -41,7 +41,7 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
-    var isReportModalOpen by remember { mutableStateOf(false)}
+    var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
     Home(
         title = "Prescription",
@@ -52,18 +52,23 @@ fun PrescriptionHome(
                         NoPrescriptionDialog.show(context)
                     else
                         isReportModalOpen = true
-                } to { Icon(
-                    imageVector = Icons.Default.FileOpen,
-                    contentDescription = "Bouton pour générer un rapport",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                ) },
-                onAddPrescriptionClick to { Icon(
-                    imageVector = Icons.Default.DocumentScanner,
-                    contentDescription = "Bouton pour ajouter une prescription",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                ) },
+                } to {
+                    Icon(
+                        imageVector = Icons.Default.FileOpen,
+                        contentDescription = "Bouton pour générer un rapport",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+                onAddPrescriptionClick to {
+                    Icon(
+                        imageVector = Icons.Default.DocumentScanner,
+                        contentDescription = "Bouton pour ajouter une prescription",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
 
-            ))
+                )
+            )
         }
     ) {
         if (prescriptions.isEmpty()) {
@@ -75,7 +80,7 @@ fun PrescriptionHome(
             )
         }
         if (isReportModalOpen)
-            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false}) {
+            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false }) {
                 isReportModalOpen = false
             }
     }
