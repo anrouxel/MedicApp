@@ -1,11 +1,13 @@
 package fr.medicapp.medicapp.ui.navigation
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload
 import fr.medicapp.medicapp.ui.screen.root.RootScreen
 import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
@@ -20,7 +22,9 @@ fun RootNavGraph(
     navController: NavHostController,
     theme: ThemeColorScheme,
     onThemeChange: (ThemeColorScheme) -> Unit,
-    isUser: Boolean
+    isUser: Boolean,
+    isDownload: Boolean,
+    context : Context
 ) {
 
     /**
@@ -30,7 +34,7 @@ fun RootNavGraph(
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = if (isUser) Graph.HOME else Graph.USER,
+        startDestination = if (isUser && isDownload) Graph.HOME else Graph.USER,
     ) {
         /**
          * Composable pour l'écran d'accueil.
@@ -42,7 +46,7 @@ fun RootNavGraph(
             )
         }
 
-        userNavGraph(navController, onThemeChange)
+        userNavGraph(navController, onThemeChange, isUser, isDownload, context)
     }
 }
 
@@ -64,4 +68,9 @@ object Graph {
      * Route pour l'écran d'accueil.
      */
     const val HOME = "home_graph"
+
+    /**
+     * Route pour l'écran de chargement et le téléchargement des données
+     */
+    const val LOADING = "loading_graph"
 }
