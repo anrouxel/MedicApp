@@ -92,8 +92,7 @@ class MedicationDownload(
                 continuer = false
                 Log.d("ObjectBox", "Fin du téléchargement des médicaments")
                 sharedPreferences.edit().putBoolean("isDataDownloaded", true).apply()
-            }
-            else {
+            } else {
                 continuer = false
                 val errorBody = response.errorBody()?.string()
                 Log.e("Error de guegue", errorBody ?: "Error body is null")
@@ -115,7 +114,7 @@ class MedicationDownload(
         }
     }
 
-    fun updateDownloadCountInSharedPreferences(countDownload : Int) {
+    fun updateDownloadCountInSharedPreferences(countDownload: Int) {
         sharedPreferences.edit().putInt("downloadCount", countDownload).apply()
     }
 

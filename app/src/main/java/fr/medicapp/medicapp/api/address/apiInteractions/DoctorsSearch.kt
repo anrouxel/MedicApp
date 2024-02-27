@@ -1,17 +1,17 @@
 package fr.medicapp.medicapp.api.address.apiInteractions
 
+import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
-import java.time.LocalDate
-import java.lang.reflect.Type
-import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.model.prescription.Doctor
-import android.os.Handler
 import java.io.IOException
-import android.os.Looper
+import java.lang.reflect.Type
+import java.time.LocalDate
 
 class DoctorsSearch {
 

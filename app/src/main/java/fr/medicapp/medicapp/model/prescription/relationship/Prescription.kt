@@ -100,7 +100,7 @@ data class Prescription(
         return notifications
     }
 
-    fun getNextAlarms(alarmId: Long) : AlarmItem? {
+    fun getNextAlarms(alarmId: Long): AlarmItem? {
         val now = LocalDateTime.now()
 
         this.notifications.forEach { notification ->
@@ -119,7 +119,11 @@ data class Prescription(
                                 minute
                             )
                             if (dateTime.isAfter(now)) {
-                                return AlarmItem(alarm.id, dateTime, "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}")
+                                return AlarmItem(
+                                    alarm.id,
+                                    dateTime,
+                                    "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"
+                                )
                             }
                         }
                         date.plusDays(1)
@@ -167,7 +171,13 @@ data class Prescription(
 
                         if (dateTime.isAfter(now)) {
                             Log.d("Alarm", "Alarm: $dateTime")
-                            alarms.add(AlarmItem(alarm.id, dateTime, "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"))
+                            alarms.add(
+                                AlarmItem(
+                                    alarm.id,
+                                    dateTime,
+                                    "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"
+                                )
+                            )
                         }
                     }
                 }
@@ -199,7 +209,13 @@ data class Prescription(
                                     minute
                                 )
                                 if (dateTime.isBefore(now)) {
-                                    alarms.add(AlarmItem(alarm.id, dateTime, "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"))
+                                    alarms.add(
+                                        AlarmItem(
+                                            alarm.id,
+                                            dateTime,
+                                            "C'est l'heure de prendre votre médicament : ${medication!!.medicationInformation.name}"
+                                        )
+                                    )
                                 }
                             }
                         }

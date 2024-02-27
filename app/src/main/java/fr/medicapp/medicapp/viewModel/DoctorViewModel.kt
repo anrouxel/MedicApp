@@ -1,4 +1,5 @@
 package fr.medicapp.medicapp.viewModel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,8 @@ class DoctorViewModel : ViewModel() {
     fun searchDoctor(query: String) {
         viewModelScope.launch {
             val searchResults = DoctorsSearch().searchDoctor(query) { doctors ->
-                _doctors.postValue(doctors)}
+                _doctors.postValue(doctors)
+            }
         }
     }
 }

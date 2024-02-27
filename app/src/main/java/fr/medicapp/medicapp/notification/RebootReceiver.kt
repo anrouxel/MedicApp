@@ -16,12 +16,17 @@ class RebootReceiver : BroadcastReceiver() {
                 Intent.ACTION_BOOT_COMPLETED,
                 Intent.ACTION_LOCKED_BOOT_COMPLETED -> {
                     val alarms =
-                        PrescriptionRepository(context).getAll().map { it.getNextAlarms() }.flatten()
+                        PrescriptionRepository(context).getAll().map { it.getNextAlarms() }
+                            .flatten()
 
                     NotificationPrescriptionManager.add(context, alarms)
                 }
 
-                else -> Toast.makeText(context, "Unknown action: ${intent.action}", Toast.LENGTH_SHORT)
+                else -> Toast.makeText(
+                    context,
+                    "Unknown action: ${intent.action}",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }.start()
