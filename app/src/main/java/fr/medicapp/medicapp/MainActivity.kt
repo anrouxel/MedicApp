@@ -1,8 +1,10 @@
 package fr.medicapp.medicapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -13,12 +15,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.ai.PrescriptionAI
-import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload
+import fr.medicapp.medicapp.api.address.APIAddressClient
+import fr.medicapp.medicapp.api.address.medication.MedicationDownload
+import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
+import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.model.gson.MedicationGSON
 import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import java.lang.reflect.Type
+import java.time.LocalDate
 
 /**
  * Activité principale de l'application.
@@ -37,13 +47,19 @@ class MainActivity : ComponentActivity() {
      *
      * @param savedInstanceState Si l'activité est recréée après avoir été tuée par le système, c'est le bundle qui contient l'état de l'activité. Sinon, c'est null.
      */
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val isUser = this.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
             .getBoolean("isUserCreated", false)
+
+        Thread {
+
+        }.start()
+
+        //Téléchargement des médicaments
+        MedicationDownload(this)
 
         // Initialisation de l'IA de prescription
         PrescriptionAI.getInstance(this)
@@ -84,4 +100,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

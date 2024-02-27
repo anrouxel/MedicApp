@@ -3,7 +3,7 @@ package fr.medicapp.medicapp.ai
 import android.content.Context
 import android.content.res.AssetManager
 import android.net.Uri
-    import android.os.Handler
+import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import androidx.annotation.WorkerThread
@@ -152,7 +152,7 @@ class PrescriptionAI(
      */
     fun analyse(
         imageUri: Uri,
-        onDismiss: () -> Unit
+        onDismiss: (MutableList<Prescription>?) -> Unit
     ) {
         mHandle.post {
             // Attend que le module PyTorch soit chargé.
@@ -169,10 +169,13 @@ class PrescriptionAI(
 
                 // Appelle le callback avec les prédictions générées.
                 val prescriptions = onPrediction(sentenceTokenized)
+
+                // Appelle le callback lorsque l'analyse est terminée.
+                onDismiss(prescriptions)
             }
 
             // Appelle le callback lorsque l'analyse est terminée.
-            onDismiss()
+            onDismiss(null)
         }
     }
 
@@ -358,7 +361,7 @@ class PrescriptionAI(
     }
 
     @WorkerThread
-    fun onPrediction(sentenceTokenized: MutableList<Pair<String, String>>): MutableList<Prescription> {
+    fun onPrediction(sentenceTokenized: List<Pair<String, String>>): MutableList<Prescription> {
         var query = ""
         val prescriptions = mutableListOf<Prescription>()
         var prescription = Prescription()
