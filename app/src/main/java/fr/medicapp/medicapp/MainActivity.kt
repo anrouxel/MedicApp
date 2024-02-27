@@ -15,7 +15,7 @@ import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.medication.MedicationDownload
 import fr.medicapp.medicapp.mozilla.GeckoManager
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
-import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
+import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 /**
@@ -36,10 +36,6 @@ class MainActivity : ComponentActivity() {
         val isUser = this.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
             .getBoolean("isUserCreated", false)
 
-        Thread {
-
-        }.start()
-
         //Téléchargement des médicaments
         MedicationDownload(this)
 
@@ -51,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
         // Définition du contenu de l'activité
         setContent {
-            var theme by remember { mutableStateOf(EUYellowColorShema) }
+            var theme by remember { mutableStateOf(EUPurpleColorShema) }
             // Utilisation du thème de l'application
             MedicAppTheme(
                 theme = theme
