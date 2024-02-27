@@ -384,7 +384,7 @@ class PrescriptionAI(
                         "DrugQuantity" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugForm" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugFrequency" -> prescription.prescriptionInformation.posology += " $word"
-                        //"DrugDuration" -> prescription.prescriptionInformation.renew += " $word"
+                        // "DrugDuration" -> prescription.prescriptionInformation.renew += " $word"
                     }
                 }
 
@@ -394,7 +394,7 @@ class PrescriptionAI(
                         "DrugQuantity" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugForm" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugFrequency" -> prescription.prescriptionInformation.posology += " $word"
-                        //"DrugDuration" -> treatment.renew += " $word"
+                        // "DrugDuration" -> treatment.renew += " $word"
                     }
                 }
             }
@@ -413,21 +413,31 @@ class PrescriptionAI(
     }
 
     fun jaroWinklerDistance(st1: String, st2: String): Double {
-        var s1 = st1
-        var s2 = st2
-        if (s1.length < s2.length) {
-            val temp = s2
-            s2 = s1
-            s1 = temp
-        }
+        val (s1, s2) = swapStringsIfRequired(st1, st2)
         val len1 = s1.length
         val len2 = s2.length
         if (len2 == 0) {
             return 0.0
         }
         val delta = max(0, len2 / 2 - 1)
-        val flag = BooleanArray(len2)
+        val (matches, transpositions) = calculateMatchesAndTranspositions(s1, s2, delta)
+        if (matches == 0) {
+            return 1.0
+        }
+        val jaro = calculateJaroDistance(matches, len1, len2, transpositions)
+        val commonPrefix = calculateCommonPrefix(s1, s2)
+        return 1.0 - (jaro + commonPrefix * 0.1 * (1 - jaro))
+    }
+
+    private fun swapStringsIfRequired(s1: String, s2: String): Pair<String, String> {
+        return if (s1.length < s2.length) Pair(s2, s1) else Pair(s1, s2)
+    }
+
+    private fun calculateMatchesAndTranspositions(s1: String, s2: String, delta: Int): Pair<Int, Int> {
+        val flag = BooleanArray(s2.length)
         val ch1Match = mutableListOf<Char>()
+        var transpositions = 0
+        var idx1 = 0
         for ((idx1, ch1) in s1.withIndex()) {
             for ((idx2, ch2) in s2.withIndex()) {
                 if (idx2 <= idx1 + delta && idx2 >= idx1 - delta && ch1 == ch2 && !flag[idx2]) {
@@ -437,12 +447,6 @@ class PrescriptionAI(
                 }
             }
         }
-        val matches = ch1Match.size
-        if (matches == 0) {
-            return 1.0
-        }
-        var transpositions = 0
-        var idx1 = 0
         for ((idx2, ch2) in s2.withIndex()) {
             if (flag[idx2]) {
                 if (ch2 != ch1Match[idx1]) {
@@ -451,15 +455,21 @@ class PrescriptionAI(
                 idx1++
             }
         }
-        val jaro =
-            (matches.toDouble() / len1 + matches.toDouble() / len2 + (matches - transpositions / 2).toDouble() / matches) / 3.0
+        return Pair(ch1Match.size, transpositions)
+    }
+
+    private fun calculateJaroDistance(matches: Int, len1: Int, len2: Int, transpositions: Int): Double {
+        return (matches.toDouble() / len1 + matches.toDouble() / len2 + (matches - transpositions / 2).toDouble() / matches) / 3.0
+    }
+
+    fun calculateCommonPrefix(s1: String, s2: String): Int {
         var commonPrefix = 0
-        for (i in 0 until min(4, len2)) {
+        for (i in 0 until min(4, s2.length)) {
             if (s1[i] == s2[i]) {
                 commonPrefix++
             }
         }
-        return 1.0 - (jaro + commonPrefix * 0.1 * (1 - jaro))
+        return commonPrefix
     }
 
     /**
