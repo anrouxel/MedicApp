@@ -41,7 +41,7 @@ fun SideEffectHome(
                 containerColor = MaterialTheme.colorScheme.primary,
             ) {
                 Icon(
-                    imageVector =  Icons.Default.DocumentScanner,
+                    imageVector = Icons.Default.DocumentScanner,
                     contentDescription = "",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )

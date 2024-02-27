@@ -41,7 +41,7 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
-    var isReportModalOpen by remember { mutableStateOf(false)}
+    var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
     Home(
         title = "Prescriptions",
@@ -63,7 +63,8 @@ fun PrescriptionHome(
                     tint = MaterialTheme.colorScheme.onPrimary
                 ) },
 
-            ))
+                )
+            )
         }
     ) {
         if (prescriptions.isEmpty()) {
@@ -75,7 +76,7 @@ fun PrescriptionHome(
             )
         }
         if (isReportModalOpen)
-            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false}) {
+            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false }) {
                 isReportModalOpen = false
             }
     }

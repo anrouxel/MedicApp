@@ -26,7 +26,7 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 @Composable
 fun Home(
     title: String,
-    floatingActionButtons : @Composable () -> Unit = {},
+    floatingActionButtons: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
