@@ -1,3 +1,21 @@
 
 €
 Papp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionEditNavGraph.kt,0\d\0dc72ce84c58f0d0bb63271c59c5ff8e5436941b
+s
+Capp/src/main/java/fr/medicapp/medicapp/ui/screen/root/RootScreen.kt,a\e\aede6a3e8b27c018908212d3155e84f5714d051e
+r
+Bapp/src/main/java/fr/medicapp/medicapp/ui/screen/root/RootRoute.kt,e\a\eae24c1e1b5853d820f06bea30548ab8c97e27fe
+t
+Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/UserNavGraph.kt,3\5\3573a61fcdaada8d158efbca3c6e6c688087a7df
+{
+Kapp/src/main/java/fr/medicapp/medicapp/ui/navigation/RootNavigationGraph.kt,d\b\dbc03e33c132b6cede60b40677f5c598e0352ee7
+t
+Dapp/src/main/java/fr/medicapp/medicapp/ui/navigation/HomeNavGraph.kt,9\4\944f1b39a76b674a5f09d5a4fc661da49a84b42d
+f
+6app/src/main/java/fr/medicapp/medicapp/MainActivity.kt,6\9\69f8dd06c87c9db45c59088da5c18d2a480fc647
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ui/navigation/PrescriptionNavGraph.kt,0\a\0a4fd3a4b7b64a59d2d009514797e7f1ec5f52b1
+z
+Japp/src/main/java/fr/medicapp/medicapp/ui/navigation/SideEffectNavGraph.kt,0\4\04ddf44da726de57ea9fb808d1eb3c9a09ade93f
+v
+Fapp/src/main/java/fr/medicapp/medicapp/ui/navigation/DoctorNavGraph.kt,0\a\0a04adff3500b17864c8c42c2bdb12f16f5118d5
