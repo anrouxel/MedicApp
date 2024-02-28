@@ -17,12 +17,54 @@ import java.time.LocalDate
 
 class DoctorsSearch {
 
-    fun searchDoctor(doctor: String, callback: (List<Doctor>) -> Unit) {
+    fun searchLittleDoctor(doctor: String, callback: (List<Doctor>) -> Unit) {
+        val apiService = APIAddressClient().apiServiceGuewen
+        val call = apiService.getLittleDocByNom(doctor)
+
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    val allDocsJsonArray = response.body()!!
+                    Log.d("Docteurs", "Les docteurs sont trouvés !")
+
+                    val gson = GsonBuilder()
+                        .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                        .create()
+
+                    val doctorListType: Type = object : TypeToken<List<Doctor>>() {}.type
+                    val doctors: List<Doctor> = gson.fromJson(allDocsJsonArray, doctorListType)
+
+                    Log.d("Docteurs", "Les docteurs sont trouvés ! : ${doctors.size}")
+                    // Callback on the main thread
+                    return callback(doctors)
+                } else {
+                    Log.d("Docteurs", "Les docteurs ne sont pas trouvés !")
+                    // Callback on the main thread
+                    return callback(emptyList())
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("GuegueApi", "Error during API call: ${t.message}")
+                if (t.message == "timeout") {
+                    Log.d("Gueguemagouille", "je relance la requête")
+                    Handler(Looper.getMainLooper()).post {
+                        // Relancer la requête avec les mêmes paramètres
+                        searchLittleDoctor(doctor, callback)
+                    }
+                } else {
+                    return callback(emptyList())
+                }
+            }
+        })
+    }
+
+    fun searchDoctor(doctor: Long, callback: (List<Doctor>) -> Unit) {
 
         cancelSearch()
 
         val apiService = APIAddressClient().apiServiceGuewen
-        val call = apiService.getDocByNom(doctor)
+        val call = apiService.getDocById(doctor)
 
         currentCall = call
 
