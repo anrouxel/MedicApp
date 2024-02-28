@@ -239,8 +239,6 @@ x
 Happ/src/main/java/fr/medicapp/medicapp/ui/components/card/CardContent.kt,a\2\a210d3751452c1d47f446261933982a4e4518035
 Å
 Qapp/src/main/java/fr/medicapp/medicapp/ui/components/card/ReusableElevatedCard.kt,2\9\298ba7a8e5a5339d1ecbc95c2504f3b4cd26326e
-É
-Sapp/src/main/java/fr/medicapp/medicapp/ui/components/dialog/NoPrescriptionDialog.kt,5\9\5926f4bcbcd238a24f7318596ecdc10f613b5ae8
 }
 Mapp/src/main/java/fr/medicapp/medicapp/ui/components/list/ListOfMedication.kt,9\5\95b5190332b3f2fc64c8c85f0e04c9bbf0a125d2
 x
@@ -363,3 +361,7 @@ y
 Iapp/src/test/java/fr/medicapp/medicapp/ai/tokenization/CharCheckerTest.kt,c\2\c260ed506bde8cd6cc837e984a94b79b0f78d343
 }
 Mapp/src/test/java/fr/medicapp/medicapp/reportGenerator/ReportGeneratorTest.kt,5\7\57418778415cf76363d3c47a64a33ce650ef3328
+@
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
