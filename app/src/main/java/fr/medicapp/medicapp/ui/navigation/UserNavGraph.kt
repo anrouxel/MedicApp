@@ -6,7 +6,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -17,7 +16,6 @@ import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
-import java.util.concurrent.Flow
 
 /**
  * Cette fonction construit le graphe de navigation pour l'écran utilisateur.
@@ -79,7 +77,11 @@ fun NavGraphBuilder.userNavGraph(
                         }
                     }
                     sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
-                    awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
+                    awaitClose {
+                        sharedPreferences.unregisterOnSharedPreferenceChangeListener(
+                            listener
+                        )
+                    }
                 }.collect { isDataDownloaded ->
                     if (isDataDownloaded) {
                         Log.d("Guegueintervention", "ça change !!!!!!!")

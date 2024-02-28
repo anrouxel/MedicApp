@@ -12,7 +12,7 @@ class DoctorViewModel : ViewModel() {
     private val _doctors = MutableLiveData<List<Doctor>>()
     val doctors: LiveData<List<Doctor>> get() = _doctors
 
-    fun searchDoctor(query: Long, callback: (List<Doctor>) -> Unit){
+    fun searchDoctor(query: Long, callback: (List<Doctor>) -> Unit) {
         viewModelScope.launch {
             val searchResults = DoctorsSearch().searchDoctor(query) { doctors ->
                 _doctors.postValue(doctors)
@@ -21,7 +21,7 @@ class DoctorViewModel : ViewModel() {
         }
     }
 
-    fun searchLittleDoctor(query: String, callback: (List<Doctor>) -> Unit){
+    fun searchLittleDoctor(query: String, callback: (List<Doctor>) -> Unit) {
         viewModelScope.launch {
             val searchResults = DoctorsSearch().searchLittleDoctor(query) { doctors ->
                 _doctors.postValue(doctors)

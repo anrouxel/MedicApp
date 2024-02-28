@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload

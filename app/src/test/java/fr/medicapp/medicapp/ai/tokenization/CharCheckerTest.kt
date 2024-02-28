@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ai.tokenization
 
+import fr.medicapp.medicapp.tokenization.CharChecker
 import org.junit.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource

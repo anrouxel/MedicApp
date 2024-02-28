@@ -28,7 +28,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePickerButton
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
-import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedTextFieldButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
