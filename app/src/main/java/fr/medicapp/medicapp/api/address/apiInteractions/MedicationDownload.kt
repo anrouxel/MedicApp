@@ -100,6 +100,7 @@ class MedicationDownload(
                 Log.e("ObjectBox", "Error while fetching medications")
             }
         }
+        gBackgroundThread.quitSafely()
     }
 
     @WorkerThread

@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,17 +20,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fr.medicapp.medicapp.api.address.APIAddressClient
-import fr.medicapp.medicapp.api.address.apiInteractions.DoctorsSearch
 import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.DoctorViewModel
-import kotlinx.coroutines.runBlocking
+import androidx.compose.runtime.livedata.observeAsState
+
 
 @Composable
 fun DoctorHome(
@@ -36,19 +37,20 @@ fun DoctorHome(
 ) {
     val doctor = remember { mutableStateOf("") }
 
+    val doctors by viewModel.doctors.observeAsState(emptyList())
+
     Column {
         ReusableOutlinedTextField(
             value = doctor.value,
             onValueChange = {
                 doctor.value = it
-                if (doctor.value.length > 3) {
-                    viewModel.searchDoctor(doctor.value)
+                if (it.length > 3) {
+                    viewModel.searchDoctor(it)
                 }
             },
             label = "Rechercher"
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        val doctors = viewModel.doctors.value ?: emptyList()
         if (doctors.isEmpty()) {
             NoDoctorFound()
         } else {
@@ -66,15 +68,13 @@ fun DoctorList(
     doctors: List<Doctor>,
     onDoctorClick: (Long) -> Unit
 ) {
-    Column {
-        doctors.forEachIndexed { index, doctor ->
+    LazyColumn {
+        items(doctors) { doctor ->
             DoctorItem(
                 doctor = doctor,
                 onDoctorClick = onDoctorClick
             )
-            if (index != doctors.size - 1) {
-                Spacer(modifier = Modifier.padding(10.dp))
-            }
+            Spacer(modifier = Modifier.padding(10.dp))
         }
     }
 }
