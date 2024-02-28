@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.apiInteractions.DoctorsSearch
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.database.repositories.prescription.DoctorRepository
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.prescription.Alarm
@@ -184,6 +185,21 @@ class SharedPrescriptionEditViewModel(
                 doctors.addAll(it.map { it.toOptionDialog() })
             }
             doctors
+        }
+    }
+
+    suspend fun updateDoctor(doctorOption: OptionDialog, context: Context) {
+        withContext(dispatcher) {
+            val doctor = DoctorRepository(context).getByNationalId(doctorOption.id)
+            if (doctor != null) {
+                _sharedState.value[0] = _sharedState.value[0].copy(doctor = doctor)
+            } else {
+                DoctorsSearch().searchDoctor(doctorOption.id) {
+                    val id = DoctorRepository(context).insert(it.first())
+                    val newDoctor = DoctorRepository(context).getById(id)
+                    _sharedState.value[0] = _sharedState.value[0].copy(doctor = newDoctor)
+                }
+            }
         }
     }
 }

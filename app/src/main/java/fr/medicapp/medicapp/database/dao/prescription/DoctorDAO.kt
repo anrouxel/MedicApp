@@ -14,6 +14,14 @@ interface DoctorDAO {
     @Query("SELECT * FROM Doctor")
     fun getAll(): List<Doctor>
 
+    @Transaction
+    @Query("SELECT * FROM Doctor WHERE doctor_id = :id")
+    fun getById(id: Long): Doctor?
+
+    @Transaction
+    @Query("SELECT * FROM Doctor WHERE nationalId = :nationalId")
+    fun getByNationalId(nationalId: Long): Doctor?
+
     @Insert
     fun insert(doctor: Doctor): Long
 

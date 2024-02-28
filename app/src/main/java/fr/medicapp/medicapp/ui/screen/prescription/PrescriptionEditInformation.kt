@@ -131,7 +131,7 @@ fun PrescriptionEditInformation(
                             label = "Docteur",
                             warnings = state.doctor == null
                         ) {
-                            viewModel.updateMedication(it, context)
+                            viewModel.updateDoctor(it, context)
                         }
                     }
                 }
