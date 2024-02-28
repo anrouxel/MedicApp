@@ -44,7 +44,7 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
-    var noPrescriptionDialog by remember { mutableStateOf(false) }
+    var noPrescriptionDialog = remember { mutableStateOf(false) }
     var alertRedondantOpen by remember { mutableStateOf(false) }
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -59,7 +59,7 @@ fun PrescriptionHome(
                 buttons = listOf(
                     {
                         if (prescriptions.isEmpty()) {
-                            noPrescriptionDialog = true
+                            noPrescriptionDialog.value = true
 
                         } else {
                             isReportModalOpen = true
@@ -114,9 +114,12 @@ fun PrescriptionHome(
             }
         }
         if (isReportModalOpen) {
-            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false }) {
-                isReportModalOpen = false
-            }
+            ConfirmReportModal(onDismissRequest = { isReportModalOpen = false },
+                noPrescriptionDialog = noPrescriptionDialog,
+                onConfirmation = {
+                    isReportModalOpen = false
+                }
+            )
         }
         if (alertRedondantOpen) {
             AlertModal(
@@ -133,14 +136,17 @@ fun PrescriptionHome(
                 }
             )
         }
-        if (noPrescriptionDialog) {
+        if (noPrescriptionDialog.value) {
             AlertModal(
                 title = "Erreur",
                 content = "Vous n'avez pas de prescription pour le moment.",
-                dismissText = "",
+                dismissText = "Annuler",
                 confirmText = "Ok",
+                onDismissRequest = {
+                    noPrescriptionDialog.value = false
+                },
                 onConfirm = {
-                    noPrescriptionDialog = false
+                    noPrescriptionDialog.value = false
                 }
             )
         }

@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 fun ConfirmReportModal(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
+    noPrescriptionDialog: MutableState<Boolean>
 ) {
     var notes by remember { mutableStateOf("") }
     val reportGenerator = ReportGenerator(LocalContext.current)
@@ -73,7 +75,7 @@ fun ConfirmReportModal(
                     TextButton(
                         onClick = {
                             onConfirmation()
-                            reportGenerator.report(notes)
+                            reportGenerator.report(notes, noPrescriptionDialog)
                         },
                         modifier = Modifier.padding(8.dp),
                     ) {
