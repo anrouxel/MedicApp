@@ -287,7 +287,6 @@ class PrescriptionAI(
             val feature: Feature = featureConverter.convert(visionText)
             val inputIds = feature.inputIds
             val inputMask = feature.inputMask
-            val segmentIds = feature.segmentIds
             val startLogits = FloatArray(MAX_SEQ_LEN)
             val endLogits = FloatArray(MAX_SEQ_LEN)
 
@@ -348,7 +347,7 @@ class PrescriptionAI(
 
             // Convertit la liste de prédictions en liste de labels.
             var predictionsLabelList: List<String> = startPredictionsList.map { index ->
-                labels[index]!!
+                labels.getValue(index)
             }
 
             // Parcourt la liste des labels prédits.
