@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
@@ -29,6 +31,7 @@ fun DatePickerModal(
     onConfirm: () -> Unit = {},
 ) {
     DatePickerDialog(
+        modifier = Modifier.testTag("DatePickerModal"),
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(

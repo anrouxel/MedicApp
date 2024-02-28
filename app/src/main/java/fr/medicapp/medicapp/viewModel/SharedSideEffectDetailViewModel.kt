@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.database.repositories.prescription.SideEffectRepository
 import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,19 +20,20 @@ import kotlinx.coroutines.withContext
 class SharedSideEffectDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private val _sharedState: MutableStateFlow<SideEffect> = MutableStateFlow(SideEffect())
     val sharedState: StateFlow<SideEffect> = _sharedState
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loadSideEffect(context: Context, id: Long) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             _sharedState.value = SideEffectRepository(context).getById(id)
         }
     }
 
     suspend fun removeSideEffect(context: Context) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             SideEffectRepository(context).delete(_sharedState.value)
         }
     }

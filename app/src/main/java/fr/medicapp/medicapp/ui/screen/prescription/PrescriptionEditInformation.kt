@@ -44,6 +44,7 @@ fun PrescriptionEditInformation(
 ) {
     val state = viewModel.sharedState.collectAsState().value[0]
     val context = LocalContext.current
+    val loadingState = viewModel.loadings.collectAsState()
 
     val cameraPermissionState = rememberPermissionState(
         android.Manifest.permission.CAMERA
@@ -80,107 +81,115 @@ fun PrescriptionEditInformation(
         },
     )
 
-    Edit(
-        title = "Ajouter une prescription",
-        bottomText = "Suivant",
-        onClick = onClick,
-        enabled = state.medication != null && state.prescriptionInformation.posology.isNotEmpty() && state.prescriptionInformation.frequency.isNotEmpty() && state.duration != null
-    ) {
-        Column {
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    Text("Scanner une ordonnance", color = MaterialTheme.colorScheme.primary)
+    if (!loadingState.value) {
+        Edit(
+            title = "Ajouter une prescription",
+            bottomText = "Suivant",
+            onClick = onClick,
+            enabled = state.medication != null && state.prescriptionInformation.posology.isNotEmpty() && state.prescriptionInformation.frequency.isNotEmpty() && state.duration != null
+        ) {
+            Column {
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        Text("Scanner une ordonnance", color = MaterialTheme.colorScheme.primary)
 
-                    Column {
-                        ReusableButton(
-                            text = "Appareil photo",
-                            icon = Icons.Default.PhotoCamera,
-                        ) {
-                            if (cameraPermissionState.status.isGranted) {
-                                imageUri = context.createImageFile()
-                                cameraLauncher.launch(imageUri)
-                            } else {
-                                cameraPermissionState.launchPermissionRequest()
+                        Column {
+                            ReusableButton(
+                                text = "Appareil photo",
+                                icon = Icons.Default.PhotoCamera,
+                            ) {
+                                if (cameraPermissionState.status.isGranted) {
+                                    imageUri = context.createImageFile()
+                                    cameraLauncher.launch(imageUri)
+                                } else {
+                                    cameraPermissionState.launchPermissionRequest()
+                                }
+                            }
+                            Spacer(modifier = Modifier.padding(3.dp))
+                            ReusableButton(
+                                text = "Galerie",
+                                icon = Icons.Default.Photo,
+                            ) {
+                                imagePicker.launch("image/*")
                             }
                         }
-                        Spacer(modifier = Modifier.padding(3.dp))
-                        ReusableButton(
-                            text = "Galerie",
-                            icon = Icons.Default.Photo,
-                        ) {
-                            imagePicker.launch("image/*")
-                        }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.padding(7.dp))
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    ReusableOutlinedTextFieldButton(
-                        value = "",
-                        label = "Docteur",
-                        warnings = false,
-                        onClick = {}
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.padding(7.dp))
-
-            ReusableElevatedCard {
-                Column(
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    ReusableOutlinedSearchButton(
-                        options = {
-                            viewModel.searchMedication(it, context)
-                        },
-                        value = state.medication,
-                        label = "Médicament",
-                        warnings = state.medication == null
+                Spacer(modifier = Modifier.padding(7.dp))
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
                     ) {
-                        viewModel.updateMedication(it, context)
-                    }
-
-                    Spacer(modifier = Modifier.padding(10.dp))
-
-                    ReusableOutlinedTextField(
-                        value = state.prescriptionInformation.posology,
-                        onValueChange = {
-                            viewModel.updatePosology(it)
-                        },
-                        warnings = state.prescriptionInformation.posology.isEmpty(),
-                        label = "Posologie"
-                    )
-
-                    Spacer(modifier = Modifier.padding(10.dp))
-
-                    ReusableOutlinedTextField(
-                        value = state.prescriptionInformation.frequency,
-                        onValueChange = {
-                            viewModel.updateFrequency(it)
-                        },
-                        warnings = state.prescriptionInformation.frequency.isEmpty(),
-                        label = "Fréquence"
-                    )
-
-                    Spacer(modifier = Modifier.padding(10.dp))
-
-                    ReusableOutlinedDateRangePickerButton(
-                        value = state.duration,
-                        label = "Durée",
-                        warnings = state.duration == null,
-                        onSelected = {
-                            viewModel.updateDuration(it)
+                        ReusableOutlinedSearchButton(
+                            options = {
+                                viewModel.searchDoctor(it)
+                            },
+                            value = state.doctor,
+                            label = "Docteur",
+                            warnings = state.doctor == null
+                        ) {
+                            viewModel.updateDoctor(it, context)
                         }
-                    )
+                    }
+                }
+
+                Spacer(modifier = Modifier.padding(7.dp))
+
+                ReusableElevatedCard {
+                    Column(
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        ReusableOutlinedSearchButton(
+                            options = {
+                                viewModel.searchMedication(it, context)
+                            },
+                            value = state.medication,
+                            label = "Médicament",
+                            warnings = state.medication == null
+                        ) {
+                            viewModel.updateMedication(it, context)
+                        }
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableOutlinedTextField(
+                            value = state.prescriptionInformation.posology,
+                            onValueChange = {
+                                viewModel.updatePosology(it)
+                            },
+                            warnings = state.prescriptionInformation.posology.isEmpty(),
+                            label = "Posologie"
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableOutlinedTextField(
+                            value = state.prescriptionInformation.frequency,
+                            onValueChange = {
+                                viewModel.updateFrequency(it)
+                            },
+                            warnings = state.prescriptionInformation.frequency.isEmpty(),
+                            label = "Fréquence"
+                        )
+
+                        Spacer(modifier = Modifier.padding(10.dp))
+
+                        ReusableOutlinedDateRangePickerButton(
+                            value = state.duration,
+                            label = "Durée",
+                            warnings = state.duration == null,
+                            onSelected = {
+                                viewModel.updateDuration(it)
+                            }
+                        )
+                    }
                 }
             }
         }
+    } else {
+        Text("Chargement...")
     }
 }

@@ -14,11 +14,18 @@ interface HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO {
     fun getAll(): List<HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef>
 
     @Insert
-    fun insert(hasSmrOpinionTransparencyCommissionOpinionLinksCrossRef: HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef): Long
+    fun insert(
+        hasSmrOpinionTransparencyCommissionOpinionLinksCrossRef: HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef
+    ): Long
 
     @Insert
-    fun insert(hasSmrOpinionTransparencyCommissionOpinionLinksCrossRef: List<HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef>): List<Long>
+    fun insert(
+        hasSmrOpinionTransparencyCommissionOpinionLinksCrossRef:
+        List<HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef>
+    ): List<Long>
 
     @Delete
-    fun delete(hasSmrOpinionTransparencyCommissionOpinionLinksCrossRef: HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef)
+    fun delete(
+        hasSmrOpinionTransparencyCommissionOpinionLinksCrossRef: HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef
+    )
 }

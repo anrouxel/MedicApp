@@ -9,6 +9,14 @@ class DoctorRepository(context: Context) : Repository(context = context) {
         return db.doctorDAO().getAll()
     }
 
+    fun getById(id: Long): Doctor? {
+        return db.doctorDAO().getById(id)
+    }
+
+    fun getByNationalId(nationalId: Long): Doctor? {
+        return db.doctorDAO().getByNationalId(nationalId)
+    }
+
     fun insert(doctor: Doctor): Long {
         return db.doctorDAO().insert(doctor)
     }

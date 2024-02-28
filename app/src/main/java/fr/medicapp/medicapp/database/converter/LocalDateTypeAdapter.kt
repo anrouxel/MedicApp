@@ -12,7 +12,6 @@ import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 class LocalDateTypeAdapter :
     JsonSerializer<LocalDate?>,
     JsonDeserializer<LocalDate?> {

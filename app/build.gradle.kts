@@ -9,6 +9,10 @@ plugins {
     id("jacoco")
 }
 
+jacoco {
+    version = "0.8.8"
+}
+
 android {
     namespace = "fr.medicapp.medicapp"
     compileSdk = 34

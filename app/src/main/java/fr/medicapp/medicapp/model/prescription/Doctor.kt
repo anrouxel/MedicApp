@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import fr.medicapp.medicapp.model.OptionDialog
 
 /**
  * Une classe modèle pour les médecins
@@ -128,4 +129,16 @@ data class Doctor(
     @SerializedName("libelleRole") var roleLabel: String = "",
     @SerializedName("codeGenreActivite") var activityGenreCode: String = "",
     @SerializedName("libelleGenreActivite") var activityGenreLabel: String = ""
-)
+) {
+    override fun toString(): String {
+        return "$civilLabelEx $firstName $lastName"
+    }
+
+    fun toOptionDialog(): OptionDialog {
+        return OptionDialog(
+            nationalId,
+            "$civilLabelEx $firstName $lastName",
+            professionLabel
+        )
+    }
+}

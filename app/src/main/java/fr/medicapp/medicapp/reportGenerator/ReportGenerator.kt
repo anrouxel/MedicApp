@@ -12,6 +12,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
@@ -25,7 +26,6 @@ import fr.medicapp.medicapp.database.repositories.UserRepository
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Notification
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
-import fr.medicapp.medicapp.ui.components.dialog.NoPrescriptionDialog
 import fr.medicapp.medicapp.ui.theme.EUGreen130
 import java.io.File
 import java.io.FileOutputStream
@@ -81,7 +81,7 @@ class ReportGenerator(private val ctx: Context) {
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun report(notes: String = "") {
+    fun report(notes: String = "", noPrescriptionDialog: MutableState<Boolean>) {
         Thread {
             val prescriptions = PrescriptionRepository(ctx).getAll()
                 .filter { it.duration?.endDate?.isAfter(LocalDate.now()) == true }
@@ -91,7 +91,7 @@ class ReportGenerator(private val ctx: Context) {
                 val file = generate(signature, notes, prescriptions)
                 exportInMail(file, signature)
             } catch (e: NoPrescriptionException) {
-                NoPrescriptionDialog.show(ctx)
+                noPrescriptionDialog.value = true
             }
         }.start()
 

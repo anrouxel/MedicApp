@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 /**
  * Classe WordpieceTokenizer pour la tokenization du texte en morceaux de mots.
@@ -59,7 +59,33 @@ class WordpieceTokenizer(
 
             // Continue tant que l'indice de fin est supérieur à 0.
             while (0 < end) {
-                val curSubStr = tokenizeSubstring(token, start, end)
+                var curSubStr = ""
+
+                // Les sous-chaînes plus longues correspondent en premier.
+                while (start < end) {
+                    val subStr =
+                        if (start == 0) {
+                            // Si l'indice de début est 0, ajoute un préfixe (espace insécable) à la sous-chaîne.
+                            "▁${token.substring(start, end)}"
+                        } else {
+                            // Sinon, extrait la sous-chaîne du token.
+                            token.substring(
+                                start,
+                                end
+                            )
+                        }
+
+                    // Vérifie si la sous-chaîne existe dans le dictionnaire.
+                    curSubStr = dic[subStr]?.let { subStr } ?: curSubStr
+
+                    // Si la sous-chaîne existe dans le dictionnaire, sort de la boucle.
+                    if (curSubStr != "") {
+                        break
+                    }
+
+                    // Incrémente l'indice de début.
+                    start++
+                }
 
                 // Si la sous-chaîne n'existe pas dans le dictionnaire, marque le mot comme mauvais et sort de la boucle.
                 if ("" == curSubStr) {
@@ -86,38 +112,5 @@ class WordpieceTokenizer(
 
         // Retourne la liste des tokens de sortie.
         return outputTokens
-    }
-
-    private fun tokenizeSubstring(token: String, start: Int, end: Int): String {
-        var curSubStr = ""
-        var start = start
-
-        // Les sous-chaînes plus longues correspondent en premier.
-        while (start < end) {
-            val subStr =
-                if (start == 0) {
-                    // Si l'indice de début est 0, ajoute un préfixe (espace insécable) à la sous-chaîne.
-                    "▁${token.substring(start, end)}"
-                } else {
-                    // Sinon, extrait la sous-chaîne du token.
-                    token.substring(
-                        start,
-                        end
-                    )
-                }
-
-            // Vérifie si la sous-chaîne existe dans le dictionnaire.
-            curSubStr = dic[subStr]?.let { subStr } ?: curSubStr
-
-            // Si la sous-chaîne existe dans le dictionnaire, sort de la boucle.
-            if (curSubStr != "") {
-                break
-            }
-
-            // Incrémente l'indice de début.
-            start++
-        }
-
-        return curSubStr
     }
 }

@@ -14,7 +14,7 @@ class ReusableButtonTest {
 
     @Test
     fun testDisplay() {
-        rule.setContent { ReusableButton(onClick = {}, text =  "Test") }
+        rule.setContent { ReusableButton(onClick = {}, text = "Test") }
         val buttonDisplay = hasText("Test") and hasClickAction()
         rule.onNode(buttonDisplay).assertExists()
     }
