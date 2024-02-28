@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.api.address.apiInteractions
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
@@ -11,6 +12,7 @@ import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.reflect.Type
@@ -22,7 +24,7 @@ class MedicationDownload(
     /**
      * Thread en background pour le téléchargement des données
      */
-    private lateinit var gBackgroundThread: HandlerThread
+    private var gBackgroundThread: HandlerThread = HandlerThread("MedicationDownload")
 
     /**
      * Gestionnaire des tâches en background
@@ -32,13 +34,12 @@ class MedicationDownload(
     /**
      * Accès aux donnés sauvegardées dans le téléphone
      */
-    val sharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
 
     /**
      * Initialisation du thread en background
      */
     init {
-        gBackgroundThread = HandlerThread("MedicationDownload")
         gBackgroundThread.start()
         gHandler = Handler(gBackgroundThread.looper)
 
@@ -51,6 +52,7 @@ class MedicationDownload(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @WorkerThread
     fun download() {
 
@@ -115,7 +117,7 @@ class MedicationDownload(
         }
     }
 
-    fun updateDownloadCountInSharedPreferences(countDownload: Int) {
+    private fun updateDownloadCountInSharedPreferences(countDownload: Int) {
         sharedPreferences.edit().putInt("downloadCount", countDownload).apply()
     }
 
