@@ -40,7 +40,6 @@ fun DoctorDetail(
                     state.value.structureCedexOffice
 
             ReusableElevatedCard {
-
                 Column(
                     modifier = Modifier.padding(10.dp)
                 ) {
@@ -114,13 +113,11 @@ fun MapLibre(
                         map.cameraPosition = it
                     }
                     map.setStyle(style)
-
                 }
             }
         }
     )
 }
-
 
 @Preview
 @Composable

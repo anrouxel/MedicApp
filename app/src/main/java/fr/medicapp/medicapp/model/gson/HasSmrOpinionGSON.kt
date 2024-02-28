@@ -5,7 +5,6 @@ import fr.medicapp.medicapp.model.medication.TransparencyCommissionOpinionLinks
 import fr.medicapp.medicapp.model.medication.relationship.HasSmrOpinion
 import java.time.LocalDate
 
-
 data class HasSmrOpinionGSON(
     var cisCode: Long = 0L,
 

@@ -24,8 +24,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.concurrent.CountDownLatch
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Classe PrescriptionAI pour l'analyse des prescriptions médicales.
@@ -130,7 +128,7 @@ class PrescriptionAI(
      */
     init {
         // Crée un nouveau thread en arrière-plan.
-        mBackgroundThread = HandlerThread("BackgroundThread")
+        mBackgroundThread = HandlerThread("BackgroundPyTorchThread")
 
         // Démarre le thread en arrière-plan.
         mBackgroundThread.start()
@@ -159,17 +157,22 @@ class PrescriptionAI(
             // Attend que le module PyTorch soit chargé.
             while (mModule == null) {
                 Thread.sleep(100)
+                Log.v(TAG, "Waiting for model to load.")
             }
+            Log.d(TAG, "Model loaded.")
 
             // Reconnaît le texte dans l'image spécifiée par l'URI.
             val visionText = recognizeText(imageUri)
+            Log.d(TAG, "Text recognized: $visionText")
 
             if (visionText != null) {
                 // Exécute le modèle PyTorch sur le texte reconnu et génère des prédictions.
                 val sentenceTokenized = runModel(visionText)
+                Log.d(TAG, "Predictions: $sentenceTokenized")
 
                 // Appelle le callback avec les prédictions générées.
                 val prescriptions = onPrediction(sentenceTokenized)
+                Log.d(TAG, "Prescriptions: $prescriptions")
 
                 // Appelle le callback lorsque l'analyse est terminée.
                 onDismiss(prescriptions)
@@ -370,7 +373,7 @@ class PrescriptionAI(
             when {
                 label.startsWith("B-") -> {
                     if (label.removePrefix("B-") == "Drug") {
-                        val medication = MedicationRepository(context).getAll().sortedByDescending {
+                        val medication = MedicationRepository(context).getAll().sortedBy {
                             JaroWinkler.jaroWinklerDistance(
                                 it.medicationInformation.name,
                                 query.trim()
@@ -401,7 +404,7 @@ class PrescriptionAI(
             }
         }
         if (query.isNotEmpty()) {
-            val medication = MedicationRepository(context).getAll().sortedByDescending {
+            val medication = MedicationRepository(context).getAll().sortedBy {
                 JaroWinkler.jaroWinklerDistance(
                     it.medicationInformation.name,
                     query.trim()

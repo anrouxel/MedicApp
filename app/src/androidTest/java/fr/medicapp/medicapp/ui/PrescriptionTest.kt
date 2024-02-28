@@ -1,22 +1,39 @@
 package fr.medicapp.medicapp.ui
 
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import fr.medicapp.medicapp.model.prescription.Alarm
+import fr.medicapp.medicapp.model.prescription.NotificationInformation
+import fr.medicapp.medicapp.model.prescription.PrescriptionInformation
+import fr.medicapp.medicapp.model.prescription.relationship.Notification
+import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
+import org.junit.Rule
+import org.junit.Test
+import java.time.DayOfWeek
+import java.time.LocalTime
+
 class PrescriptionTest {
 
-    /*@get:Rule
+    @get:Rule
     val rule = createAndroidComposeRule<ComponentActivity>()
 
     private val prescription = Prescription(
-        0L,
-        null,
-        mutableListOf(),
-        null,
-        Treatment(0L, "posology", "frequency", null, null),
-        mutableListOf(
+        prescriptionInformation = PrescriptionInformation(0L, "posology", "frequency"),
+        notifications = mutableListOf(
             Notification(
-                0L,
-                true,
-                mutableListOf(DayOfWeek.MONDAY),
-                mutableListOf(Alarm(0L, 0, 0))
+                notificationInformation = NotificationInformation(
+                    0L,
+                    true,
+                    mutableListOf(DayOfWeek.MONDAY),
+                ),
+                alarms = mutableListOf(
+                    Alarm(
+                        0L,
+                        LocalTime.of(12, 0)
+                    )
+                )
             )
         )
     )
@@ -34,8 +51,5 @@ class PrescriptionTest {
     fun testWithPrescription() {
         rule.setContent { PrescriptionHome(listOf(prescription)) }
         rule.onNode(nodeNoPrescription).assertDoesNotExist()
-
-    }*/
-
-
+    }
 }

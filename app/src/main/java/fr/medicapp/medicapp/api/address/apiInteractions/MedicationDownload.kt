@@ -42,7 +42,7 @@ class MedicationDownload(
         gBackgroundThread.start()
         gHandler = Handler(gBackgroundThread.looper)
 
-        //Lancement du téléchargement des médicaments en background
+        // Lancement du téléchargement des médicaments en background
         gHandler.post {
             if (sharedPreferences.getInt("totalMedication", 0) == 0) {
                 getTotalData()
@@ -53,7 +53,6 @@ class MedicationDownload(
 
     @WorkerThread
     fun download() {
-
         val medicationRepository = MedicationRepository(context)
 
         val apiService = APIAddressClient().apiServiceGuewen
@@ -66,7 +65,6 @@ class MedicationDownload(
                 val allMedsJsonArray = response.body()!!
 
                 GlobalScope.launch {
-
                     val gson = GsonBuilder()
                         .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
                         .create()
@@ -87,7 +85,6 @@ class MedicationDownload(
                 }
 
                 page += 1
-
             } else if (response.code() == 409) {
                 continuer = false
                 Log.d("ObjectBox", "Fin du téléchargement des médicaments")
@@ -104,7 +101,6 @@ class MedicationDownload(
 
     @WorkerThread
     fun getTotalData() {
-
         val sharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
         val apiService = APIAddressClient().apiServiceGuewen
         val response = apiService.getTotalMedications().execute()
@@ -118,5 +114,4 @@ class MedicationDownload(
     fun updateDownloadCountInSharedPreferences(countDownload: Int) {
         sharedPreferences.edit().putInt("downloadCount", countDownload).apply()
     }
-
 }

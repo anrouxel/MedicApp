@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.ai.PrescriptionAI
@@ -36,11 +37,16 @@ class SharedPrescriptionEditViewModel(
     )
     val sharedState: StateFlow<MutableList<Prescription>> = _sharedState
 
+    private val _loadings: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val loadings: StateFlow<Boolean> = _loadings
+
     fun load(uri: Uri, context: Context) {
+        _loadings.value = true
         Log.d("SharedPrescriptionEditViewModel", "load: $uri")
         PrescriptionAI(context).analyse(uri) { prescriptions ->
             if (prescriptions.isNullOrEmpty()) return@analyse
-            _sharedState.value.addAll(prescriptions)
+            _sharedState.value = prescriptions.toMutableStateList()
+            _loadings.value = false
         }
     }
 

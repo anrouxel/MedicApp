@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("io.gitlab.arturbosch.detekt") version("1.23.5")
     id("com.google.devtools.ksp") version("1.8.10-1.0.9") apply false
+    id("jacoco")
 }
 
 val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
