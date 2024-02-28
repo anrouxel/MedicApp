@@ -31,7 +31,6 @@ import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
-import fr.medicapp.medicapp.ui.components.dialog.NoPrescriptionDialog
 import fr.medicapp.medicapp.ui.components.modal.AlertModal
 import fr.medicapp.medicapp.ui.components.modal.ConfirmReportModal
 import fr.medicapp.medicapp.ui.components.screen.Home
@@ -45,6 +44,7 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
+    var noPrescriptionDialog by remember { mutableStateOf(false) }
     var alertRedondantOpen by remember { mutableStateOf(false) }
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -59,7 +59,8 @@ fun PrescriptionHome(
                 buttons = listOf(
                     {
                         if (prescriptions.isEmpty()) {
-                            NoPrescriptionDialog.show(context)
+                            noPrescriptionDialog = true
+
                         } else {
                             isReportModalOpen = true
                         }
@@ -129,6 +130,17 @@ fun PrescriptionHome(
                         putBoolean("isNewMedicationAdded", false)
                         apply()
                     }
+                }
+            )
+        }
+        if (noPrescriptionDialog) {
+            AlertModal(
+                title = "Erreur",
+                content = "Vous n'avez pas de prescription pour le moment.",
+                dismissText = "",
+                confirmText = "Ok",
+                onConfirm = {
+                    noPrescriptionDialog = false
                 }
             )
         }

@@ -26,6 +26,7 @@ import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepos
 import fr.medicapp.medicapp.model.prescription.relationship.Notification
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.components.dialog.NoPrescriptionDialog
+import fr.medicapp.medicapp.ui.components.modal.AlertModal
 import fr.medicapp.medicapp.ui.theme.EUGreen130
 import java.io.File
 import java.io.FileOutputStream
@@ -92,6 +93,14 @@ class ReportGenerator(private val ctx: Context) {
                 exportInMail(file, signature)
             } catch (e: NoPrescriptionException) {
                 NoPrescriptionDialog.show(ctx)
+//                AlertModal(
+//                    title = "Erreur",
+//                    content = "Vous n'avez pas de prescription pour le moment.",
+//                    dismissText = "Annuler",
+//                    confirmText = "Ok",
+//                    onDismissRequest = {},
+//                    onConfirm = {}
+//                )
             }
         }.start()
 
