@@ -37,7 +37,6 @@ import kotlinx.coroutines.launch
 fun RootScreen(
     navController: NavHostController = rememberNavController(),
     theme: ThemeColorScheme,
-    onThemeChange: (ThemeColorScheme) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -117,7 +116,6 @@ fun RootScreen(
         ) {
             HomeNavGraph(
                 navController = navController,
-                onThemeChange = onThemeChange
             )
         }
     }
@@ -132,5 +130,7 @@ fun RootScreen(
 @Preview
 @Composable
 private fun RootPreview() {
-    RootScreen(theme = EUYellowColorShema, onThemeChange = {})
+    RootScreen(
+        theme = EUYellowColorShema,
+    )
 }

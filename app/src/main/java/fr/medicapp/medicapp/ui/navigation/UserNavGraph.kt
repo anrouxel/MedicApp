@@ -10,30 +10,23 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload
 import fr.medicapp.medicapp.ui.components.screen.Loading
-import fr.medicapp.medicapp.ui.screen.loading.LoadingScreen
 import fr.medicapp.medicapp.ui.screen.user.UserEditAllergy
 import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
 
 /**
  * Cette fonction construit le graphe de navigation pour l'écran utilisateur.
  *
  * @param navController Le contrôleur de navigation.
- * @param onThemeChange La fonction de changement de thème.
  */
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit,
-    isUser : Boolean,
+    isUser: Boolean,
     isDownload: Boolean,
-    context : Context
+    context: Context
 ) {
-    var isDataDownloaded = false
-
     navigation(
         route = Graph.USER,
         startDestination = if (!isUser) UserRoute.UserGeneralInformationRoute.route else UserRoute.LoadingScreenRoute.route
@@ -73,10 +66,11 @@ fun NavGraphBuilder.userNavGraph(
         composable(route = UserRoute.LoadingScreenRoute.route) {
             Loading("Chargement en cours...", "Veuillez patienter quelques instants...")
             LaunchedEffect(Unit) {
-                val sharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+                val sharedPreferences =
+                    context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
                 snapshotFlow {
                     sharedPreferences.getBoolean("isDataDownloaded", false)
-                }.collect { isDataDownloaded ->
+                }.collect {
                     Log.d("Guegueintervention", "ça change !!!!!!!")
                     navController.navigate(Graph.HOME) {
                         popUpTo(Graph.HOME) {

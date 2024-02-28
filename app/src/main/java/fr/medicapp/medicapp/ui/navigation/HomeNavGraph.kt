@@ -12,7 +12,6 @@ import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepos
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.screen.home.HomeScreen
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 
 /**
  * Ceci est une classe de navigation pour l'écran d'accueil.
@@ -20,7 +19,10 @@ import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
  */
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorScheme) -> Unit) {
+
+fun HomeNavGraph(
+    navController: NavHostController,
+) {
     /**
      * Construit le graphe de navigation pour l'écran d'accueil.
      *
@@ -56,7 +58,6 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          */
         prescriptionNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
 
         /**
@@ -64,12 +65,10 @@ fun HomeNavGraph(navController: NavHostController, onThemeChange: (ThemeColorSch
          */
         sideEffectNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
 
         doctorNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
     }
 }

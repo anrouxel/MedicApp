@@ -339,7 +339,6 @@ class ReportGenerator(private val ctx: Context) {
         fun calcMissingTake(prescription: Prescription): List<LocalDateTime> {
             val takes = prescription.prescriptionInformation.takes
             val missingTakes = mutableListOf<LocalDateTime>()
-            Log.d("calcMissingTake", "calcMissingTake: ${prescription.notifications.size}")
             for (date in prescription.duration?.startDate!!.datesUntil(
                 LocalDate.now().plusDays(1)
             )) {

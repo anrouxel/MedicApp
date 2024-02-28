@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ui.screen.prescription
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -8,12 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +32,7 @@ import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.dialog.NoPrescriptionDialog
+import fr.medicapp.medicapp.ui.components.modal.AlertModal
 import fr.medicapp.medicapp.ui.components.modal.ConfirmReportModal
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
@@ -42,44 +45,93 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
+    var alertRedondantOpen by remember { mutableStateOf(false) }
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val sharedPrefs = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    val isNewMedicationAdded = sharedPrefs
+        .getBoolean("isNewMedicationAdded", false)
+
     Home(
         title = "Prescriptions",
         floatingActionButtons = {
-            FloatingActionButtons(buttons = listOf(
-                {
-                    if (prescriptions.isEmpty())
-                        NoPrescriptionDialog.show(context)
-                    else
-                        isReportModalOpen = true
-                } to { Icon(
-                    imageVector = Icons.Default.FileOpen,
-                    contentDescription = "Bouton pour générer un rapport",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                ) },
-                onAddPrescriptionClick to { Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Bouton pour ajouter une prescription",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                ) },
-
+            FloatingActionButtons(
+                buttons = listOf(
+                    {
+                        if (prescriptions.isEmpty()) {
+                            NoPrescriptionDialog.show(context)
+                        } else {
+                            isReportModalOpen = true
+                        }
+                    } to {
+                        Icon(
+                            imageVector = Icons.Default.FileOpen,
+                            contentDescription = "Bouton pour générer un rapport",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    onAddPrescriptionClick to {
+                        Icon(
+                            imageVector = Icons.Default.DocumentScanner,
+                            contentDescription = "Bouton pour ajouter une prescription",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
                 )
             )
         }
     ) {
-        if (prescriptions.isEmpty()) {
-            NoPrescriptionAvailable()
-        } else {
-            PrescriptionList(
-                prescriptions = prescriptions,
-                onPrescriptionClick = onPrescriptionClick
-            )
+        when {
+            prescriptions.isEmpty() -> {
+                NoPrescriptionAvailable()
+            }
+
+            prescriptions.size > 1 -> {
+                LaunchedEffect(prescriptions) {
+                    val lastMedocCompo =
+                        prescriptions.last().medication?.medicationCompositions?.map { it.substanceCode }
+
+                    alertRedondantOpen = prescriptions.dropLast(1).any { prescription ->
+                        prescription.medication?.medicationCompositions?.any {
+                            it.substanceCode in (lastMedocCompo ?: emptyList())
+                        } == true
+                    } && isNewMedicationAdded
+
+                }
+                PrescriptionList(
+                    prescriptions = prescriptions,
+                    onPrescriptionClick = onPrescriptionClick
+                )
+
+            }
+
+            else -> {
+                PrescriptionList(
+                    prescriptions = prescriptions,
+                    onPrescriptionClick = onPrescriptionClick
+                )
+            }
         }
-        if (isReportModalOpen)
+        if (isReportModalOpen) {
             ConfirmReportModal(onDismissRequest = { isReportModalOpen = false }) {
                 isReportModalOpen = false
             }
+        }
+        if (alertRedondantOpen) {
+            AlertModal(
+                title = "Redondance des principes actifs",
+                content = "Attention, le médicament que vous venez de rajouter contient le même principe actif qu'un déjà présent dans vos traitements",
+                dismissText = "",
+                confirmText = "Compris",
+                onConfirm = {
+                    alertRedondantOpen = false
+                    with(sharedPrefs.edit()) {
+                        putBoolean("isNewMedicationAdded", false)
+                        apply()
+                    }
+                }
+            )
+        }
     }
 }
 

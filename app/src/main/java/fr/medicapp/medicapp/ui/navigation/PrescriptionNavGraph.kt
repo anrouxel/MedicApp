@@ -14,7 +14,6 @@ import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
-import fr.medicapp.medicapp.ui.theme.ThemeColorScheme
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 /**
@@ -25,7 +24,6 @@ import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 @RequiresApi(Build.VERSION_CODES.Q)
 fun NavGraphBuilder.prescriptionNavGraph(
     navController: NavHostController,
-    onThemeChange: (ThemeColorScheme) -> Unit
 ) {
     /**
      * Définit la navigation pour le graphe de prescription.
@@ -88,7 +86,6 @@ fun NavGraphBuilder.prescriptionNavGraph(
 
         prescriptionEditNavGraph(
             navController = navController,
-            onThemeChange = onThemeChange
         )
     }
 }

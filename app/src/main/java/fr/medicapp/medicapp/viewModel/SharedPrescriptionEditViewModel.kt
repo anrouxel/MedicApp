@@ -6,7 +6,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import fr.medicapp.medicapp.ai.PrescriptionAI
@@ -145,9 +144,13 @@ class SharedPrescriptionEditViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun save(context: Context) {
         withContext(Dispatchers.IO) {
+            _sharedState.value[0] = PrescriptionRepository(context).getById(
+                PrescriptionRepository(context).insert(_sharedState.value[0])
+            )
             addToNotificationManager(context)
-            PrescriptionRepository(context).insert(_sharedState.value[0])
             _sharedState.value.removeAt(0)
+            context.getSharedPreferences("medicapp", Context.MODE_PRIVATE).edit()
+                .putBoolean("isNewMedicationAdded", true).apply()
         }
     }
 
