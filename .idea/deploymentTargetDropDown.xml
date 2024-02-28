@@ -2,19 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="FloatingActionButtonsTest">
-        <State />
-      </entry>
-      <entry key="ReusableAlertButtonTest">
-        <State />
-      </entry>
-      <entry key="ReusableAlertIconButtonTest">
+      <entry key="Tests in 'fr.medicapp.medicapp'">
         <State />
       </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="floatingActionButtonCorrectNumber()">
         <State />
       </entry>
     </value>
