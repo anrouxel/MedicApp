@@ -2,7 +2,6 @@ package fr.medicapp.medicapp.utils
 
 import java.util.Arrays
 
-
 object JaroWinkler {
     fun jaroWinklerDistance(string1: String, string2: String): Double {
         var string1 = string1
