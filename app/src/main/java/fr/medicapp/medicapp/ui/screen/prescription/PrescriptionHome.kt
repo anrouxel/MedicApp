@@ -44,7 +44,7 @@ fun PrescriptionHome(
     onPrescriptionClick: (Long) -> Unit = {},
     onAddPrescriptionClick: () -> Unit = {}
 ) {
-    var noPrescriptionDialog = remember { mutableStateOf(false) }
+    val noPrescriptionDialog = remember { mutableStateOf(false) }
     var alertRedondantOpen by remember { mutableStateOf(false) }
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
