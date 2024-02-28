@@ -2,7 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Tests in 'fr.medicapp.medicapp'">
+      <entry key="ReusableOutlinedDatePickerButtonTest">
+        <State />
+      </entry>
+      <entry key="ReusableRadioButtonGroupTest">
         <State />
       </entry>
       <entry key="app">
