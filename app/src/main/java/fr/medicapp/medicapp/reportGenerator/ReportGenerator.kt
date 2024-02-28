@@ -91,7 +91,6 @@ class ReportGenerator(private val ctx: Context) {
                 val file = generate(signature, notes, prescriptions)
                 exportInMail(file, signature)
             } catch (e: NoPrescriptionException) {
-                //NoPrescriptionDialog.show(ctx)
                 noPrescriptionDialog.value = true
             }
         }.start()
