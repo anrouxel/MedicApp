@@ -34,7 +34,7 @@ import fr.medicapp.medicapp.viewModel.DoctorViewModel
 @Composable
 fun DoctorHome(
     viewModel: DoctorViewModel = viewModel(),
-    onDoctorClick: (Doctor) -> Unit
+    onDoctorClick: (Long) -> Unit
 ) {
     val doctor = remember { mutableStateOf("") }
     val doctors by viewModel.doctors.observeAsState(emptyList())
@@ -47,7 +47,7 @@ fun DoctorHome(
                 doctor.value = it
                 if (it.length > 3) {
                     isLoading.value = true
-                    viewModel.searchDoctor(it) {
+                    viewModel.searchLittleDoctor(it) {
                         isLoading.value = false
                     }
                 }
@@ -78,7 +78,7 @@ fun DoctorHome(
 @Composable
 fun DoctorList(
     doctors: List<Doctor>,
-    onDoctorClick: (Doctor) -> Unit
+    onDoctorClick: (Long) -> Unit
 ) {
     LazyColumn {
         items(doctors) { doctor ->
@@ -94,10 +94,10 @@ fun DoctorList(
 @Composable
 fun DoctorItem(
     doctor: Doctor,
-    onDoctorClick: (Doctor) -> Unit
+    onDoctorClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = { onDoctorClick(doctor) }
+        onClick = {onDoctorClick(doctor.nationalId) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",

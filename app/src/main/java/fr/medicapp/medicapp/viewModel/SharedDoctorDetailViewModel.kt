@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mapbox.mapboxsdk.geometry.LatLng
 import fr.medicapp.medicapp.api.address.APIAddressClient
+import fr.medicapp.medicapp.api.address.apiInteractions.DoctorsSearch
 import fr.medicapp.medicapp.model.prescription.Doctor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,12 @@ class SharedDoctorDetailViewModel(
         )
     )
     val sharedState: StateFlow<Doctor> = _sharedState
+
+    fun loadDoctor(id : Long) {
+        DoctorsSearch().searchDoctor(id) {
+            _sharedState.value = it.first()
+        }
+    }
 
     fun fetch(): LatLng {
         return runBlocking {
