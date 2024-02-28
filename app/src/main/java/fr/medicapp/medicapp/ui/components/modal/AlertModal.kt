@@ -8,7 +8,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
-
 @Composable
 fun AlertModal(
     title: String,

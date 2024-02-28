@@ -55,7 +55,6 @@ fun DoctorHome(
     }
 }
 
-
 @Composable
 fun DoctorList(
     doctors: List<Doctor>,
