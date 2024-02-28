@@ -7,6 +7,7 @@ import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepos
 import fr.medicapp.medicapp.database.repositories.prescription.SideEffectRepository
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.prescription.relationship.SideEffect
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +20,7 @@ import java.time.LocalDate
  */
 class SharedSideEffectEditViewModel(
     private val savedStateHandle: SavedStateHandle,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     private val _sharedState: MutableStateFlow<SideEffect> = MutableStateFlow(SideEffect())
     val sharedState: StateFlow<SideEffect> = _sharedState
@@ -40,13 +42,13 @@ class SharedSideEffectEditViewModel(
     }
 
     suspend fun searchPrescription(search: String, context: Context): List<OptionDialog> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             PrescriptionRepository(context).search(search)
         }
     }
 
     suspend fun updatePrescription(prescription: OptionDialog, context: Context) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             val prescription = PrescriptionRepository(context).getById(prescription.id)
             val updatedSideEffect = _sharedState.value.copy(prescription = prescription)
             _sharedState.value = updatedSideEffect
@@ -54,7 +56,7 @@ class SharedSideEffectEditViewModel(
     }
 
     suspend fun save(context: Context) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             val id = SideEffectRepository(context).insert(_sharedState.value)
             _sharedState.value = SideEffectRepository(context).getById(id)
         }

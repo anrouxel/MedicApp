@@ -18,6 +18,7 @@ import fr.medicapp.medicapp.model.prescription.Duration
 import fr.medicapp.medicapp.model.prescription.relationship.Notification
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +31,7 @@ import java.time.DayOfWeek
  */
 class SharedPrescriptionEditViewModel(
     private val savedStateHandle: SavedStateHandle,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val _sharedState: MutableStateFlow<MutableList<Prescription>> = MutableStateFlow(
@@ -140,7 +142,7 @@ class SharedPrescriptionEditViewModel(
     }
 
     suspend fun updateMedication(newMedication: OptionDialog, context: Context) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             _sharedState.value[0] = _sharedState.value[0].copy(
                 medication = MedicationRepository(context).getById(newMedication.id)
             )
@@ -149,7 +151,7 @@ class SharedPrescriptionEditViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun save(context: Context) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             _sharedState.value[0] = PrescriptionRepository(context).getById(
                 PrescriptionRepository(context).insert(_sharedState.value[0])
             )
@@ -161,7 +163,7 @@ class SharedPrescriptionEditViewModel(
     }
 
     suspend fun searchMedication(search: String, context: Context): List<OptionDialog> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             MedicationRepository(context).search(search)
         }
     }

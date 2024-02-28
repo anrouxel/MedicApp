@@ -9,6 +9,7 @@ import fr.medicapp.medicapp.database.repositories.prescription.NotificationRepos
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.notification.NotificationPrescriptionManager
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.withContext
  */
 class SharedPrescriptionDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
@@ -27,13 +29,13 @@ class SharedPrescriptionDetailViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loadPrescription(context: Context, id: Long) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             _sharedState.value = PrescriptionRepository(context).getById(id)
         }
     }
 
     suspend fun removePrescription(context: Context) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             val prescription = _sharedState.value
             _sharedState.value = Prescription()
             PrescriptionRepository(context).delete(prescription)
@@ -42,7 +44,7 @@ class SharedPrescriptionDetailViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun updatedNotificationState(context: Context, index: Int, active: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             val updatedNotifications = _sharedState.value.notifications.toMutableList()
             val updateNotificationInformation =
                 updatedNotifications[index].notificationInformation.copy(active = active)
@@ -67,7 +69,7 @@ class SharedPrescriptionDetailViewModel(
     }
 
     suspend fun removeNotification(context: Context, id: Long) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             val updatedNotifications = _sharedState.value.notifications.toMutableList()
             val notification = updatedNotifications.find { it.notificationInformation.id == id }
             updatedNotifications.remove(notification)
