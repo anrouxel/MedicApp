@@ -10,10 +10,10 @@ import androidx.annotation.WorkerThread
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import fr.medicapp.medicapp.ai.tokenization.Feature
-import fr.medicapp.medicapp.ai.tokenization.FeatureConverter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.tokenization.Feature
+import fr.medicapp.medicapp.tokenization.FeatureConverter
 import fr.medicapp.medicapp.utils.JaroWinkler
 import org.pytorch.IValue
 import org.pytorch.Module
@@ -128,7 +128,7 @@ class PrescriptionAI(
      */
     init {
         // Crée un nouveau thread en arrière-plan.
-        mBackgroundThread = HandlerThread("BackgroundPyTorchThread")
+        mBackgroundThread = HandlerThread("BackgroundThread")
 
         // Démarre le thread en arrière-plan.
         mBackgroundThread.start()
@@ -157,24 +157,24 @@ class PrescriptionAI(
             // Attend que le module PyTorch soit chargé.
             while (mModule == null) {
                 Thread.sleep(100)
-                Log.v(TAG, "Waiting for model to load.")
             }
-            Log.d(TAG, "Model loaded.")
 
             // Reconnaît le texte dans l'image spécifiée par l'URI.
             val visionText = recognizeText(imageUri)
-            Log.d(TAG, "Text recognized: $visionText")
+
+            Log.d("visionText", visionText.toString())
 
             if (visionText != null) {
                 // Exécute le modèle PyTorch sur le texte reconnu et génère des prédictions.
                 val sentenceTokenized = runModel(visionText)
-                Log.d(TAG, "Predictions: $sentenceTokenized")
+
+                Log.d("sentenceTokenized", sentenceTokenized.toString())
+
+                val prescriptions = onPrediction(sentenceTokenized)
+
+                Log.d("prescriptions", prescriptions.toString())
 
                 // Appelle le callback avec les prédictions générées.
-                val prescriptions = onPrediction(sentenceTokenized)
-                Log.d(TAG, "Prescriptions: $prescriptions")
-
-                // Appelle le callback lorsque l'analyse est terminée.
                 onDismiss(prescriptions)
             }
 
@@ -287,6 +287,7 @@ class PrescriptionAI(
             val feature: Feature = featureConverter.convert(visionText)
             val inputIds = feature.inputIds
             val inputMask = feature.inputMask
+            val segmentIds = feature.segmentIds
             val startLogits = FloatArray(MAX_SEQ_LEN)
             val endLogits = FloatArray(MAX_SEQ_LEN)
 
@@ -314,7 +315,7 @@ class PrescriptionAI(
             )
 
             // Aligne les IDs de mots avec les labels.
-            val labelIds = FeatureConverter.alignWordIDS(feature)
+            val labelIds = FeatureConverter.align_word_ids(feature)
 
             // Exécute le modèle PyTorch avec les prédictions d'entrée et de masque.
             val outputTensor = mModule!!.forward(
@@ -347,7 +348,7 @@ class PrescriptionAI(
 
             // Convertit la liste de prédictions en liste de labels.
             var predictionsLabelList: List<String> = startPredictionsList.map { index ->
-                labels.getValue(index)
+                labels[index]!!
             }
 
             // Parcourt la liste des labels prédits.
@@ -372,13 +373,18 @@ class PrescriptionAI(
         sentenceTokenized.forEach { (word, label) ->
             when {
                 label.startsWith("B-") -> {
-                    if (label.removePrefix("B-") == "Drug") {
-                        val medication = MedicationRepository(context).getAll().sortedBy {
-                            JaroWinkler.jaroWinklerDistance(
-                                it.medicationInformation.name,
+                    if (label.removePrefix("B-") == "Drug" && query.isNotEmpty()) {
+                        val medication = MedicationRepository(context).getAll().map { medication ->
+                            val distance = JaroWinkler.jaroWinklerDistance(
+                                medication.medicationInformation.name,
                                 query.trim()
                             )
-                        }.first()
+                            Pair(medication, distance)
+                        }.filter { (_, distance) ->
+                            distance < 0.20
+                        }.minByOrNull { (_, distance) ->
+                            distance
+                        }?.first
                         prescription.medication = medication
                         prescriptions.add(prescription)
                         prescription = Prescription()
@@ -404,12 +410,17 @@ class PrescriptionAI(
             }
         }
         if (query.isNotEmpty()) {
-            val medication = MedicationRepository(context).getAll().sortedBy {
-                JaroWinkler.jaroWinklerDistance(
-                    it.medicationInformation.name,
+            val medication = MedicationRepository(context).getAll().map { medication ->
+                val distance = JaroWinkler.jaroWinklerDistance(
+                    medication.medicationInformation.name,
                     query.trim()
                 )
-            }.first()
+                Pair(medication, distance)
+            }.filter { (_, distance) ->
+                distance < 0.20
+            }.minByOrNull { (_, distance) ->
+                distance
+            }?.first
             prescription.medication = medication
             prescriptions.add(prescription)
         }

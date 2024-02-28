@@ -19,8 +19,8 @@ import kotlinx.coroutines.withContext
  */
 class SharedSideEffectDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private val _sharedState: MutableStateFlow<SideEffect> = MutableStateFlow(SideEffect())
     val sharedState: StateFlow<SideEffect> = _sharedState

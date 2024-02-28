@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 import java.util.Collections
 
@@ -159,7 +159,7 @@ class FeatureConverter(
          * @param labelAllTokens Indique si tous les tokens doivent être étiquetés.
          * @return Une liste d'identifiants de mots alignés.
          */
-        fun alignWordIDS(feature: Feature, labelAllTokens: Boolean = false): MutableList<Int> {
+        fun align_word_ids(feature: Feature, labelAllTokens: Boolean = false): MutableList<Int> {
             // Récupère les identifiants d'entrée de la caractéristique.
             val inputIds = feature.inputIds
 

@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 /**
  * Classe BasicTokenizer pour la tokenization de base du texte.
@@ -107,13 +107,13 @@ class BasicTokenizer(
          * @return Une liste de tokens.
          */
         fun whitespaceTokenize(text: String): MutableList<String> {
+
             // Divise le texte en tokens en utilisant les espaces blancs comme séparateurs.
             return mutableListOf(
                 // Supprime les tokens vides à la fin de la liste.
                 *text.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
                     // Convertit la liste de tokens en MutableList.
-                    .toTypedArray()
-            )
+                    .toTypedArray())
         }
 
         /**

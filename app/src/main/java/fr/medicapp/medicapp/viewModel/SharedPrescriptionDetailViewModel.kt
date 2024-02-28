@@ -21,8 +21,8 @@ import kotlinx.coroutines.withContext
  */
 class SharedPrescriptionDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private val _sharedState: MutableStateFlow<Prescription> = MutableStateFlow(Prescription())
     val sharedState: StateFlow<Prescription> = _sharedState

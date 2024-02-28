@@ -123,12 +123,16 @@ fun PrescriptionEditInformation(
                     Column(
                         modifier = Modifier.padding(10.dp)
                     ) {
-                        ReusableOutlinedTextFieldButton(
-                            value = "",
+                        ReusableOutlinedSearchButton(
+                            options = {
+                                viewModel.searchDoctor(it)
+                            },
+                            value = state.doctor,
                             label = "Docteur",
-                            warnings = false,
-                            onClick = {}
-                        )
+                            warnings = state.doctor == null
+                        ) {
+                            viewModel.updateMedication(it, context)
+                        }
                     }
                 }
 

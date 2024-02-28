@@ -365,3 +365,11 @@ Mapp/src/test/java/fr/medicapp/medicapp/reportGenerator/ReportGeneratorTest.kt,
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 D
 app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+z
+Japp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FeatureConverter.kt,0\d\0dc2e3b0de986150b6383cb0ba334876d34f2a4e
+q
+Aapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/Feature.kt,d\c\dc926960261f1dc86ea528b3a33bd1b394d3bd04
+w
+Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a\0\a0f4f2d1a4ab8fe57559abc4c15cff11491f6861
+|
+Lapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/WordpieceTokenizer.kt,e\6\e6b3b79026807cdcf2ff34f73f18e2c1d2df91e9

@@ -1,4 +1,4 @@
-package fr.medicapp.medicapp.ai.tokenization
+package fr.medicapp.medicapp.tokenization
 
 /**
  * Classe Feature pour représenter une caractéristique d'un texte.

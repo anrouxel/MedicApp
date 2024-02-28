@@ -9,11 +9,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import fr.medicapp.medicapp.ai.PrescriptionAI
+import fr.medicapp.medicapp.api.address.apiInteractions.DoctorsSearch
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.OptionDialog
 import fr.medicapp.medicapp.model.prescription.Alarm
+import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.Duration
 import fr.medicapp.medicapp.model.prescription.relationship.Notification
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
@@ -22,6 +25,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.DayOfWeek
 
@@ -31,8 +35,8 @@ import java.time.DayOfWeek
  */
 class SharedPrescriptionEditViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private val _sharedState: MutableStateFlow<MutableList<Prescription>> = MutableStateFlow(
         mutableStateListOf(Prescription())
@@ -171,5 +175,15 @@ class SharedPrescriptionEditViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun addToNotificationManager(context: Context) {
         NotificationPrescriptionManager.add(context, _sharedState.value[0].getNextAlarms())
+    }
+
+    suspend fun searchDoctor(query: String) : List<OptionDialog> {
+        return withContext(dispatcher) {
+            val doctors = mutableListOf<OptionDialog>()
+            DoctorsSearch().searchLittleDoctor(query) {
+                doctors.addAll(it.map { it.toOptionDialog() })
+            }
+            doctors
+        }
     }
 }
