@@ -27,4 +27,7 @@ interface ApiServiceGuewen {
     fun getLittleDocByNom(
         @Path("name") name: String
     ): Call<String>
+
+    @GET("get_relations")
+    fun getRelations(): Call<String>
 }
