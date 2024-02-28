@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
         // Définition du contenu de l'activité
         setContent {
-            var theme by remember { mutableStateOf(EUPurpleColorShema) }
+            val theme by remember { mutableStateOf(EUPurpleColorShema) }
             // Utilisation du thème de l'application
             MedicAppTheme(
                 theme = theme
