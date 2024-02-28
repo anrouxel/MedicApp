@@ -24,8 +24,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.concurrent.CountDownLatch
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Classe PrescriptionAI pour l'analyse des prescriptions médicales.
