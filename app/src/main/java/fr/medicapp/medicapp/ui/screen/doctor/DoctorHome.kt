@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,7 +29,6 @@ import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.DoctorViewModel
-import androidx.compose.runtime.livedata.observeAsState
 
 
 @Composable
@@ -97,7 +97,7 @@ fun DoctorItem(
     onDoctorClick: (Doctor) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = {onDoctorClick(doctor) }
+        onClick = { onDoctorClick(doctor) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",
