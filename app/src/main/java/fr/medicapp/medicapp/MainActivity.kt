@@ -39,6 +39,15 @@ class MainActivity : ComponentActivity() {
         val isDownloaded = this.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
             .getBoolean("isDataDownloaded", false)
 
+        //Téléchargement des médicaments
+        MedicationDownload(this)
+
+        // Initialisation de l'IA de prescription
+        PrescriptionAI.getInstance(this)
+
+        // Initialisation du moteur de rendu Gecko
+        GeckoManager.getInstances(this)
+
         // Définition du contenu de l'activité
         setContent {
             var theme by remember { mutableStateOf(EUYellowColorShema) }
@@ -46,16 +55,6 @@ class MainActivity : ComponentActivity() {
             MedicAppTheme(
                 theme = theme
             ) {
-
-                //Téléchargement des médicaments
-                MedicationDownload(this)
-
-                // Initialisation de l'IA de prescription
-                PrescriptionAI.getInstance(this)
-
-                // Initialisation du moteur de rendu Gecko
-                GeckoManager.getInstances(this)
-
                 // Création du graphe de navigation racine
                 RootNavGraph(
                     navController = rememberNavController(),

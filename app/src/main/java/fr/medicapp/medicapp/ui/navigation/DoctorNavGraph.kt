@@ -31,10 +31,13 @@ fun NavGraphBuilder.doctorNavGraph(
             DoctorHome(
                 onDoctorClick = {
                     navController.navigate(
+                        /*
                         PrescriptionRoute.PrescriptionDetailRoute.route.replace(
                             "{id}",
                             it.toString()
                         )
+                        */
+                        DoctorRoute.DoctorDetailRoute.route
                     )
                 }
             )

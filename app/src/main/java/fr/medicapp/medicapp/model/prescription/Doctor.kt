@@ -72,9 +72,9 @@ data class Doctor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "doctor_id")
     var id: Long = 0L,
-    @SerializedName("idNational") var nationalId: Int = 0,
-    @SerializedName("idTypePP") var idTypePP: Int = 0,
-    @SerializedName("idPP") var idPP: Int = 0,
+    @SerializedName("idNational") var nationalId: Long = 0,
+    @SerializedName("idTypePP") var idTypePP: Long = 0,
+    @SerializedName("idPP") var idPP: Long = 0,
     @SerializedName("codeCiviliteEx") var civilCodeEx: String = "",
     @SerializedName("libelleCiviliteEx") var civilLabelEx: String = "",
     @SerializedName("codeCivilite") var civilCode: String = "",

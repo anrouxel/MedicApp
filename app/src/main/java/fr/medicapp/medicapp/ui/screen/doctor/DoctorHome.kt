@@ -4,10 +4,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,34 +28,49 @@ import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.DoctorViewModel
+import androidx.compose.runtime.livedata.observeAsState
+
 
 @Composable
 fun DoctorHome(
     viewModel: DoctorViewModel = viewModel(),
-    onDoctorClick: (Long) -> Unit
+    onDoctorClick: (Doctor) -> Unit
 ) {
     val doctor = remember { mutableStateOf("") }
+    val doctors by viewModel.doctors.observeAsState(emptyList())
+    val isLoading = remember { mutableStateOf(false) }
 
     Column {
         ReusableOutlinedTextField(
             value = doctor.value,
             onValueChange = {
                 doctor.value = it
-                if (doctor.value.length > 3) {
-                    viewModel.searchDoctor(doctor.value)
+                if (it.length > 3) {
+                    isLoading.value = true
+                    viewModel.searchDoctor(it) {
+                        isLoading.value = false
+                    }
                 }
             },
             label = "Rechercher"
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        val doctors = viewModel.doctors.value ?: emptyList()
-        if (doctors.isEmpty()) {
-            NoDoctorFound()
-        } else {
-            DoctorList(
-                doctors = doctors,
-                onDoctorClick = onDoctorClick,
+        if (isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(4.dp)
+                    .align(Alignment.CenterHorizontally)
             )
+        } else {
+            if (doctors.isEmpty()) {
+                NoDoctorFound()
+            } else {
+                DoctorList(
+                    doctors = doctors,
+                    onDoctorClick = onDoctorClick,
+                )
+            }
         }
     }
 }
@@ -58,17 +78,15 @@ fun DoctorHome(
 @Composable
 fun DoctorList(
     doctors: List<Doctor>,
-    onDoctorClick: (Long) -> Unit
+    onDoctorClick: (Doctor) -> Unit
 ) {
-    Column {
-        doctors.forEachIndexed { index, doctor ->
+    LazyColumn {
+        items(doctors) { doctor ->
             DoctorItem(
                 doctor = doctor,
                 onDoctorClick = onDoctorClick
             )
-            if (index != doctors.size - 1) {
-                Spacer(modifier = Modifier.padding(10.dp))
-            }
+            Spacer(modifier = Modifier.padding(10.dp))
         }
     }
 }
@@ -76,10 +94,10 @@ fun DoctorList(
 @Composable
 fun DoctorItem(
     doctor: Doctor,
-    onDoctorClick: (Long) -> Unit
+    onDoctorClick: (Doctor) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = { onDoctorClick(doctor.id) }
+        onClick = {onDoctorClick(doctor) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",
@@ -105,6 +123,20 @@ private fun NoDoctorFound() {
 @Preview
 @Composable
 fun DoctorHomePreview() {
+    val doctors = mutableListOf(
+        Doctor(
+            civilCodeEx = "DR",
+            firstName = "Jean",
+            lastName = "Mottu",
+            professionLabel = "Médecin/Beta Testeur"
+        ),
+        Doctor(
+            civilCodeEx = "DR",
+            firstName = "Willy",
+            lastName = "Wonka",
+            professionLabel = "Fraude"
+        )
+    )
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -119,6 +151,7 @@ fun DoctorHomePreview() {
 @Preview
 @Composable
 fun DoctorHomeDarkPreview() {
+    val doctors = mutableListOf<Doctor>()
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
