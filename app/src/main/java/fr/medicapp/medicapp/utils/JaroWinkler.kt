@@ -39,8 +39,8 @@ object JaroWinkler {
             var i: Int = 0
             var j: Int = 0
             while (j < len2) {
-                if (flag.get(j)) {
-                    if (string2.get(j) != ch1Match.get(i)) ++transpositions
+                if (flag[j]) {
+                    if (string2[j] != ch1Match[i]) ++transpositions
                     ++i
                 }
                 ++j
