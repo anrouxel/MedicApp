@@ -42,7 +42,7 @@ fun ConfirmReportModal(
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
 
-        ) {
+            ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),

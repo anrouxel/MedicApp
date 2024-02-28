@@ -35,9 +35,9 @@ fun DoctorDetail(
     ) {
         Column {
             val structureAdresse = "${state.value.structureStreetNumber} " +
-                "${state.value.structureStreetTypeLabel} " +
-                "${state.value.structureStreetLabel} " +
-                state.value.structureCedexOffice
+                    "${state.value.structureStreetTypeLabel} " +
+                    "${state.value.structureStreetLabel} " +
+                    state.value.structureCedexOffice
 
             ReusableElevatedCard {
                 Column(
@@ -45,7 +45,7 @@ fun DoctorDetail(
                 ) {
                     ReusableTextMediumCard(
                         value = "${state.value.civilCode} ${state.value.firstName} ${state.value.lastName} \n" +
-                            state.value.skillLabel
+                                state.value.skillLabel
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
