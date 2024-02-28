@@ -1,13 +1,14 @@
 package fr.medicapp.medicapp.ui.screen.doctor
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,11 +34,11 @@ import androidx.compose.runtime.livedata.observeAsState
 @Composable
 fun DoctorHome(
     viewModel: DoctorViewModel = viewModel(),
-    onDoctorClick: (Long) -> Unit
+    onDoctorClick: (Doctor) -> Unit
 ) {
     val doctor = remember { mutableStateOf("") }
-
     val doctors by viewModel.doctors.observeAsState(emptyList())
+    val isLoading = remember { mutableStateOf(false) }
 
     Column {
         ReusableOutlinedTextField(
@@ -45,19 +46,31 @@ fun DoctorHome(
             onValueChange = {
                 doctor.value = it
                 if (it.length > 3) {
-                    viewModel.searchDoctor(it)
+                    isLoading.value = true
+                    viewModel.searchDoctor(it) {
+                        isLoading.value = false
+                    }
                 }
             },
             label = "Rechercher"
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        if (doctors.isEmpty()) {
-            NoDoctorFound()
-        } else {
-            DoctorList(
-                doctors = doctors,
-                onDoctorClick = onDoctorClick,
+        if (isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(4.dp)
+                    .align(Alignment.CenterHorizontally)
             )
+        } else {
+            if (doctors.isEmpty()) {
+                NoDoctorFound()
+            } else {
+                DoctorList(
+                    doctors = doctors,
+                    onDoctorClick = onDoctorClick,
+                )
+            }
         }
     }
 }
@@ -66,7 +79,7 @@ fun DoctorHome(
 @Composable
 fun DoctorList(
     doctors: List<Doctor>,
-    onDoctorClick: (Long) -> Unit
+    onDoctorClick: (Doctor) -> Unit
 ) {
     LazyColumn {
         items(doctors) { doctor ->
@@ -82,10 +95,10 @@ fun DoctorList(
 @Composable
 fun DoctorItem(
     doctor: Doctor,
-    onDoctorClick: (Long) -> Unit
+    onDoctorClick: (Doctor) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = {onDoctorClick(doctor.id) }
+        onClick = {onDoctorClick(doctor) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",

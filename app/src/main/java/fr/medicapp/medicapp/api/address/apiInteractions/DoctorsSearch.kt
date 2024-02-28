@@ -16,53 +16,87 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DoctorsSearch {
 
-    private val handlerThread = HandlerThread("DoctorSearchThread").apply { start() }
-    private val backgroundHandler = Handler(handlerThread.looper)
-
-    private var currentSearchJob: Job? = null
-
     fun searchDoctor(doctor: String, callback: (List<Doctor>) -> Unit) {
+
         cancelSearch()
 
-        // = CoroutineScope(Dispatchers.IO).launch {
-            backgroundHandler.post {
-                val apiService = APIAddressClient().apiServiceGuewen
-                try {
-                    val response = apiService.getDocByNom(doctor).execute()
-                    if (response.isSuccessful) {
-                        val allDocsJsonArray = response.body()!!
-                        Log.d("Docteurs", "Les docteurs sont trouvés !")
+        val apiService = APIAddressClient().apiServiceGuewen
+        val call = apiService.getDocByNom(doctor)
 
-                        val gson = GsonBuilder()
-                            .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
-                            .create()
+        currentCall = call
 
-                        val doctorListType: Type = object : TypeToken<List<Doctor>>() {}.type
-                        val doctors: List<Doctor> = gson.fromJson(allDocsJsonArray, doctorListType)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (call != currentCall){
+                    //requête obsolète
+                    closeConnection()
+                    return
+                }
+                if (response.isSuccessful) {
+                    val allDocsJsonArray = response.body()!!
+                    Log.d("Docteurs", "Les docteurs sont trouvés !")
 
-                        Log.d("Docteurs", "Les docteurs sont trouvés ! : ${doctors.size}")
+                    val gson = GsonBuilder()
+                        .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                        .create()
 
-                        // Callback on the main thread
-                        Handler(Looper.getMainLooper()).post { callback(doctors) }
-                    } else {
-                        Log.d("Docteurs", "Les docteurs ne sont pas trouvés !")
-                        // Callback on the main thread
-                        Handler(Looper.getMainLooper()).post { callback(emptyList()) }
-                    }
-                } catch (e: IOException) {
-                    Log.e("Network", "Error during API call: ${e.message}")
+                    val doctorListType: Type = object : TypeToken<List<Doctor>>() {}.type
+                    val doctors: List<Doctor> = gson.fromJson(allDocsJsonArray, doctorListType)
+
+                    Log.d("Docteurs", "Les docteurs sont trouvés ! : ${doctors.size}")
+                    currentCall = null
                     // Callback on the main thread
-                    Handler(Looper.getMainLooper()).post { callback(emptyList()) }
+                    closeConnection()
+                    return callback(doctors)
+                } else {
+                    Log.d("Docteurs", "Les docteurs ne sont pas trouvés !")
+                    currentCall = null
+                    closeConnection()
+                    // Callback on the main thread
+                    return callback(emptyList())
                 }
             }
-        //}
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                if (call != currentCall) {
+                    //requête obsolète
+                    closeConnection()
+                    return
+                }
+                Log.e("GuegueApi", "Error during API call: ${t.message}")
+                if (t.message == "timeout") {
+                    Log.d("Gueguemagouille", "je relance la requête")
+                    Handler(Looper.getMainLooper()).post {
+                        // Relancer la requête avec les mêmes paramètres
+                        searchDoctor(doctor, callback)
+                    }
+                } else {
+                    currentCall = null
+                    closeConnection()
+                    return callback(emptyList())
+                }
+            }
+        })
     }
 
-    fun cancelSearch() {
+    private fun cancelSearch() {
         // Annuler la recherche en cours, s'il y en a une
-        currentSearchJob?.cancel()
+        currentCall?.cancel()
+    }
+
+    fun closeConnection() {
+        okHttpClient.dispatcher.executorService.shutdown()
+    }
+
+    companion object {
+        private var currentCall: Call<String>? = null
+        private var okHttpClient = OkHttpClient.Builder().build()
     }
 }
