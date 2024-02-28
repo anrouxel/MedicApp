@@ -17,4 +17,14 @@ interface ApiServiceGuewen {
 
     @GET("get_all_med")
     fun getTotalMedications(): Call<String>
+
+    @GET("get_doc/id/{id}")
+    fun getDocById(
+        @Path("id") id: Long
+    ): Call<String>
+
+    @GET("get_doc/onlyName/{name}")
+    fun getLittleDocByNom(
+        @Path("name") name: String
+    ): Call<String>
 }

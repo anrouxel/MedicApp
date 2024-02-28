@@ -31,21 +31,24 @@ fun NavGraphBuilder.doctorNavGraph(
             DoctorHome(
                 onDoctorClick = {
                     navController.navigate(
-                        /*
-                        PrescriptionRoute.PrescriptionDetailRoute.route.replace(
+                        DoctorRoute.DoctorDetailRoute.route.replace(
                             "{id}",
                             it.toString()
                         )
-                        */
-                        DoctorRoute.DoctorDetailRoute.route
                     )
                 }
             )
         }
 
         composable(route = DoctorRoute.DoctorDetailRoute.route) {
+            val doctor = it.arguments?.getString("id")?.toLongOrNull()
+
             val viewModel =
                 it.sharedViewModel<SharedDoctorDetailViewModel>(navController = navController)
+
+            if (doctor != null) {
+                viewModel.loadDoctor(doctor)
+            }
 
             DoctorDetail(
                 viewModel = viewModel
@@ -66,7 +69,7 @@ sealed class DoctorRoute(val route: String) {
     /**
      * Route pour afficher une prescription spécifique.
      */
-    object DoctorDetailRoute : DoctorRoute(route = "doctor_detail")
+    object DoctorDetailRoute : DoctorRoute(route = "doctor_detail/{id}")
 
     /**
      * Route pour ajouter une nouvelle prescription.
