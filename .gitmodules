@@ -1,3 +1,0 @@
-[submodule "app/src/main/assets/ai"]
-	path = app/src/main/assets/ai
-	url = https://huggingface.co/anrouxel/MedicApp
