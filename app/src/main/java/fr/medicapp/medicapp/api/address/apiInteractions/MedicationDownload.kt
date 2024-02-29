@@ -36,7 +36,8 @@ class MedicationDownload(
     /**
      * Accès aux donnés sauvegardées dans le téléphone
      */
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
 
     /**
      * Initialisation du thread en background

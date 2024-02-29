@@ -72,7 +72,9 @@ fun PrescriptionDetail(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             ReusableTextMediumCard(
-                                modifier = Modifier.fillMaxWidth().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
                                 value = "Médicament : $it",
                             )
 

@@ -11,7 +11,7 @@ data class RelationGSON(
 ) {
     fun toRelations(): Relations {
         return Relations(
-            relationInfo =  RelationInfo(
+            relationInfo = RelationInfo(
                 substance = substance,
                 com = com
             ),
