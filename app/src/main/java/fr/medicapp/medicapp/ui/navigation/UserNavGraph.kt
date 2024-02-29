@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import fr.medicapp.medicapp.ui.components.screen.Loading
+import fr.medicapp.medicapp.ui.components.screen.LoadingSnake
 import fr.medicapp.medicapp.ui.screen.user.UserEditAllergy
 import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
@@ -58,7 +59,48 @@ fun NavGraphBuilder.userNavGraph(
         }
 
         composable(route = UserRoute.LoadingScreenRoute.route) {
-            Loading("Chargement en cours...", "Veuillez patienter quelques instants...")
+            Loading(
+                title ="Chargement en cours...",
+                text ="Veuillez patienter quelques instants...",
+                onClick = {
+                    navController.navigate(UserRoute.LoadingSnakeScreenRoute.route)
+                }
+            )
+            LaunchedEffect(Unit) {
+                val sharedPreferences =
+                    context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+                callbackFlow {
+                    val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                        if (key == "isDataDownloaded") {
+                            this.trySend(sharedPreferences.getBoolean(key, false)).isSuccess
+                        }
+                    }
+                    sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+                    awaitClose {
+                        sharedPreferences.unregisterOnSharedPreferenceChangeListener(
+                            listener
+                        )
+                    }
+                }.collect { isDataDownloaded ->
+                    if (isDataDownloaded) {
+                        Log.d("Guegueintervention", "ça change !!!!!!!")
+                        navController.navigate(Graph.HOME) {
+                            popUpTo(Graph.HOME) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        composable(route = UserRoute.LoadingSnakeScreenRoute.route) {
+            LoadingSnake(
+                title ="Chargement en cours...",
+                onClick = {
+                    navController.popBackStack()
+                }
+            )
             LaunchedEffect(Unit) {
                 val sharedPreferences =
                     context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
@@ -93,6 +135,7 @@ sealed class UserRoute(val route: String) {
     object UserGeneralInformationRoute : UserRoute("user_general_information")
     object UserAllergyRoute : UserRoute("user_allergy")
     object LoadingScreenRoute : UserRoute("loading_screen")
+    object LoadingSnakeScreenRoute : UserRoute("loading_snake_screen")
 }
 
 fun isDownloaded(isDownload: Boolean, navController: NavHostController) {

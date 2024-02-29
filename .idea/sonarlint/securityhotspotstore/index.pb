@@ -373,3 +373,7 @@ Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a\0\a0
 Lapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/WordpieceTokenizer.kt,e\6\e6b3b79026807cdcf2ff34f73f18e2c1d2df91e9
 ƒ
 Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedMedicationDetailViewModel.kt,7\6\7626aa293360b1608e28ef735a993fc67f35c0d3
+~
+Napp/src/main/java/fr/medicapp/medicapp/ui/screen/loading/LoadingSnakeScreen.kt,0\4\042ac74351581775e9b406eb469d1b7c3bae3b7b
+{
+Kapp/src/main/java/fr/medicapp/medicapp/ui/components/screen/LoadingSnake.kt,c\3\c3ae48982eab2a00291d6c268311fdbab8e022c7

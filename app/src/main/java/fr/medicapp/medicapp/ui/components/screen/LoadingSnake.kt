@@ -21,15 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.medicapp.medicapp.ui.components.button.ReusableButton
+import fr.medicapp.medicapp.ui.components.mozilla.Gecko
 import fr.medicapp.medicapp.ui.components.text.ReusableTextLargeCard
 import fr.medicapp.medicapp.ui.theme.EUYellowColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Loading(
+fun LoadingSnake(
     title: String,
-    text: String = "Chargement en cours...",
     onClick: () -> Unit = {}
 ) {
     Scaffold(
@@ -53,7 +53,7 @@ fun Loading(
                 modifier = Modifier.padding(10.dp)
             ) {
                 ReusableButton(
-                    text = "Jouer au Snake pour patienter",
+                    text = "Revenir à la page précédente",
                     onClick = onClick
                 )
             }
@@ -62,54 +62,38 @@ fun Loading(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
-                .padding(10.dp)
-                .verticalScroll(
-                    state = rememberScrollState()
-                ),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LinearProgressIndicator(
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(modifier = Modifier.padding(10.dp))
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ReusableTextLargeCard(
-                    modifier = Modifier,
-                    value = text
-                )
-            }
+            Gecko(uri = "https://snake.googlemaps.com/")
         }
     }
 }
 
 @Preview(name = "Light Theme")
 @Composable
-private fun LoadingPreview() {
+private fun LoadingSnakePreview() {
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        Loading(
-            title = "Traitements"
+        LoadingSnake(
+            title = "Traitements",
         )
     }
 }
 
 @Preview(name = "Dark Theme")
 @Composable
-private fun LoadingDarkPreview() {
+private fun LoadingSnakeDarkPreview() {
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,
         theme = EUYellowColorShema
     ) {
-        Loading(
+        LoadingSnake(
             title = "Traitements",
         )
     }
