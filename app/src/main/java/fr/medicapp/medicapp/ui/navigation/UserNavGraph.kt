@@ -71,10 +71,12 @@ fun NavGraphBuilder.userNavGraph(
                 snapshotFlow {
                     sharedPreferences.getBoolean("isDataDownloaded", false)
                 }.collect {
-                    Log.d("Guegueintervention", "ça change !!!!!!!")
-                    navController.navigate(Graph.HOME) {
-                        popUpTo(Graph.HOME) {
-                            inclusive = true
+                    if(it) {
+                        Log.d("Guegueintervention", "ça change !!!!!!!")
+                        navController.navigate(Graph.HOME) {
+                            popUpTo(Graph.HOME) {
+                                inclusive = true
+                            }
                         }
                     }
                 }

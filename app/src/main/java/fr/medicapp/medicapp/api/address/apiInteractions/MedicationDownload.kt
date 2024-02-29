@@ -11,7 +11,9 @@ import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.database.repositories.relations.RelationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
+import fr.medicapp.medicapp.model.gson.RelationGSON
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -48,6 +50,7 @@ class MedicationDownload(
             if (sharedPreferences.getInt("totalMedication", 0) == 0) {
                 getTotalData()
             }
+            downloadRelations()
             download()
         }
     }
@@ -99,6 +102,39 @@ class MedicationDownload(
             }
         }
         gBackgroundThread.quitSafely()
+    }
+
+    @WorkerThread
+    fun downloadRelations() {
+
+        val dl = sharedPreferences.getBoolean("isRelationDownloaded", false)
+        if (!dl) {
+            Log.d("GuegueApi", "On télécharge les relations")
+            val apiService = APIAddressClient().apiServiceGuewen
+            val response = apiService.getRelations().execute()
+            if (response.isSuccessful) {
+                val allRelJsonArray = response.body()!!
+                Log.d("GuegueApi", "Les données sont téléchargées")
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                    .create()
+
+                val listType: Type = object : TypeToken<List<RelationGSON>>() {}.type
+
+                val relations: List<RelationGSON> =
+                    gson.fromJson(allRelJsonArray, listType)
+
+                // Mapper et convertir les données en MedicationEntity
+                val relationsEntities = relations.map { it.toRelations() }
+
+                // Enregistrer les RelationsEntity
+                RelationRepository(context).insert(relationsEntities)
+                Log.d("GuegueApi", "Les relations sont enregistrées")
+                sharedPreferences.edit().putBoolean("isRelationDownloaded", true).apply()
+            } else {
+                Log.e("ObjectBox", "Error while fetching relations")
+            }
+        }
     }
 
     @WorkerThread
