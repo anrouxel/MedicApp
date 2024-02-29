@@ -13,7 +13,7 @@ data class Relations(
 
     @Relation(
         parentColumn = "relation_info_id",
-        entityColumn = "interaction_id"
+        entityColumn = "relation_info_id"
     )
     val interactions: List<Interactions> = emptyList()
 )
