@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +53,7 @@ fun SearchModal(
     onConfirm: suspend (OptionDialog) -> Unit = {},
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    var selectedOption by remember { mutableStateOf<OptionDialog?>(null) }
+    val selectedOption = remember { mutableStateOf<OptionDialog?>(null) }
     val searchResults = remember { mutableStateOf<List<OptionDialog>>(emptyList()) }
     val scope = rememberCoroutineScope()
     val isLoading = remember { mutableStateOf(false) }
@@ -100,41 +101,7 @@ fun SearchModal(
                 } else {
                     LazyColumn {
                         items(searchResults.value) { option ->
-                            ElevatedCard(
-                                onClick = {
-                                    selectedOption = option
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = if (option == selectedOption) {
-                                    CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.primary,
-                                        contentColor = MaterialTheme.colorScheme.onPrimary
-                                    )
-                                } else {
-                                    CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.surface,
-                                        contentColor = MaterialTheme.colorScheme.onSurface
-                                    )
-                                }
-                            ) {
-                                Text(
-                                    text = option.title,
-                                    modifier = Modifier.padding(5.dp),
-                                )
-
-                                option.description?.let {
-                                    Text(
-                                        text = it,
-                                        modifier = Modifier.padding(5.dp),
-                                        color = if (option == selectedOption) {
-                                            MaterialTheme.colorScheme.onPrimary
-                                        } else {
-                                            MaterialTheme.colorScheme.onSurface
-                                        }
-                                    )
-                                }
-                            }
-
+                            OptionCard(option = option, selectedOption = selectedOption)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }
@@ -151,10 +118,10 @@ fun SearchModal(
         },
         confirmButton = {
             TextButton(
-                enabled = selectedOption != null,
+                enabled = selectedOption.value != null,
                 onClick = {
                     scope.launch {
-                        selectedOption?.let { onConfirm(it) }
+                        onConfirm(selectedOption.value!!)
                     }
                 }
             ) {
@@ -162,6 +129,43 @@ fun SearchModal(
             }
         }
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OptionCard(option: OptionDialog, selectedOption: MutableState<OptionDialog?>) {
+    ElevatedCard(
+        onClick = { selectedOption.value = option },
+        modifier = Modifier.fillMaxWidth(),
+        colors = if (option == selectedOption.value) {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
+        } else {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    ) {
+        Text(
+            text = option.title,
+            modifier = Modifier.padding(5.dp),
+        )
+
+        option.description?.let {
+            Text(
+                text = it,
+                modifier = Modifier.padding(5.dp),
+                color = if (option == selectedOption.value) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                }
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
