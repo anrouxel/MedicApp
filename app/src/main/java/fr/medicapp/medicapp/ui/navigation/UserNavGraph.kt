@@ -53,15 +53,7 @@ fun NavGraphBuilder.userNavGraph(
             UserEditAllergy(
                 viewModel = viewModel,
                 onClick = {
-                    if (isDownload) {
-                        navController.navigate(Graph.HOME) {
-                            popUpTo(Graph.HOME) {
-                                inclusive = true
-                            }
-                        }
-                    } else {
-                        navController.navigate(UserRoute.LoadingScreenRoute.route)
-                    }
+                    isDownloaded(isDownload, navController)
                 }
             )
         }
@@ -102,4 +94,16 @@ sealed class UserRoute(val route: String) {
     object UserGeneralInformationRoute : UserRoute("user_general_information")
     object UserAllergyRoute : UserRoute("user_allergy")
     object LoadingScreenRoute : UserRoute("loading_screen")
+}
+
+fun isDownloaded(isDownload: Boolean, navController: NavHostController) {
+    if (isDownload) {
+        navController.navigate(Graph.HOME) {
+            popUpTo(Graph.HOME) {
+                inclusive = true
+            }
+        }
+    } else {
+        navController.navigate(UserRoute.LoadingScreenRoute.route)
+    }
 }
