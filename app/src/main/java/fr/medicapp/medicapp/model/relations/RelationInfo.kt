@@ -9,6 +9,7 @@ data class RelationInfo(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "relation_info_id")
     val id: Long = 0L,
+
     val substance: String = "",
     val com: String = ""
 )

@@ -106,8 +106,8 @@ fun PrescriptionHome(
                     } && isNewMedicationAdded
 
                     alertRelationOpen = withContext(Dispatchers.IO) {
-                        controlRelation(prescriptions.dropLast(1), relations)
-                    }
+                        controlRelation(prescriptions, relations)
+                    } && isNewMedicationAdded
 
                 }
                 PrescriptionList(
@@ -230,32 +230,43 @@ suspend fun controlRelation(
     relationRepo : RelationRepository
 ): Boolean {
     Log.d("GuegueTest", "ça rentre dans la méthode")
-    val substanceNames = prescriptions.last().medication?.medicationCompositions?.map { it.substanceName }
+    val substanceNames = prescriptions.last().medication?.medicationCompositions?.map{ it.substanceName }
     if (substanceNames.isNullOrEmpty()) {
         return withContext(Dispatchers.IO) {
             false
         }
     }
 
-    val relations = relationRepo.getAll().map { it.relationInfo.substance }
-    Log.d("Relation", relations.toString())
+    val relationsNoAccent = relationRepo.getAll().map { it.relationInfo.substance }.map { it.removeAccents() }
+    val relationsNorm = relationRepo.getAll().map { it.relationInfo.substance }
+    Log.d("Relation", relationsNorm.toString())
     Log.d("Relation", substanceNames.toString())
     for (substance in substanceNames) {
-        if (relations.contains(substance)) {
+        val substanceCheck = substance.removeAccents()
+        if (relationsNoAccent.contains(substanceCheck)) {
             //On cherche si il y a intéraction avec un autre produit
             //Interactions est une liste de substance
             Log.d("GuegueTest", "ça rentre dans la boucle = relation trouvée")
-            val interactions = relationRepo.getBySubstance(substance)
+            val index = relationsNoAccent.indexOf(substanceCheck)
+            Log.d("GuegueTest", "Substance qui pose problème : ${relationsNorm[index]}")
+            val interactions = relationRepo.getBySubstance(relationsNorm[index])
                 .map { it.interactions }
                 .flatten()
                 .map { it.substance }
+                .map { it.removeAccents() }
+
+
             Log.d("GuegueTest", "voici les interactions : $interactions")
-            for (prescription in prescriptions) {
+
+            for (prescription in prescriptions.dropLast(1)) {
+                Log.d("GuegueTest", "taille de prescription : ${prescriptions.dropLast(1).size}")
                 Log.d("GuegueTest", "ça rentre dans la boucle2")
-                val prescriptionSubstanceNames = prescription.medication?.medicationCompositions?.map { it.substanceName }
+                val prescriptionSubstanceNames = prescription.medication?.medicationCompositions?.map { it.substanceName } ?.map { it.removeAccents() }
                 if (!prescriptionSubstanceNames.isNullOrEmpty()) {
+                    Log.d("GuegueTest", "prescriptionSubstanceNames : $prescriptionSubstanceNames")
                     for (prescriptionSubstance in prescriptionSubstanceNames) {
                         if (interactions.contains(prescriptionSubstance)) {
+                            Log.d("GuegueTest", "aie aie aie")
                             return withContext(Dispatchers.IO) {
                                 true
                             }
@@ -263,11 +274,30 @@ suspend fun controlRelation(
                     }
                 }
             }
+
         }
     }
     return withContext(Dispatchers.IO) {
         false
     }
+}
+
+fun String.removeAccents(): String {
+    return this
+        .replace("é".uppercase(), "E")
+        .replace("è".uppercase(), "E")
+    .replace("ê".uppercase(), "E")
+        .replace("à".uppercase(), "A")
+        .replace("â".uppercase(), "A")
+        .replace("ù".uppercase(), "U")
+        .replace("û".uppercase(), "U")
+        .replace("ô".uppercase(), "O")
+        .replace("î".uppercase(), "I")
+        .replace("ï".uppercase(), "I")
+        .replace("ç".uppercase(), "C")
+        .replace("ë".uppercase(), "E")
+        .replace("ü".uppercase(), "U")
+        .replace("ö".uppercase(), "O")
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)

@@ -11,6 +11,10 @@ class RelationRepository(contexte : Context) : Repository(contexte) {
         return db.RelationsDAO().getAll()
     }
 
+    fun getById(id: Long): Relations {
+        return db.RelationsDAO().getById(id)
+    }
+
     fun getBySubstance(substance: String): List<Relations> {
         return db.RelationsDAO().getBySubstance(substance)
     }
@@ -21,6 +25,8 @@ class RelationRepository(contexte : Context) : Repository(contexte) {
         relation.interactions.forEach {
             it.relationInfoId = id
         }
+
+        db.InteractionsDAO().insert(relation.interactions)
 
         return id
     }
