@@ -116,8 +116,10 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     ksp("androidx.room:room-compiler:2.5.2")
 
-    // Gson
+    // Gson / Moshi
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
+
 
     // QRcode
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
