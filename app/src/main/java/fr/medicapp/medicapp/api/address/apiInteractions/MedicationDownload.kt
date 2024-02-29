@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.api.address.apiInteractions
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
@@ -10,19 +11,22 @@ import com.google.gson.reflect.TypeToken
 import fr.medicapp.medicapp.api.address.APIAddressClient
 import fr.medicapp.medicapp.database.converter.LocalDateTypeAdapter
 import fr.medicapp.medicapp.database.repositories.medication.MedicationRepository
+import fr.medicapp.medicapp.database.repositories.relations.RelationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
+import fr.medicapp.medicapp.model.gson.RelationGSON
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import java.time.LocalDate
 
-@OptIn(DelicateCoroutinesApi::class)
 class MedicationDownload(
     private val context: Context
 ) {
     /**
      * Thread en background pour le téléchargement des données
      */
-    private lateinit var gBackgroundThread: HandlerThread
+    private var gBackgroundThread: HandlerThread = HandlerThread("MedicationDownload")
 
     /**
      * Gestionnaire des tâches en background
@@ -32,13 +36,12 @@ class MedicationDownload(
     /**
      * Accès aux donnés sauvegardées dans le téléphone
      */
-    val sharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
 
     /**
      * Initialisation du thread en background
      */
     init {
-        gBackgroundThread = HandlerThread("MedicationDownload")
         gBackgroundThread.start()
         gHandler = Handler(gBackgroundThread.looper)
 
@@ -47,10 +50,12 @@ class MedicationDownload(
             if (sharedPreferences.getInt("totalMedication", 0) == 0) {
                 getTotalData()
             }
+            downloadRelations()
             download()
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @WorkerThread
     fun download() {
         val medicationRepository = MedicationRepository(context)
@@ -64,23 +69,25 @@ class MedicationDownload(
             if (response.isSuccessful) {
                 val allMedsJsonArray = response.body()!!
 
-                val gson = GsonBuilder()
-                    .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
-                    .create()
+                GlobalScope.launch {
+                    val gson = GsonBuilder()
+                        .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                        .create()
 
-                val listType: Type = object : TypeToken<List<MedicationGSON>>() {}.type
+                    val listType: Type = object : TypeToken<List<MedicationGSON>>() {}.type
 
-                val medications: List<MedicationGSON> =
-                    gson.fromJson(allMedsJsonArray, listType)
+                    val medications: List<MedicationGSON> =
+                        gson.fromJson(allMedsJsonArray, listType)
 
-                // Mapper et convertir les données en MedicationEntity
-                val medicationEntities = medications.map { it.toMedication() }
-                MedicationRepository(context).getAll().count().let {
-                    updateDownloadCountInSharedPreferences(it)
+                    // Mapper et convertir les données en MedicationEntity
+                    val medicationEntities = medications.map { it.toMedication() }
+                    MedicationRepository(context).getAll().count().let {
+                        updateDownloadCountInSharedPreferences(it)
+                    }
+                    // Enregistrer les MedicationEntity
+                    medicationRepository.insert(medicationEntities)
+                    sharedPreferences.edit().putInt("medicationPage", page).apply()
                 }
-                // Enregistrer les MedicationEntity
-                medicationRepository.insert(medicationEntities)
-                sharedPreferences.edit().putInt("medicationPage", page).apply()
 
                 page += 1
             } else if (response.code() == 409) {
@@ -98,6 +105,39 @@ class MedicationDownload(
     }
 
     @WorkerThread
+    fun downloadRelations() {
+
+        val dl = sharedPreferences.getBoolean("isRelationDownloaded", false)
+        if (!dl) {
+            Log.d("GuegueApi", "On télécharge les relations")
+            val apiService = APIAddressClient().apiServiceGuewen
+            val response = apiService.getRelations().execute()
+            if (response.isSuccessful) {
+                val allRelJsonArray = response.body()!!
+                Log.d("GuegueApi", "Les données sont téléchargées")
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                    .create()
+
+                val listType: Type = object : TypeToken<List<RelationGSON>>() {}.type
+
+                val relations: List<RelationGSON> =
+                    gson.fromJson(allRelJsonArray, listType)
+
+                // Mapper et convertir les données en MedicationEntity
+                val relationsEntities = relations.map { it.toRelations() }
+
+                // Enregistrer les RelationsEntity
+                RelationRepository(context).insert(relationsEntities)
+                Log.d("GuegueApi", "Les relations sont enregistrées")
+                sharedPreferences.edit().putBoolean("isRelationDownloaded", true).apply()
+            } else {
+                Log.e("ObjectBox", "Error while fetching relations")
+            }
+        }
+    }
+
+    @WorkerThread
     fun getTotalData() {
         val sharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
         val apiService = APIAddressClient().apiServiceGuewen
@@ -109,7 +149,7 @@ class MedicationDownload(
         }
     }
 
-    fun updateDownloadCountInSharedPreferences(countDownload: Int) {
+    private fun updateDownloadCountInSharedPreferences(countDownload: Int) {
         sharedPreferences.edit().putInt("downloadCount", countDownload).apply()
     }
 }

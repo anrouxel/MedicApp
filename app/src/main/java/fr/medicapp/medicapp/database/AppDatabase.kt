@@ -31,6 +31,8 @@ import fr.medicapp.medicapp.database.dao.prescription.NotificationDAO
 import fr.medicapp.medicapp.database.dao.prescription.PrescriptionDAO
 import fr.medicapp.medicapp.database.dao.prescription.SideEffectDAO
 import fr.medicapp.medicapp.database.dao.prescription.crossRef.NotificationAlarmCrossRefDAO
+import fr.medicapp.medicapp.database.dao.relations.InteractionsDAO
+import fr.medicapp.medicapp.database.dao.relations.RelationsDAO
 import fr.medicapp.medicapp.model.User
 import fr.medicapp.medicapp.model.medication.GenericGroup
 import fr.medicapp.medicapp.model.medication.HasAsmrOpinionInformation
@@ -51,6 +53,8 @@ import fr.medicapp.medicapp.model.prescription.NotificationInformation
 import fr.medicapp.medicapp.model.prescription.PrescriptionInformation
 import fr.medicapp.medicapp.model.prescription.SideEffectInformation
 import fr.medicapp.medicapp.model.prescription.relationship.crossRef.NotificationAlarmCrossRef
+import fr.medicapp.medicapp.model.relations.Interactions
+import fr.medicapp.medicapp.model.relations.RelationInfo
 
 /**
  * Cette classe représente la base de données de l'application.
@@ -76,7 +80,9 @@ import fr.medicapp.medicapp.model.prescription.relationship.crossRef.Notificatio
         HasAsmrOpinionTransparencyCommissionOpinionLinksCrossRef::class,
         HasSmrOpinionTransparencyCommissionOpinionLinksCrossRef::class,
         NotificationAlarmCrossRef::class,
-        User::class
+        User::class,
+        RelationInfo::class,
+        Interactions::class
     ],
     version = 1,
     exportSchema = false
@@ -129,6 +135,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO(): HasSmrOpinionTransparencyCommissionOpinionLinksCrossRefDAO
 
     abstract fun userDAO(): UserDAO
+
+    abstract fun RelationsDAO(): RelationsDAO
+
+    abstract fun InteractionsDAO(): InteractionsDAO
 
     companion object {
 
