@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -14,6 +15,8 @@ import fr.medicapp.medicapp.ui.components.screen.Loading
 import fr.medicapp.medicapp.ui.screen.user.UserEditAllergy
 import fr.medicapp.medicapp.ui.screen.user.UserEditGeneralInformation
 import fr.medicapp.medicapp.viewModel.SharedUserEditViewModel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 /**
  * Cette fonction construit le graphe de navigation pour l'écran utilisateur.
@@ -68,10 +71,20 @@ fun NavGraphBuilder.userNavGraph(
             LaunchedEffect(Unit) {
                 val sharedPreferences =
                     context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
-                snapshotFlow {
-                    sharedPreferences.getBoolean("isDataDownloaded", false)
-                }.collect {
-                    if(it) {
+                callbackFlow {
+                    val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                        if (key == "isDataDownloaded") {
+                            this.trySend(sharedPreferences.getBoolean(key, false)).isSuccess
+                        }
+                    }
+                    sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+                    awaitClose {
+                        sharedPreferences.unregisterOnSharedPreferenceChangeListener(
+                            listener
+                        )
+                    }
+                }.collect { isDataDownloaded ->
+                    if (isDataDownloaded) {
                         Log.d("Guegueintervention", "ça change !!!!!!!")
                         navController.navigate(Graph.HOME) {
                             popUpTo(Graph.HOME) {

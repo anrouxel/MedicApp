@@ -28,7 +28,7 @@ class SharedDoctorDetailViewModel(
     )
     val sharedState: StateFlow<Doctor> = _sharedState
 
-    fun loadDoctor(id : Long) {
+    fun loadDoctor(id: Long) {
         DoctorsSearch().searchDoctor(id) {
             _sharedState.value = it.first()
         }

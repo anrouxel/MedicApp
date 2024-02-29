@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.ai.tokenization
 
+import fr.medicapp.medicapp.tokenization.BasicTokenizer
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

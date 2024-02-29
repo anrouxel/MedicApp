@@ -97,7 +97,7 @@ fun DoctorItem(
     onDoctorClick: (Long) -> Unit
 ) {
     ReusableElevatedCardButton(
-        onClick = {onDoctorClick(doctor.nationalId) }
+        onClick = { onDoctorClick(doctor.nationalId) }
     ) {
         CardContent(
             title = "${doctor.civilCodeEx} ${doctor.firstName} ${doctor.lastName}",
