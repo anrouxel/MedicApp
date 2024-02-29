@@ -31,12 +31,13 @@ class MedicationDownload(
     /**
      * Gestionnaire des tâches en background
      */
-    private lateinit var gHandler: Handler
+    private var gHandler: Handler
 
     /**
      * Accès aux donnés sauvegardées dans le téléphone
      */
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
 
     /**
      * Initialisation du thread en background
