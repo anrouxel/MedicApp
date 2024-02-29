@@ -53,7 +53,7 @@ data class Prescription(
     val sideEffects: MutableList<SideEffectInformation> = mutableStateListOf()
 ) {
     override fun toString(): String {
-        return medication!!.medicationInformation.name
+        return medication?.medicationInformation?.name ?: "Aucun médicament associé à cette ordonnance"
     }
 
     fun toOptionDialog(): OptionDialog {

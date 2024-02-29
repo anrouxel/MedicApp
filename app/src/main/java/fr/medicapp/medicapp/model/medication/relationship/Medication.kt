@@ -21,56 +21,56 @@ data class Medication(
     @Relation(
         entity = MedicationComposition::class,
         parentColumn = "medication_id",
-        entityColumn = "medication_composition_id",
+        entityColumn = "medication_id",
     )
     val medicationCompositions: MutableList<MedicationComposition> = mutableStateListOf(),
 
     @Relation(
         entity = MedicationPresentation::class,
         parentColumn = "medication_id",
-        entityColumn = "medication_presentation_id",
+        entityColumn = "medication_id",
     )
     val medicationPresentations: MutableList<MedicationPresentation> = mutableStateListOf(),
 
     @Relation(
         entity = GenericGroup::class,
         parentColumn = "medication_id",
-        entityColumn = "generic_group_id",
+        entityColumn = "medication_id",
     )
     val genericGroups: MutableList<GenericGroup> = mutableStateListOf(),
 
     @Relation(
         entity = HasSmrOpinionInformation::class,
         parentColumn = "medication_id",
-        entityColumn = "has_smr_opinion_id",
+        entityColumn = "medication_id",
     )
     val hasSmrOpinions: MutableList<HasSmrOpinion> = mutableStateListOf(),
 
     @Relation(
         entity = HasAsmrOpinionInformation::class,
         parentColumn = "medication_id",
-        entityColumn = "has_asmr_opinion_id",
+        entityColumn = "medication_id",
     )
     val hasAsmrOpinions: MutableList<HasAsmrOpinion> = mutableStateListOf(),
 
     @Relation(
         entity = ImportantInformation::class,
         parentColumn = "medication_id",
-        entityColumn = "important_information_id",
+        entityColumn = "medication_id",
     )
     val importantInformations: MutableList<ImportantInformation> = mutableStateListOf(),
 
     @Relation(
         entity = PrescriptionDispensingConditions::class,
         parentColumn = "medication_id",
-        entityColumn = "prescription_dispensing_conditions_id",
+        entityColumn = "medication_id",
     )
     val prescriptionDispensingConditions: MutableList<PrescriptionDispensingConditions> = mutableStateListOf(),
 
     @Relation(
         entity = PharmaceuticalSpecialty::class,
         parentColumn = "medication_id",
-        entityColumn = "pharmaceutical_specialty_id",
+        entityColumn = "medication_id",
     )
     val pharmaceuticalSpecialties: MutableList<PharmaceuticalSpecialty> = mutableStateListOf()
 ) {
