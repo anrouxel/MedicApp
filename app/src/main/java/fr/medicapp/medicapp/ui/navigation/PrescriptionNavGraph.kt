@@ -131,7 +131,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             if (uri == null) {
                 navController.popBackStack()
             } else {
-                Gecko(uri = "https://google.com")
+                Gecko(uri = uri)
             }
         }
     }
