@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.medicapp.medicapp.model.prescription.Doctor
+import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.button.ReusableElevatedCardButton
 import fr.medicapp.medicapp.ui.components.card.CardContent
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
@@ -45,16 +48,24 @@ fun DoctorHome(
             value = doctor.value,
             onValueChange = {
                 doctor.value = it
-                if (it.length > 3) {
-                    isLoading.value = true
-                    viewModel.searchLittleDoctor(it) {
-                        isLoading.value = false
-                    }
-                }
             },
-            label = "Rechercher"
+            label = "Nom du médecin"
         )
         Spacer(modifier = Modifier.padding(10.dp))
+
+        ReusableButton(
+            text = "Rechercher",
+            icon = Icons.Filled.Search,
+            onClick = {
+                isLoading.value = true
+                viewModel.searchLittleDoctor(doctor.value) {
+                    isLoading.value = false
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.padding(10.dp))
+
         if (isLoading.value) {
             CircularProgressIndicator(
                 modifier = Modifier
@@ -123,20 +134,6 @@ private fun NoDoctorFound() {
 @Preview
 @Composable
 fun DoctorHomePreview() {
-    val doctors = mutableListOf(
-        Doctor(
-            civilCodeEx = "DR",
-            firstName = "Jean",
-            lastName = "Mottu",
-            professionLabel = "Médecin/Beta Testeur"
-        ),
-        Doctor(
-            civilCodeEx = "DR",
-            firstName = "Willy",
-            lastName = "Wonka",
-            professionLabel = "Fraude"
-        )
-    )
     MedicAppTheme(
         darkTheme = false,
         dynamicColor = false,
@@ -151,7 +148,6 @@ fun DoctorHomePreview() {
 @Preview
 @Composable
 fun DoctorHomeDarkPreview() {
-    val doctors = mutableListOf<Doctor>()
     MedicAppTheme(
         darkTheme = true,
         dynamicColor = false,

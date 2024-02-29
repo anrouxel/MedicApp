@@ -128,7 +128,6 @@ fun PrescriptionEditInformation(
                             },
                             value = state.doctor,
                             label = "Docteur",
-                            warnings = state.doctor == null
                         ) {
                             viewModel.updateDoctor(it, context)
                         }

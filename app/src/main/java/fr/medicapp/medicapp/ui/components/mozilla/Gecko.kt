@@ -9,14 +9,14 @@ import fr.medicapp.medicapp.mozilla.GeckoManager
 
 @Composable
 fun Gecko(
-    url: String
+    uri: String
 ) {
     val context = LocalContext.current
 
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = {
-            GeckoManager.newGeckoView(context, url)
+            GeckoManager.newGeckoView(context, uri)
         }
     )
 }

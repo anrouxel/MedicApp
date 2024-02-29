@@ -1,6 +1,7 @@
 package fr.medicapp.medicapp.ui.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -9,11 +10,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.google.gson.Gson
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.ui.components.mozilla.Gecko
+import fr.medicapp.medicapp.ui.screen.medication.MedicationDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionDetail
 import fr.medicapp.medicapp.ui.screen.prescription.PrescriptionHome
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
+import fr.medicapp.medicapp.viewModel.SharedMedicationDetailViewModel
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionDetailViewModel
 
 /**
@@ -80,6 +85,14 @@ fun NavGraphBuilder.prescriptionNavGraph(
                 viewModel = viewModel,
                 onRemovePrescriptionClick = {
                     navController.popBackStack()
+                },
+                onMedicationClick = {
+                    navController.navigate(
+                        PrescriptionRoute.MedicationDetailRoute.route.replace(
+                            "{id}",
+                            it.toString()
+                        )
+                    )
                 }
             )
         }
@@ -87,6 +100,40 @@ fun NavGraphBuilder.prescriptionNavGraph(
         prescriptionEditNavGraph(
             navController = navController,
         )
+
+        composable(route = PrescriptionRoute.MedicationDetailRoute.route) {
+            val id = it.arguments?.getString("id")?.toLongOrNull()
+
+            val viewModel =
+                it.sharedViewModel<SharedMedicationDetailViewModel>(navController = navController)
+
+            val context = LocalContext.current
+
+            if (id != null) {
+                LaunchedEffect(key1 = id) {
+                    viewModel.loadMedication(context = context, id = id)
+                }
+            } else {
+                navController.popBackStack()
+            }
+
+            MedicationDetail(
+                viewModel = viewModel,
+                onMoreInformationClick = {
+                    navController.navigate(PrescriptionRoute.GeckoRoute.route.replace("{url}", viewModel.getMedicationUrl().toString()))
+                }
+            )
+        }
+
+        composable(route = PrescriptionRoute.GeckoRoute.route) {
+            val uri = it.arguments?.getString("url")
+            Log.d("test", "prescriptionNavGraph: $uri")
+            if (uri == null) {
+                navController.popBackStack()
+            } else {
+                Gecko(uri = "https://google.com")
+            }
+        }
     }
 }
 
@@ -108,4 +155,14 @@ sealed class PrescriptionRoute(val route: String) {
      * Route pour ajouter une nouvelle prescription.
      */
     object PrescriptionEditRoute : PrescriptionRoute(route = "prescription_edit")
+
+    /**
+     * Route pour afficher les détails d'un médicament.
+     */
+    object MedicationDetailRoute : PrescriptionRoute(route = "medication_detail/{id}")
+
+    /**
+     * Route pour afficher une page web.
+     */
+    object GeckoRoute : PrescriptionRoute(route = "gecko?url={url}")
 }

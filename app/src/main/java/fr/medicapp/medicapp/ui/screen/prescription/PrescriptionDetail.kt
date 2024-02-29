@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -33,6 +36,7 @@ import kotlinx.coroutines.launch
 fun PrescriptionDetail(
     viewModel: SharedPrescriptionDetailViewModel,
     onRemovePrescriptionClick: () -> Unit,
+    onMedicationClick: (Long) -> Unit,
 ) {
     val state = viewModel.sharedState.collectAsState()
     val context = LocalContext.current
@@ -61,9 +65,30 @@ fun PrescriptionDetail(
                     modifier = Modifier.padding(10.dp)
                 ) {
                     state.value.medication?.let {
-                        ReusableTextMediumCard(
-                            value = "Médicament : $it",
-                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            ReusableTextMediumCard(
+                                modifier = Modifier.fillMaxWidth().weight(1f),
+                                value = "Médicament : $it",
+                            )
+
+                            IconButton(
+                                onClick = {
+                                    onMedicationClick(
+                                        state.value.medication!!.medicationInformation.id
+                                    )
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Info,
+                                    contentDescription = "Information sur le médicament",
+                                )
+                            }
+                        }
                     }
 
                     Spacer(modifier = Modifier.padding(10.dp))
