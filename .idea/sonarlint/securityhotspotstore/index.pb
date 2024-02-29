@@ -289,8 +289,6 @@ u
 Eapp/src/main/java/fr/medicapp/medicapp/ui/screen/doctor/DoctorHome.kt,f\0\f0d21942b3e9d1910bd4ff8a90e435a2c7b81c84
 s
 Capp/src/main/java/fr/medicapp/medicapp/ui/screen/home/HomeScreen.kt,7\4\742cc0308f2f72ae191716529cb4765682de0110
-y
-Iapp/src/main/java/fr/medicapp/medicapp/ui/screen/loading/LoadingScreen.kt,d\8\d8bcf1b2016b04d36dfeec4ad858704bd19ba6dc
 
 Oapp/src/main/java/fr/medicapp/medicapp/ui/screen/medication/MedicationDetail.kt,5\6\567c7e5ded257a7e953d3768de56bc25f4688f5a
 ƒ
@@ -373,8 +371,6 @@ Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a\0\a0
 Lapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/WordpieceTokenizer.kt,e\6\e6b3b79026807cdcf2ff34f73f18e2c1d2df91e9
 ƒ
 Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedMedicationDetailViewModel.kt,7\6\7626aa293360b1608e28ef735a993fc67f35c0d3
-~
-Napp/src/main/java/fr/medicapp/medicapp/ui/screen/loading/LoadingSnakeScreen.kt,0\4\042ac74351581775e9b406eb469d1b7c3bae3b7b
 {
 Kapp/src/main/java/fr/medicapp/medicapp/ui/components/screen/LoadingSnake.kt,c\3\c3ae48982eab2a00291d6c268311fdbab8e022c7
 “

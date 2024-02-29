@@ -84,13 +84,14 @@ class MedicationDownload(
                 }
                 // Enregistrer les MedicationEntity
                 medicationRepository.insert(medicationEntities)
-                sharedPreferences.edit().putInt("medicationPage", page).apply()
-
                 page += 1
+                sharedPreferences.edit().putInt("medicationPage", page).apply()
             } else if (response.code() == 409) {
                 continuer = false
                 Log.d("ObjectBox", "Fin du téléchargement des médicaments")
                 sharedPreferences.edit().putBoolean("isDataDownloaded", true).apply()
+                page += 1
+                sharedPreferences.edit().putInt("medicationPage", page).apply()
             } else {
                 continuer = false
                 val errorBody = response.errorBody()?.string()

@@ -32,6 +32,6 @@ class SharedMedicationDetailViewModel(
     }
 
     fun getMedicationUrl(): Uri {
-        return Uri.parse("https://data.ansm.sante.fr/specialite/${_sharedState.value!!.medicationInformation.cisCode}")
+        return Uri.parse("https://base-donnees-publique.medicaments.gouv.fr/extrait.php?specid=${_sharedState.value!!.medicationInformation.cisCode}")
     }
 }
