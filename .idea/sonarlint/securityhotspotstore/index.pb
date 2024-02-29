@@ -371,11 +371,5 @@ w
 Gapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/FullTokenizer.kt,a\0\a0f4f2d1a4ab8fe57559abc4c15cff11491f6861
 |
 Lapp/src/main/java/fr/medicapp/medicapp/ai/tokenization/WordpieceTokenizer.kt,e\6\e6b3b79026807cdcf2ff34f73f18e2c1d2df91e9
-z
-Japp/src/main/java/fr/medicapp/medicapp/ui/navigation/MedicationNavGraph.kt,1\f\1f699654a7f47df78b3d34147147102e5313adb0
 ƒ
 Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedMedicationDetailViewModel.kt,7\6\7626aa293360b1608e28ef735a993fc67f35c0d3
-|
-Lapp/src/main/java/fr/medicapp/medicapp/model/serialisable/UriSerializable.kt,6\c\6ce5bbf0aa666494fee689e8c79fd41751ec92dd
-|
-Lapp/src/main/java/fr/medicapp/medicapp/model/serializable/UriSerializable.kt,b\0\b0d355bfad29d946502bfa78516e309fd596539c

@@ -1,12 +1,10 @@
 package fr.medicapp.medicapp.database.repositories.relations
 
 import android.content.Context
-import androidx.room.Relation
 import fr.medicapp.medicapp.database.repositories.Repository
-import fr.medicapp.medicapp.model.relations.Interactions
 import fr.medicapp.medicapp.model.relations.crossRef.Relations
 
-class RelationRepository(contexte : Context) : Repository(contexte) {
+class RelationRepository(contexte: Context) : Repository(contexte) {
     fun getAll(): List<Relations> {
         return db.RelationsDAO().getAll()
     }
@@ -38,7 +36,7 @@ class RelationRepository(contexte : Context) : Repository(contexte) {
         return relations.map { it.relationInfo.id }
     }
 
-    fun delete(relation : Relations) {
+    fun delete(relation: Relations) {
         relation.interactions.forEach {
             db.InteractionsDAO().delete(it)
         }

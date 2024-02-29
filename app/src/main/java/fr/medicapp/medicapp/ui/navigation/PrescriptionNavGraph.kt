@@ -10,7 +10,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.google.gson.Gson
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.components.mozilla.Gecko
@@ -120,7 +119,12 @@ fun NavGraphBuilder.prescriptionNavGraph(
             MedicationDetail(
                 viewModel = viewModel,
                 onMoreInformationClick = {
-                    navController.navigate(PrescriptionRoute.GeckoRoute.route.replace("{url}", viewModel.getMedicationUrl().toString()))
+                    navController.navigate(
+                        PrescriptionRoute.GeckoRoute.route.replace(
+                            "{url}",
+                            viewModel.getMedicationUrl().toString()
+                        )
+                    )
                 }
             )
         }
@@ -131,7 +135,7 @@ fun NavGraphBuilder.prescriptionNavGraph(
             if (uri == null) {
                 navController.popBackStack()
             } else {
-                Gecko(uri = "https://google.com")
+                Gecko(uri = uri)
             }
         }
     }

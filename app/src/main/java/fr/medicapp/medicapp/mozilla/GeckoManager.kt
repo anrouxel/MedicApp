@@ -19,9 +19,9 @@ object GeckoManager {
 
     fun geckoSessionSettings(): GeckoSessionSettings {
         return GeckoSessionSettings().apply {
-            this.useTrackingProtection = true
+            /*this.useTrackingProtection = true
             this.userAgentMode = GeckoSessionSettings.USER_AGENT_MODE_MOBILE
-            this.allowJavascript = true
+            this.allowJavascript = true*/
         }
     }
 

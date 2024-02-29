@@ -13,7 +13,7 @@ interface RelationsDAO {
 
     @Transaction
     @Query("SELECT * FROM RelationInfo")
-    fun getAll() : List<Relations>
+    fun getAll(): List<Relations>
 
     @Transaction
     @Query("SELECT * FROM RelationInfo WHERE relation_info_id = :id")

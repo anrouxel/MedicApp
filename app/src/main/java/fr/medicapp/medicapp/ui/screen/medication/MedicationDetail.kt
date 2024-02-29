@@ -16,7 +16,6 @@ import fr.medicapp.medicapp.ui.components.button.ReusableButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Detail
 import fr.medicapp.medicapp.ui.components.text.ReusableTextMediumCard
-import fr.medicapp.medicapp.ui.navigation.Graph
 import fr.medicapp.medicapp.ui.theme.EURedColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import fr.medicapp.medicapp.viewModel.SharedMedicationDetailViewModel
@@ -44,8 +43,14 @@ fun MedicationDetail(
                             state.value!!.medicationInformation.administrationRoutes.joinToString()
                         ),
                         Pair("Code CIS", state.value!!.medicationInformation.cisCode.toString()),
-                        Pair("Informations Importantes", state.value!!.importantInformations.joinToString()),
-                        Pair("Forme pharmaceutique", state.value!!.medicationInformation.pharmaceuticalForm),
+                        Pair(
+                            "Informations Importantes",
+                            state.value!!.importantInformations.joinToString()
+                        ),
+                        Pair(
+                            "Forme pharmaceutique",
+                            state.value!!.medicationInformation.pharmaceuticalForm
+                        ),
                         Pair("Composition", state.value!!.medicationCompositions.joinToString()),
                         Pair(
                             "Conditions de délivrance des ordonnances",
@@ -73,7 +78,10 @@ fun MedicationDetail(
                             state.value!!.medicationInformation.marketingAuthorizationDate.toString()
                         ),
                         Pair("Status BDM", state.value!!.medicationInformation.bdmStatus),
-                        Pair("Détenteurs", state.value!!.medicationInformation.holders.joinToString()),
+                        Pair(
+                            "Détenteurs",
+                            state.value!!.medicationInformation.holders.joinToString()
+                        ),
                         Pair(
                             "Surveillance renforcée",
                             state.value!!.medicationInformation.enhancedMonitoring.toString()

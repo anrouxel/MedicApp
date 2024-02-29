@@ -6,7 +6,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -53,15 +52,7 @@ fun NavGraphBuilder.userNavGraph(
             UserEditAllergy(
                 viewModel = viewModel,
                 onClick = {
-                    if (isDownload) {
-                        navController.navigate(Graph.HOME) {
-                            popUpTo(Graph.HOME) {
-                                inclusive = true
-                            }
-                        }
-                    } else {
-                        navController.navigate(UserRoute.LoadingScreenRoute.route)
-                    }
+                    isDownloaded(isDownload, navController)
                 }
             )
         }
@@ -102,4 +93,16 @@ sealed class UserRoute(val route: String) {
     object UserGeneralInformationRoute : UserRoute("user_general_information")
     object UserAllergyRoute : UserRoute("user_allergy")
     object LoadingScreenRoute : UserRoute("loading_screen")
+}
+
+fun isDownloaded(isDownload: Boolean, navController: NavHostController) {
+    if (isDownload) {
+        navController.navigate(Graph.HOME) {
+            popUpTo(Graph.HOME) {
+                inclusive = true
+            }
+        }
+    } else {
+        navController.navigate(UserRoute.LoadingScreenRoute.route)
+    }
 }

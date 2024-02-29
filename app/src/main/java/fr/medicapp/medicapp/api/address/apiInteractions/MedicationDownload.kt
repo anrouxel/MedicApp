@@ -31,12 +31,13 @@ class MedicationDownload(
     /**
      * Gestionnaire des tâches en background
      */
-    private lateinit var gHandler: Handler
+    private var gHandler: Handler
 
     /**
      * Accès aux donnés sauvegardées dans le téléphone
      */
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
 
     /**
      * Initialisation du thread en background
@@ -69,25 +70,23 @@ class MedicationDownload(
             if (response.isSuccessful) {
                 val allMedsJsonArray = response.body()!!
 
-                GlobalScope.launch {
-                    val gson = GsonBuilder()
-                        .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
-                        .create()
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(LocalDate::class.java, LocalDateTypeAdapter())
+                    .create()
 
-                    val listType: Type = object : TypeToken<List<MedicationGSON>>() {}.type
+                val listType: Type = object : TypeToken<List<MedicationGSON>>() {}.type
 
-                    val medications: List<MedicationGSON> =
-                        gson.fromJson(allMedsJsonArray, listType)
+                val medications: List<MedicationGSON> =
+                    gson.fromJson(allMedsJsonArray, listType)
 
-                    // Mapper et convertir les données en MedicationEntity
-                    val medicationEntities = medications.map { it.toMedication() }
-                    MedicationRepository(context).getAll().count().let {
-                        updateDownloadCountInSharedPreferences(it)
-                    }
-                    // Enregistrer les MedicationEntity
-                    medicationRepository.insert(medicationEntities)
-                    sharedPreferences.edit().putInt("medicationPage", page).apply()
+                // Mapper et convertir les données en MedicationEntity
+                val medicationEntities = medications.map { it.toMedication() }
+                MedicationRepository(context).getAll().count().let {
+                    updateDownloadCountInSharedPreferences(it)
                 }
+                    // Enregistrer les MedicationEntity
+                medicationRepository.insert(medicationEntities)
+                sharedPreferences.edit().putInt("medicationPage", page).apply()
 
                 page += 1
             } else if (response.code() == 409) {

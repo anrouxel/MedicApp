@@ -4,7 +4,7 @@ import android.content.Context
 import fr.medicapp.medicapp.database.repositories.Repository
 import fr.medicapp.medicapp.model.relations.Interactions
 
-class InteractionRepository(contexte : Context) : Repository(contexte) {
+class InteractionRepository(contexte: Context) : Repository(contexte) {
     fun getAll(): List<Interactions> {
         return db.InteractionsDAO().getAll()
     }
@@ -17,7 +17,7 @@ class InteractionRepository(contexte : Context) : Repository(contexte) {
         return db.InteractionsDAO().insert(interactions)
     }
 
-    fun delete(interactions : Interactions) {
+    fun delete(interactions: Interactions) {
         db.InteractionsDAO().delete(interactions)
     }
 }
