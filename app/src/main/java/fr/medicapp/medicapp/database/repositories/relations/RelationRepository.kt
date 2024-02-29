@@ -11,6 +11,10 @@ class RelationRepository(contexte : Context) : Repository(contexte) {
         return db.RelationsDAO().getAll()
     }
 
+    fun getBySubstance(substance: String): List<Relations> {
+        return db.RelationsDAO().getBySubstance(substance)
+    }
+
     fun insert(relation: Relations): Long {
         val id = db.RelationsDAO().insert(relation.relationInfo)
 

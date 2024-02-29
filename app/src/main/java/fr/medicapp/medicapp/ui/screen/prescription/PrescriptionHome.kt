@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.medicapp.medicapp.database.repositories.relations.RelationRepository
 import fr.medicapp.medicapp.model.prescription.Doctor
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
 import fr.medicapp.medicapp.ui.components.button.FloatingActionButtons
@@ -36,6 +37,9 @@ import fr.medicapp.medicapp.ui.components.modal.ConfirmReportModal
 import fr.medicapp.medicapp.ui.components.screen.Home
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -46,8 +50,10 @@ fun PrescriptionHome(
 ) {
     val noPrescriptionDialog = remember { mutableStateOf(false) }
     var alertRedondantOpen by remember { mutableStateOf(false) }
+    var alertRelationOpen by remember { mutableStateOf(false) }
     var isReportModalOpen by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val relations = RelationRepository(context)
     val sharedPrefs = context.getSharedPreferences("medicapp", Context.MODE_PRIVATE)
     val isNewMedicationAdded = sharedPrefs
         .getBoolean("isNewMedicationAdded", false)
@@ -98,14 +104,16 @@ fun PrescriptionHome(
                         } == true
                     } && isNewMedicationAdded
 
+                    alertRelationOpen = withContext(Dispatchers.IO) {
+                        controlRelation(prescriptions.dropLast(1), prescriptions.last(), relations)
+                    }
+
                 }
                 PrescriptionList(
                     prescriptions = prescriptions,
                     onPrescriptionClick = onPrescriptionClick
                 )
-
             }
-
             else -> {
                 PrescriptionList(
                     prescriptions = prescriptions,
@@ -129,6 +137,21 @@ fun PrescriptionHome(
                 confirmText = "Compris",
                 onConfirm = {
                     alertRedondantOpen = false
+                    with(sharedPrefs.edit()) {
+                        putBoolean("isNewMedicationAdded", false)
+                        apply()
+                    }
+                }
+            )
+        }
+        if (alertRelationOpen) {
+            AlertModal(
+                title = "Relation médicamenteuse dangereuse",
+                content = "Attention, le médicament que vous venez de rajouter contient un principe actif qui peut interagir avec un autre médicament déjà présent dans vos traitements.",
+                dismissText = "",
+                confirmText = "Compris",
+                onConfirm = {
+                    alertRelationOpen = false
                     with(sharedPrefs.edit()) {
                         putBoolean("isNewMedicationAdded", false)
                         apply()
@@ -199,6 +222,46 @@ fun NoPrescriptionAvailable() {
             .fillMaxSize()
             .wrapContentHeight(align = Alignment.CenterVertically)
     )
+}
+
+suspend fun controlRelation(
+    prescriptions: List<Prescription>,
+    newPrescription : Prescription,
+    relationRepo : RelationRepository
+): Boolean {
+    val substanceNames = newPrescription.medication?.medicationCompositions?.map { it.substanceName }
+    if (substanceNames.isNullOrEmpty()) {
+        return withContext(Dispatchers.IO) {
+            false
+        }
+    }
+
+    val relations = relationRepo.getAll().map { it.relationInfo.substance }
+    for (substance in substanceNames) {
+        if (relations.contains(substance)) {
+            //On cherche si il y a intéraction avec un autre produit
+            //Interactions est une liste de substance
+            val interactions = relationRepo.getBySubstance(substance)
+                .map { it.interactions }
+                .flatten()
+                .map { it.substance }
+            for (prescription in prescriptions) {
+                val prescriptionSubstanceNames = prescription.medication?.medicationCompositions?.map { it.substanceName }
+                if (!prescriptionSubstanceNames.isNullOrEmpty()) {
+                    for (prescriptionSubstance in prescriptionSubstanceNames) {
+                        if (interactions.contains(prescriptionSubstance)) {
+                            return withContext(Dispatchers.IO) {
+                                true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return withContext(Dispatchers.IO) {
+        false
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)
