@@ -387,13 +387,14 @@ class PrescriptionAI(
                         prescription.medication = medication
                         prescriptions.add(prescription)
                         prescription = Prescription()
+                        query = ""
                     }
                     when (label.removePrefix("B-")) {
                         "Drug" -> query += " $word"
                         "DrugQuantity" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugForm" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugFrequency" -> prescription.prescriptionInformation.posology += " $word"
-                        // "DrugDuration" -> prescription.prescriptionInformation.renew += " $word"
+                        "DrugDuration" -> prescription.prescriptionInformation.renew += " $word"
                     }
                 }
 
@@ -403,7 +404,7 @@ class PrescriptionAI(
                         "DrugQuantity" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugForm" -> prescription.prescriptionInformation.posology += " $word"
                         "DrugFrequency" -> prescription.prescriptionInformation.posology += " $word"
-                        // "DrugDuration" -> treatment.renew += " $word"
+                        "DrugDuration" -> prescription.prescriptionInformation.renew += " $word"
                     }
                 }
             }

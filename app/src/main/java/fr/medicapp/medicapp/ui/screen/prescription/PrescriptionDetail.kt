@@ -102,7 +102,7 @@ fun PrescriptionDetail(
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     ReusableTextMediumCard(
-                        value = "Fréquence : ${state.value.prescriptionInformation.frequency}",
+                        value = "Renouvellement : ${state.value.prescriptionInformation.renew}",
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))

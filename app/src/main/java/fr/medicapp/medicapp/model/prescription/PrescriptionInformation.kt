@@ -13,7 +13,7 @@ data class PrescriptionInformation(
 
     var posology: String = "",
 
-    var frequency: String = "",
+    var renew: String = "",
 
     var takes: MutableList<LocalDateTime> = mutableListOf(),
 

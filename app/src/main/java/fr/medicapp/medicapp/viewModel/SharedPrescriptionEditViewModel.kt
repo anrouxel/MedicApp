@@ -67,7 +67,7 @@ class SharedPrescriptionEditViewModel(
         _sharedState.value[0] =
             _sharedState.value[0].copy(
                 prescriptionInformation = _sharedState.value[0].prescriptionInformation.copy(
-                    frequency = newFrequency
+                    renew = newFrequency
                 )
             )
     }

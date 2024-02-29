@@ -85,7 +85,7 @@ fun PrescriptionEditInformation(
             title = "Ajouter une prescription",
             bottomText = "Suivant",
             onClick = onClick,
-            enabled = state.medication != null && state.prescriptionInformation.posology.isNotEmpty() && state.prescriptionInformation.frequency.isNotEmpty() && state.duration != null
+            enabled = state.medication != null && state.prescriptionInformation.posology.isNotEmpty() && state.prescriptionInformation.renew.isNotEmpty() && state.duration != null
         ) {
             Column {
                 ReusableElevatedCard {
@@ -165,12 +165,12 @@ fun PrescriptionEditInformation(
                         Spacer(modifier = Modifier.padding(10.dp))
 
                         ReusableOutlinedTextField(
-                            value = state.prescriptionInformation.frequency,
+                            value = state.prescriptionInformation.renew,
                             onValueChange = {
                                 viewModel.updateFrequency(it)
                             },
-                            warnings = state.prescriptionInformation.frequency.isEmpty(),
-                            label = "Fréquence"
+                            warnings = state.prescriptionInformation.renew.isEmpty(),
+                            label = "Renouvellement"
                         )
 
                         Spacer(modifier = Modifier.padding(10.dp))

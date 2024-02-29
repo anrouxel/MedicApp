@@ -377,3 +377,5 @@ Sapp/src/main/java/fr/medicapp/medicapp/viewModel/SharedMedicationDetailViewMode
 Napp/src/main/java/fr/medicapp/medicapp/ui/screen/loading/LoadingSnakeScreen.kt,0\4\042ac74351581775e9b406eb469d1b7c3bae3b7b
 {
 Kapp/src/main/java/fr/medicapp/medicapp/ui/components/screen/LoadingSnake.kt,c\3\c3ae48982eab2a00291d6c268311fdbab8e022c7
+“
+capp/src/main/java/fr/medicapp/medicapp/database/repositories/prescription/NotificationRepository.kt,1\e\1e0ed8fad30e53d8dd215c7da2857d0498841f8b
