@@ -88,6 +88,7 @@ fun PrescriptionDetail(
                                 Icon(
                                     imageVector = Icons.Filled.Info,
                                     contentDescription = "Information sur le médicament",
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
