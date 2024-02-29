@@ -31,7 +31,7 @@ class MedicationDownload(
     /**
      * Gestionnaire des tâches en background
      */
-    private lateinit var gHandler: Handler
+    private var gHandler: Handler
 
     /**
      * Accès aux donnés sauvegardées dans le téléphone
