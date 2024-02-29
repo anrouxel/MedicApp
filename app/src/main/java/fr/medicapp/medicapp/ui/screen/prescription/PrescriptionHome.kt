@@ -2,6 +2,7 @@ package fr.medicapp.medicapp.ui.screen.prescription
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -105,7 +106,7 @@ fun PrescriptionHome(
                     } && isNewMedicationAdded
 
                     alertRelationOpen = withContext(Dispatchers.IO) {
-                        controlRelation(prescriptions.dropLast(1), prescriptions.last(), relations)
+                        controlRelation(prescriptions.dropLast(1), relations)
                     }
 
                 }
@@ -226,10 +227,10 @@ fun NoPrescriptionAvailable() {
 
 suspend fun controlRelation(
     prescriptions: List<Prescription>,
-    newPrescription : Prescription,
     relationRepo : RelationRepository
 ): Boolean {
-    val substanceNames = newPrescription.medication?.medicationCompositions?.map { it.substanceName }
+    Log.d("GuegueTest", "ça rentre dans la méthode")
+    val substanceNames = prescriptions.last().medication?.medicationCompositions?.map { it.substanceName }
     if (substanceNames.isNullOrEmpty()) {
         return withContext(Dispatchers.IO) {
             false
@@ -237,15 +238,20 @@ suspend fun controlRelation(
     }
 
     val relations = relationRepo.getAll().map { it.relationInfo.substance }
+    Log.d("Relation", relations.toString())
+    Log.d("Relation", substanceNames.toString())
     for (substance in substanceNames) {
         if (relations.contains(substance)) {
             //On cherche si il y a intéraction avec un autre produit
             //Interactions est une liste de substance
+            Log.d("GuegueTest", "ça rentre dans la boucle = relation trouvée")
             val interactions = relationRepo.getBySubstance(substance)
                 .map { it.interactions }
                 .flatten()
                 .map { it.substance }
+            Log.d("GuegueTest", "voici les interactions : $interactions")
             for (prescription in prescriptions) {
+                Log.d("GuegueTest", "ça rentre dans la boucle2")
                 val prescriptionSubstanceNames = prescription.medication?.medicationCompositions?.map { it.substanceName }
                 if (!prescriptionSubstanceNames.isNullOrEmpty()) {
                     for (prescriptionSubstance in prescriptionSubstanceNames) {
