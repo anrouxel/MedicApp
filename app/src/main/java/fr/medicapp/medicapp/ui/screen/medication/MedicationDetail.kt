@@ -44,58 +44,17 @@ fun MedicationDetail(
                         ),
                         Pair("Code CIS", state.value!!.medicationInformation.cisCode.toString()),
                         Pair(
-                            "Informations Importantes",
-                            state.value!!.importantInformations.joinToString()
-                        ),
-                        Pair(
                             "Forme pharmaceutique",
                             state.value!!.medicationInformation.pharmaceuticalForm
                         ),
-                        Pair("Composition", state.value!!.medicationCompositions.joinToString()),
-                        Pair(
-                            "Conditions de délivrance des ordonnances",
-                            state.value!!.prescriptionDispensingConditions.joinToString()
-                        ),
-                        Pair("Groupe générique", state.value!!.genericGroups.joinToString()),
-                        Pair(
-                            "Numéro d'authorisation européen",
-                            state.value!!.medicationInformation.europeanAuthorizationNumber
-                        ),
-                        Pair(
-                            "Status de l'autorisation de mise sur le marché",
-                            state.value!!.medicationInformation.marketingAuthorizationStatus
-                        ),
-                        Pair(
-                            "Type de procédure d'autorisation de mise sur le marché",
-                            state.value!!.medicationInformation.marketingAuthorizationProcedureType
+                        Pair("Composition",
+                            state.value!!.medicationCompositions.map { it.substanceName }
+                                .joinToString()
                         ),
                         Pair(
                             "Status de commercialisation",
                             state.value!!.medicationInformation.commercializationStatus
                         ),
-                        Pair(
-                            "Date d'autorisation de mise sur le marché",
-                            state.value!!.medicationInformation.marketingAuthorizationDate.toString()
-                        ),
-                        Pair("Status BDM", state.value!!.medicationInformation.bdmStatus),
-                        Pair(
-                            "Détenteurs",
-                            state.value!!.medicationInformation.holders.joinToString()
-                        ),
-                        Pair(
-                            "Surveillance renforcée",
-                            state.value!!.medicationInformation.enhancedMonitoring.toString()
-                        ),
-                        Pair(
-                            "Présentations du médicament",
-                            state.value!!.medicationPresentations.joinToString()
-                        ),
-                        Pair("Avis SMR", state.value!!.hasSmrOpinions.joinToString()),
-                        Pair("Avis ASMR", state.value!!.hasAsmrOpinions.joinToString()),
-                        Pair(
-                            "Spécialités pharmaceutiques",
-                            state.value!!.pharmaceuticalSpecialties.joinToString()
-                        )
                     )
                 )
             }

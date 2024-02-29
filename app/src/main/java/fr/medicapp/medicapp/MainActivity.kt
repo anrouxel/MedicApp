@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import fr.medicapp.medicapp.ai.PrescriptionAI
 import fr.medicapp.medicapp.api.address.apiInteractions.MedicationDownload
 import fr.medicapp.medicapp.mozilla.GeckoManager
-import fr.medicapp.medicapp.ui.components.mozilla.Gecko
 import fr.medicapp.medicapp.ui.navigation.RootNavGraph
 import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
