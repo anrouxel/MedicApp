@@ -15,8 +15,6 @@ import fr.medicapp.medicapp.database.repositories.relations.RelationRepository
 import fr.medicapp.medicapp.model.gson.MedicationGSON
 import fr.medicapp.medicapp.model.gson.RelationGSON
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import java.time.LocalDate
 
@@ -84,7 +82,7 @@ class MedicationDownload(
                 MedicationRepository(context).getAll().count().let {
                     updateDownloadCountInSharedPreferences(it)
                 }
-                    // Enregistrer les MedicationEntity
+                // Enregistrer les MedicationEntity
                 medicationRepository.insert(medicationEntities)
                 sharedPreferences.edit().putInt("medicationPage", page).apply()
 
