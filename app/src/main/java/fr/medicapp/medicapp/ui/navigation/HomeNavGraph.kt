@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fr.medicapp.medicapp.database.repositories.prescription.PrescriptionRepository
 import fr.medicapp.medicapp.model.prescription.relationship.Prescription
+import fr.medicapp.medicapp.ui.components.mozilla.Gecko
 import fr.medicapp.medicapp.ui.screen.home.HomeScreen
 import fr.medicapp.medicapp.ui.screen.root.RootRoute
 

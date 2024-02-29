@@ -71,4 +71,10 @@ sealed class RootRoute(
         title = "Utilisateur",
         icon = Icons.Filled.Settings,
     )
+
+    object RootRouteMedicationRoute : RootRoute(
+        route = "medication",
+        title = "Médicaments",
+        icon = Icons.Filled.Medication,
+    )
 }
