@@ -23,7 +23,7 @@ class DoctorsSearch {
 
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
+                val doctorsList: List<Doctor> = if (response.isSuccessful) {
                     val allDocsJsonArray = response.body()!!
                     Log.d("Docteurs", "Les docteurs sont trouvés !")
 
@@ -35,13 +35,13 @@ class DoctorsSearch {
                     val doctors: List<Doctor> = gson.fromJson(allDocsJsonArray, doctorListType)
 
                     Log.d("Docteurs", "Les docteurs sont trouvés ! : ${doctors.size}")
-                    // Callback on the main thread
-                    return callback(doctors)
+                    doctors
                 } else {
                     Log.d("Docteurs", "Les docteurs ne sont pas trouvés !")
-                    // Callback on the main thread
-                    return callback(emptyList())
+                    emptyList()
                 }
+                // Callback on the main thread
+                return callback(doctorsList)
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {

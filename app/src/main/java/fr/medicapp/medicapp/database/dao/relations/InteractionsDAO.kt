@@ -15,10 +15,10 @@ interface InteractionsDAO {
     fun getAll(): List<Interactions>
 
     @Insert
-    fun insert(interactions: Interactions) : Long
+    fun insert(interactions: Interactions): Long
 
     @Insert
-    fun insert(interactions: List<Interactions>) : List<Long>
+    fun insert(interactions: List<Interactions>): List<Long>
 
     @Delete
     fun delete(interactions: Interactions)

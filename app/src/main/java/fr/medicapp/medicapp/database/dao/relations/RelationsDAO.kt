@@ -13,7 +13,7 @@ interface RelationsDAO {
 
     @Transaction
     @Query("SELECT * FROM RelationInfo")
-    fun getAll() : List<Relations>
+    fun getAll(): List<Relations>
 
     @Insert
     fun insert(relation: RelationInfo): Long
