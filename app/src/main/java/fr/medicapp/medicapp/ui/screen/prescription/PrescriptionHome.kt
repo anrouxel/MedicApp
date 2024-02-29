@@ -40,7 +40,6 @@ import fr.medicapp.medicapp.ui.theme.EUPurpleColorShema
 import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -115,6 +114,7 @@ fun PrescriptionHome(
                     onPrescriptionClick = onPrescriptionClick
                 )
             }
+
             else -> {
                 PrescriptionList(
                     prescriptions = prescriptions,
@@ -227,17 +227,19 @@ fun NoPrescriptionAvailable() {
 
 suspend fun controlRelation(
     prescriptions: List<Prescription>,
-    relationRepo : RelationRepository
+    relationRepo: RelationRepository
 ): Boolean {
     Log.d("GuegueTest", "ça rentre dans la méthode")
-    val substanceNames = prescriptions.last().medication?.medicationCompositions?.map{ it.substanceName }
+    val substanceNames =
+        prescriptions.last().medication?.medicationCompositions?.map { it.substanceName }
     if (substanceNames.isNullOrEmpty()) {
         return withContext(Dispatchers.IO) {
             false
         }
     }
 
-    val relationsNoAccent = relationRepo.getAll().map { it.relationInfo.substance }.map { it.removeAccents() }
+    val relationsNoAccent =
+        relationRepo.getAll().map { it.relationInfo.substance }.map { it.removeAccents() }
     val relationsNorm = relationRepo.getAll().map { it.relationInfo.substance }
     Log.d("Relation", relationsNorm.toString())
     Log.d("Relation", substanceNames.toString())
@@ -261,7 +263,9 @@ suspend fun controlRelation(
             for (prescription in prescriptions.dropLast(1)) {
                 Log.d("GuegueTest", "taille de prescription : ${prescriptions.dropLast(1).size}")
                 Log.d("GuegueTest", "ça rentre dans la boucle2")
-                val prescriptionSubstanceNames = prescription.medication?.medicationCompositions?.map { it.substanceName } ?.map { it.removeAccents() }
+                val prescriptionSubstanceNames =
+                    prescription.medication?.medicationCompositions?.map { it.substanceName }
+                        ?.map { it.removeAccents() }
                 if (!prescriptionSubstanceNames.isNullOrEmpty()) {
                     Log.d("GuegueTest", "prescriptionSubstanceNames : $prescriptionSubstanceNames")
                     for (prescriptionSubstance in prescriptionSubstanceNames) {
@@ -286,7 +290,7 @@ fun String.removeAccents(): String {
     return this
         .replace("é".uppercase(), "E")
         .replace("è".uppercase(), "E")
-    .replace("ê".uppercase(), "E")
+        .replace("ê".uppercase(), "E")
         .replace("à".uppercase(), "A")
         .replace("â".uppercase(), "A")
         .replace("ù".uppercase(), "U")

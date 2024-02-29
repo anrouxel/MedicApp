@@ -43,9 +43,9 @@ fun DoctorHome(
     val doctors by viewModel.doctors.observeAsState(emptyList())
     val isLoading = remember { mutableStateOf(false) }
 
-    Column (
+    Column(
         modifier = Modifier.padding(10.dp)
-    ){
+    ) {
         ReusableOutlinedTextField(
             value = doctor.value,
             onValueChange = {

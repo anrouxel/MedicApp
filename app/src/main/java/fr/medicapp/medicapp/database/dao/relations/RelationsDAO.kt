@@ -17,11 +17,11 @@ interface RelationsDAO {
 
     @Transaction
     @Query("SELECT * FROM RelationInfo WHERE relation_info_id = :id")
-    fun getById(id: Long) : Relations
+    fun getById(id: Long): Relations
 
     @Transaction
     @Query("SELECT * FROM RelationInfo WHERE substance = :substance")
-    fun getBySubstance(substance: String) : List<Relations>
+    fun getBySubstance(substance: String): List<Relations>
 
     @Insert
     fun insert(relation: RelationInfo): Long

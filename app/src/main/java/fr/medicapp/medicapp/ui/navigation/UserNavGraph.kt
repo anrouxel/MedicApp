@@ -60,8 +60,8 @@ fun NavGraphBuilder.userNavGraph(
 
         composable(route = UserRoute.LoadingScreenRoute.route) {
             Loading(
-                title ="Chargement en cours...",
-                text ="Veuillez patienter quelques instants...",
+                title = "Chargement en cours...",
+                text = "Veuillez patienter quelques instants...",
                 onClick = {
                     navController.navigate(UserRoute.LoadingSnakeScreenRoute.route)
                 }
@@ -96,7 +96,7 @@ fun NavGraphBuilder.userNavGraph(
 
         composable(route = UserRoute.LoadingSnakeScreenRoute.route) {
             LoadingSnake(
-                title ="Chargement en cours...",
+                title = "Chargement en cours...",
                 onClick = {
                     navController.popBackStack()
                 }
