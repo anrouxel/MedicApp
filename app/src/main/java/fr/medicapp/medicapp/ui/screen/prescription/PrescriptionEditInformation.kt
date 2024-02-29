@@ -30,6 +30,7 @@ import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedDateRangePicker
 import fr.medicapp.medicapp.ui.components.button.ReusableOutlinedSearchButton
 import fr.medicapp.medicapp.ui.components.card.ReusableElevatedCard
 import fr.medicapp.medicapp.ui.components.screen.Edit
+import fr.medicapp.medicapp.ui.components.screen.Loading
 import fr.medicapp.medicapp.ui.components.textfield.ReusableOutlinedTextField
 import fr.medicapp.medicapp.utils.createImageFile
 import fr.medicapp.medicapp.viewModel.SharedPrescriptionEditViewModel
@@ -188,6 +189,10 @@ fun PrescriptionEditInformation(
             }
         }
     } else {
-        Text("Chargement...")
+        Loading(
+            title = "Traitement de l'ordonnance en cours",
+            text = "Veuillez patienter...",
+            snake = false
+        )
     }
 }

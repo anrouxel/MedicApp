@@ -30,7 +30,8 @@ import fr.medicapp.medicapp.ui.theme.MedicAppTheme
 fun Loading(
     title: String,
     text: String = "Chargement en cours...",
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    snake: Boolean = true
 ) {
     Scaffold(
         topBar = {
@@ -49,13 +50,15 @@ fun Loading(
             )
         },
         bottomBar = {
-            Box(
-                modifier = Modifier.padding(10.dp)
-            ) {
-                ReusableButton(
-                    text = "Jouer au Snake pour patienter",
-                    onClick = onClick
-                )
+            if (snake) {
+                Box(
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    ReusableButton(
+                        text = "Jouer au Snake pour patienter",
+                        onClick = onClick
+                    )
+                }
             }
         }
     ) { innerPadding ->
