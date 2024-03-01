@@ -1,5 +1,6 @@
 package fr.medicapp.medicapp.model.prescription.relationship
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Embedded
 import androidx.room.Relation
@@ -120,7 +121,7 @@ data class Prescription(
                     val dateTime =
                         LocalDateTime.of(date.year, date.month, date.dayOfMonth, hour, minute)
 
-                    if (dateTime.isAfter(LocalDateTime.now())) {
+                    if (dateTime.isAfter(LocalDateTime.now()) && alarms.find { it.id == alarm.id } == null) {
                         alarms.add(
                             AlarmItem(
                                 alarm.id,
