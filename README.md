@@ -78,5 +78,5 @@
 * Android application: [MedicApp](https://github.com/anrouxel/MedicApp#----)
 * C# data cleaner: [MedicAppToolsDatasets](https://github.com/anrouxel/MedicAppToolsDatasets#----)
 * Artificial Intelligence Generator (Named Entity Recognition): [MedicAppAI](https://github.com/anrouxel/MedicAppAI#----)
-* Named Entity Recognition AI model for prescriptions (usable as a sub-module): [MedicAppAssets](https://gitlab.univ-nantes.fr/E213726L/MedicAppAssets.git)
+* Named Entity Recognition AI model for prescriptions (usable as a sub-module): [MedicApp](https://huggingface.co/anrouxel/MedicApp)
 * API : [MedicAppAPI](https://github.com/Renarde-dev/MedicApp-API#----)
